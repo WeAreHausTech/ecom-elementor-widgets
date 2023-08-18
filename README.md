@@ -1,13 +1,13 @@
-# README #
+# README
 
-Components for ecommmerce
-
+Haus components for ecommmerce
 
 # Local development
 
 Create local database, see and follow (https://bitbucket.org/careofhaus/livv-ecom/src/main/)
 
-cd till paketet tex.
+## product-presentation
+
 ```
   cd packages/product-presentation
 ```
