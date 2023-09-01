@@ -1,0 +1,67 @@
+{
+  "name": "@haus-tech/ecom-components",
+  "version": "0.0.1",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "publish": "npm run build && npm publish"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.8.1",
+    "graphql": "^16.8.0",
+    "immer": "^10.0.2",
+    "lodash": "^4.17.21",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "use-immer": "^0.9.0"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.0",
+    "@graphql-codegen/client-preset": "^4.1.0",
+    "@haus-tech/eslint-config": "^1.0.8",
+    "@haus-tech/prettier-config": "^1.0.3",
+    "@parcel/watcher": "^2.3.0",
+    "@types/lodash": "^4.14.197",
+    "@types/node": "^20.5.7",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@vitejs/plugin-react": "^4.0.3",
+    "eslint": "^8.48.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2",
+    "vite": "^4.4.5",
+    "vite-plugin-dts": "^3.5.3",
+    "vite-tsconfig-paths": "^4.2.0"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "description": "ECOM Components",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/ecom-components.umd.js",
+  "module": "./dist/ecom-components.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/ecom-components.es.js",
+      "require": "./dist/ecom-components.umd.js"
+    }
+  },
+  "author": "Haus Tech",
+  "repository": {
+    "type": "git",
+    "url": "git+https://bitbucket.org/careofhaus/ecom-components.git"
+  }
+}
