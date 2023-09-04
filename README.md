@@ -30,6 +30,27 @@ Most components use a headless approach where we just return a wrapper and then 
 </ProductList>
 ```
 
+## Event bus
+
+### Create channel
+
+```
+import { eventbus } from '../eventbus'
+
+export const sampleChannel = eventbus<{
+  onSample: (payload: { message: string }) => void
+  addSample: (payload: { sampleId: number }) => void
+}>()
+```
+
+### Emit event
+
+`sampleChannel.emit('onSample', { message: 'Hello from SampleComponent' })`
+
+### Recieve event
+
+`const unsubscribeSampleEventListener = sampleChannel.on('onSample', (data) => { ... })`
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
