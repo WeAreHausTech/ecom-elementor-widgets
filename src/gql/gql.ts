@@ -13,7 +13,13 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n  fragment ListedProduct on SearchResult {\n    productId\n    productName\n    slug\n    description\n    score\n    productAsset {\n      id\n      preview\n    }\n    currencyCode\n    price {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n    priceWithTax {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n  }\n": types.ListedProductFragmentDoc,
+    "\n  mutation addItemToOrder($productVariantId: ID!, $quantity: Int!) {\n    addItemToOrder(productVariantId: $productVariantId, quantity: $quantity) {\n      ... on Order {\n        lines {\n          ...ListedOrderLines\n        }\n      }\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n": types.AddItemToOrderDocument,
+    "\n  fragment ListedOrderLines on OrderLine {\n    id\n    quantity\n    featuredAsset {\n      preview\n    }\n    productVariant {\n      name\n      price\n      currencyCode\n      product {\n        slug\n      }\n    }\n  }\n": types.ListedOrderLinesFragmentDoc,
+    "\n  query ActiveOrderLines {\n    activeOrder {\n      lines {\n        ...ListedOrderLines\n      }\n    }\n  }\n": types.ActiveOrderLinesDocument,
+    "\n  fragment ListedTotalPrice on Order {\n    subTotal\n    totalWithTax\n    taxSummary {\n      taxRate\n      taxTotal\n      taxBase\n    }\n    shipping\n    currencyCode\n  }\n": types.ListedTotalPriceFragmentDoc,
+    "\n  query ActiveOrderTotalPrice {\n    activeOrder {\n      ...ListedTotalPrice\n    }\n  }\n": types.ActiveOrderTotalPriceDocument,
+    "\n  mutation removeOrderLine($orderLineId: ID!) {\n    removeOrderLine(orderLineId: $orderLineId) {\n      ... on Order {\n        lines {\n          ...ListedOrderLines\n        }\n      }\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n": types.RemoveOrderLineDocument,
+    "\n  fragment ListedProduct on SearchResult {\n    productId\n    productVariantId\n    productName\n    slug\n    description\n    score\n    productAsset {\n      id\n      preview\n    }\n    currencyCode\n    price {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n    priceWithTax {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n  }\n": types.ListedProductFragmentDoc,
     "\n  query search($input: SearchInput!) {\n    search(input: $input) {\n      totalItems\n      items {\n        ...ListedProduct\n      }\n      facetValues {\n        facetValue {\n          id\n          name\n          facet {\n            id\n            name\n          }\n        }\n        count\n      }\n    }\n  }\n": types.SearchDocument,
 };
 
@@ -34,7 +40,31 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment ListedProduct on SearchResult {\n    productId\n    productName\n    slug\n    description\n    score\n    productAsset {\n      id\n      preview\n    }\n    currencyCode\n    price {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n    priceWithTax {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment ListedProduct on SearchResult {\n    productId\n    productName\n    slug\n    description\n    score\n    productAsset {\n      id\n      preview\n    }\n    currencyCode\n    price {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n    priceWithTax {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  mutation addItemToOrder($productVariantId: ID!, $quantity: Int!) {\n    addItemToOrder(productVariantId: $productVariantId, quantity: $quantity) {\n      ... on Order {\n        lines {\n          ...ListedOrderLines\n        }\n      }\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation addItemToOrder($productVariantId: ID!, $quantity: Int!) {\n    addItemToOrder(productVariantId: $productVariantId, quantity: $quantity) {\n      ... on Order {\n        lines {\n          ...ListedOrderLines\n        }\n      }\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  fragment ListedOrderLines on OrderLine {\n    id\n    quantity\n    featuredAsset {\n      preview\n    }\n    productVariant {\n      name\n      price\n      currencyCode\n      product {\n        slug\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment ListedOrderLines on OrderLine {\n    id\n    quantity\n    featuredAsset {\n      preview\n    }\n    productVariant {\n      name\n      price\n      currencyCode\n      product {\n        slug\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query ActiveOrderLines {\n    activeOrder {\n      lines {\n        ...ListedOrderLines\n      }\n    }\n  }\n"): (typeof documents)["\n  query ActiveOrderLines {\n    activeOrder {\n      lines {\n        ...ListedOrderLines\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  fragment ListedTotalPrice on Order {\n    subTotal\n    totalWithTax\n    taxSummary {\n      taxRate\n      taxTotal\n      taxBase\n    }\n    shipping\n    currencyCode\n  }\n"): (typeof documents)["\n  fragment ListedTotalPrice on Order {\n    subTotal\n    totalWithTax\n    taxSummary {\n      taxRate\n      taxTotal\n      taxBase\n    }\n    shipping\n    currencyCode\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query ActiveOrderTotalPrice {\n    activeOrder {\n      ...ListedTotalPrice\n    }\n  }\n"): (typeof documents)["\n  query ActiveOrderTotalPrice {\n    activeOrder {\n      ...ListedTotalPrice\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation removeOrderLine($orderLineId: ID!) {\n    removeOrderLine(orderLineId: $orderLineId) {\n      ... on Order {\n        lines {\n          ...ListedOrderLines\n        }\n      }\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation removeOrderLine($orderLineId: ID!) {\n    removeOrderLine(orderLineId: $orderLineId) {\n      ... on Order {\n        lines {\n          ...ListedOrderLines\n        }\n      }\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  fragment ListedProduct on SearchResult {\n    productId\n    productVariantId\n    productName\n    slug\n    description\n    score\n    productAsset {\n      id\n      preview\n    }\n    currencyCode\n    price {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n    priceWithTax {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment ListedProduct on SearchResult {\n    productId\n    productVariantId\n    productName\n    slug\n    description\n    score\n    productAsset {\n      id\n      preview\n    }\n    currencyCode\n    price {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n    priceWithTax {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
