@@ -25,7 +25,6 @@ export const App = () => {
         {({ loading, products }) => {
           return (
             <div className="product-list">
-              <img src="/images/logo.png" alt="logo" />
               {!loading && products && products.length > 0 ? (
                 <div className="product-list__container">
                   <div className="product-list__grid">
