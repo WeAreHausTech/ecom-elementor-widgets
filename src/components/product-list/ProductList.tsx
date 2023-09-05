@@ -56,6 +56,7 @@ export const ProductList = ({
 
   useEffect(() => {
     const unsubscribeFromSort = searchFilterChannel.on('onSort', (data) => {
+      setProducts([])
       setVariables((draft) => {
         draft.sort = data
       })
@@ -64,7 +65,7 @@ export const ProductList = ({
     return () => {
       unsubscribeFromSort()
     }
-  }, [refetch, setVariables])
+  }, [refetch, setVariables, setProducts])
 
   useEffect(() => {
     refetch()
