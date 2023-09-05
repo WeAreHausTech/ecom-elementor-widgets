@@ -1,5 +1,6 @@
 import { searchFilterChannel } from '@/eventbus/channels/search-filter-channel'
 import { SearchResultSortParameter } from '@/gql/graphql'
+import { CustomHTMLElement } from '@/types'
 import { ReactNode, useCallback } from 'react'
 
 interface ProductSortProps extends CustomHTMLElement {
