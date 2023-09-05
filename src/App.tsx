@@ -10,6 +10,8 @@ import { sampleChannel } from './eventbus/channels/sample-channel'
 import { ProductSort } from './components/products-sort/ProductSort'
 import { SortOrder } from './gql/graphql'
 
+const infinitePagination = true
+
 export const App = () => {
   useEffect(() => {
     console.log('SampleComponent mounted')
@@ -47,14 +49,20 @@ export const App = () => {
           </select>
         )}
       </ProductSort>
-      <ProductList wrapperTag="section" className="product-list-wrapper">
-        {({ loading, products }) => {
+      <ProductList
+        wrapperTag="section"
+        searchInputProps={{ take: 4 }}
+        infinitePagination={infinitePagination}
+        className="product-list-wrapper"
+      >
+        {({ loading, products, pagination }) => {
+          if (loading && !infinitePagination) return <div>Loading...</div>
           return (
             <div className="product-list">
-              {!loading && products && products.length > 0 ? (
+              {products && products.length > 0 ? (
                 <div className="grid grid-cols-4">
-                  {products.map((product, idx) => (
-                    <Product key={idx} thumbnailSize={undefined} product={product}>
+                  {products.map((product) => (
+                    <Product key={product.productId} thumbnailSize={undefined} product={product}>
                       {({ product, thumbnail }) => (
                         <div className="mx-auto mt-11 w-80 transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-md duration-300 hover:scale-105 hover:shadow-lg">
                           <img
@@ -100,6 +108,37 @@ export const App = () => {
               ) : (
                 <div className="product-list__no-products">No products found</div>
               )}
+              <div className="pagination w-100 mt-4 flex justify-center items-center">
+                {infinitePagination ? (
+                  <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    onClick={() => pagination?.nextPage()}
+                    disabled={!pagination?.canGoForward}
+                  >
+                    Load more
+                  </button>
+                ) : (
+                  <>
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                      onClick={() => pagination?.prevPage()}
+                      disabled={!pagination?.canGoBack}
+                    >
+                      Previous
+                    </button>
+                    <div className="mx-4">
+                      {pagination?.currentPage} / {pagination?.totalPages}
+                    </div>
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                      onClick={() => pagination?.nextPage()}
+                      disabled={!pagination?.canGoForward}
+                    >
+                      Next
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
           )
         }}
