@@ -25,6 +25,10 @@ export const Default: Story = {
       productId: '1',
       productName: 'Product 1',
       slug: 'product-1',
+      productVariantId: '1',
+      description: 'Product 1 description',
+      score: 1,
+      price: { value: 100 },
       priceWithTax: { value: 100 },
       currencyCode: CurrencyCode.Eur,
       productAsset: {
