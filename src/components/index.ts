@@ -3,6 +3,7 @@ import { VendureApolloProvider } from '@/providers/vendure/VendureApolloProvider
 // Products
 import { ProductList } from '@/components/product-list/ProductList'
 import { Product } from '@/components/product/Product'
+import { ProductSort } from './products-sort/ProductSort'
 
 // Cart
 import { AddToCart } from './add-to-cart/AddToCart'
@@ -14,6 +15,7 @@ export {
   VendureApolloProvider,
   ProductList,
   Product,
+  ProductSort,
   AddToCart,
   CartContent,
   CartRemoveItem,
