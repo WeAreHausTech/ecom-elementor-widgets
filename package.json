@@ -1,6 +1,6 @@
 {
   "name": "@haus-tech/ecom-components",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "publish": "npm run build && npm publish",
+    "publish-package": "npm run build && npm publish",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
