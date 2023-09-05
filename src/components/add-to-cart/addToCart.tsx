@@ -2,6 +2,7 @@ import { useMutation } from '@apollo/client'
 import { ADD_ITEM_TO_ORDER } from '@/providers/vendure/cart/activeOrders'
 import { ReactNode } from 'react'
 import { cartChannel } from '../../eventbus/channels/cart-channel'
+import { CustomHTMLElement } from '@/types'
 
 interface AddToCartProps extends CustomHTMLElement {
   children: (props: {
@@ -11,11 +12,7 @@ interface AddToCartProps extends CustomHTMLElement {
   }) => ReactNode
 }
 
-export const AddToCart = ({
-  wrapperTag: Wrapper = 'div',
-  children,
-  ...rest
-}: AddToCartProps) => {
+export const AddToCart = ({ wrapperTag: Wrapper = 'div', children, ...rest }: AddToCartProps) => {
   let success = false
   let isError = false
 

@@ -10,6 +10,7 @@ export default defineConfig({
     react(),
     tsConfigPaths(),
     dts({
+      insertTypesEntry: true,
       rollupTypes: true,
     }),
   ],
@@ -17,7 +18,7 @@ export default defineConfig({
     lib: {
       entry: path.resolve('src', 'components/index.ts'),
       name: 'ecom-components',
-      formats: ['es', 'umd'],
+      formats: ['es'],
       fileName: (format) => `ecom-components.${format}.js`,
     },
     rollupOptions: {

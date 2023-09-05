@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 import { REMOVE_ORDER_LINE } from '@/providers/vendure/cart/activeOrders'
 import { useMutation } from '@apollo/client'
 import { cartChannel } from '../../eventbus/channels/cart-channel'
+import { CustomHTMLElement } from '@/types'
 
 interface CartRemoveItemProps extends CustomHTMLElement {
   children: (props: {

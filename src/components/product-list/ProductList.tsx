@@ -5,6 +5,7 @@ import { ListedProductFragment, SearchInput, SortOrder } from '@/gql/graphql'
 import { LISTED_PRODUCT_FRAGMENT, SEARCH } from '@/providers/vendure/products/products'
 import { getFragmentData } from '@/gql'
 import { searchFilterChannel } from '@/eventbus/channels/search-filter-channel'
+import { CustomHTMLElement } from '@/types'
 
 type SearchInputProps = Pick<
   SearchInput,

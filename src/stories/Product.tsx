@@ -1,5 +1,6 @@
 import { Product as ProductComponent } from '@/components/product/Product'
 import { ListedProductFragment } from '@/gql/graphql'
+import { CustomHTMLElement } from '@/types'
 import { getPrice } from '@/utils/utils'
 
 interface ProductProps extends CustomHTMLElement {

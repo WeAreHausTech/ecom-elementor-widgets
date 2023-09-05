@@ -7,6 +7,7 @@ import {
 import { ListedOrderLinesFragment } from '@/gql/graphql'
 import { cartChannel } from '../../eventbus/channels/cart-channel'
 import { getFragmentData } from '@/gql'
+import { CustomHTMLElement } from '@/types'
 
 interface CartContentsProps extends CustomHTMLElement {
   children: (props: {

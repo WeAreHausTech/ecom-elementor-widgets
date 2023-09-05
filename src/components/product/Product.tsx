@@ -1,4 +1,5 @@
 import { ListedProductFragment } from '@/gql/graphql'
+import { CustomHTMLElement } from '@/types'
 
 interface ProductProps extends CustomHTMLElement {
   product: ListedProductFragment
