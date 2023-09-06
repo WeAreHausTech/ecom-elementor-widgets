@@ -16,6 +16,9 @@ import { OrderBillingAddress } from './order-billing-address/OrderBillingAddress
 import { OrderShippingAddress } from './order-shipping-address/OrderShippingAddress'
 import { OrderMessage } from './order-message/OrderMessage'
 
+// Price
+import { Price } from './price/Price'
+
 export {
   VendureApolloProvider,
   ProductList,
@@ -28,4 +31,5 @@ export {
   OrderBillingAddress,
   OrderShippingAddress,
   OrderMessage,
+  Price,
 }
