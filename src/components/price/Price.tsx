@@ -1,48 +1,24 @@
-import { CurrencyCode, ListedOrderLinesFragment, ListedProductFragment } from '@/gql/graphql.ts'
+import { CurrencyCode, PriceRange, SinglePrice } from '@/gql/graphql.ts'
+import { CustomHTMLElement } from '@/types'
+import { formatPrice, getPrice } from '@/utils/utils'
 import { ReactNode } from 'react'
 
-interface PriceProps {
-  className?: string
-  product: ListedProductFragment | ListedOrderLinesFragment
+interface PriceProps extends CustomHTMLElement {
+  price: PriceRange | SinglePrice
+  priceWithTax: PriceRange | SinglePrice
+  currencyCode: CurrencyCode
   children: (props: { formattedPrice?: string }) => ReactNode
 }
 
-export const Price = ({ className, product, children }): PriceProps => {
-  //TODO where to get showTax from?
-  const showTax = true
+//TODO where to get showTax from?
+const showTax = true
 
-  const priceWithTax =
-    product.__typename === 'OrderLine'
-      ? product.productVariant.priceWithTax
-      : showTax
-      ? product.priceWithTax
-      : product.price
-  const currencyCode =
-    product.__typename === 'OrderLine' ? product.productVariant.currencyCode : product.currencyCode
+export const Price = ({ wrapperTag: Wrapper = 'div', price, priceWithTax, currencyCode, children, ...rest }: PriceProps) => {
 
-  if (priceWithTax === null || !currencyCode) {
-    return <></>
-  }
+  const activePrice = showTax ? priceWithTax : price
+  const fromPrice = typeof activePrice === 'object' && 'min' in activePrice && 'max' in activePrice && activePrice.min !== activePrice.max
 
-  let formattedPrice = null
-  if (typeof priceWithTax === 'number') {
-    formattedPrice = formatPrice(priceWithTax, currencyCode)
-  } else if ('value' in priceWithTax) {
-    formattedPrice = formatPrice(priceWithTax.value, currencyCode)
-  } else if (priceWithTax.min === priceWithTax.max) {
-    formattedPrice = `${formatPrice(priceWithTax.min, currencyCode)}`
-  } else {
-    //TODO: Translate "Från"
-    formattedPrice = `Från ${formatPrice(priceWithTax.min, currencyCode)}`
-  }
+  const formattedPrice = formatPrice(getPrice(activePrice), currencyCode, fromPrice)
 
-  return <div className={className}>{children({ formattedPrice })}</div>
-}
-
-export function formatPrice(value: number, currency: CurrencyCode) {
-  //TODO use currency ('sv-SE') from context
-  return new Intl.NumberFormat('sv-SE', {
-    style: 'currency',
-    currency,
-  }).format(value / 100)
+  return <Wrapper {...rest}>{children({ formattedPrice })}</Wrapper>
 }

@@ -25,6 +25,7 @@ export const ACTIVE_ORDER_LINE_FRAGMENT = graphql(/* GraphQL */ `
     }
     productVariant {
       name
+      price
       priceWithTax
       currencyCode
       product {

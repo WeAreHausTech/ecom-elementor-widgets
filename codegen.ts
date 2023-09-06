@@ -1,7 +1,7 @@
 import { CodegenConfig } from '@graphql-codegen/cli'
 
 const config: CodegenConfig = {
-  schema: 'https://demo.vendure.io/shop-api',
+  schema: process.env.VITE_API_URL,
   documents: ['src/**/*.tsx', 'src/**/*.ts', '!src/gql/**/*'],
   ignoreNoDocuments: true, // for better experience with the watcher
   generates: {

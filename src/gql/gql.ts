@@ -14,11 +14,17 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  mutation addItemToOrder($productVariantId: ID!, $quantity: Int!) {\n    addItemToOrder(productVariantId: $productVariantId, quantity: $quantity) {\n      ... on Order {\n        lines {\n          ...ListedOrderLines\n        }\n      }\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n": types.AddItemToOrderDocument,
-    "\n  fragment ListedOrderLines on OrderLine {\n    id\n    quantity\n    featuredAsset {\n      preview\n    }\n    productVariant {\n      name\n      priceWithTax\n      currencyCode\n      product {\n        slug\n      }\n    }\n  }\n": types.ListedOrderLinesFragmentDoc,
+    "\n  fragment ListedOrderLines on OrderLine {\n    id\n    quantity\n    featuredAsset {\n      preview\n    }\n    productVariant {\n      name\n      price\n      priceWithTax\n      currencyCode\n      product {\n        slug\n      }\n    }\n  }\n": types.ListedOrderLinesFragmentDoc,
     "\n  query ActiveOrderLines {\n    activeOrder {\n      lines {\n        ...ListedOrderLines\n      }\n    }\n  }\n": types.ActiveOrderLinesDocument,
     "\n  fragment ListedTotalPrice on Order {\n    subTotal\n    totalWithTax\n    taxSummary {\n      taxRate\n      taxTotal\n      taxBase\n    }\n    shipping\n    currencyCode\n  }\n": types.ListedTotalPriceFragmentDoc,
     "\n  query ActiveOrderTotalPrice {\n    activeOrder {\n      ...ListedTotalPrice\n    }\n  }\n": types.ActiveOrderTotalPriceDocument,
     "\n  mutation removeOrderLine($orderLineId: ID!) {\n    removeOrderLine(orderLineId: $orderLineId) {\n      ... on Order {\n        lines {\n          ...ListedOrderLines\n        }\n      }\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n": types.RemoveOrderLineDocument,
+    "\n  fragment ListedOrderAdressOrder on OrderAddress {\n    fullName\n    company\n    streetLine1\n    streetLine2\n    city\n    province\n    postalCode\n    country\n    countryCode\n    phoneNumber\n  }\n": types.ListedOrderAdressOrderFragmentDoc,
+    "\n  mutation setOrderShippingAddress($input: CreateAddressInput!) {\n    setOrderShippingAddress(input: $input) {\n      ... on Order {\n        shippingAddress {\n          ...ListedOrderAdressOrder\n        }\n      }\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n": types.SetOrderShippingAddressDocument,
+    "\n  mutation setOrderBillingAddress($input: CreateAddressInput!) {\n    setOrderBillingAddress(input: $input) {\n      ... on Order {\n        billingAddress {\n          ...ListedOrderAdressOrder\n        }\n      }\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n": types.SetOrderBillingAddressDocument,
+    "\n  query ActiveOrderShippingAddress {\n    activeOrder {\n      shippingAddress {\n        ...ListedOrderAdressOrder\n      }\n    }\n  }\n": types.ActiveOrderShippingAddressDocument,
+    "\n  query ActiveOrderBillingAddress {\n    activeOrder {\n      billingAddress {\n        ...ListedOrderAdressOrder\n      }\n    }\n  }\n": types.ActiveOrderBillingAddressDocument,
+    "\n  mutation setOrderCustomFields($input: UpdateOrderInput!) {\n    setOrderCustomFields(input: $input) {\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n": types.SetOrderCustomFieldsDocument,
     "\n  fragment ListedProduct on SearchResult {\n    productId\n    productVariantId\n    productName\n    slug\n    description\n    score\n    productAsset {\n      id\n      preview\n    }\n    currencyCode\n    price {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n    priceWithTax {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n  }\n": types.ListedProductFragmentDoc,
     "\n  query search($input: SearchInput!) {\n    search(input: $input) {\n      totalItems\n      items {\n        ...ListedProduct\n      }\n      facetValues {\n        facetValue {\n          id\n          name\n          facet {\n            id\n            name\n          }\n        }\n        count\n      }\n    }\n  }\n": types.SearchDocument,
 };
@@ -44,7 +50,7 @@ export function graphql(source: "\n  mutation addItemToOrder($productVariantId: 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment ListedOrderLines on OrderLine {\n    id\n    quantity\n    featuredAsset {\n      preview\n    }\n    productVariant {\n      name\n      priceWithTax\n      currencyCode\n      product {\n        slug\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment ListedOrderLines on OrderLine {\n    id\n    quantity\n    featuredAsset {\n      preview\n    }\n    productVariant {\n      name\n      priceWithTax\n      currencyCode\n      product {\n        slug\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  fragment ListedOrderLines on OrderLine {\n    id\n    quantity\n    featuredAsset {\n      preview\n    }\n    productVariant {\n      name\n      price\n      priceWithTax\n      currencyCode\n      product {\n        slug\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment ListedOrderLines on OrderLine {\n    id\n    quantity\n    featuredAsset {\n      preview\n    }\n    productVariant {\n      name\n      price\n      priceWithTax\n      currencyCode\n      product {\n        slug\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -61,6 +67,30 @@ export function graphql(source: "\n  query ActiveOrderTotalPrice {\n    activeOr
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation removeOrderLine($orderLineId: ID!) {\n    removeOrderLine(orderLineId: $orderLineId) {\n      ... on Order {\n        lines {\n          ...ListedOrderLines\n        }\n      }\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation removeOrderLine($orderLineId: ID!) {\n    removeOrderLine(orderLineId: $orderLineId) {\n      ... on Order {\n        lines {\n          ...ListedOrderLines\n        }\n      }\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  fragment ListedOrderAdressOrder on OrderAddress {\n    fullName\n    company\n    streetLine1\n    streetLine2\n    city\n    province\n    postalCode\n    country\n    countryCode\n    phoneNumber\n  }\n"): (typeof documents)["\n  fragment ListedOrderAdressOrder on OrderAddress {\n    fullName\n    company\n    streetLine1\n    streetLine2\n    city\n    province\n    postalCode\n    country\n    countryCode\n    phoneNumber\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation setOrderShippingAddress($input: CreateAddressInput!) {\n    setOrderShippingAddress(input: $input) {\n      ... on Order {\n        shippingAddress {\n          ...ListedOrderAdressOrder\n        }\n      }\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation setOrderShippingAddress($input: CreateAddressInput!) {\n    setOrderShippingAddress(input: $input) {\n      ... on Order {\n        shippingAddress {\n          ...ListedOrderAdressOrder\n        }\n      }\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation setOrderBillingAddress($input: CreateAddressInput!) {\n    setOrderBillingAddress(input: $input) {\n      ... on Order {\n        billingAddress {\n          ...ListedOrderAdressOrder\n        }\n      }\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation setOrderBillingAddress($input: CreateAddressInput!) {\n    setOrderBillingAddress(input: $input) {\n      ... on Order {\n        billingAddress {\n          ...ListedOrderAdressOrder\n        }\n      }\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query ActiveOrderShippingAddress {\n    activeOrder {\n      shippingAddress {\n        ...ListedOrderAdressOrder\n      }\n    }\n  }\n"): (typeof documents)["\n  query ActiveOrderShippingAddress {\n    activeOrder {\n      shippingAddress {\n        ...ListedOrderAdressOrder\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query ActiveOrderBillingAddress {\n    activeOrder {\n      billingAddress {\n        ...ListedOrderAdressOrder\n      }\n    }\n  }\n"): (typeof documents)["\n  query ActiveOrderBillingAddress {\n    activeOrder {\n      billingAddress {\n        ...ListedOrderAdressOrder\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation setOrderCustomFields($input: UpdateOrderInput!) {\n    setOrderCustomFields(input: $input) {\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation setOrderCustomFields($input: UpdateOrderInput!) {\n    setOrderCustomFields(input: $input) {\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

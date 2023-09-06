@@ -9,7 +9,7 @@ Create local database, see and follow (https://bitbucket.org/careofhaus/livv-eco
 ### Start graphql codegen (automatically get TS types from Graph QL operations)
 
 ```
-yarn graphql-codegen --watch
+yarn graphql-codegen --require dotenv/config --config ./codegen.ts dotenv_config_path=./.env --watch
 ```
 
 ### Start development server

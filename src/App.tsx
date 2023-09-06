@@ -3,12 +3,16 @@ import { ProductList } from './components/product-list/ProductList'
 import { CartContent } from '@/components/cart-content/CartContent'
 import { CartRemoveItem } from '@/components/cart-remove-item/CartRemoveItem'
 import { CartTotals } from '@/components/cart-totals/CartTotals'
+import { OrderShippingAddress } from './components/order-shipping-address/OrderShippingAddress'
+import { OrderBillingAddress } from './components/order-billing-address/OrderBillingAddress'
+import { OrderMessage } from '@/components/order-message/OrderMessage'
 import { AddToCart } from '@/components/add-to-cart/AddToCart'
 import { useEffect } from 'react'
 import { sampleChannel } from './eventbus/channels/sample-channel'
 import { ProductSort } from './components/products-sort/ProductSort'
 import { SortOrder } from './gql/graphql'
 import { Price } from '@/components/price/Price.tsx'
+import { Input } from './components/_form-components/Input'
 
 const infinitePagination = true
 
@@ -78,13 +82,15 @@ export const App = () => {
                               Product description goes here.
                             </p>
                             <div className="flex items-center">
-                              <p className="mr-2 text-lg font-semibold text-gray-900 dark:text-white">
-                                <Price product={product}>
-                                  {({ formattedPrice }) => {
-                                    return <div>{formattedPrice}</div>
-                                  }}
-                                </Price>
-                              </p>
+                              <Price
+                                price={product.price}
+                                priceWithTax={product.priceWithTax}
+                                currencyCode={product.currencyCode}
+                              >
+                                {({ formattedPrice }) => {
+                                  return <div>{formattedPrice}</div>
+                                }}
+                              </Price>
                             </div>
                           </div>
                           <AddToCart>
@@ -147,58 +153,59 @@ export const App = () => {
           )
         }}
       </ProductList>
-      <h2>Cart</h2>
+      <h2 className="text-2xl font-semibold mb-4">Cart</h2>
       <CartContent>
         {({ activeProducts }) => {
           return (
             <div className="cart-content">
               {!activeProducts ? (
-                <div> Cart is empty </div>
+                <div className="text-center py-4 text-gray-600">Cart is empty</div>
               ) : (
-                <ul>
+                <ul className="space-y-4">
                   {(activeProducts ?? []).map((product) => (
-                    <li key={product.id}>
-                      <div>
+                    <li key={product.id} className="flex items-center space-x-4">
+                      <div className="w-20 h-20">
                         <img
                           src={product.featuredAsset?.preview + '?preset=thumb'}
                           alt={product.productVariant.name}
+                          className="w-full h-full object-cover rounded-md"
                         />
                       </div>
-                      <h3>
-                        <a
-                          key={product.id}
-                          href={`/products/${product.productVariant.product.slug}`}
+                      <div>
+                        <h3 className="text-lg font-semibold">
+                          <a
+                            key={product.id}
+                            href={`/products/${product.productVariant.product.slug}`}
+                            className="text-blue-500 hover:underline"
+                          >
+                            {product.productVariant.name}
+                          </a>
+                        </h3>
+                        <Price
+                          className="text-gray-600"
+                          price={product.productVariant.price}
+                          priceWithTax={product.productVariant.priceWithTax}
+                          currencyCode={product.productVariant.currencyCode}
                         >
-                          {product.productVariant.name}
-                        </a>
-                      </h3>
-                      <p>
-                        {' '}
-                        <Price product={product}>
                           {({ formattedPrice }) => {
                             return <div>{formattedPrice}</div>
                           }}
                         </Price>
-                      </p>
-                      <p>Antal: {product.quantity}</p>
-
-                      <CartRemoveItem>
-                        {({ removeItem }) => {
-                          return (
-                            <div>
-                              <button
-                                type="submit"
-                                name="removeItem"
-                                value={product.id}
-                                className="font-medium text-primary-600 hover:text-primary-500"
-                                onClick={() => removeItem(product.id)}
-                              >
-                                Remove
-                              </button>
-                            </div>
-                          )
-                        }}
-                      </CartRemoveItem>
+                        <p className="text-gray-500">Antal: {product.quantity}</p>
+                        <CartRemoveItem>
+                          {({ removeItem }) => (
+                            <button
+                              type="submit"
+                              name="removeItem"
+                              value={product.id}
+                              className="text-primary-600 hover:text-primary-500 focus:outline-none"
+                              onClick={() => removeItem(product.id)}
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </CartRemoveItem>
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -212,14 +219,14 @@ export const App = () => {
           return (
             <div className="cart-totals">
               {totalPrice ? (
-                <div>
-                  <p>
-                    Varukostnad: {totalPrice.subTotal} {totalPrice.currencyCode}{' '}
+                <div className="bg-white p-4 rounded-md shadow-md">
+                  <p className="mb-2">
+                    Varukostnad: {totalPrice.subTotal} {totalPrice.currencyCode}
                   </p>
-                  <p>
+                  <p className="mb-2">
                     Frakt: {totalPrice.shipping} {totalPrice.currencyCode}
                   </p>
-                  <p>
+                  <p className="mb-2">
                     Moms: {totalPrice.taxSummary[0]?.taxTotal} {totalPrice.currencyCode}
                   </p>
                   <p>
@@ -227,12 +234,181 @@ export const App = () => {
                   </p>
                 </div>
               ) : (
-                <div> Cart is empty </div>
+                <div className="text-center py-4 text-gray-600">Cart is empty</div>
               )}
             </div>
           )
         }}
       </CartTotals>
+
+      <h2 className="text-2xl font-semibold mb-4">Checkout</h2>
+      <OrderShippingAddress>
+        {({ formData, handleChange, handleSubmit }) => {
+          return !formData ? (
+            <div>Loading...</div>
+          ) : (
+            <div className="shipping-address bg-white p-4 rounded-md shadow-m">
+              <form onSubmit={handleSubmit} className="bg-white p-6 rounded-md shadow-md max-w-md">
+                <h3 className="text-lg font-semibold mb-2">Company information</h3>
+                <label className="block mb-4">
+                  Company:
+                  <Input
+                    type="text"
+                    name="company"
+                    value={formData.company!}
+                    onChange={handleChange}
+                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
+                  />
+                </label>
+
+                <label className="block mb-4">
+                  Street Line 1:
+                  <Input
+                    type="text"
+                    name="streetLine1"
+                    value={formData.streetLine1!}
+                    onChange={handleChange}
+                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
+                  />
+                </label>
+
+                <label className="block mb-4">
+                  City:
+                  <Input
+                    type="text"
+                    name="city"
+                    value={formData.city!}
+                    onChange={handleChange}
+                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
+                  />
+                </label>
+
+                <label className="block mb-4">
+                  Street Line 2:
+                  <Input
+                    type="text"
+                    name="streetLine2"
+                    value={formData.streetLine2!}
+                    onChange={handleChange}
+                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
+                  />
+                </label>
+
+                <label className="block mb-4">
+                  Province:
+                  <Input
+                    type="text"
+                    name="province"
+                    value={formData.province!}
+                    onChange={handleChange}
+                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
+                  />
+                </label>
+
+                <label className="block mb-4">
+                  Postal Code:
+                  <Input
+                    type="text"
+                    name="postalCode"
+                    value={formData.postalCode!}
+                    onChange={handleChange}
+                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
+                  />
+                </label>
+
+                <label className="block mb-4">
+                  Country Code:
+                  <Input
+                    type="text"
+                    name="countryCode"
+                    value={formData.countryCode!}
+                    onChange={handleChange}
+                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
+                  />
+                </label>
+
+                <br />
+                <h3 className="text-lg font-semibold mb-2">Contact information</h3>
+                <label className="block mb-4">
+                  Full Name:
+                  <Input
+                    type="text"
+                    name="fullName"
+                    value={formData.fullName!}
+                    onChange={handleChange}
+                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
+                  />
+                </label>
+
+                <label className="block mb-4">
+                  Phone Number:
+                  <Input
+                    type="text"
+                    name="phoneNumber"
+                    value={formData.phoneNumber!}
+                    onChange={handleChange}
+                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
+                  />
+                </label>
+
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  type="submit"
+                >
+                  Uppdatera uppgifter
+                </button>
+              </form>
+            </div>
+          )
+        }}
+      </OrderShippingAddress>
+      <OrderBillingAddress>
+        {({ update }) => {
+          return (
+            <div className="cart-totals">
+              <button
+                type="submit"
+                name="removeItem"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() =>
+                  update({
+                    fullName: 'Test Testsson',
+                    company: 'Testbolaget',
+                    streetLine1: 'Testgatan 1',
+                    streetLine2: 'Testgatan 12',
+                    city: 'Teststaden',
+                    province: 'Testlän',
+                    postalCode: '12345',
+                    countryCode: 'SE',
+                    phoneNumber: '0701234567',
+                  })
+                }
+              >
+                Update billing address
+              </button>
+            </div>
+          )
+        }}
+      </OrderBillingAddress>
+      <OrderMessage>
+        {({ message, setMessage, addMessageToOrder }) => {
+          return (
+            <div className="cart-totals">
+              <label className="block mb-4">
+                Write a message
+                <Input
+                  type="text"
+                  name="message"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  onBlur={addMessageToOrder}
+                  className="mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300 px-3 py-2"
+                />
+              </label>
+            </div>
+          )
+        }}
+      </OrderMessage>
     </div>
   )
 }
