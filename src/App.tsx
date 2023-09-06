@@ -1,6 +1,5 @@
 import { Product } from './components/product/Product'
 import { ProductList } from './components/product-list/ProductList'
-import { getPrice } from './utils/utils'
 import { CartContent } from '@/components/cart-content/CartContent'
 import { CartRemoveItem } from '@/components/cart-remove-item/CartRemoveItem'
 import { CartTotals } from '@/components/cart-totals/CartTotals'
@@ -9,6 +8,7 @@ import { useEffect } from 'react'
 import { sampleChannel } from './eventbus/channels/sample-channel'
 import { ProductSort } from './components/products-sort/ProductSort'
 import { SortOrder } from './gql/graphql'
+import { Price } from '@/components/price/Price.tsx'
 
 const infinitePagination = true
 
@@ -79,7 +79,11 @@ export const App = () => {
                             </p>
                             <div className="flex items-center">
                               <p className="mr-2 text-lg font-semibold text-gray-900 dark:text-white">
-                                {getPrice(product.priceWithTax)} {product.currencyCode}
+                                <Price product={product}>
+                                  {({ formattedPrice }) => {
+                                    return <div>{formattedPrice}</div>
+                                  }}
+                                </Price>
                               </p>
                             </div>
                           </div>
@@ -170,7 +174,11 @@ export const App = () => {
                       </h3>
                       <p>
                         {' '}
-                        {product.productVariant.price} {product.productVariant.currencyCode}{' '}
+                        <Price product={product}>
+                          {({ formattedPrice }) => {
+                            return <div>{formattedPrice}</div>
+                          }}
+                        </Price>
                       </p>
                       <p>Antal: {product.quantity}</p>
 

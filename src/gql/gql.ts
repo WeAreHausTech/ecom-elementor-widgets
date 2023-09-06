@@ -14,7 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  mutation addItemToOrder($productVariantId: ID!, $quantity: Int!) {\n    addItemToOrder(productVariantId: $productVariantId, quantity: $quantity) {\n      ... on Order {\n        lines {\n          ...ListedOrderLines\n        }\n      }\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n": types.AddItemToOrderDocument,
-    "\n  fragment ListedOrderLines on OrderLine {\n    id\n    quantity\n    featuredAsset {\n      preview\n    }\n    productVariant {\n      name\n      price\n      currencyCode\n      product {\n        slug\n      }\n    }\n  }\n": types.ListedOrderLinesFragmentDoc,
+    "\n  fragment ListedOrderLines on OrderLine {\n    id\n    quantity\n    featuredAsset {\n      preview\n    }\n    productVariant {\n      name\n      priceWithTax\n      currencyCode\n      product {\n        slug\n      }\n    }\n  }\n": types.ListedOrderLinesFragmentDoc,
     "\n  query ActiveOrderLines {\n    activeOrder {\n      lines {\n        ...ListedOrderLines\n      }\n    }\n  }\n": types.ActiveOrderLinesDocument,
     "\n  fragment ListedTotalPrice on Order {\n    subTotal\n    totalWithTax\n    taxSummary {\n      taxRate\n      taxTotal\n      taxBase\n    }\n    shipping\n    currencyCode\n  }\n": types.ListedTotalPriceFragmentDoc,
     "\n  query ActiveOrderTotalPrice {\n    activeOrder {\n      ...ListedTotalPrice\n    }\n  }\n": types.ActiveOrderTotalPriceDocument,
@@ -44,7 +44,7 @@ export function graphql(source: "\n  mutation addItemToOrder($productVariantId: 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment ListedOrderLines on OrderLine {\n    id\n    quantity\n    featuredAsset {\n      preview\n    }\n    productVariant {\n      name\n      price\n      currencyCode\n      product {\n        slug\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment ListedOrderLines on OrderLine {\n    id\n    quantity\n    featuredAsset {\n      preview\n    }\n    productVariant {\n      name\n      price\n      currencyCode\n      product {\n        slug\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  fragment ListedOrderLines on OrderLine {\n    id\n    quantity\n    featuredAsset {\n      preview\n    }\n    productVariant {\n      name\n      priceWithTax\n      currencyCode\n      product {\n        slug\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment ListedOrderLines on OrderLine {\n    id\n    quantity\n    featuredAsset {\n      preview\n    }\n    productVariant {\n      name\n      priceWithTax\n      currencyCode\n      product {\n        slug\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
