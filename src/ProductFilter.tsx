@@ -1,4 +1,4 @@
-import { ProductList, AddToCart, Product, ProductSort } from '@haus-tech/ecom-components'
+import { ProductList, AddToCart, Product, ProductSort, Price } from '@haus-tech/ecom-components'
 import { AddToCartButton } from './AddToCartButton'
 
 export default function ProductFilter() {
@@ -63,9 +63,19 @@ export default function ProductFilter() {
                               Product description goes here.
                             </p>
                             <div className="flex items-center justify-center">
-                              <p className="mr-2 text-lg font-semibold text-gray-900 dark:text-white text-center">
-                                {'0'} {product.currencyCode}
-                              </p>
+                              <Price
+                                price={product.price}
+                                priceWithTax={product.priceWithTax}
+                                currencyCode={product.currencyCode}
+                              >
+                                {({ formattedPrice }) => {
+                                  return (
+                                    <p className="mr-2 text-lg font-semibold text-gray-900 dark:text-white text-center">
+                                      {formattedPrice}{' '}
+                                    </p>
+                                  )
+                                }}
+                              </Price>
                             </div>
                           </div>
                           <AddToCart wrapperTag="section">

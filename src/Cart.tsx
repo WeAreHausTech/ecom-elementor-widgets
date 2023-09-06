@@ -1,4 +1,4 @@
-import { CartContent, CartTotals, CartRemoveItem } from '@haus-tech/ecom-components'
+import { CartContent, CartTotals, CartRemoveItem, Price } from '@haus-tech/ecom-components'
 
 export default function Cart() {
   return (
@@ -36,9 +36,16 @@ export default function Cart() {
                                 {product.productVariant.name}
                               </a>
                             </h3>
-                            <p className="text-gray-700">
-                              {product.productVariant.price} {product.productVariant.currencyCode}
-                            </p>
+                            <Price
+                              className="text-gray-700"
+                              price={product.productVariant.price}
+                              priceWithTax={product.productVariant.priceWithTax}
+                              currencyCode={product.productVariant.currencyCode}
+                            >
+                              {({ formattedPrice }) => {
+                                return <p className="text-gray-700">{formattedPrice} </p>
+                              }}
+                            </Price>
                             <p className="text-gray-600">
                               {/* Additional information goes here */}
                             </p>
@@ -76,18 +83,65 @@ export default function Cart() {
                 <div className="cart-totals">
                   {totalPrice && (
                     <div className="rounded-lg border border-gray-300 p-4">
-                      <p className="mb-2 text-left text-gray-900 font-bold text-lg">
-                        Betala: {totalPrice.totalWithTax} {totalPrice.currencyCode}
-                      </p>
-                      <p className="mb-2 text-left text-gray-900 text-sm">
-                        Varukostnad: {totalPrice.subTotal} {totalPrice.currencyCode}
-                      </p>
-                      <p className="mb-2 text-left text-gray-900 text-sm">
-                        Frakt: {totalPrice.shipping} {totalPrice.currencyCode}
-                      </p>
-                      <p className="mb-2 text-left text-gray-900 text-sm">
-                        Moms: {totalPrice.taxSummary[0]?.taxTotal} {totalPrice.currencyCode}
-                      </p>
+                      <Price
+                        className="text-gray-600"
+                        price={totalPrice.totalWithTax}
+                        priceWithTax={totalPrice.totalWithTax}
+                        currencyCode={totalPrice.currencyCode}
+                      >
+                        {({ formattedPrice }) => {
+                          return (
+                            <p className="mb-2 text-left text-gray-900 font-bold text-lg">
+                              Betala: {formattedPrice}
+                            </p>
+                          )
+                        }}
+                      </Price>
+
+                      <Price
+                        className="text-gray-600"
+                        price={totalPrice.subTotal}
+                        priceWithTax={totalPrice.subTotal}
+                        currencyCode={totalPrice.currencyCode}
+                      >
+                        {({ formattedPrice }) => {
+                          return (
+                            <p className="mb-2 text-left text-gray-900 text-sm">
+                              Varukostnad: {formattedPrice}
+                            </p>
+                          )
+                        }}
+                      </Price>
+
+                      <Price
+                        className="text-gray-600"
+                        price={totalPrice.shipping}
+                        priceWithTax={totalPrice.shipping}
+                        currencyCode={totalPrice.currencyCode}
+                      >
+                        {({ formattedPrice }) => {
+                          return (
+                            <p className="mb-2 text-left text-gray-900 text-sm">
+                              Frakt: {formattedPrice}
+                            </p>
+                          )
+                        }}
+                      </Price>
+
+                      <Price
+                        className="text-gray-600"
+                        price={totalPrice.taxSummary[0]?.taxTotal}
+                        priceWithTax={totalPrice.taxSummary[0]?.taxTotal}
+                        currencyCode={totalPrice.currencyCode}
+                      >
+                        {({ formattedPrice }) => {
+                          return (
+                            <p className="mb-2 text-left text-gray-900 text-sm">
+                              Moms: {formattedPrice}
+                            </p>
+                          )
+                        }}
+                      </Price>
                     </div>
                   )}
                 </div>
