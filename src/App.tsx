@@ -4,7 +4,7 @@ import { VendureApolloProvider, ProductList, AddToCart, Product } from '@haus-te
 function App() {
   return (
     <>
-      <VendureApolloProvider>
+      <VendureApolloProvider apiUrl={import.meta.env.VITE_API_URL}>
         <ProductList wrapperTag="section" className="product-list-wrapper">
           {({ loading, products }) => {
             return (
