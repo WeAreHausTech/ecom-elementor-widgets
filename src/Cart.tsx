@@ -4,7 +4,7 @@ export default function Cart() {
   return (
     <div>
       <h2 className="mb-2 text-left text-gray-900 font-bold text-3xl">Varukorg</h2>
-      <div className="flex flex-row gap-20 justify-around">
+      <div className="flex flex-row gap-20 justify-around items-start">
         <div className="w-3/5">
           <CartContent>
             {({ activeProducts }) => {
@@ -69,13 +69,13 @@ export default function Cart() {
           </CartContent>
         </div>
 
-        <div className="w-2/5">
+        <div className="w-2/5 rounded-lg border border-gray-300 p-4">
           <CartTotals>
             {({ totalPrice }) => {
               return (
                 <div className="cart-totals">
                   {totalPrice && (
-                    <div className="rounded-lg border border-gray-300 p-4">
+                    <div>
                       <p className="mb-2 text-left text-gray-900 font-bold text-lg">
                         Betala: {totalPrice.totalWithTax} {totalPrice.currencyCode}
                       </p>
@@ -94,6 +94,16 @@ export default function Cart() {
               )
             }}
           </CartTotals>
+          <div>
+            <button
+              onClick={() => {
+                window.location.href = '/checkout'
+              }}
+              className="w-full rounded-lg border border-gray-300 p-2 flex justify-center items-center space-x-2 hover:bg-gray-800 hover:text-white"
+            >
+              Gå till kassan
+            </button>
+          </div>
         </div>
       </div>
     </div>
