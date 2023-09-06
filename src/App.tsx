@@ -17,8 +17,8 @@ function App() {
         <div className="App p-4 flex flex-col">
           <div className="flex flex-row justify-end ">
             {showProductFilter ? (
-              <button onClick={toggleView} className="text-white font-bold py-2 px-4 rounded">
-                <img src="src/Darkcart.png"></img>
+              <button onClick={toggleView} className="hover:text-grey-400 text-grey-900 py-2 px-4 rounded text-md">
+                Varukorg
               </button>
             ) : (
               <button
