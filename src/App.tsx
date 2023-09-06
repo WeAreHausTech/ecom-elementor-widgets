@@ -2,7 +2,7 @@ import './App.css'
 import { VendureApolloProvider } from '@haus-tech/ecom-components'
 import ProductFilter from './ProductFilter'
 import Cart from './Cart'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 function App() {
   const [showProductFilter, setShowProductFilter] = useState(true)

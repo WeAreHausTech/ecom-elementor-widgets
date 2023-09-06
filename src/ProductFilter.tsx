@@ -1,5 +1,5 @@
 import { ProductList, AddToCart, Product, ProductSort } from '@haus-tech/ecom-components'
-import React, { useState, useEffect } from 'react'
+import {useState, useEffect } from 'react'
 
 export default function ProductFilter() {
   const SortOrder = {
