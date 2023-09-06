@@ -1,5 +1,5 @@
 import { ProductList, AddToCart, Product, ProductSort } from '@haus-tech/ecom-components'
-import {useState, useEffect } from 'react'
+import { AddToCartButton } from './AddToCartButton'
 
 export default function ProductFilter() {
   const SortOrder = {
@@ -68,32 +68,14 @@ export default function ProductFilter() {
                               </p>
                             </div>
                           </div>
-                          <AddToCart>
+                          <AddToCart wrapperTag="section">
                             {({ addProductToCart, success }) => {
-                              const [successMessage, setSuccessMessage] = useState(false)
-
-                              useEffect(() => {
-                                let timeoutId
-
-                                if (success) {
-                                  setSuccessMessage(true)
-                                  timeoutId = setTimeout(() => {
-                                    setSuccessMessage(false)
-                                  }, 1000)
-                                }
-                              }, [success])
                               return (
-                                <>
-                                  <button
-                                    type="submit"
-                                    name="addToCart"
-                                    value={'1'}
-                                    className="px-6 py-2 transition ease-in duration-200 uppercase rounded-full hover:bg-gray-800 hover:text-white border-2 border-gray-900 focus:outline-none mb-4"
-                                    onClick={() => addProductToCart(product.productVariantId, 1)}
-                                  >
-                                    {successMessage ? 'Tillagd i varukorgen' : 'köp'}
-                                  </button>
-                                </>
+                                <AddToCartButton
+                                  success={success}
+                                  addProductToCart={addProductToCart}
+                                  productId={product.productVariantId}
+                                />
                               )
                             }}
                           </AddToCart>
