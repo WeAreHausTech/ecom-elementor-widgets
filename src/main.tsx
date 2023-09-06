@@ -6,7 +6,7 @@ import { VendureApolloProvider } from './providers/vendure/VendureApolloProvider
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <VendureApolloProvider>
+    <VendureApolloProvider apiUrl="http://localhost:3000/shop-api">
       <App />
     </VendureApolloProvider>
   </React.StrictMode>,
