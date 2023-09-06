@@ -1,3 +1,9 @@
+# Development
+
+Add NODE_AUTH_TOKEN to your .zshrc file to install @haus-tech/ecom-components
+
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
