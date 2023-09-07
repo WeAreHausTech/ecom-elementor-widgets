@@ -41,10 +41,10 @@ export default function ProductFilter() {
         searchInputProps={{ take: 8 }}
       >
         {({ loading, products, pagination }) => {
-          if (loading && !infinitePagination) return <div>Loading...</div>
+          if (loading['productList:search'] && !infinitePagination) return <div>Loading...</div>
           return (
             <div className="product-list">
-              {!loading && products && products.length > 0 ? (
+              {!loading['productList:search'] && products && products.length > 0 ? (
                 <div className="grid grid-cols-4 gap-8">
                   {products.map((product, idx) => (
                     <Product key={idx} thumbnailSize={[200, 200]} product={product}>
@@ -79,10 +79,12 @@ export default function ProductFilter() {
                             </div>
                           </div>
                           <AddToCart wrapperTag="section">
-                            {({ addProductToCart, success }) => {
+                            {({ addProductToCart, loading, error }) => {
+                              console.log(loading)
                               return (
                                 <AddToCartButton
-                                  success={success}
+                                  loading={loading}
+                                  error={error}
                                   addProductToCart={addProductToCart}
                                   productId={product.productVariantId}
                                 />

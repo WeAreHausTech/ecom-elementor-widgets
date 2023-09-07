@@ -1,7 +1,7 @@
 import './App.css'
 import { VendureApolloProvider } from '@haus-tech/ecom-components'
-import ProductFilter from './ProductFilter'
-import Cart from './Cart'
+import ProductFilter from './components/ProductFilter'
+import Cart from './components/Cart'
 import { useState } from 'react'
 
 function App() {
@@ -17,7 +17,10 @@ function App() {
         <div className="App p-4 flex flex-col">
           <div className="flex flex-row justify-end ">
             {showProductFilter ? (
-              <button onClick={toggleView} className="hover:text-grey-400 text-grey-900 py-2 px-4 rounded text-md">
+              <button
+                onClick={toggleView}
+                className="hover:text-grey-400 text-grey-900 py-2 px-4 rounded text-md"
+              >
                 Varukorg
               </button>
             ) : (
