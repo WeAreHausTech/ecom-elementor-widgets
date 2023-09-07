@@ -13,3 +13,7 @@ export interface Pagination {
   nextPage: () => void
   prevPage: () => void
 }
+
+export interface Loading {
+  [key: string]: boolean
+}

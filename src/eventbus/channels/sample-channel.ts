@@ -1,6 +1,6 @@
 import { eventbus } from '../eventbus'
 
 export const sampleChannel = eventbus<{
-  onSample: (payload: { message: string }) => void
-  addSample: (payload: { sampleId: number }) => void
+  'sample:message': (payload: { message: string }) => void
+  'sample:add': (payload: { sampleId: number }) => void
 }>()

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { ApolloError, useQuery } from '@apollo/client'
 import {
   ACTIVE_ORDER_LINES,
@@ -7,12 +7,12 @@ import {
 import { ListedOrderLinesFragment } from '@/gql/graphql'
 import { cartChannel } from '../../eventbus/channels/cart-channel'
 import { getFragmentData } from '@/gql'
-import { CustomHTMLElement } from '@/types'
+import { CustomHTMLElement, Loading } from '@/types'
 
 interface CartContentsProps extends CustomHTMLElement {
   children: (props: {
     activeProducts: readonly ListedOrderLinesFragment[]
-    loading: boolean
+    loading: Loading
     error: ApolloError | undefined
   }) => ReactNode
 }
@@ -24,11 +24,21 @@ export const CartContent = ({
 }: CartContentsProps) => {
   const { loading, error, data, refetch } = useQuery(ACTIVE_ORDER_LINES)
 
-  cartChannel.on('onUpdateCart', () => {
-    refetch()
-  })
+  useEffect(() => {
+    const unsubscribeFromCartUpdated = cartChannel.on('cart:updated', () => {
+      refetch()
+    })
+
+    return () => {
+      unsubscribeFromCartUpdated()
+    }
+  }, [refetch])
 
   const activeProducts = getFragmentData(ACTIVE_ORDER_LINE_FRAGMENT, data?.activeOrder?.lines) ?? []
 
-  return <Wrapper {...rest}>{children({ loading, error, activeProducts })}</Wrapper>
+  return (
+    <Wrapper {...rest}>
+      {children({ loading: { 'cart:content': loading }, error, activeProducts })}
+    </Wrapper>
+  )
 }

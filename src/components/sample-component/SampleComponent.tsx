@@ -4,8 +4,8 @@ import { SortOrder } from '@/gql/graphql'
 
 export const SampleComponent = () => {
   const onButtonClick = () => {
-    sampleChannel.emit('onSample', { message: 'Hello from SampleComponent' })
-    searchFilterChannel.emit('onSort', { price: SortOrder.Asc })
+    sampleChannel.emit('sample:message', { message: 'Hello from SampleComponent' })
+    searchFilterChannel.emit('search-filter:sort', { price: SortOrder.Asc })
   }
 
   return (

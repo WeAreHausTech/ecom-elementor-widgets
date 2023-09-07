@@ -15,7 +15,7 @@ export const ProductSort = ({
   ...rest
 }: ProductSortProps) => {
   const handleSortOptionChange = useCallback((sortOption: SearchResultSortParameter) => {
-    searchFilterChannel.emit('onSort', sortOption)
+    searchFilterChannel.emit('search-filter:sort', sortOption)
   }, [])
 
   return <Wrapper {...rest}>{children({ handleSortOptionChange })}</Wrapper>

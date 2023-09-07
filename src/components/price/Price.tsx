@@ -10,13 +10,23 @@ interface PriceProps extends CustomHTMLElement {
   children: (props: { formattedPrice?: string }) => ReactNode
 }
 
-//TODO where to get showTax from?
+// TODO: where to get showTax from?
 const showTax = true
 
-export const Price = ({ wrapperTag: Wrapper = 'div', price, priceWithTax, currencyCode, children, ...rest }: PriceProps) => {
-
+export const Price = ({
+  wrapperTag: Wrapper = 'div',
+  price,
+  priceWithTax,
+  currencyCode,
+  children,
+  ...rest
+}: PriceProps) => {
   const activePrice = showTax ? priceWithTax : price
-  const fromPrice = typeof activePrice === 'object' && 'min' in activePrice && 'max' in activePrice && activePrice.min !== activePrice.max
+  const fromPrice =
+    typeof activePrice === 'object' &&
+    'min' in activePrice &&
+    'max' in activePrice &&
+    activePrice.min !== activePrice.max
 
   const formattedPrice = formatPrice(getPrice(activePrice), currencyCode, fromPrice)
 

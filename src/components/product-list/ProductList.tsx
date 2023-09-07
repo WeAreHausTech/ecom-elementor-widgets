@@ -6,7 +6,7 @@ import { LISTED_PRODUCT_FRAGMENT, SEARCH } from '@/providers/vendure/products/pr
 import { getFragmentData } from '@/gql'
 import { searchFilterChannel } from '@/eventbus/channels/search-filter-channel'
 import { isNumber } from 'lodash'
-import { CustomHTMLElement, Pagination } from '@/types'
+import { CustomHTMLElement, Loading, Pagination } from '@/types'
 
 type SearchInputProps = Pick<
   SearchInput,
@@ -16,7 +16,7 @@ interface ProductListProps extends CustomHTMLElement {
   searchInputProps?: SearchInputProps
   infinitePagination?: boolean
   children: (props: {
-    loading: boolean
+    loading: Loading
     products: ListedProductFragment[]
     pagination?: Pagination
   }) => ReactNode
@@ -55,7 +55,7 @@ export const ProductList = ({
   })
 
   useEffect(() => {
-    const unsubscribeFromSort = searchFilterChannel.on('onSort', (data) => {
+    const unsubscribeFromSort = searchFilterChannel.on('search-filter:sort', (data) => {
       setProducts([])
       setVariables((draft) => {
         draft.sort = data
@@ -74,13 +74,18 @@ export const ProductList = ({
   useEffect(() => {
     if (data?.search?.items) {
       const { items } = data.search
-      const products = items.map((item) => getFragmentData(LISTED_PRODUCT_FRAGMENT, item))
+      const productItems = items.map((item) => getFragmentData(LISTED_PRODUCT_FRAGMENT, item))
       if (infinitePagination) {
         setProducts((draft) => {
-          draft.push(...products)
+          const existingProducts = draft.map((item) => item.productId)
+          const newProducts = productItems.filter(
+            (item) => !existingProducts.includes(item.productId),
+          )
+
+          draft.push(...newProducts)
         })
       } else {
-        setProducts(products)
+        setProducts(productItems)
       }
     }
   }, [data, infinitePagination, setProducts])
@@ -126,5 +131,9 @@ export const ProductList = ({
 
   if (error) return <div>{error.message}</div>
 
-  return <Wrapper {...rest}>{children({ loading, products, pagination })}</Wrapper>
+  return (
+    <Wrapper {...rest}>
+      {children({ loading: { 'productList:search': loading }, products, pagination })}
+    </Wrapper>
+  )
 }

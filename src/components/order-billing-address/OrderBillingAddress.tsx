@@ -5,16 +5,16 @@ import {
   ORDER_ADDRESS_FRAGMNENT,
 } from '@/providers/vendure/checkout/checkout'
 import { CreateAddressInput } from '@/gql/graphql'
-import { useMutation, useQuery } from '@apollo/client'
+import { ApolloError, useMutation, useQuery } from '@apollo/client'
 import { getFragmentData } from '@/gql'
-import { CustomHTMLElement } from '@/types'
+import { CustomHTMLElement, Loading } from '@/types'
 
 interface BillingAddressProp extends CustomHTMLElement {
   children: (props: {
     update: (adress: CreateAddressInput) => void
     savedData: CreateAddressInput | null
-    isError: boolean
-    success: boolean
+    error: ApolloError | undefined
+    loading: Loading
   }) => ReactNode
 }
 
@@ -23,27 +23,36 @@ export const OrderBillingAddress = ({
   children,
   ...rest
 }: BillingAddressProp) => {
-  let success = false
-  let isError = false
-
-  const { error: billingError, data: billingData } = useQuery(ACTIVE_ORDER_BILLING_ADDRESS)
+  const {
+    error: billingError,
+    data: billingData,
+    loading: loadingBillingData,
+  } = useQuery(ACTIVE_ORDER_BILLING_ADDRESS)
 
   const savedData =
-    getFragmentData(ORDER_ADDRESS_FRAGMNENT, billingData?.activeOrder?.billingAddress) as CreateAddressInput ?? null
+    (getFragmentData(
+      ORDER_ADDRESS_FRAGMNENT,
+      billingData?.activeOrder?.billingAddress,
+    ) as CreateAddressInput) ?? null
 
-  const [updateAddress, { error, data }] = useMutation(UPDATE_BILLING_ADDRESS)
-
-  if (data) {
-    success = true
-  }
-
-  if (error || billingError) {
-    isError = true
-  }
+  const [updateAddress, { error: updateAddressError, loading: loadingUpdatingAddress }] =
+    useMutation(UPDATE_BILLING_ADDRESS)
 
   const update = (address: CreateAddressInput) => {
     updateAddress({ variables: { input: address } })
   }
 
-  return <Wrapper {...rest}>{children({ update, savedData, success, isError })}</Wrapper>
+  return (
+    <Wrapper {...rest}>
+      {children({
+        update,
+        savedData,
+        loading: {
+          'order:fetchBillingAddress': loadingBillingData,
+          'order:updateBillingAddress': loadingUpdatingAddress,
+        },
+        error: billingError || updateAddressError,
+      })}
+    </Wrapper>
+  )
 }

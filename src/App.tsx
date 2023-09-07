@@ -20,7 +20,7 @@ export const App = () => {
   useEffect(() => {
     console.log('SampleComponent mounted')
 
-    const unsubscribeSampleEventListener = sampleChannel.on('onSample', (data) => {
+    const unsubscribeSampleEventListener = sampleChannel.on('sample:message', (data) => {
       console.log('SampleComponent received sample-event', data)
     })
 

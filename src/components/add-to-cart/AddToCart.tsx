@@ -1,35 +1,36 @@
-import { useMutation } from '@apollo/client'
+import { ApolloError, useMutation } from '@apollo/client'
 import { ADD_ITEM_TO_ORDER } from '@/providers/vendure/cart/activeOrders'
 import { ReactNode } from 'react'
-import { cartChannel } from '../../eventbus/channels/cart-channel'
-import { CustomHTMLElement } from '@/types'
+import { CartAction, cartChannel } from '../../eventbus/channels/cart-channel'
+import { CustomHTMLElement, Loading } from '@/types'
 
 interface AddToCartProps extends CustomHTMLElement {
   children: (props: {
     addProductToCart: (productVariantId: string, quantity: number) => void
-    isError: boolean
-    success: boolean
+    error: ApolloError | undefined
+    loading: Loading
   }) => ReactNode
 }
 
 export const AddToCart = ({ wrapperTag: Wrapper = 'div', children, ...rest }: AddToCartProps) => {
-  let success = false
-  let isError = false
+  const [updateCart, { error, loading }] = useMutation(ADD_ITEM_TO_ORDER)
 
-  const [updateCart, { error, data }] = useMutation(ADD_ITEM_TO_ORDER)
-
-  if (error) {
-    isError = true
+  const addProductToCart = async (productVariantId: string, quantity: number) => {
+    const addedProduct = await updateCart({
+      variables: { productVariantId: productVariantId, quantity: quantity },
+    })
+    if (addedProduct.data) {
+      cartChannel.emit('cart:updated', { data: addedProduct.data, action: CartAction.ADD })
+    }
   }
 
-  if (data) {
-    cartChannel.emit('onUpdateCart', { message: 'Cart updated' })
-    success = true
-  }
-
-  const addProductToCart = (productVariantId: string, quantity: number) => {
-    updateCart({ variables: { productVariantId: productVariantId, quantity: quantity } })
-  }
-
-  return <Wrapper {...rest}>{children({ addProductToCart, success, isError })}</Wrapper>
+  return (
+    <Wrapper {...rest}>
+      {children({
+        addProductToCart,
+        error,
+        loading: { 'cart:addToCart': loading },
+      })}
+    </Wrapper>
+  )
 }

@@ -66,6 +66,7 @@ export function eventbus<E extends EventMap>(config?: EventBusConfig) {
   }
 
   const emit: EventBus<E>['emit'] = (key, ...payload) => {
+    console.log(`Event emitted: key = ${String(key)}, payload =`, payload)
     document.dispatchEvent(
       new CustomEvent(key.toString(), { detail: payload.length === 1 ? payload[0] : payload }),
     )
