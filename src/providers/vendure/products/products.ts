@@ -8,6 +8,7 @@ export const LISTED_PRODUCT_FRAGMENT = graphql(/* GraphQL */ `
     slug
     description
     score
+    inStock
     productAsset {
       id
       preview

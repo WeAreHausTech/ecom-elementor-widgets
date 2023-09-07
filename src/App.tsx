@@ -97,15 +97,19 @@ export const App = () => {
                             {({ addProductToCart }) => {
                               return (
                                 <div>
-                                  <button
-                                    type="submit"
-                                    name="addToCart"
-                                    value={'1'}
-                                    className="font-medium text-primary-600 hover:text-primary-500"
-                                    onClick={() => addProductToCart(product.productVariantId, 1)}
-                                  >
-                                    Add to cart
-                                  </button>
+                                  {product.inStock ? (
+                                    <button
+                                      type="submit"
+                                      name="addToCart"
+                                      value={'1'}
+                                      className="font-medium text-primary-600 hover:text-primary-500"
+                                      onClick={() => addProductToCart(product.productVariantId, 1)}
+                                    >
+                                      Add to cart
+                                    </button>
+                                  ) : (
+                                    <div className="text-red-500">Out of stock</div>
+                                  )}
                                 </div>
                               )
                             }}
