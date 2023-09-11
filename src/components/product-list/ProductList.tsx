@@ -16,7 +16,7 @@ interface ProductListProps extends CustomHTMLElement {
   searchInputProps?: SearchInputProps
   infinitePagination?: boolean
   children: (props: {
-    loading: Loading
+    loading: Loading<'productList:search'>
     products: ListedProductFragment[]
     pagination?: Pagination
   }) => ReactNode

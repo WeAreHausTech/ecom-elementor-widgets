@@ -13,6 +13,8 @@ import { ProductSort } from './components/products-sort/ProductSort'
 import { SortOrder } from './gql/graphql'
 import { Price } from '@/components/price/Price.tsx'
 import { Input } from './components/_form-components/Input'
+import { Login } from './components/account/Login'
+import { getError } from './utils/utils'
 
 const infinitePagination = true
 
@@ -413,6 +415,56 @@ export const App = () => {
           )
         }}
       </OrderMessage>
+
+      <div className="mt-4">
+        <h1>Customer</h1>
+        <Login>
+          {({ loading, error, formData, setFormData, authenticate }) => {
+            return (
+              <div>
+                {loading['auth:login'] && <div>Loading...</div>}
+                {error && <div>Error: {getError(error)?.message}</div>}
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    const test = authenticate()
+                    test.then((res) => {
+                      console.log('res', res)
+                    })
+                  }}
+                >
+                  <label className="block mb-4">
+                    Email:
+                    <Input
+                      type="text"
+                      name="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
+                    />
+                  </label>
+                  <label className="block mb-4">
+                    Password:
+                    <Input
+                      type="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                      className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
+                    />
+                  </label>
+                  <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    type="submit"
+                  >
+                    Login
+                  </button>
+                </form>
+              </div>
+            )
+          }}
+        </Login>
+      </div>
     </div>
   )
 }

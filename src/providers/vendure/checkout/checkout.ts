@@ -1,4 +1,4 @@
-import { graphql } from '../../../gql'
+import { graphql } from '@/gql'
 
 export const ORDER_ADDRESS_FRAGMNENT = graphql(/* GraphQL */ `
   fragment ListedOrderAdressOrder on OrderAddress {

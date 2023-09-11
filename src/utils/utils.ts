@@ -1,4 +1,6 @@
-import { CurrencyCode, PriceRange, SinglePrice } from '@/gql/graphql'
+import { CurrencyCode, ErrorCode, ErrorResult, PriceRange, SinglePrice } from '@/gql/graphql'
+import { GenericApolloError } from '@/types'
+import { ApolloError } from '@apollo/client'
 
 export const getPrice = (priceWithTax: PriceRange | SinglePrice) => {
   if (priceWithTax == null) {
@@ -21,4 +23,32 @@ export const formatPrice = (value: number, currency: CurrencyCode, fromPrice?: b
     style: 'currency',
     currency,
   }).format(value / 100)}`
+}
+
+export const isErrorResult = (input: unknown): input is ErrorResult => {
+  return !(
+    input &&
+    (input as ErrorResult).message !== undefined &&
+    (input as ErrorResult).errorCode !== undefined
+  )
+}
+
+export const isApolloError = (input: unknown): input is ApolloError => {
+  return !(input && (input as ApolloError).graphQLErrors !== undefined)
+}
+
+export const isError = (input: unknown): input is GenericApolloError => {
+  return isErrorResult(input) || isApolloError(input)
+}
+
+export const getError = (error: GenericApolloError): ErrorResult | null => {
+  if (isErrorResult(error)) {
+    return error
+  } else if (isApolloError(error)) {
+    return {
+      errorCode: ErrorCode.UnknownError,
+      message: 'Unknown error',
+    }
+  }
+  return null
 }
