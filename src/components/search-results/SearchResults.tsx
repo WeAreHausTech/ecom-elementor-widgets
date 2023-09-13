@@ -12,7 +12,7 @@ import { CustomHTMLElement, GenericApolloError } from '@/types'
 import { useCustomLazyQuery } from '@/hooks/useCustomLazyQuery'
 
 type SearchInputProps = Pick<SearchInput, 'term' | 'take' | 'groupByProduct'>
-interface SearchResultProps extends CustomHTMLElement {
+export interface SearchResultProps extends CustomHTMLElement {
   searchInputProps?: SearchInputProps
   children: (props: {
     loading: boolean

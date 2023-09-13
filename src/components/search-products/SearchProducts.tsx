@@ -2,7 +2,7 @@ import { searchChannel } from '@/eventbus/channels/search-channel'
 import { CustomHTMLElement } from '@/types'
 import { debounce } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
-interface ProductSearchProps extends CustomHTMLElement {
+export interface SearchProductsProps extends CustomHTMLElement {
   children: (props: {
     term: string
     setTerm: (value: string) => void
@@ -14,7 +14,7 @@ export const SearchProducts = ({
   wrapperTag: Wrapper = 'div',
   children,
   ...rest
-}: ProductSearchProps) => {
+}: SearchProductsProps) => {
   const [term, setTerm] = useState<string>('')
 
   const clear = () => {

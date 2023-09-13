@@ -2,8 +2,9 @@ import { VendureApolloProvider } from '@/providers/vendure/VendureApolloProvider
 
 // Products
 import { ProductList, ProductListProps } from '@/components/product-list/ProductList'
-import { Product, ProductProps } from '@/components/product/Product'
 import { ProductSort, ProductSortProps } from './products-sort/ProductSort'
+import { SearchProducts, SearchProductsProps } from './search-products/SearchProducts'
+import { SearchResults, SearchResultProps } from './search-results/SearchResults'
 
 // Cart
 import { AddToCart, AddToCartProps } from './add-to-cart/AddToCart'
@@ -22,7 +23,6 @@ import { Price, PriceProps } from './price/Price'
 export {
   VendureApolloProvider,
   ProductList,
-  Product,
   ProductSort,
   AddToCart,
   CartContent,
@@ -32,9 +32,11 @@ export {
   OrderShippingAddress,
   OrderMessage,
   Price,
+  SearchProducts,
+  SearchResults
 }
 
-export type { ProductProps, ProductListProps, ProductSortProps, AddToCartProps, CartContentsProps, CartRemoveItemProps, CartTotalsProps, OrderBillingAddressProps, OrderShippingAddressProps, OrderMessageProps, PriceProps }
+export type { ProductListProps, ProductSortProps, AddToCartProps, CartContentsProps, CartRemoveItemProps, CartTotalsProps, OrderBillingAddressProps, OrderShippingAddressProps, OrderMessageProps, PriceProps, SearchProductsProps, SearchResultProps }
 
 export type { Pagination, Loading } from '@/types'
 export type { ApolloError } from '@apollo/client'
