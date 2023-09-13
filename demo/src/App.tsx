@@ -1,14 +1,20 @@
 import { VendureApolloProvider } from '@haus-tech/ecom-components'
 import { Outlet, RootRoute, Route, Router, RouterProvider } from '@tanstack/react-router'
 import { Products } from './pages/Products'
+import { Icon } from '../../components/icon/Icon'
+import { Cart } from '../../components/cart/Cart'
 
 function App() {
   const rootRoute = new RootRoute({
     component: () => (
       <div>
         <header>
-          <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
-            Header
+          <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800 flex items-center justify-between">
+            <div>LIVV</div>
+            <div className="flex space-x-4 text-2xl">
+              <Icon name="avatar" />
+              <Cart />
+            </div>
           </nav>
         </header>
         <div className="container mx-auto px-4 lg:px-6 py-2.5">
@@ -24,7 +30,13 @@ function App() {
     component: () => <Products />,
   })
 
-  const routeTree = rootRoute.addChildren([indexRoute])
+  const checkoutRoute = new Route({
+    getParentRoute: () => rootRoute,
+    path: '/checkout',
+    component: () => <div>Checkout</div>,
+  })
+
+  const routeTree = rootRoute.addChildren([checkoutRoute, indexRoute])
 
   const router = new Router({ routeTree })
 
