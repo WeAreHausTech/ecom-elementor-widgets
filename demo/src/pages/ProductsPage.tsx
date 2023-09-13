@@ -8,7 +8,7 @@ const availableSortOptions = [
   { label: 'Pris stigande', value: { price: SortOrder.Asc } },
 ]
 
-export const Products = () => {
+export const ProductsPage = () => {
   return (
     <>
       <ProductSort

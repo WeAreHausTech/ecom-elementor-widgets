@@ -1,0 +1,63 @@
+.Checkout {
+  background-color: var(--White);
+  border-radius: 20px;
+
+  .checkout-step {
+    overflow: hidden;
+    padding: 0 24px;
+
+    .checkout-step-header {
+      display: flex;
+
+      .checkout-step-trigger {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 24px 0;
+        gap: 8px;
+
+        .checkout-step-number {
+          align-items: center;
+          background-color: var(--White);
+          border-radius: 50%;
+          color: var(--Almost-Black);
+          display: flex;
+          font-size: 14px;
+          font-weight: 600;
+          height: 36px;
+          width: 36px;
+          justify-content: center;
+          border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .checkout-step-title {
+          color: var(--AlmostBlack);
+          font-size: 22px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 130%;
+        }
+
+        &.current {
+          .checkout-step-number {
+            background-color: var(--Blue-Light);
+            border-color: var(--Blue-Light);
+          }
+        }
+      }
+    }
+
+    .checkout-step-content {
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--Gray-Light);
+    }
+  }
+
+  .BillingAddress {
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+  }
+}

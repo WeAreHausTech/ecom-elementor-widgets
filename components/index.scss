@@ -21,6 +21,16 @@
 @import './select/Select.scss';
 @import './icon/Icon.scss';
 @import './button/Button.scss';
+@import './input/Input.scss';
 
 @import './product-list/ProductList.scss';
 @import './cart/Cart.scss';
+@import './checkout/Checkout.scss';
+
+// Global styles
+input {
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: var(--White, #fff);
+  padding: 8px 16px;
+}

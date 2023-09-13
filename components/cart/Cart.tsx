@@ -4,6 +4,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { Link } from '@tanstack/react-router'
 
 export const Cart = () => {
+  // TODO: Design cart dropdown
   return (
     <CartContent className="Cart">
       {({ activeProducts }) => {

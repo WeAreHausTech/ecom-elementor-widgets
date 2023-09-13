@@ -1,8 +1,9 @@
 import { VendureApolloProvider } from '@haus-tech/ecom-components'
 import { Outlet, RootRoute, Route, Router, RouterProvider } from '@tanstack/react-router'
-import { Products } from './pages/Products'
 import { Icon } from '../../components/icon/Icon'
 import { Cart } from '../../components/cart/Cart'
+import { ProductsPage } from './pages/ProductsPage'
+import { CheckoutPage } from './pages/CheckoutPage'
 
 function App() {
   const rootRoute = new RootRoute({
@@ -27,13 +28,13 @@ function App() {
   const indexRoute = new Route({
     getParentRoute: () => rootRoute,
     path: '/',
-    component: () => <Products />,
+    component: () => <ProductsPage />,
   })
 
   const checkoutRoute = new Route({
     getParentRoute: () => rootRoute,
     path: '/checkout',
-    component: () => <div>Checkout</div>,
+    component: () => <CheckoutPage />,
   })
 
   const routeTree = rootRoute.addChildren([checkoutRoute, indexRoute])
