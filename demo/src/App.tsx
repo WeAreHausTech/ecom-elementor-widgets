@@ -1,39 +1,37 @@
-import './App.css'
 import { VendureApolloProvider } from '@haus-tech/ecom-components'
-import ProductFilter from './components/ProductFilter'
-import Cart from './components/Cart'
-import { useState } from 'react'
+import { Outlet, RootRoute, Route, Router, RouterProvider } from '@tanstack/react-router'
+import { Products } from './pages/Products'
 
 function App() {
-  const [showProductFilter, setShowProductFilter] = useState(true)
+  const rootRoute = new RootRoute({
+    component: () => (
+      <div>
+        <header>
+          <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
+            Header
+          </nav>
+        </header>
+        <div className="container mx-auto px-4 lg:px-6 py-2.5">
+          <Outlet />
+        </div>
+      </div>
+    ),
+  })
 
-  const toggleView = () => {
-    setShowProductFilter(!showProductFilter)
-  }
+  const indexRoute = new Route({
+    getParentRoute: () => rootRoute,
+    path: '/',
+    component: () => <Products />,
+  })
+
+  const routeTree = rootRoute.addChildren([indexRoute])
+
+  const router = new Router({ routeTree })
 
   return (
     <>
       <VendureApolloProvider apiUrl={import.meta.env.VITE_API_URL}>
-        <div className="App p-4 flex flex-col">
-          <div className="flex flex-row justify-end ">
-            {showProductFilter ? (
-              <button
-                onClick={toggleView}
-                className="hover:text-grey-400 text-grey-900 py-2 px-4 rounded text-md"
-              >
-                Varukorg
-              </button>
-            ) : (
-              <button
-                onClick={toggleView}
-                className="hover:text-grey-400 text-grey-900 py-2 px-4 rounded text-md"
-              >
-                Tillbaka
-              </button>
-            )}
-          </div>
-          <div className="mt-4">{showProductFilter ? <ProductFilter /> : <Cart />}</div>
-        </div>
+        <RouterProvider router={router} />
       </VendureApolloProvider>
     </>
   )

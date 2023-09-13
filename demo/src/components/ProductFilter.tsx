@@ -80,7 +80,6 @@ export default function ProductFilter() {
                           </div>
                           <AddToCart wrapperTag="section">
                             {({ addProductToCart, loading, error }) => {
-                              console.log(loading)
                               return (
                                 <AddToCartButton
                                   loading={loading}

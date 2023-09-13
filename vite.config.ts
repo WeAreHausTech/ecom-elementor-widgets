@@ -10,6 +10,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         app: './demo/index.html',
+        css: './demo/index.scss',
       },
     },
   },

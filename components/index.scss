@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --Black: rgba(0, 0, 0, 1);
+  --White: rgba(255, 255, 255, 1);
+  --Gray-Light: rgba(242, 242, 242, 1);
+  --Gray: rgba(153, 153, 153, 1);
+  --Gray-Medium: rgba(222, 222, 222, 1);
+  --Almost-Black: rgba(62, 72, 73, 1);
+  --Blue-Dark: rgba(116, 151, 155, 1);
+  --Blue-Light: rgba(233, 244, 240, 1);
+  --Turquoise: rgba(179, 214, 205, 1);
+  --Yellow: rgba(255, 213, 132, 1);
+  --Red: rgba(239, 126, 111, 1);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@import './select/Select.scss';
+@import './icon/Icon.scss';
+@import './button/Button.scss';
+
+@import './product-card/ProductCard.scss';
+@import './pagination/Pagination.scss';
