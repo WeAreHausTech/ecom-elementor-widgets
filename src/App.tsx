@@ -12,6 +12,8 @@ import { ProductSort } from './components/products-sort/ProductSort'
 import { SortOrder } from './gql/graphql'
 import { Price } from '@/components/price/Price.tsx'
 import { Input } from './components/_form-components/Input'
+import { SearchProducts } from './components/search-products/SearchProducts'
+import { SearchResults } from './components/search-results/SearchResults'
 import { PaymentMethods } from './components/payment-methods/PaymentMethods'
 import { ShippingMethod } from './components/shipping-method/ShippingMethod'
 import { OrderCustomer } from './components/order-customer/OrderCustomer'
@@ -45,6 +47,84 @@ export const App = () => {
 
   return (
     <div className="m-4">
+      <SearchProducts>
+        {({ term, setTerm, clear }) => {
+          return (
+            <div className="mb-4">
+              <label className="block mb-4">
+                <Input
+                  type="text"
+                  name="search"
+                  value={term}
+                  onChange={(e) => setTerm(e.target.value)}
+                  className="bg-gray-100 rounded-full px-4 py-2 outline-none w-full  max-w-screen-sm"
+                  placeholder="Search..."
+                />
+                <button onClick={() => clear()}> x</button>
+              </label>
+            </div>
+          )
+        }}
+      </SearchProducts>
+      <SearchResults searchInputProps={{ take: 3 }}>
+        {({ loading, products, collections }) => {
+          if (loading) return <div>Loading...</div>
+          if (products.length === 0 && collections.length === 0) return <div>No results</div>
+
+          console.log(collections)
+          const collectionWithLowestLevel = collections[collections.length - 1]
+
+          return (
+            <div className="mb-4">
+              <div className="flex flex-col max-w-screen-sm gap-4">
+                {collectionWithLowestLevel && (
+                  <a href={collectionWithLowestLevel.slug}>
+                    <div className="flex flex-row w-full h-16 gap-4">
+                      <img
+                        className="w-16 h-object-cover object-center rounded-lg"
+                        src={collectionWithLowestLevel.featuredAsset?.preview}
+                        alt="Product Image"
+                      />
+                      <div className="flex flex-col">
+                        <p> {collectionWithLowestLevel.name} </p>
+                        <p className="font-bold">{collectionWithLowestLevel.parent?.name}</p>
+                      </div>
+                    </div>
+                  </a>
+                )}
+                <div className="flex flex-col gap-4">
+                  {products.map((product) => (
+                    <a href={`/products/${product.slug}`} key={product.productId}>
+                      <div className="flex flex-row w-full h-16 justify-between">
+                        <div className="flex flex-row gap-4">
+                          <img
+                            className=" w-16 h-object-cover object-center rounded-lg"
+                            src={product.productAsset?.preview}
+                            alt="Product Image"
+                          />
+
+                          <p> {product.productName} </p>
+                        </div>
+                        <div>
+                          <Price
+                            price={product.price}
+                            priceWithTax={product.priceWithTax}
+                            currencyCode={product.currencyCode}
+                          >
+                            {({ formattedPrice }) => {
+                              return <p className="font-bold">{formattedPrice}</p>
+                            }}
+                          </Price>
+                        </div>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )
+        }}
+      </SearchResults>
       <ProductSort>
         {({ handleSortOptionChange }) => (
           <select

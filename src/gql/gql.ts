@@ -37,7 +37,9 @@ const documents = {
     "\n  query EligiblePaymentMethods {\n    eligiblePaymentMethods {\n      ...EligiblePaymentMethods\n    }\n  }\n": types.EligiblePaymentMethodsDocument,
     "\n  mutation addPaymentToOrder($input: PaymentInput!) {\n    addPaymentToOrder (input: $input) {\n        ... on ErrorResult {\n            errorCode\n            message\n          }\n    }\n  }\n": types.AddPaymentToOrderDocument,
     "\n  fragment ListedProduct on SearchResult {\n    productId\n    productVariantId\n    productName\n    slug\n    description\n    score\n    inStock\n    productAsset {\n      id\n      preview\n    }\n    currencyCode\n    price {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n    priceWithTax {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n    facetIds\n    facetValueIds\n    collectionIds\n  }\n": types.ListedProductFragmentDoc,
+    "\n  fragment ListedCollection on Collection {\n    id\n    name\n    slug\n    parentId\n    parent {\n      id\n      name\n      slug\n    }\n    productVariants {\n      totalItems\n    }\n    featuredAsset {\n      id\n      preview\n    }\n  }\n": types.ListedCollectionFragmentDoc,
     "\n  query search($input: SearchInput!) {\n    search(input: $input) {\n      totalItems\n      items {\n        ...ListedProduct\n      }\n      facetValues {\n        facetValue {\n          id\n          name\n          facet {\n            id\n            name\n          }\n        }\n        count\n      }\n    }\n  }\n": types.SearchDocument,
+    "\n  query topSearch($input: SearchInput!) {\n    search(input: $input) {\n      totalItems\n      items {\n        ...ListedProduct\n      }\n      collections {\n        collection {\n          ...ListedCollection\n        }\n        count\n      }\n    }\n  }\n": types.TopSearchDocument,
 };
 
 /**
@@ -153,7 +155,15 @@ export function graphql(source: "\n  fragment ListedProduct on SearchResult {\n 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n  fragment ListedCollection on Collection {\n    id\n    name\n    slug\n    parentId\n    parent {\n      id\n      name\n      slug\n    }\n    productVariants {\n      totalItems\n    }\n    featuredAsset {\n      id\n      preview\n    }\n  }\n"): (typeof documents)["\n  fragment ListedCollection on Collection {\n    id\n    name\n    slug\n    parentId\n    parent {\n      id\n      name\n      slug\n    }\n    productVariants {\n      totalItems\n    }\n    featuredAsset {\n      id\n      preview\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n  query search($input: SearchInput!) {\n    search(input: $input) {\n      totalItems\n      items {\n        ...ListedProduct\n      }\n      facetValues {\n        facetValue {\n          id\n          name\n          facet {\n            id\n            name\n          }\n        }\n        count\n      }\n    }\n  }\n"): (typeof documents)["\n  query search($input: SearchInput!) {\n    search(input: $input) {\n      totalItems\n      items {\n        ...ListedProduct\n      }\n      facetValues {\n        facetValue {\n          id\n          name\n          facet {\n            id\n            name\n          }\n        }\n        count\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query topSearch($input: SearchInput!) {\n    search(input: $input) {\n      totalItems\n      items {\n        ...ListedProduct\n      }\n      collections {\n        collection {\n          ...ListedCollection\n        }\n        count\n      }\n    }\n  }\n"): (typeof documents)["\n  query topSearch($input: SearchInput!) {\n    search(input: $input) {\n      totalItems\n      items {\n        ...ListedProduct\n      }\n      collections {\n        collection {\n          ...ListedCollection\n        }\n        count\n      }\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

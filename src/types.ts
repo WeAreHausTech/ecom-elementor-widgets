@@ -4,7 +4,10 @@ import {
   ApolloError,
   DefaultContext,
   FetchResult,
+  LazyQueryExecFunction,
   MutationFunctionOptions,
+  OperationVariables,
+  QueryResult,
 } from '@apollo/client'
 import { HTMLAttributes } from 'react'
 import { ErrorResult, FacetValueResult, ListedProductFragment } from './gql/graphql'
@@ -49,6 +52,8 @@ export type CustomMutationTuple<
   ) => Promise<FetchResult<TData>>,
   CustomMutationResult<TData>,
 ]
+
+export type CustomLazyQueryResultTuple<TData, TVariables extends OperationVariables> = [LazyQueryExecFunction<TData, TVariables>, Omit<QueryResult<TData, TVariables>, 'error'> & { error: GenericApolloError}];
 
 export interface SearchProduct extends ListedProductFragment {
   facetValues: FacetValueResult

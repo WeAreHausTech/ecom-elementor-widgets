@@ -38,6 +38,27 @@ export const LISTED_PRODUCT_FRAGMENT = graphql(/* GraphQL */ `
   }
 `)
 
+export const LISTED_COLLECTION_FRAGMENT = graphql(/* GraphQL */ `
+  fragment ListedCollection on Collection {
+    id
+    name
+    slug
+    parentId
+    parent {
+      id
+      name
+      slug
+    }
+    productVariants {
+      totalItems
+    }
+    featuredAsset {
+      id
+      preview
+    }
+  }
+`)
+
 export const SEARCH = graphql(/* GraphQL */ `
   query search($input: SearchInput!) {
     search(input: $input) {
@@ -53,6 +74,23 @@ export const SEARCH = graphql(/* GraphQL */ `
             id
             name
           }
+        }
+        count
+      }
+    }
+  }
+`)
+
+export const TOPSEARCH = graphql(/* GraphQL */ `
+  query topSearch($input: SearchInput!) {
+    search(input: $input) {
+      totalItems
+      items {
+        ...ListedProduct
+      }
+      collections {
+        collection {
+          ...ListedCollection
         }
         count
       }
