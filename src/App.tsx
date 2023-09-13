@@ -1,4 +1,3 @@
-import { Product } from './components/product/Product'
 import { ProductList } from './components/product-list/ProductList'
 import { CartContent } from '@/components/cart-content/CartContent'
 import { CartRemoveItem } from '@/components/cart-remove-item/CartRemoveItem'
@@ -73,12 +72,12 @@ export const App = () => {
               {products && products.length > 0 ? (
                 <div className="grid grid-cols-4">
                   {products.map((product) => (
-                    <Product key={product.productId} thumbnailSize={undefined} product={product}>
-                      {({ product, thumbnail }) => (
+                    <div key={product.productId}>
+
                         <div className="mx-auto mt-11 w-80 transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-md duration-300 hover:scale-105 hover:shadow-lg">
                           <img
                             className="h-48 w-full object-cover object-center"
-                            src={thumbnail}
+                            src={product.productAsset?.preview + '?preset=thumb'}
                             alt="Product Image"
                           />
                           <div className="p-4">
@@ -122,8 +121,7 @@ export const App = () => {
                             }}
                           </AddToCart>
                         </div>
-                      )}
-                    </Product>
+                    </div>
                   ))}
                 </div>
               ) : (
