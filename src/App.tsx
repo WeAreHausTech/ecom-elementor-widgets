@@ -153,54 +153,53 @@ export const App = () => {
                 <div className="grid grid-cols-4">
                   {products.map((product) => (
                     <div key={product.productId}>
-
-                        <div className="mx-auto mt-11 w-80 transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-md duration-300 hover:scale-105 hover:shadow-lg">
-                          <img
-                            className="h-48 w-full object-cover object-center"
-                            src={product.productAsset?.preview + '?preset=thumb'}
-                            alt="Product Image"
-                          />
-                          <div className="p-4">
-                            <h2 className="mb-2 text-lg font-medium dark:text-white text-gray-900">
-                              {product.productName}
-                            </h2>
-                            <p className="mb-2 text-base dark:text-gray-300 text-gray-700">
-                              Product description goes here.
-                            </p>
-                            <div className="flex items-center">
-                              <Price
-                                price={product.price}
-                                priceWithTax={product.priceWithTax}
-                                currencyCode={product.currencyCode}
-                              >
-                                {({ formattedPrice }) => {
-                                  return <div>{formattedPrice}</div>
-                                }}
-                              </Price>
-                            </div>
+                      <div className="mx-auto mt-11 w-80 transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-md duration-300 hover:scale-105 hover:shadow-lg">
+                        <img
+                          className="h-48 w-full object-cover object-center"
+                          src={product.productAsset?.preview + '?preset=thumb'}
+                          alt="Product Image"
+                        />
+                        <div className="p-4">
+                          <h2 className="mb-2 text-lg font-medium dark:text-white text-gray-900">
+                            {product.productName}
+                          </h2>
+                          <p className="mb-2 text-base dark:text-gray-300 text-gray-700">
+                            Product description goes here.
+                          </p>
+                          <div className="flex items-center">
+                            <Price
+                              price={product.price}
+                              priceWithTax={product.priceWithTax}
+                              currencyCode={product.currencyCode}
+                            >
+                              {({ formattedPrice }) => {
+                                return <div>{formattedPrice}</div>
+                              }}
+                            </Price>
                           </div>
-                          <AddToCart>
-                            {({ addProductToCart }) => {
-                              return (
-                                <div>
-                                  {product.inStock ? (
-                                    <button
-                                      type="submit"
-                                      name="addToCart"
-                                      value={'1'}
-                                      className="font-medium text-primary-600 hover:text-primary-500"
-                                      onClick={() => addProductToCart(product.productVariantId, 1)}
-                                    >
-                                      Add to cart
-                                    </button>
-                                  ) : (
-                                    <div className="text-red-500">Out of stock</div>
-                                  )}
-                                </div>
-                              )
-                            }}
-                          </AddToCart>
                         </div>
+                        <AddToCart>
+                          {({ addProductToCart }) => {
+                            return (
+                              <div>
+                                {product.inStock ? (
+                                  <button
+                                    type="submit"
+                                    name="addToCart"
+                                    value={'1'}
+                                    className="font-medium text-primary-600 hover:text-primary-500"
+                                    onClick={() => addProductToCart(product.productVariantId, 1)}
+                                  >
+                                    Add to cart
+                                  </button>
+                                ) : (
+                                  <div className="text-red-500">Out of stock</div>
+                                )}
+                              </div>
+                            )
+                          }}
+                        </AddToCart>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -332,120 +331,29 @@ export const App = () => {
 
       <h2 className="text-2xl font-semibold mb-4">Checkout</h2>
       <OrderShippingAddress>
-        {({ formData, handleChange, handleSubmit }) => {
-          return !formData ? (
-            <div>Loading...</div>
-          ) : (
-            <div className="shipping-address bg-white p-4 rounded-md shadow-m">
-              <form onSubmit={handleSubmit} className="bg-white p-6 rounded-md shadow-md max-w-md">
-                <h3 className="text-lg font-semibold mb-2"> 1. Company information</h3>
-                <label className="block mb-4">
-                  Company:
-                  <Input
-                    type="text"
-                    name="company"
-                    value={formData.company!}
-                    onChange={handleChange}
-                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
-                  />
-                </label>
-
-                <label className="block mb-4">
-                  Street Line 1:
-                  <Input
-                    type="text"
-                    name="streetLine1"
-                    value={formData.streetLine1!}
-                    onChange={handleChange}
-                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
-                  />
-                </label>
-
-                <label className="block mb-4">
-                  City:
-                  <Input
-                    type="text"
-                    name="city"
-                    value={formData.city!}
-                    onChange={handleChange}
-                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
-                  />
-                </label>
-
-                <label className="block mb-4">
-                  Street Line 2:
-                  <Input
-                    type="text"
-                    name="streetLine2"
-                    value={formData.streetLine2!}
-                    onChange={handleChange}
-                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
-                  />
-                </label>
-
-                <label className="block mb-4">
-                  Province:
-                  <Input
-                    type="text"
-                    name="province"
-                    value={formData.province!}
-                    onChange={handleChange}
-                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
-                  />
-                </label>
-
-                <label className="block mb-4">
-                  Postal Code:
-                  <Input
-                    type="text"
-                    name="postalCode"
-                    value={formData.postalCode!}
-                    onChange={handleChange}
-                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
-                  />
-                </label>
-
-                <label className="block mb-4">
-                  Country Code:
-                  <Input
-                    type="text"
-                    name="countryCode"
-                    value={formData.countryCode!}
-                    onChange={handleChange}
-                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
-                  />
-                </label>
-
-                <br />
-                <label className="block mb-4">
-                  Full Name:
-                  <Input
-                    type="text"
-                    name="fullName"
-                    value={formData.fullName!}
-                    onChange={handleChange}
-                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
-                  />
-                </label>
-
-                <label className="block mb-4">
-                  Phone Number:
-                  <Input
-                    type="text"
-                    name="phoneNumber"
-                    value={formData.phoneNumber!}
-                    onChange={handleChange}
-                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
-                  />
-                </label>
-
-                <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                  type="submit"
-                >
-                  Uppdatera uppgifter
-                </button>
-              </form>
+        {({ update }) => {
+          return (
+            <div className="cart-totals">
+              <button
+                type="submit"
+                name="removeItem"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() =>
+                  update({
+                    fullName: 'Test Testsson',
+                    company: 'Testbolaget',
+                    streetLine1: 'Testgatan 1',
+                    streetLine2: 'Testgatan 12',
+                    city: 'Teststaden',
+                    province: 'Testlän',
+                    postalCode: '12345',
+                    countryCode: 'SE',
+                    phoneNumber: '0701234567',
+                  })
+                }
+              >
+                Update shipping address
+              </button>
             </div>
           )
         }}
@@ -486,7 +394,10 @@ export const App = () => {
           ) : (
             <div className="shipping-address bg-white p-4 rounded-md shadow-m">
               <h3 className="text-lg font-semibold mb-2"> 2. Contact information</h3>
-              <form onSubmit={updateCustomer} className="bg-white p-6 rounded-md shadow-md max-w-md">
+              <form
+                onSubmit={updateCustomer}
+                className="bg-white p-6 rounded-md shadow-md max-w-md"
+              >
                 <h3 className="text-lg font-semibold mb-2">Company information</h3>
                 <label className="block mb-4">
                   Firstname:
