@@ -1,5 +1,5 @@
 import {
-  OrderBillingAddress as BillingAddressWrapper,
+  OrderShippingAddress as ShippingAddressWrapper,
   CreateAddressInput,
 } from '@haus-tech/ecom-components'
 import { Form, Formik, FormikValues } from 'formik'
@@ -8,14 +8,14 @@ import * as Yup from 'yup'
 import { Input } from '../../input/Input'
 import { Button } from '../../button/Button'
 
-interface BillingAddressProps {
+interface ShippingAddressProps {
   onSuccess: () => void
 }
 
-const BillingAddress = ({ onSuccess }: BillingAddressProps) => {
+const ShippingAddress = ({ onSuccess }: ShippingAddressProps) => {
   return (
-    <BillingAddressWrapper className="BillingAddress">
-      {({ update, savedData, error, loading }) => {
+    <ShippingAddressWrapper className="ShippingAddress">
+      {({ update, savedData, error, loading }) => { //TODO in ecom-components: add loading state to update and savedData like in billing address
         const handleSubmit = async (values: FormikValues) => {
           await update(values as CreateAddressInput)
 
@@ -43,7 +43,7 @@ const BillingAddress = ({ onSuccess }: BillingAddressProps) => {
             >
               {({ errors, touched }) => {
                 return (
-                  <Form className="billing-address-form">
+                  <Form className="shipping-address-form">
                     <Input label="Full name" name="fullName" errors={errors} touched={touched} />
                     <Input label="Company" name="company" errors={errors} touched={touched} />
                     <Input
@@ -91,7 +91,7 @@ const BillingAddress = ({ onSuccess }: BillingAddressProps) => {
           </div>
         )
       }}
-    </BillingAddressWrapper>
+    </ShippingAddressWrapper>
   )
 }
 
@@ -107,4 +107,4 @@ const validationSchema = Yup.object().shape({
   phoneNumber: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
 })
 
-export default BillingAddress
+export default ShippingAddress

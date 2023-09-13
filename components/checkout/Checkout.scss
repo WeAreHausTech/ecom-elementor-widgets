@@ -53,7 +53,7 @@
     }
   }
 
-  .BillingAddress {
+  .BillingAddress, .ShippingAddress, .CustomerInformation {
     form {
       display: flex;
       flex-direction: column;

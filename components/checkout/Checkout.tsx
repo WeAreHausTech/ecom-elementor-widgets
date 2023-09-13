@@ -6,7 +6,7 @@ import { Icon } from '../icon/Icon'
 // import { BillingAddress } from './components/BillingAddress'
 
 export const Checkout = () => {
-  const [currentStep, setCurrentStep] = useState<string>('billing')
+  const [currentStep, setCurrentStep] = useState<string>('customer-information')
   const [finishedSteps, setFinishedSteps] = useState<string[]>([])
 
   const handleNextClick = () => {
@@ -23,6 +23,11 @@ export const Checkout = () => {
   const steps = useMemo(() => {
     return [
       {
+        title: 'Customer information',
+        id: 'customer-information',
+        component: 'CustomerInformation',
+      },
+      {
         title: 'Faktura & Leveransinformation',
         id: 'billing',
         component: 'BillingAddress',
@@ -30,10 +35,12 @@ export const Checkout = () => {
       {
         title: 'Shipping address',
         id: 'shipping-adress',
+        component: 'ShippingAddress',
       },
+      
       {
         title: 'Shipping',
-        id: 'shipping',
+        id: 'shipping-method',
       },
       {
         title: 'Payment',
