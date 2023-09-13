@@ -1,5 +1,4 @@
 import { ReactNode, useEffect } from 'react'
-import { ApolloError, useQuery } from '@apollo/client'
 import {
   ACTIVE_ORDER_TOTAL_PRICE,
   TOTAL_PRICE_FRAGMENT,
@@ -7,13 +6,14 @@ import {
 import { ListedTotalPriceFragment } from '@/gql/graphql'
 import { cartChannel } from '../../eventbus/channels/cart-channel'
 import { getFragmentData } from '@/gql'
-import { CustomHTMLElement, Loading } from '@/types'
+import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
+import { useCustomQuery } from '@/hooks/useCustomQuery'
 
-interface CartContentsProps extends CustomHTMLElement {
+export interface CartTotalsProps extends CustomHTMLElement {
   children: (props: {
     totalPrice: null | ListedTotalPriceFragment
-    loading: Loading
-    error: ApolloError | undefined
+    loading: Loading<'cart:fetchTotals'>
+    error: GenericApolloError
   }) => ReactNode
 }
 
@@ -21,8 +21,8 @@ export const CartTotals = ({
   wrapperTag: Wrapper = 'div',
   children,
   ...rest
-}: CartContentsProps) => {
-  const { loading, error, data, refetch } = useQuery(ACTIVE_ORDER_TOTAL_PRICE)
+}: CartTotalsProps) => {
+  const { loading, error, data, refetch } = useCustomQuery(ACTIVE_ORDER_TOTAL_PRICE)
 
   useEffect(() => {
     const unsubscribeFromCartUpdated = cartChannel.on('cart:updated', () => {

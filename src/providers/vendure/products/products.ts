@@ -32,6 +32,9 @@ export const LISTED_PRODUCT_FRAGMENT = graphql(/* GraphQL */ `
         value
       }
     }
+    facetIds
+    facetValueIds
+    collectionIds
   }
 `)
 

@@ -3,7 +3,7 @@ import { SearchResultSortParameter } from '@/gql/graphql'
 import { CustomHTMLElement } from '@/types'
 import { ReactNode, useCallback } from 'react'
 
-interface ProductSortProps extends CustomHTMLElement {
+export interface ProductSortProps extends CustomHTMLElement {
   children: (props: {
     handleSortOptionChange: (sortOption: SearchResultSortParameter) => void
   }) => ReactNode

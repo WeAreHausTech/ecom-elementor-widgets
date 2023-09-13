@@ -1,7 +1,7 @@
 import { ListedProductFragment } from '@/gql/graphql'
 import { CustomHTMLElement } from '@/types'
 
-interface ProductProps extends CustomHTMLElement {
+export interface ProductProps extends CustomHTMLElement {
   product: ListedProductFragment
   thumbnailSize?: [number, number]
   children: (props: { product: ListedProductFragment; thumbnail: string }) => React.ReactNode

@@ -26,8 +26,17 @@ const documents = {
     "\n  mutation setOrderBillingAddress($input: CreateAddressInput!) {\n    setOrderBillingAddress(input: $input) {\n      ... on Order {\n        billingAddress {\n          ...ListedOrderAdressOrder\n        }\n      }\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n": types.SetOrderBillingAddressDocument,
     "\n  query ActiveOrderShippingAddress {\n    activeOrder {\n      shippingAddress {\n        ...ListedOrderAdressOrder\n      }\n    }\n  }\n": types.ActiveOrderShippingAddressDocument,
     "\n  query ActiveOrderBillingAddress {\n    activeOrder {\n      billingAddress {\n        ...ListedOrderAdressOrder\n      }\n    }\n  }\n": types.ActiveOrderBillingAddressDocument,
+    "\n  mutation setCustomerForOrder($input: CreateCustomerInput!) {\n    setCustomerForOrder(input: $input) {\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n": types.SetCustomerForOrderDocument,
     "\n  mutation setOrderCustomFields($input: UpdateOrderInput!) {\n    setOrderCustomFields(input: $input) {\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n": types.SetOrderCustomFieldsDocument,
-    "\n  fragment ListedProduct on SearchResult {\n    productId\n    productVariantId\n    productName\n    slug\n    description\n    score\n    inStock\n    productAsset {\n      id\n      preview\n    }\n    currencyCode\n    price {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n    priceWithTax {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n  }\n": types.ListedProductFragmentDoc,
+    "\n  fragment EligibleShippingMethods on ShippingMethodQuote {\n    id\n    name\n  }\n": types.EligibleShippingMethodsFragmentDoc,
+    "\n  query EligibleShippingMethod {\n    eligibleShippingMethods {\n      ...EligibleShippingMethods\n    }\n  }\n": types.EligibleShippingMethodDocument,
+    "\n  mutation setOrderShippingMethod($shippingMethodId: [ID!]!) {\n    setOrderShippingMethod(shippingMethodId: $shippingMethodId) {\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n": types.SetOrderShippingMethodDocument,
+    "\n  mutation transitionOrderToState($input: String!) {\n    transitionOrderToState(state: $input) {\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n": types.TransitionOrderToStateDocument,
+    "\n  query nextOrderStates {\n    nextOrderStates\n  }\n": types.NextOrderStatesDocument,
+    "\n  fragment EligiblePaymentMethods on PaymentMethodQuote {\n    id\n    name\n    description\n    code\n  }\n": types.EligiblePaymentMethodsFragmentDoc,
+    "\n  query EligiblePaymentMethods {\n    eligiblePaymentMethods {\n      ...EligiblePaymentMethods\n    }\n  }\n": types.EligiblePaymentMethodsDocument,
+    "\n  mutation addPaymentToOrder($input: PaymentInput!) {\n    addPaymentToOrder (input: $input) {\n        ... on ErrorResult {\n            errorCode\n            message\n          }\n    }\n  }\n": types.AddPaymentToOrderDocument,
+    "\n  fragment ListedProduct on SearchResult {\n    productId\n    productVariantId\n    productName\n    slug\n    description\n    score\n    inStock\n    productAsset {\n      id\n      preview\n    }\n    currencyCode\n    price {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n    priceWithTax {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n    facetIds\n    facetValueIds\n    collectionIds\n  }\n": types.ListedProductFragmentDoc,
     "\n  query search($input: SearchInput!) {\n    search(input: $input) {\n      totalItems\n      items {\n        ...ListedProduct\n      }\n      facetValues {\n        facetValue {\n          id\n          name\n          facet {\n            id\n            name\n          }\n        }\n        count\n      }\n    }\n  }\n": types.SearchDocument,
 };
 
@@ -100,11 +109,47 @@ export function graphql(source: "\n  query ActiveOrderBillingAddress {\n    acti
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n  mutation setCustomerForOrder($input: CreateCustomerInput!) {\n    setCustomerForOrder(input: $input) {\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation setCustomerForOrder($input: CreateCustomerInput!) {\n    setCustomerForOrder(input: $input) {\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n  mutation setOrderCustomFields($input: UpdateOrderInput!) {\n    setOrderCustomFields(input: $input) {\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation setOrderCustomFields($input: UpdateOrderInput!) {\n    setOrderCustomFields(input: $input) {\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment ListedProduct on SearchResult {\n    productId\n    productVariantId\n    productName\n    slug\n    description\n    score\n    inStock\n    productAsset {\n      id\n      preview\n    }\n    currencyCode\n    price {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n    priceWithTax {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment ListedProduct on SearchResult {\n    productId\n    productVariantId\n    productName\n    slug\n    description\n    score\n    inStock\n    productAsset {\n      id\n      preview\n    }\n    currencyCode\n    price {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n    priceWithTax {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  fragment EligibleShippingMethods on ShippingMethodQuote {\n    id\n    name\n  }\n"): (typeof documents)["\n  fragment EligibleShippingMethods on ShippingMethodQuote {\n    id\n    name\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query EligibleShippingMethod {\n    eligibleShippingMethods {\n      ...EligibleShippingMethods\n    }\n  }\n"): (typeof documents)["\n  query EligibleShippingMethod {\n    eligibleShippingMethods {\n      ...EligibleShippingMethods\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation setOrderShippingMethod($shippingMethodId: [ID!]!) {\n    setOrderShippingMethod(shippingMethodId: $shippingMethodId) {\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation setOrderShippingMethod($shippingMethodId: [ID!]!) {\n    setOrderShippingMethod(shippingMethodId: $shippingMethodId) {\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation transitionOrderToState($input: String!) {\n    transitionOrderToState(state: $input) {\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation transitionOrderToState($input: String!) {\n    transitionOrderToState(state: $input) {\n      ... on ErrorResult {\n        errorCode\n        message\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query nextOrderStates {\n    nextOrderStates\n  }\n"): (typeof documents)["\n  query nextOrderStates {\n    nextOrderStates\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  fragment EligiblePaymentMethods on PaymentMethodQuote {\n    id\n    name\n    description\n    code\n  }\n"): (typeof documents)["\n  fragment EligiblePaymentMethods on PaymentMethodQuote {\n    id\n    name\n    description\n    code\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query EligiblePaymentMethods {\n    eligiblePaymentMethods {\n      ...EligiblePaymentMethods\n    }\n  }\n"): (typeof documents)["\n  query EligiblePaymentMethods {\n    eligiblePaymentMethods {\n      ...EligiblePaymentMethods\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation addPaymentToOrder($input: PaymentInput!) {\n    addPaymentToOrder (input: $input) {\n        ... on ErrorResult {\n            errorCode\n            message\n          }\n    }\n  }\n"): (typeof documents)["\n  mutation addPaymentToOrder($input: PaymentInput!) {\n    addPaymentToOrder (input: $input) {\n        ... on ErrorResult {\n            errorCode\n            message\n          }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  fragment ListedProduct on SearchResult {\n    productId\n    productVariantId\n    productName\n    slug\n    description\n    score\n    inStock\n    productAsset {\n      id\n      preview\n    }\n    currencyCode\n    price {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n    priceWithTax {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n    facetIds\n    facetValueIds\n    collectionIds\n  }\n"): (typeof documents)["\n  fragment ListedProduct on SearchResult {\n    productId\n    productVariantId\n    productName\n    slug\n    description\n    score\n    inStock\n    productAsset {\n      id\n      preview\n    }\n    currencyCode\n    price {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n    priceWithTax {\n      ... on PriceRange {\n        min\n        max\n      }\n      ... on SinglePrice {\n        value\n      }\n    }\n    facetIds\n    facetValueIds\n    collectionIds\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

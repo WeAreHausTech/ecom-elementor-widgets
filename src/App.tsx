@@ -13,6 +13,11 @@ import { ProductSort } from './components/products-sort/ProductSort'
 import { SortOrder } from './gql/graphql'
 import { Price } from '@/components/price/Price.tsx'
 import { Input } from './components/_form-components/Input'
+import { PaymentMethods } from './components/payment-methods/PaymentMethods'
+import { ShippingMethod } from './components/shipping-method/ShippingMethod'
+import { OrderCustomer } from './components/order-customer/OrderCustomer'
+
+import { OrderState } from './components/order-state/OrderState'
 import { Login } from './components/account/Login'
 import { getError } from './utils/utils'
 
@@ -255,7 +260,7 @@ export const App = () => {
           ) : (
             <div className="shipping-address bg-white p-4 rounded-md shadow-m">
               <form onSubmit={handleSubmit} className="bg-white p-6 rounded-md shadow-md max-w-md">
-                <h3 className="text-lg font-semibold mb-2">Company information</h3>
+                <h3 className="text-lg font-semibold mb-2"> 1. Company information</h3>
                 <label className="block mb-4">
                   Company:
                   <Input
@@ -334,7 +339,6 @@ export const App = () => {
                 </label>
 
                 <br />
-                <h3 className="text-lg font-semibold mb-2">Contact information</h3>
                 <label className="block mb-4">
                   Full Name:
                   <Input
@@ -396,6 +400,70 @@ export const App = () => {
           )
         }}
       </OrderBillingAddress>
+
+      <OrderCustomer>
+        {({ formData, handleChange, updateCustomer }) => {
+          return !formData ? (
+            <div>Loading...</div>
+          ) : (
+            <div className="shipping-address bg-white p-4 rounded-md shadow-m">
+              <h3 className="text-lg font-semibold mb-2"> 2. Contact information</h3>
+              <form onSubmit={updateCustomer} className="bg-white p-6 rounded-md shadow-md max-w-md">
+                <h3 className="text-lg font-semibold mb-2">Company information</h3>
+                <label className="block mb-4">
+                  Firstname:
+                  <Input
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName!}
+                    onChange={handleChange}
+                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
+                  />
+                </label>
+
+                <label className="block mb-4">
+                  Lastname:
+                  <Input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName!}
+                    onChange={handleChange}
+                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
+                  />
+                </label>
+
+                <label className="block mb-4">
+                  Phonenumber:
+                  <Input
+                    type="text"
+                    name="phoneNumber"
+                    value={formData.phoneNumber!}
+                    onChange={handleChange}
+                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
+                  />
+                </label>
+
+                <label className="block mb-4">
+                  Emailaddress
+                  <Input
+                    type="text"
+                    name="emailAddress"
+                    value={formData.emailAddress!}
+                    onChange={handleChange}
+                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
+                  />
+                </label>
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  type="submit"
+                >
+                  Uppdatera uppgifter
+                </button>
+              </form>
+            </div>
+          )
+        }}
+      </OrderCustomer>
       <OrderMessage>
         {({ message, setMessage, addMessageToOrder }) => {
           return (
@@ -416,6 +484,78 @@ export const App = () => {
         }}
       </OrderMessage>
 
+      <ShippingMethod>
+        {({ eligibleShippingMethods, setSelectedshippingMethod, updateShippingMethod }) => {
+          return (
+            <div>
+              <h3 className="text-lg font-semibold mb-2"> 3. Shipping method</h3>
+              <form
+                onSubmit={updateShippingMethod}
+                className="bg-white p-6 rounded-md shadow-md max-w-md"
+              >
+                {eligibleShippingMethods &&
+                  eligibleShippingMethods.map((method) => (
+                    <div key={method.id}>
+                      <input
+                        type="radio"
+                        id={method.id}
+                        name="shippingMethod"
+                        value={method.id}
+                        onChange={(e) => setSelectedshippingMethod(e.target.value)}
+                      />
+                      <label htmlFor={method.id}>{method.name}</label>
+                    </div>
+                  ))}
+                <button type="submit">Save shipping method</button>
+              </form>
+            </div>
+          )
+        }}
+      </ShippingMethod>
+
+      <h2 className="text-2xl font-semibold mb-4">4. Payment methods</h2>
+      <OrderState>
+        {({ changeOrderState }) => {
+          return (
+            <div>
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => changeOrderState('ArrangingPayment')}
+              >
+                {' '}
+                Change to ArrangingPayment state
+              </button>
+            </div>
+          )
+        }}
+      </OrderState>
+
+      <PaymentMethods paymentMethod="pre-payment">
+        {({ updatePaymentMethod }) => {
+          return (
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              onClick={updatePaymentMethod}
+            >
+              Place order
+            </button>
+          )
+        }}
+      </PaymentMethods>
+
+      <OrderState>
+        {({ changeOrderState }) => {
+          return (
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              onClick={() => changeOrderState('Cancelled')}
+            >
+              {' '}
+              Cancel order
+            </button>
+          )
+        }}
+      </OrderState>
       <div className="mt-4">
         <h1>Customer</h1>
         <Login>

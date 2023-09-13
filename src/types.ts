@@ -7,7 +7,7 @@ import {
   MutationFunctionOptions,
 } from '@apollo/client'
 import { HTMLAttributes } from 'react'
-import { ErrorResult } from './gql/graphql'
+import { ErrorResult, FacetValueResult, ListedProductFragment } from './gql/graphql'
 
 export interface CustomHTMLElement extends Omit<HTMLAttributes<HTMLOrSVGElement>, 'children'> {
   wrapperTag?: keyof JSX.IntrinsicElements
@@ -17,8 +17,10 @@ export interface Pagination {
   totalItems: number
   totalPages: number
   currentPage: number
+  itemsPerPage: number
   canGoBack: boolean
   canGoForward: boolean
+  infinitePagination: boolean
   nextPage: () => void
   prevPage: () => void
 }
@@ -47,3 +49,7 @@ export type CustomMutationTuple<
   ) => Promise<FetchResult<TData>>,
   CustomMutationResult<TData>,
 ]
+
+export interface SearchProduct extends ListedProductFragment {
+  facetValues: FacetValueResult
+}

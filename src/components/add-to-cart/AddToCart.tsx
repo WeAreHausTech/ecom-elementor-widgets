@@ -1,19 +1,20 @@
-import { ApolloError, useMutation } from '@apollo/client'
+
 import { ADD_ITEM_TO_ORDER } from '@/providers/vendure/cart/activeOrders'
 import { ReactNode } from 'react'
 import { CartAction, cartChannel } from '../../eventbus/channels/cart-channel'
-import { CustomHTMLElement, Loading } from '@/types'
+import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
+import { useCustomMutation } from '@/hooks/useCustomMutation'
 
-interface AddToCartProps extends CustomHTMLElement {
+export interface AddToCartProps extends CustomHTMLElement {
   children: (props: {
     addProductToCart: (productVariantId: string, quantity: number) => void
-    error: ApolloError | undefined
-    loading: Loading
+    error: GenericApolloError
+    loading: Loading<'cart:addToCart'>
   }) => ReactNode
 }
 
 export const AddToCart = ({ wrapperTag: Wrapper = 'div', children, ...rest }: AddToCartProps) => {
-  const [updateCart, { error, loading }] = useMutation(ADD_ITEM_TO_ORDER)
+  const [updateCart, { error, loading }] = useCustomMutation(ADD_ITEM_TO_ORDER)
 
   const addProductToCart = async (productVariantId: string, quantity: number) => {
     const addedProduct = await updateCart({

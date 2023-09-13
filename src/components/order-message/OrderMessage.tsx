@@ -1,13 +1,13 @@
-import { ApolloError, useMutation } from '@apollo/client'
 import { UPDATE_ORDER_CUSTOM_FIELDS } from '@/providers/vendure/checkout/checkout'
 import { ReactNode, useState } from 'react'
-import { CustomHTMLElement, Loading } from '@/types'
+import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
+import { useCustomMutation } from '@/hooks/useCustomMutation'
 
-interface OrderMessageProps extends CustomHTMLElement {
+export interface OrderMessageProps extends CustomHTMLElement {
   children: (props: {
     message: string
-    loading: Loading
-    error: ApolloError | undefined
+    loading: Loading<'order:updateMessage'>
+    error: GenericApolloError
     setMessage: (message: string) => void
     addMessageToOrder: () => void
   }) => ReactNode
@@ -19,7 +19,7 @@ export const OrderMessage = ({
   ...rest
 }: OrderMessageProps) => {
   const [message, setMessage] = useState('')
-  const [addMessage, { error, loading }] = useMutation(UPDATE_ORDER_CUSTOM_FIELDS)
+  const [addMessage, { error, loading }] = useCustomMutation(UPDATE_ORDER_CUSTOM_FIELDS)
 
   //requires a custom field called CustomerMessage in vendure
   const addMessageToOrder = () => {

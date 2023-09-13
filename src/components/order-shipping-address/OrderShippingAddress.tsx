@@ -5,15 +5,16 @@ import {
   ORDER_ADDRESS_FRAGMNENT,
 } from '@/providers/vendure/checkout/checkout'
 import { CreateAddressInput, OrderAddress } from '@/gql/graphql'
-import { ApolloError, useMutation, useQuery } from '@apollo/client'
 import { getFragmentData } from '@/gql'
-import { CustomHTMLElement, Loading } from '@/types'
+import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
 import { map, omit } from 'lodash'
+import { useCustomQuery } from '@/hooks/useCustomQuery'
+import { useCustomMutation } from '@/hooks/useCustomMutation'
 
-interface ShippingAddressProps extends CustomHTMLElement {
+export interface OrderShippingAddressProps extends CustomHTMLElement {
   children: (props: {
-    loading: Loading
-    error: ApolloError | undefined
+    loading: Loading<'order:shippingAddress' | 'order:updatingShippingAddress'>
+    error: GenericApolloError
     formData: OrderAddress | null
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
@@ -24,14 +25,14 @@ export const OrderShippingAddress = ({
   wrapperTag: Wrapper = 'div',
   children,
   ...rest
-}: ShippingAddressProps) => {
+}: OrderShippingAddressProps) => {
   const [formData, setFormData] = useState<OrderAddress | null>(null)
 
   const {
     loading: loadingShippingAdress,
     error: shippingError,
     data: shippingData,
-  } = useQuery(ACTIVE_ORDER_SHIPPING_ADDRESS)
+  } = useCustomQuery(ACTIVE_ORDER_SHIPPING_ADDRESS)
 
   const savedData =
     getFragmentData(ORDER_ADDRESS_FRAGMNENT, shippingData?.activeOrder?.shippingAddress) ?? null
@@ -50,7 +51,7 @@ export const OrderShippingAddress = ({
   }, [])
 
   const [updateAddress, { error: updateAddressError, loading: updatingAddress }] =
-    useMutation(UPDATE_SHIPPING_ADDRESS)
+    useCustomMutation(UPDATE_SHIPPING_ADDRESS)
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {

@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client'
 import { ReactNode, useEffect, useMemo } from 'react'
 import { useImmer } from 'use-immer'
 import { ListedProductFragment, SearchInput, SortOrder } from '@/gql/graphql'
@@ -6,17 +5,19 @@ import { LISTED_PRODUCT_FRAGMENT, SEARCH } from '@/providers/vendure/products/pr
 import { getFragmentData } from '@/gql'
 import { searchFilterChannel } from '@/eventbus/channels/search-filter-channel'
 import { isNumber } from 'lodash'
-import { CustomHTMLElement, Loading, Pagination } from '@/types'
+import { CustomHTMLElement, GenericApolloError, Loading, Pagination, SearchProduct } from '@/types'
+import { useCustomQuery } from '@/hooks/useCustomQuery'
 
 type SearchInputProps = Pick<
   SearchInput,
   'term' | 'collectionId' | 'facetValueFilters' | 'groupByProduct' | 'sort' | 'take'
 >
-interface ProductListProps extends CustomHTMLElement {
+export interface ProductListProps extends CustomHTMLElement {
   searchInputProps?: SearchInputProps
   infinitePagination?: boolean
   children: (props: {
     loading: Loading<'productList:search'>
+    error: GenericApolloError
     products: ListedProductFragment[]
     pagination?: Pagination
   }) => ReactNode
@@ -48,9 +49,9 @@ export const ProductList = ({
     skip: 0,
   })
 
-  const [products, setProducts] = useImmer<ListedProductFragment[]>([])
+  const [products, setProducts] = useImmer<SearchProduct[]>([])
 
-  const { loading, error, data, refetch } = useQuery(SEARCH, {
+  const { loading, error, data, refetch } = useCustomQuery(SEARCH, {
     variables: { input: variables },
   })
 
@@ -59,6 +60,7 @@ export const ProductList = ({
       setProducts([])
       setVariables((draft) => {
         draft.sort = data
+        draft.skip = 0
       })
     })
 
@@ -74,7 +76,13 @@ export const ProductList = ({
   useEffect(() => {
     if (data?.search?.items) {
       const { items } = data.search
-      const productItems = items.map((item) => getFragmentData(LISTED_PRODUCT_FRAGMENT, item))
+      const productItems = items.map((item) => {
+        const productItem = getFragmentData(LISTED_PRODUCT_FRAGMENT, item) as SearchProduct
+        // TODO: Append facet values to product item
+
+
+        return productItem
+      })
       if (infinitePagination) {
         setProducts((draft) => {
           const existingProducts = draft.map((item) => item.productId)
@@ -89,6 +97,7 @@ export const ProductList = ({
       }
     }
   }, [data, infinitePagination, setProducts])
+
 
   const pagination = useMemo<Pagination | undefined>(() => {
     const { take, skip } = variables
@@ -123,17 +132,17 @@ export const ProductList = ({
         currentPage,
         canGoBack,
         canGoForward,
+        itemsPerPage: take,
+        infinitePagination,
         nextPage,
         prevPage,
       }
     }
   }, [variables, data, infinitePagination, setVariables])
 
-  if (error) return <div>{error.message}</div>
-
   return (
     <Wrapper {...rest}>
-      {children({ loading: { 'productList:search': loading }, products, pagination })}
+      {children({ loading: { 'productList:search': loading }, products, pagination, error })}
     </Wrapper>
   )
 }

@@ -1,5 +1,4 @@
 import { ReactNode, useEffect } from 'react'
-import { ApolloError, useQuery } from '@apollo/client'
 import {
   ACTIVE_ORDER_LINES,
   ACTIVE_ORDER_LINE_FRAGMENT,
@@ -7,13 +6,14 @@ import {
 import { ListedOrderLinesFragment } from '@/gql/graphql'
 import { cartChannel } from '../../eventbus/channels/cart-channel'
 import { getFragmentData } from '@/gql'
-import { CustomHTMLElement, Loading } from '@/types'
+import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
+import { useCustomQuery } from '@/hooks/useCustomQuery'
 
-interface CartContentsProps extends CustomHTMLElement {
+export interface CartContentsProps extends CustomHTMLElement {
   children: (props: {
     activeProducts: readonly ListedOrderLinesFragment[]
-    loading: Loading
-    error: ApolloError | undefined
+    loading: Loading<'cart:content'>
+    error: GenericApolloError
   }) => ReactNode
 }
 
@@ -22,7 +22,7 @@ export const CartContent = ({
   children,
   ...rest
 }: CartContentsProps) => {
-  const { loading, error, data, refetch } = useQuery(ACTIVE_ORDER_LINES)
+  const { loading, error, data, refetch } = useCustomQuery(ACTIVE_ORDER_LINES)
 
   useEffect(() => {
     const unsubscribeFromCartUpdated = cartChannel.on('cart:updated', () => {

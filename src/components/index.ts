@@ -1,23 +1,23 @@
 import { VendureApolloProvider } from '@/providers/vendure/VendureApolloProvider'
 
 // Products
-import { ProductList } from '@/components/product-list/ProductList'
-import { Product } from '@/components/product/Product'
-import { ProductSort } from './products-sort/ProductSort'
+import { ProductList, ProductListProps } from '@/components/product-list/ProductList'
+import { Product, ProductProps } from '@/components/product/Product'
+import { ProductSort, ProductSortProps } from './products-sort/ProductSort'
 
 // Cart
-import { AddToCart } from './add-to-cart/AddToCart'
-import { CartContent } from './cart-content/CartContent'
-import { CartRemoveItem } from './cart-remove-item/CartRemoveItem'
-import { CartTotals } from './cart-totals/CartTotals'
+import { AddToCart, AddToCartProps } from './add-to-cart/AddToCart'
+import { CartContent, CartContentsProps } from './cart-content/CartContent'
+import { CartRemoveItem, CartRemoveItemProps } from './cart-remove-item/CartRemoveItem'
+import { CartTotals, CartTotalsProps } from './cart-totals/CartTotals'
 
 // Order
-import { OrderBillingAddress } from './order-billing-address/OrderBillingAddress'
-import { OrderShippingAddress } from './order-shipping-address/OrderShippingAddress'
-import { OrderMessage } from './order-message/OrderMessage'
+import { OrderBillingAddress, OrderBillingAddressProps } from './order-billing-address/OrderBillingAddress'
+import { OrderShippingAddress, OrderShippingAddressProps } from './order-shipping-address/OrderShippingAddress'
+import { OrderMessage, OrderMessageProps } from './order-message/OrderMessage'
 
 // Price
-import { Price } from './price/Price'
+import { Price, PriceProps } from './price/Price'
 
 export {
   VendureApolloProvider,
@@ -33,6 +33,8 @@ export {
   OrderMessage,
   Price,
 }
+
+export type { ProductProps, ProductListProps, ProductSortProps, AddToCartProps, CartContentsProps, CartRemoveItemProps, CartTotalsProps, OrderBillingAddressProps, OrderShippingAddressProps, OrderMessageProps, PriceProps }
 
 export type { Pagination, Loading } from '@/types'
 export type { ApolloError } from '@apollo/client'

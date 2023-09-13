@@ -5,7 +5,6 @@ import {
   MutationHookOptions,
   useMutation,
   OperationVariables,
-  MutationUpdaterFunction,
   ApolloCache,
   DefaultContext,
   TypedDocumentNode,
@@ -20,12 +19,7 @@ export const useCustomMutation = <
   TCache extends ApolloCache<unknown> = ApolloCache<unknown>,
 >(
   mutation: DocumentNode | TypedDocumentNode<TData, TVariables>,
-  options: Omit<
-    MutationHookOptions<NoInfer<TData>, NoInfer<TVariables>, TContext, TCache>,
-    'update'
-  > & {
-    update?: MutationUpdaterFunction<unknown, OperationVariables, TContext, TCache>
-  },
+  options?: MutationHookOptions<NoInfer<TData>, NoInfer<TVariables>, TContext, TCache>
 ): CustomMutationTuple<TData, TVariables, TContext, TCache> => {
   const [error, setError] = useState<GenericApolloError>(undefined)
 

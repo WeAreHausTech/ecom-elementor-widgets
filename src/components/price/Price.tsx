@@ -3,7 +3,7 @@ import { CustomHTMLElement } from '@/types'
 import { formatPrice, getPrice } from '@/utils/utils'
 import { ReactNode } from 'react'
 
-interface PriceProps extends CustomHTMLElement {
+export interface PriceProps extends CustomHTMLElement {
   price: PriceRange | SinglePrice
   priceWithTax: PriceRange | SinglePrice
   currencyCode: CurrencyCode
