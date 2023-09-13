@@ -13,9 +13,16 @@ import { CartRemoveItem, CartRemoveItemProps } from './cart-remove-item/CartRemo
 import { CartTotals, CartTotalsProps } from './cart-totals/CartTotals'
 
 // Order
-import { OrderBillingAddress, OrderBillingAddressProps } from './order-billing-address/OrderBillingAddress'
-import { OrderShippingAddress, OrderShippingAddressProps } from './order-shipping-address/OrderShippingAddress'
+import {
+  OrderBillingAddress,
+  OrderBillingAddressProps,
+} from './order-billing-address/OrderBillingAddress'
+import {
+  OrderShippingAddress,
+  OrderShippingAddressProps,
+} from './order-shipping-address/OrderShippingAddress'
 import { OrderMessage, OrderMessageProps } from './order-message/OrderMessage'
+import { OrderCustomer, OrderCustomerProps } from './order-customer/OrderCustomer'
 
 // Price
 import { Price, PriceProps } from './price/Price'
@@ -31,12 +38,27 @@ export {
   OrderBillingAddress,
   OrderShippingAddress,
   OrderMessage,
+  OrderCustomer,
   Price,
   SearchProducts,
-  SearchResults
+  SearchResults,
 }
 
-export type { ProductListProps, ProductSortProps, AddToCartProps, CartContentsProps, CartRemoveItemProps, CartTotalsProps, OrderBillingAddressProps, OrderShippingAddressProps, OrderMessageProps, PriceProps, SearchProductsProps, SearchResultProps }
+export type {
+  ProductListProps,
+  ProductSortProps,
+  AddToCartProps,
+  CartContentsProps,
+  CartRemoveItemProps,
+  CartTotalsProps,
+  OrderBillingAddressProps,
+  OrderShippingAddressProps,
+  OrderMessageProps,
+  OrderCustomerProps,
+  PriceProps,
+  SearchProductsProps,
+  SearchResultProps,
+}
 
 export type { Pagination, Loading } from '@/types'
 export type { ApolloError } from '@apollo/client'

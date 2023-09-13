@@ -1,17 +1,14 @@
-import { ReactNode, useCallback, useState } from 'react'
+import { ReactNode } from 'react'
 import { SET_CUSTOMER_FOR_ORDER } from '@/providers/vendure/checkout/checkout'
-import { CreateCustomerInput, SetCustomerForOrderMutation } from '@/gql/graphql'
+import { CreateCustomerInput } from '@/gql/graphql'
 import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
 import { useCustomMutation } from '@/hooks/useCustomMutation'
-import { FetchResult } from '@apollo/client'
 
-interface OrderCustomerProp extends CustomHTMLElement {
+export interface OrderCustomerProps extends CustomHTMLElement {
   children: (props: {
     loading: Loading<'order:updateCustomer'>
     error: GenericApolloError
-    formData: CreateCustomerInput | null
-    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-    updateCustomer: () => Promise<FetchResult<SetCustomerForOrderMutation>>
+    update: (adress: CreateCustomerInput) => void
   }) => ReactNode
 }
 
@@ -19,23 +16,13 @@ export const OrderCustomer = ({
   wrapperTag: Wrapper = 'div',
   children,
   ...rest
-}: OrderCustomerProp) => {
-  const [formData, setFormData] = useState<CreateCustomerInput>({
-    firstName: '',
-    lastName: '',
-    emailAddress: '',
-    phoneNumber: '',
-  })
-
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }, [])
-
+}: OrderCustomerProps) => {
   const [updateCustomer, { error: updateCustomerError, loading: loadingUpdatingCustomer }] =
-    useCustomMutation(SET_CUSTOMER_FOR_ORDER, {
-      variables: { input: formData },
-    })
+    useCustomMutation(SET_CUSTOMER_FOR_ORDER)
+
+  const update = (customer: CreateCustomerInput) => {
+    updateCustomer({ variables: { input: customer } })
+  }
 
   return (
     <Wrapper {...rest}>
@@ -44,9 +31,7 @@ export const OrderCustomer = ({
           'order:updateCustomer': loadingUpdatingCustomer,
         },
         error: updateCustomerError,
-        formData,
-        handleChange,
-        updateCustomer
+        update,
       })}
     </Wrapper>
   )

@@ -388,69 +388,28 @@ export const App = () => {
       </OrderBillingAddress>
 
       <OrderCustomer>
-        {({ formData, handleChange, updateCustomer }) => {
-          return !formData ? (
-            <div>Loading...</div>
-          ) : (
-            <div className="shipping-address bg-white p-4 rounded-md shadow-m">
-              <h3 className="text-lg font-semibold mb-2"> 2. Contact information</h3>
-              <form
-                onSubmit={updateCustomer}
-                className="bg-white p-6 rounded-md shadow-md max-w-md"
-              >
-                <h3 className="text-lg font-semibold mb-2">Company information</h3>
-                <label className="block mb-4">
-                  Firstname:
-                  <Input
-                    type="text"
-                    name="firstName"
-                    value={formData.firstName!}
-                    onChange={handleChange}
-                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
-                  />
-                </label>
-
-                <label className="block mb-4">
-                  Lastname:
-                  <Input
-                    type="text"
-                    name="lastName"
-                    value={formData.lastName!}
-                    onChange={handleChange}
-                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
-                  />
-                </label>
-
-                <label className="block mb-4">
-                  Phonenumber:
-                  <Input
-                    type="text"
-                    name="phoneNumber"
-                    value={formData.phoneNumber!}
-                    onChange={handleChange}
-                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
-                  />
-                </label>
-
-                <label className="block mb-4">
-                  Emailaddress
-                  <Input
-                    type="text"
-                    name="emailAddress"
-                    value={formData.emailAddress!}
-                    onChange={handleChange}
-                    className="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300"
-                  />
-                </label>
-                <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                  type="submit"
-                >
-                  Uppdatera uppgifter
-                </button>
-              </form>
-            </div>
-          )
+        {({ update }) => {
+        
+        return (
+          <div className="cart-totals">
+            <button
+              type="submit"
+              name="removeItem"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              onClick={() =>
+                update({
+                  emailAddress: 'test@test.se',
+                  firstName: 'Test',
+                  lastName: 'testsson',
+                  phoneNumber: '0701223344',
+                  title: 'Ekonomiansvarig',
+                })
+              }
+            >
+              Update customer
+            </button>
+          </div>
+        )
         }}
       </OrderCustomer>
       <OrderMessage>
