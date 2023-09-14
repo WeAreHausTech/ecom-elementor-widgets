@@ -3,7 +3,6 @@ import classNames from 'classnames'
 import { ForwardedRef, Suspense, forwardRef, lazy, useMemo, useState } from 'react'
 import { includes } from 'lodash'
 import { Icon } from '../icon/Icon'
-// import { BillingAddress } from './components/BillingAddress'
 
 export const Checkout = () => {
   const [currentStep, setCurrentStep] = useState<string>('customer-information')
@@ -36,28 +35,12 @@ export const Checkout = () => {
       {
         title: 'Leveransadress',
         id: 'shipping-adress',
-        component: 'ShippingAddress',
-      },
-      {
-        title: 'Faktureringsadress',
-        id: 'billing',
-        component: 'BillingAddress',
-      },
-
-      {
-        title: 'Leveransmetod',
-        id: 'shipping-method',
-        component: 'ShippingMethod',
-      },
-      {
-        title: 'State',
-        id: 'payment-state',
-        component: 'OrderState',
+        component: 'Address',
       },
       {
         title: 'Betalning',
         id: 'payment',
-        component: 'PaymentMethod',
+        component: 'CompleteOrder',
       },
     ]
   }, [])

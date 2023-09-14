@@ -2,6 +2,7 @@ import {
   OrderShippingAddress as ShippingAddressWrapper,
   OrderAddress,
   CreateAddressInput,
+  UseBillingAddress,
 } from '@haus-tech/ecom-components'
 import { Form, Formik, FormikValues } from 'formik'
 import { omit, size, some } from 'lodash'
@@ -11,16 +12,31 @@ import { Button } from '../../button/Button'
 
 interface ShippingAddressProps {
   onSuccess: () => void
+  sameBillingAddress: boolean
 }
 
-const ShippingAddress = ({ onSuccess }: ShippingAddressProps) => {
+const ShippingAddress = ({ onSuccess, sameBillingAddress }: ShippingAddressProps) => {
   return (
     <ShippingAddressWrapper className="ShippingAddress">
       {({ update, savedData, error, loading }) => {
+        const { mutation: billingMethodMutation } = UseBillingAddress()
+
+        const [
+          updateBillingAddressFunc,
+          { loading: updateBillingAddressLoading, error: updateBillingAddressError },
+        ] = billingMethodMutation
+
         const handleSubmit = async (values: FormikValues) => {
           await update(values as CreateAddressInput)
 
-          if (!error) {
+          //set billingaddress same as shippingaddress
+          if (sameBillingAddress && savedData !== null) {
+            await updateBillingAddressFunc({
+              variables: { input: values as CreateAddressInput },
+            })
+          }
+
+          if (!updateBillingAddressLoading && !error && !updateBillingAddressError) {
             onSuccess()
           }
         }
