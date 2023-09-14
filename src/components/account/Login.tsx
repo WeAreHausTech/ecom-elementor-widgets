@@ -5,7 +5,7 @@ import { useCustomMutation } from '@/hooks/useCustomMutation'
 import { FetchResult } from '@apollo/client'
 import { LoginMutation, LoginMutationVariables } from '@/gql/graphql'
 
-interface LoginProps extends CustomHTMLElement {
+export interface LoginProps extends CustomHTMLElement {
   children: (props: {
     loading: Loading<'auth:login'>
     error: GenericApolloError

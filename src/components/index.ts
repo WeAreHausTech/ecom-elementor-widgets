@@ -30,6 +30,9 @@ import { PaymentMethods, PaymentMethodsProps } from './payment-methods/PaymentMe
 // Price
 import { Price, PriceProps } from './price/Price'
 
+// Authentication
+import { Login, LoginProps } from './account/Login'
+
 // error
 import { isErrorResult } from '@/utils/utils'
 
@@ -53,6 +56,7 @@ export {
   Price,
   SearchProducts,
   SearchResults,
+  Login
 }
 
 export type {
@@ -72,6 +76,7 @@ export type {
   PriceProps,
   SearchProductsProps,
   SearchResultProps,
+  LoginProps
 }
 
 export type { Pagination, Loading } from '@/types'
