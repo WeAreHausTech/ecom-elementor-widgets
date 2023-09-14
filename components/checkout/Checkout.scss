@@ -53,11 +53,45 @@
     }
   }
 
-  .BillingAddress, .ShippingAddress, .CustomerInformation {
+  .BillingAddress,
+  .ShippingAddress,
+  .CustomerInformation {
     form {
       display: flex;
       flex-direction: column;
       gap: 24px;
+    }
+  }
+
+  .PaymentMethod {
+    .error {
+      color: red;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .ShippingMethod {
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+
+      label {
+        gap: 10px;
+        display: flex;
+        flex-direction: row;
+      }
+
+      input {
+        width: 20px;
+        height: 20px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      input:checked {
+        border: none;
+      }
     }
   }
 }
