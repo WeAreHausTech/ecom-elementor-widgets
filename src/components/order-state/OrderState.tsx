@@ -7,7 +7,7 @@ import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
 import { useCustomMutation } from '@/hooks/useCustomMutation'
 import { useCustomQuery } from '@/hooks/useCustomQuery'
 
-interface OrderStateProps extends CustomHTMLElement {
+export interface OrderStateProps extends CustomHTMLElement {
   children: (props: {
     loading: Loading<'order:changeState' | 'order:nextState'>
     error: GenericApolloError

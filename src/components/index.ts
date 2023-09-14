@@ -23,6 +23,9 @@ import {
 } from './order-shipping-address/OrderShippingAddress'
 import { OrderMessage, OrderMessageProps } from './order-message/OrderMessage'
 import { OrderCustomer, OrderCustomerProps } from './order-customer/OrderCustomer'
+import {ShippingMethod, ShippingMethodsProps} from './shipping-method/ShippingMethod'
+import {OrderState, OrderStateProps} from './order-state/OrderState'
+import {PaymentMethods, PaymentMethodsProps} from './payment-methods/PaymentMethods'
 
 // Price
 import { Price, PriceProps } from './price/Price'
@@ -39,6 +42,9 @@ export {
   OrderShippingAddress,
   OrderMessage,
   OrderCustomer,
+  OrderState, 
+  PaymentMethods,
+  ShippingMethod, 
   Price,
   SearchProducts,
   SearchResults,
@@ -55,6 +61,9 @@ export type {
   OrderShippingAddressProps,
   OrderMessageProps,
   OrderCustomerProps,
+  OrderStateProps, 
+  PaymentMethodsProps,
+  ShippingMethodsProps, 
   PriceProps,
   SearchProductsProps,
   SearchResultProps,

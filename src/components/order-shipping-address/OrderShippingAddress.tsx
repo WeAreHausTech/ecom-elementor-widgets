@@ -4,7 +4,7 @@ import {
   ACTIVE_ORDER_SHIPPING_ADDRESS,
   ORDER_ADDRESS_FRAGMNENT,
 } from '@/providers/vendure/checkout/checkout'
-import { CreateAddressInput, OrderAddress } from '@/gql/graphql'
+import { CreateAddressInput } from '@/gql/graphql'
 import { getFragmentData } from '@/gql'
 import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
 import { useCustomQuery } from '@/hooks/useCustomQuery'
@@ -15,7 +15,7 @@ export interface OrderShippingAddressProps extends CustomHTMLElement {
     loading: Loading<'order:shippingAddress' | 'order:updatingShippingAddress'>
     error: GenericApolloError
     update: (adress: CreateAddressInput) => void
-    savedData: OrderAddress | null
+    savedData: CreateAddressInput | null
   }) => ReactNode
 }
 
@@ -24,7 +24,6 @@ export const OrderShippingAddress = ({
   children,
   ...rest
 }: OrderShippingAddressProps) => {
-
   const {
     loading: loadingShippingAdress,
     error: shippingError,

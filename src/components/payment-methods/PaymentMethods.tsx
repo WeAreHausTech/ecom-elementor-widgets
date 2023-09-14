@@ -11,7 +11,7 @@ import { useCustomQuery } from '@/hooks/useCustomQuery'
 import { useCustomMutation } from '@/hooks/useCustomMutation'
 import { FetchResult } from '@apollo/client'
 
-interface PaymentMethodsProps extends CustomHTMLElement {
+export interface PaymentMethodsProps extends CustomHTMLElement {
   paymentMethod?: string | null
   children: (props: {
     eligiblePaymentMethods: readonly EligiblePaymentMethodsFragment[] | null

@@ -11,7 +11,7 @@ import { useCustomQuery } from '@/hooks/useCustomQuery'
 import { useCustomMutation } from '@/hooks/useCustomMutation'
 import { FetchResult } from '@apollo/client'
 
-interface ShippingMethodsProps extends CustomHTMLElement {
+export interface ShippingMethodsProps extends CustomHTMLElement {
   children: (props: {
     eligibleShippingMethods: readonly EligibleShippingMethodsFragment[] | null
     loading: Loading<'shipping:fetchshippingMethods' | 'shipping:updatingshipping'>
