@@ -4,7 +4,7 @@ import {
   ACTIVE_ORDER_BILLING_ADDRESS,
   ORDER_ADDRESS_FRAGMNENT,
 } from '@/providers/vendure/checkout/checkout'
-import { CreateAddressInput } from '@/gql/graphql'
+import { CreateAddressInput, OrderAddress } from '@/gql/graphql'
 import { getFragmentData } from '@/gql'
 import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
 import { useCustomQuery } from '@/hooks/useCustomQuery'
@@ -13,7 +13,7 @@ import { useCustomMutation } from '@/hooks/useCustomMutation'
 export interface OrderBillingAddressProps extends CustomHTMLElement {
   children: (props: {
     update: (adress: CreateAddressInput) => void
-    savedData: CreateAddressInput | null
+    savedData: OrderAddress | null
     error: GenericApolloError
     loading: Loading<'order:fetchBillingAddress' | 'order:updateBillingAddress'>
   }) => ReactNode
