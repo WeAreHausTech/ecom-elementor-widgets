@@ -1,5 +1,6 @@
 import {
   OrderShippingAddress as ShippingAddressWrapper,
+  OrderAddress,
   CreateAddressInput,
 } from '@haus-tech/ecom-components'
 import { Form, Formik, FormikValues } from 'formik'
@@ -27,7 +28,7 @@ const ShippingAddress = ({ onSuccess }: ShippingAddressProps) => {
         // Create intitialValues from savedData, if value is null, set it to empty string
         const initialValues = savedData
           ? Object.keys(omit(savedData, ['__typename', 'country'])).reduce((acc, key) => {
-              acc[key] = savedData[key as keyof CreateAddressInput] || ''
+              acc[key] = savedData[key as keyof OrderAddress] || ''
               return acc
             }, {} as FormikValues)
           : {}

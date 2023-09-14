@@ -1,5 +1,6 @@
 import {
   OrderBillingAddress as BillingAddressWrapper,
+  OrderAddress,
   CreateAddressInput,
 } from '@haus-tech/ecom-components'
 import { Form, Formik, FormikValues } from 'formik'
@@ -27,7 +28,8 @@ const BillingAddress = ({ onSuccess }: BillingAddressProps) => {
         // Create intitialValues from savedData, if value is null, set it to empty string
         const initialValues = savedData
           ? Object.keys(omit(savedData, ['__typename', 'country'])).reduce((acc, key) => {
-              acc[key] = savedData[key as keyof CreateAddressInput] || ''
+            console.log
+              acc[key] = savedData[key as keyof OrderAddress] || ''
               return acc
             }, {} as FormikValues)
           : {}
@@ -46,12 +48,7 @@ const BillingAddress = ({ onSuccess }: BillingAddressProps) => {
                   <Form className="billing-address-form">
                     <Input label="Namn" name="fullName" errors={errors} touched={touched} />
                     <Input label="Företag" name="company" errors={errors} touched={touched} />
-                    <Input
-                      label="Adress"
-                      name="streetLine1"
-                      errors={errors}
-                      touched={touched}
-                    />
+                    <Input label="Adress" name="streetLine1" errors={errors} touched={touched} />
                     <Input
                       label="Adress rad 2"
                       name="streetLine2"
@@ -62,12 +59,7 @@ const BillingAddress = ({ onSuccess }: BillingAddressProps) => {
                     <Input label="Landskod" name="countryCode" errors={errors} touched={touched} />
 
                     <Input label="Provins" name="province" errors={errors} touched={touched} />
-                    <Input
-                      label="Postnummer"
-                      name="postalCode"
-                      errors={errors}
-                      touched={touched}
-                    />
+                    <Input label="Postnummer" name="postalCode" errors={errors} touched={touched} />
                     <Input
                       label="Telefonnummer"
                       name="phoneNumber"
