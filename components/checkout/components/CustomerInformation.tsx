@@ -3,7 +3,7 @@ import {
     CreateCustomerInput,
   } from '@haus-tech/ecom-components'
   import { Form, Formik, FormikValues } from 'formik'
-  import { omit, size, some } from 'lodash'
+  import {size, some } from 'lodash'
   import * as Yup from 'yup'
   import { Input } from '../../input/Input'
   import { Button } from '../../button/Button'
@@ -39,10 +39,10 @@ import {
                 {({ errors, touched }) => {
                   return (
                     <Form className="billing-address-form">
-                      <Input label="First name" name="firstName" errors={errors} touched={touched} />
-                      <Input label="Last name" name="lastName" errors={errors} touched={touched} />
-                      <Input label="Emailaddress" name="emailAddress" errors={errors} touched={touched} />
-                      <Input label="Phonenumber" name="phoneNumber" errors={errors} touched={touched} />
+                      <Input label="Förnamn" name="firstName" errors={errors} touched={touched} />
+                      <Input label="Efternamn" name="lastName" errors={errors} touched={touched} />
+                      <Input label="E-post" name="emailAddress" errors={errors} touched={touched} />
+                      <Input label="Telefon" name="phoneNumber" errors={errors} touched={touched} />
                
                       <div>
                         <Button

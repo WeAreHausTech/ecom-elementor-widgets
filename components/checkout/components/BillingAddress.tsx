@@ -44,32 +44,32 @@ const BillingAddress = ({ onSuccess }: BillingAddressProps) => {
               {({ errors, touched }) => {
                 return (
                   <Form className="billing-address-form">
-                    <Input label="Full name" name="fullName" errors={errors} touched={touched} />
-                    <Input label="Company" name="company" errors={errors} touched={touched} />
+                    <Input label="Namn" name="fullName" errors={errors} touched={touched} />
+                    <Input label="Företag" name="company" errors={errors} touched={touched} />
                     <Input
-                      label="Streetline 1"
+                      label="Adress"
                       name="streetLine1"
                       errors={errors}
                       touched={touched}
                     />
                     <Input
-                      label="Streetline 2"
+                      label="Adress rad 2"
                       name="streetLine2"
                       errors={errors}
                       touched={touched}
                     />
-                    <Input label="City" name="city" errors={errors} touched={touched} />
-                    <Input label="Country" name="countryCode" errors={errors} touched={touched} />
+                    <Input label="Stad" name="city" errors={errors} touched={touched} />
+                    <Input label="Landskod" name="countryCode" errors={errors} touched={touched} />
 
-                    <Input label="Province" name="province" errors={errors} touched={touched} />
+                    <Input label="Provins" name="province" errors={errors} touched={touched} />
                     <Input
-                      label="Postal code"
+                      label="Postnummer"
                       name="postalCode"
                       errors={errors}
                       touched={touched}
                     />
                     <Input
-                      label="Phone number"
+                      label="Telefonnummer"
                       name="phoneNumber"
                       errors={errors}
                       touched={touched}

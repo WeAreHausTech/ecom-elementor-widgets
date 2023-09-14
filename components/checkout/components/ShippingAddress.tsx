@@ -15,7 +15,7 @@ interface ShippingAddressProps {
 const ShippingAddress = ({ onSuccess }: ShippingAddressProps) => {
   return (
     <ShippingAddressWrapper className="ShippingAddress">
-      {({ update, savedData, error, loading }) => { //TODO in ecom-components: add loading state to update and savedData like in billing address
+      {({ update, savedData, error, loading }) => {
         const handleSubmit = async (values: FormikValues) => {
           await update(values as CreateAddressInput)
 
@@ -44,32 +44,22 @@ const ShippingAddress = ({ onSuccess }: ShippingAddressProps) => {
               {({ errors, touched }) => {
                 return (
                   <Form className="shipping-address-form">
-                    <Input label="Full name" name="fullName" errors={errors} touched={touched} />
-                    <Input label="Company" name="company" errors={errors} touched={touched} />
+                    <Input label="Namn" name="fullName" errors={errors} touched={touched} />
+                    <Input label="Företag" name="company" errors={errors} touched={touched} />
+                    <Input label="Adress" name="streetLine1" errors={errors} touched={touched} />
                     <Input
-                      label="Streetline 1"
-                      name="streetLine1"
-                      errors={errors}
-                      touched={touched}
-                    />
-                    <Input
-                      label="Streetline 2"
+                      label="Adress rad 2"
                       name="streetLine2"
                       errors={errors}
                       touched={touched}
                     />
-                    <Input label="City" name="city" errors={errors} touched={touched} />
-                    <Input label="Country" name="countryCode" errors={errors} touched={touched} />
+                    <Input label="Stad" name="city" errors={errors} touched={touched} />
+                    <Input label="Landskod" name="countryCode" errors={errors} touched={touched} />
 
-                    <Input label="Province" name="province" errors={errors} touched={touched} />
+                    <Input label="Provins" name="province" errors={errors} touched={touched} />
+                    <Input label="Postnummer" name="postalCode" errors={errors} touched={touched} />
                     <Input
-                      label="Postal code"
-                      name="postalCode"
-                      errors={errors}
-                      touched={touched}
-                    />
-                    <Input
-                      label="Phone number"
+                      label="Telefonnummer"
                       name="phoneNumber"
                       errors={errors}
                       touched={touched}

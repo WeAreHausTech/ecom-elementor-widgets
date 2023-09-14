@@ -23,27 +23,27 @@ export const Checkout = () => {
   const steps = useMemo(() => {
     return [
       {
-        title: 'Customer information',
+        title: 'Kontaktuppgifter',
         id: 'customer-information',
         component: 'CustomerInformation',
       },
       {
-        title: 'Faktura & Leveransinformation',
-        id: 'billing',
-        component: 'BillingAddress',
-      },
-      {
-        title: 'Shipping address',
+        title: 'Leveransadress',
         id: 'shipping-adress',
         component: 'ShippingAddress',
       },
-      
       {
-        title: 'Shipping',
+        title: 'Faktureringsadress',
+        id: 'billing',
+        component: 'BillingAddress',
+      },
+
+      {
+        title: 'Leveransmetod',
         id: 'shipping-method',
       },
       {
-        title: 'Payment',
+        title: 'Betalning',
         id: 'payment',
       },
     ]
