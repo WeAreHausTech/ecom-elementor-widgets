@@ -25,10 +25,8 @@ const BillingAddress = ({ onSuccess }: BillingAddressProps) => {
           }
         }
 
-        // Create intitialValues from savedData, if value is null, set it to empty string
         const initialValues = savedData
           ? Object.keys(omit(savedData, ['__typename', 'country'])).reduce((acc, key) => {
-            console.log
               acc[key] = savedData[key as keyof OrderAddress] || ''
               return acc
             }, {} as FormikValues)
@@ -73,7 +71,7 @@ const BillingAddress = ({ onSuccess }: BillingAddressProps) => {
                         type="submit"
                         disabled={some(loading, (value) => value === true)}
                       >
-                        {some(loading, (value) => value === true) ? 'Loading...' : 'Fortsätt'}
+                        {some(loading, (value) => value === true) ? 'Laddar...' : 'Fortsätt'}
                       </Button>
                     </div>
                   </Form>

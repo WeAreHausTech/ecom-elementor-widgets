@@ -72,7 +72,7 @@ const ShippingAddress = ({ onSuccess }: ShippingAddressProps) => {
                         type="submit"
                         disabled={some(loading, (value) => value === true)}
                       >
-                        {some(loading, (value) => value === true) ? 'Loading...' : 'Fortsätt'}
+                        {some(loading, (value) => value === true) ? 'Laddar...' : 'Fortsätt'}
                       </Button>
                     </div>
                   </Form>
