@@ -5,7 +5,9 @@ const AUTH_TOKEN_KEY = 'auth_token'
 
 let dynamicURI = "http://localhost:3000/shop-api";
 
-const httpLink = new HttpLink();
+const httpLink = new HttpLink({
+  credentials: 'include'
+});
 
 const uriMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext({
