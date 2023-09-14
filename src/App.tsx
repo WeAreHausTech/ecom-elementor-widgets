@@ -21,6 +21,7 @@ import { OrderCustomer } from './components/order-customer/OrderCustomer'
 import { OrderState } from './components/order-state/OrderState'
 import { Login } from './components/account/Login'
 import { getError } from './utils/utils'
+import { some } from 'lodash'
 
 const infinitePagination = true
 
@@ -59,6 +60,12 @@ export const App = () => {
                   onChange={(e) => setTerm(e.target.value)}
                   className="bg-gray-100 rounded-full px-4 py-2 outline-none w-full  max-w-screen-sm"
                   placeholder="Search..."
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault()
+                      window.location.href = `?search=${term}`
+                    }
+                  }}
                 />
                 <button onClick={() => clear()}> x</button>
               </label>
@@ -146,7 +153,7 @@ export const App = () => {
         className="product-list-wrapper"
       >
         {({ loading, products, pagination }) => {
-          if (loading && !infinitePagination) return <div>Loading...</div>
+          if (some(loading, i => i === true) && !infinitePagination) return <div>Loading...</div>
           return (
             <div className="product-list">
               {products && products.length > 0 ? (

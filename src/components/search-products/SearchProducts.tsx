@@ -9,7 +9,6 @@ export interface SearchProductsProps extends CustomHTMLElement {
     clear: () => void
   }) => React.ReactNode
 }
-
 export const SearchProducts = ({
   wrapperTag: Wrapper = 'div',
   children,
