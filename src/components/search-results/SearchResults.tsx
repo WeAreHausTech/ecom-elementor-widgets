@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { ListedProductFragment, ListedCollectionFragment, SearchInput } from '@/gql/graphql'
 import { searchChannel } from '@/eventbus/channels/search-channel'
 import { useImmer } from 'use-immer'
@@ -19,6 +19,7 @@ export interface SearchResultProps extends CustomHTMLElement {
     error: GenericApolloError
     products: ListedProductFragment[]
     collections: ListedCollectionFragment[]
+    active: boolean
   }) => ReactNode
 }
 
@@ -31,6 +32,7 @@ export const SearchResults = ({
   const { term, groupByProduct = true, take = 3 } = searchInputProps || {}
   const [products, setProducts] = useImmer<ListedProductFragment[]>([])
   const [collections, setCollections] = useImmer<ListedCollectionFragment[]>([])
+  const [active, setActive] = useState(false)
 
   const [variables, setVariables] = useImmer<SearchInput>({
     term,
@@ -60,12 +62,14 @@ export const SearchResults = ({
       setVariables((draft) => {
         draft.term = data
       })
+      setActive(true)
       getSearchResults()
     })
 
     const clearSearch = searchChannel.on('search:clear', () => {
       setProducts([])
       setCollections([])
+      setActive(false)
     })
 
     return () => {
@@ -74,5 +78,5 @@ export const SearchResults = ({
     }
   }, [getSearchResults, setVariables, setProducts, setCollections])
 
-  return <Wrapper {...rest}>{children({ loading, error, products, collections })}</Wrapper>
+  return <Wrapper {...rest}>{children({ loading, error, products, collections, active })}</Wrapper>
 }

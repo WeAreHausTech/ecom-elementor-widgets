@@ -18,6 +18,7 @@ export interface ShippingMethodsProps extends CustomHTMLElement {
     error: GenericApolloError
     setSelectedshippingMethod: (method: string) => void
     updateShippingMethod: () => Promise<FetchResult<SetOrderShippingMethodMutation> | undefined>
+    selectedshippingMethod: string | null
   }) => ReactNode
 }
 
@@ -40,14 +41,16 @@ export const ShippingMethod = ({
       shippingMethodData?.eligibleShippingMethods,
     ) ?? null
 
-  const [updateShippingMethodFunc, { error: updateshippingError, loading: updatingshippingLoading }] =
-    useCustomMutation(SET_ORDER_SHIPPING_METHODS)
+  const [
+    updateShippingMethodFunc,
+    { error: updateshippingError, loading: updatingshippingLoading },
+  ] = useCustomMutation(SET_ORDER_SHIPPING_METHODS)
 
   const updateShippingMethod = useCallback(async () => {
     if (!selectedshippingMethod) return
 
     return updateShippingMethodFunc({
-      variables: { shippingMethodId: selectedshippingMethod},
+      variables: { shippingMethodId: selectedshippingMethod },
     })
   }, [selectedshippingMethod, updateShippingMethodFunc])
 
@@ -61,7 +64,8 @@ export const ShippingMethod = ({
         error: shippingMethodError || updateshippingError,
         eligibleShippingMethods,
         setSelectedshippingMethod,
-        updateShippingMethod
+        updateShippingMethod,
+        selectedshippingMethod, 
       })}
     </Wrapper>
   )

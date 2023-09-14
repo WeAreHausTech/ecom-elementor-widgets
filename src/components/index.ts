@@ -23,12 +23,17 @@ import {
 } from './order-shipping-address/OrderShippingAddress'
 import { OrderMessage, OrderMessageProps } from './order-message/OrderMessage'
 import { OrderCustomer, OrderCustomerProps } from './order-customer/OrderCustomer'
-import {ShippingMethod, ShippingMethodsProps} from './shipping-method/ShippingMethod'
-import {OrderState, OrderStateProps} from './order-state/OrderState'
-import {PaymentMethods, PaymentMethodsProps} from './payment-methods/PaymentMethods'
+import { ShippingMethod, ShippingMethodsProps } from './shipping-method/ShippingMethod'
+import { OrderState, OrderStateProps } from './order-state/OrderState'
+import { PaymentMethods, PaymentMethodsProps } from './payment-methods/PaymentMethods'
 
 // Price
 import { Price, PriceProps } from './price/Price'
+
+// error
+import { isErrorResult } from '@/utils/utils'
+
+export { isErrorResult }
 
 export {
   VendureApolloProvider,
@@ -42,9 +47,9 @@ export {
   OrderShippingAddress,
   OrderMessage,
   OrderCustomer,
-  OrderState, 
+  OrderState,
   PaymentMethods,
-  ShippingMethod, 
+  ShippingMethod,
   Price,
   SearchProducts,
   SearchResults,
@@ -61,9 +66,9 @@ export type {
   OrderShippingAddressProps,
   OrderMessageProps,
   OrderCustomerProps,
-  OrderStateProps, 
+  OrderStateProps,
   PaymentMethodsProps,
-  ShippingMethodsProps, 
+  ShippingMethodsProps,
   PriceProps,
   SearchProductsProps,
   SearchResultProps,
