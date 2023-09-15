@@ -1,6 +1,7 @@
 import { CurrencyCode, ErrorCode, ErrorResult, PriceRange, SinglePrice } from '@/gql/graphql'
 import { GenericApolloError } from '@/types'
 import { ApolloError } from '@apollo/client'
+import { some } from 'lodash'
 
 export const getPrice = (priceWithTax: PriceRange | SinglePrice) => {
   if (priceWithTax == null) {
@@ -25,12 +26,10 @@ export const formatPrice = (value: number, currency: CurrencyCode, fromPrice?: b
   }).format(value / 100)}`
 }
 
-export const isErrorResult = (input: unknown): input is ErrorResult => {
-  return !!(
-    input &&
-    (input as ErrorResult).message !== undefined &&
-    (input as ErrorResult).errorCode !== undefined
-  )
+export const isErrorResult = (input: unknown): boolean => {
+  return some((input as object), (i) => {
+    return i && (i as ErrorResult).errorCode !== undefined
+  })
 }
 
 export const isApolloError = (input: unknown): input is ApolloError => {
@@ -41,8 +40,15 @@ export const isError = (input: unknown): input is GenericApolloError => {
   return isErrorResult(input) || isApolloError(input)
 }
 
-export const getError = (error: GenericApolloError): ErrorResult | null => {
+export const getError = (error: GenericApolloError): GenericApolloError | null => {
   if (isErrorResult(error)) {
+    console.log(error)
+  // for (const key in (error as { [key: string]: ErrorResult })) {
+  //   if ((input as { [key: string]: ErrorResult })[key].hasOwnProperty('errorCode')) {
+  //     return 
+  //     break;
+  //   }
+  // }
     return error
   } else if (isApolloError(error)) {
     return {

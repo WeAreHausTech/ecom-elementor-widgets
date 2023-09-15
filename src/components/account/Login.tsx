@@ -1,17 +1,20 @@
-import type { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
+import type { CustomHTMLElement, GenericApolloError, Loading, Maybe } from '@/types'
 import { LOGIN } from '@/providers/vendure/account/account'
 import { useState } from 'react'
 import { useCustomMutation } from '@/hooks/useCustomMutation'
 import { FetchResult } from '@apollo/client'
 import { LoginMutation, LoginMutationVariables } from '@/gql/graphql'
 
+type AuthenticateProps = Maybe<{
+  variables?: LoginMutationVariables
+}>
 export interface LoginProps extends CustomHTMLElement {
   children: (props: {
     loading: Loading<'auth:login'>
     error: GenericApolloError
     formData: LoginMutationVariables
     setFormData: (data: LoginMutationVariables) => void
-    authenticate: () => Promise<FetchResult<LoginMutation>>
+    authenticate: (input?: AuthenticateProps) => Promise<FetchResult<LoginMutation>>
   }) => React.ReactNode
 }
 

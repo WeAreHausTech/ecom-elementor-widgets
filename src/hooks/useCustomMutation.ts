@@ -1,3 +1,4 @@
+import { ErrorResult } from '@/components'
 import type { CustomMutationTuple, GenericApolloError } from '@/types'
 import { isErrorResult } from '@/utils/utils'
 import {
@@ -19,7 +20,7 @@ export const useCustomMutation = <
   TCache extends ApolloCache<unknown> = ApolloCache<unknown>,
 >(
   mutation: DocumentNode | TypedDocumentNode<TData, TVariables>,
-  options?: MutationHookOptions<NoInfer<TData>, NoInfer<TVariables>, TContext, TCache>
+  options?: MutationHookOptions<NoInfer<TData>, NoInfer<TVariables>, TContext, TCache>,
 ): CustomMutationTuple<TData, TVariables, TContext, TCache> => {
   const [error, setError] = useState<GenericApolloError>(undefined)
 
@@ -31,7 +32,13 @@ export const useCustomMutation = <
       }
 
       if (isErrorResult(data)) {
-        setError(data)
+        for (const key in data as { [key: string]: ErrorResult }) {
+          if ((data as { [key: string]: ErrorResult })[key].hasOwnProperty('errorCode')) {
+            const err = (data as { [key: string]: ErrorResult })[key]
+            setError(err)
+            break
+          }
+        }
       }
     },
     onError: (error) => {

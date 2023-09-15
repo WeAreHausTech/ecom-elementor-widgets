@@ -12,6 +12,8 @@ import {
 import { HTMLAttributes } from 'react'
 import { ErrorResult, FacetValueResult, ListedProductFragment } from './gql/graphql'
 
+export type Maybe<T> = T | undefined;
+
 export interface CustomHTMLElement extends Omit<HTMLAttributes<HTMLOrSVGElement>, 'children'> {
   wrapperTag?: keyof JSX.IntrinsicElements
 }
