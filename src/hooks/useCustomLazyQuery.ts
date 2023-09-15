@@ -7,9 +7,10 @@ import {
   NoInfer,
   useLazyQuery,
   TypedDocumentNode,
+  QueryResult,
 } from '@apollo/client'
 import { DocumentNode } from 'graphql'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 export const useCustomLazyQuery = <
   TData = unknown,
@@ -45,8 +46,18 @@ export const useCustomLazyQuery = <
     },
   })
 
+  const q = useCallback(
+    (
+      options?: LazyQueryHookOptions<NoInfer<TData>, NoInfer<TVariables>>,
+    ): Promise<QueryResult<TData, TVariables>> => {
+      setError(undefined)
+      return lazyQuery(options)
+    },
+    [lazyQuery],
+  )
+
   return [
-    lazyQuery,
+    q,
     {
       ...lazyQueryResult,
       error,

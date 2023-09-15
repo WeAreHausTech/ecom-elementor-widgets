@@ -10,8 +10,9 @@ import {
   DefaultContext,
   TypedDocumentNode,
   NoInfer,
+  FetchResult,
 } from '@apollo/client'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 export const useCustomMutation = <
   TData = unknown,
@@ -49,8 +50,18 @@ export const useCustomMutation = <
     },
   })
 
+  const mutate = useCallback(
+    (
+      options?: MutationHookOptions<NoInfer<TData>, NoInfer<TVariables>, TContext, TCache>,
+    ): Promise<FetchResult<TData>> => {
+      setError(undefined)
+      return mutateFunction(options)
+    },
+    [mutateFunction],
+  )
+
   return [
-    mutateFunction,
+    mutate,
     {
       ...mutationResult,
       error,

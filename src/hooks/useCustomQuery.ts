@@ -36,6 +36,8 @@ export const useCustomQuery = <
             break
           }
         }
+      } else {
+        setError(undefined)
       }
     },
     onError: (error) => {
