@@ -4,6 +4,7 @@ import { Icon } from '../../components/icon/Icon'
 import { Cart } from '../../components/cart/Cart'
 import { ProductsPage } from './pages/ProductsPage'
 import { CheckoutPage } from './pages/CheckoutPage'
+import { LoginPage } from './pages/LoginPage'
 
 function App() {
   const rootRoute = new RootRoute({
@@ -37,7 +38,13 @@ function App() {
     component: () => <CheckoutPage />,
   })
 
-  const routeTree = rootRoute.addChildren([checkoutRoute, indexRoute])
+  const loginRoute = new Route({
+    getParentRoute: () => rootRoute,
+    path: '/login',
+    component: () => <LoginPage />,
+  })
+
+  const routeTree = rootRoute.addChildren([loginRoute, checkoutRoute, indexRoute])
 
   const router = new Router({ routeTree })
 
