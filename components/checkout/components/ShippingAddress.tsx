@@ -2,7 +2,7 @@ import {
   OrderShippingAddress as ShippingAddressWrapper,
   OrderAddress,
   CreateAddressInput,
-  UseBillingAddress,
+  useBillingAddress,
 } from '@haus-tech/ecom-components'
 import { Form, Formik, FormikValues } from 'formik'
 import { omit, size, some } from 'lodash'
@@ -16,11 +16,10 @@ interface ShippingAddressProps {
 }
 
 const ShippingAddress = ({ onSuccess, sameBillingAddress }: ShippingAddressProps) => {
+  const { mutation: billingMethodMutation } = useBillingAddress()
   return (
     <ShippingAddressWrapper className="ShippingAddress">
       {({ update, savedData, error, loading }) => {
-        const { mutation: billingMethodMutation } = UseBillingAddress()
-
         const [
           updateBillingAddressFunc,
           { loading: updateBillingAddressLoading, error: updateBillingAddressError },
