@@ -30,11 +30,19 @@ import { PaymentMethods, PaymentMethodsProps } from './payment-methods/PaymentMe
 // Price
 import { Price, PriceProps } from './price/Price'
 
+// error
+import { isErrorResult } from '@/utils/utils'
+
+// hooks
+import {usePaymentMethods} from '@/hooks/usePaymentMethods'
+import {useShippingMethods} from '@/hooks/useShippingMethod'
+import {useOrderState} from '@/hooks/useOrderState'
+import {useBillingAddress} from '@/hooks/useBillingAddress'
+
+
 // Authentication
 import { Login, LoginProps } from './account/Login'
 
-// error
-import { isErrorResult } from '@/utils/utils'
 
 export { isErrorResult }
 
@@ -56,6 +64,10 @@ export {
   Price,
   SearchProducts,
   SearchResults,
+  usePaymentMethods, 
+  useShippingMethods, 
+  useOrderState, 
+  useBillingAddress,
   Login
 }
 

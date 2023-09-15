@@ -45,11 +45,11 @@ export const PaymentMethods = ({
   const [updatePaymentMethodFunc, { error: updatepaymentError, loading: updatingPaymentLoading }] =
     useCustomMutation(UPDATE_PAYMENT_METHOD)
 
-  const updatePaymentMethod = useCallback(async() => {
+  const updatePaymentMethod = useCallback(async () => {
     if (!selectedPaymentMethod) return
 
     return updatePaymentMethodFunc({
-      variables: { input: { method: 'pre-payment', metadata: {} } },
+      variables: { input: { method: selectedPaymentMethod, metadata: {} } },
     })
   }, [selectedPaymentMethod, updatePaymentMethodFunc])
 
