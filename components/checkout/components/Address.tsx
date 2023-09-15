@@ -24,12 +24,14 @@ const Address = ({ onSuccess }: AddressProps) => {
         onSuccess={() => success('shipping')}
       />
 
-      <label onClick={() => setAddBillingAddress(!addBillingAddress)}>
-        <input type="checkbox" /> Jag har separat Faktureringsadress
-      </label>
+      <div className="addressCheckbox">
+        <label onClick={() => setAddBillingAddress(!addBillingAddress)}>
+          <input type="checkbox" /> Jag har separat faktureringsadress
+        </label>
+      </div>
 
       {addBillingAddress && (
-        <div>
+        <div className="billingAddress">
           <h2>Faktureringsaddress</h2>
           <BillingAddress onSuccess={() => success('billing')} />
         </div>
