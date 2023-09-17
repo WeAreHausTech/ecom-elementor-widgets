@@ -1,14 +1,15 @@
 import { ReactNode } from 'react'
-import { SET_CUSTOMER_FOR_ORDER } from '@/providers/vendure/checkout/checkout'
-import { CreateCustomerInput } from '@/gql/graphql'
+import { CreateCustomerInput, SetCustomerForOrderMutation } from '@/gql/graphql'
 import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
 import { useCustomMutation } from '@/hooks/useCustomMutation'
+import { SET_CUSTOMER_FOR_ORDER } from '@/providers/vendure/order/order'
+import { FetchResult } from '@apollo/client'
 
 export interface OrderCustomerProps extends CustomHTMLElement {
   children: (props: {
     loading: Loading<'order:updateCustomer'>
     error: GenericApolloError
-    update: (adress: CreateCustomerInput) => void
+    update: (adress: CreateCustomerInput) => Promise<FetchResult<SetCustomerForOrderMutation>>
   }) => ReactNode
 }
 
@@ -21,7 +22,7 @@ export const OrderCustomer = ({
     useCustomMutation(SET_CUSTOMER_FOR_ORDER)
 
   const update = (customer: CreateCustomerInput) => {
-    updateCustomer({ variables: { input: customer } })
+    return updateCustomer({ variables: { input: customer } })
   }
 
   return (

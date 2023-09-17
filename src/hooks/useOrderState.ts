@@ -3,7 +3,7 @@ import { useCustomMutation } from '@/hooks/useCustomMutation'
 import {
   NEXT_ORDER_STATES,
   TRANSISTION_ORDER_TO_STATE,
-} from '@/providers/vendure/order-states/orderStates'
+} from '@/providers/vendure/order/orderStates'
 
 export const useOrderState = () => {
   const query = useCustomQuery(NEXT_ORDER_STATES)

@@ -1,6 +1,5 @@
 import { ReactNode } from 'react'
 import {
-  UPDATE_SHIPPING_ADDRESS,
   ACTIVE_ORDER_SHIPPING_ADDRESS,
   ORDER_ADDRESS_FRAGMNENT,
 } from '@/providers/vendure/checkout/checkout'
@@ -9,6 +8,7 @@ import { getFragmentData } from '@/gql'
 import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
 import { useCustomQuery } from '@/hooks/useCustomQuery'
 import { useCustomMutation } from '@/hooks/useCustomMutation'
+import { SET_ORDER_SHIPPING_ADDRESS } from '@/providers/vendure/order/order'
 
 export interface OrderShippingAddressProps extends CustomHTMLElement {
   children: (props: {
@@ -37,7 +37,7 @@ export const OrderShippingAddress = ({
     ) as CreateAddressInput) ?? null
 
   const [updateAddress, { error: updateAddressError, loading: loadingUpdatingAddress }] =
-    useCustomMutation(UPDATE_SHIPPING_ADDRESS)
+    useCustomMutation(SET_ORDER_SHIPPING_ADDRESS)
 
   const update = (address: CreateAddressInput) => {
     updateAddress({ variables: { input: address } })

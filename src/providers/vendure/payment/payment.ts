@@ -16,14 +16,3 @@ export const ELIGIBLE_PAYMENT_METHODS = graphql(/* GraphQL */ `
     }
   }
 `)
-
-export const UPDATE_PAYMENT_METHOD = graphql(/* GraphQL */ `
-  mutation addPaymentToOrder($input: PaymentInput!) {
-    addPaymentToOrder (input: $input) {
-        ... on ErrorResult {
-            errorCode
-            message
-          }
-    }
-  }
-`)

@@ -2,7 +2,6 @@ import { ReactNode, useState, useCallback } from 'react'
 import {
   ELIGIBLE_ORDER_SHIPPING_METHODS,
   ELIGIBLE_ORDER_SHIPPING_METHODS_FRAGMNENT,
-  SET_ORDER_SHIPPING_METHODS,
 } from '@/providers/vendure/checkout/checkout'
 import { EligibleShippingMethodsFragment, SetOrderShippingMethodMutation } from '@/gql/graphql'
 import { getFragmentData } from '@/gql'
@@ -10,6 +9,7 @@ import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
 import { useCustomQuery } from '@/hooks/useCustomQuery'
 import { useCustomMutation } from '@/hooks/useCustomMutation'
 import { FetchResult } from '@apollo/client'
+import { SET_ORDER_SHIPPING_METHOD } from '@/providers/vendure/order/order'
 
 export interface ShippingMethodsProps extends CustomHTMLElement {
   children: (props: {
@@ -44,7 +44,7 @@ export const ShippingMethod = ({
   const [
     updateShippingMethodFunc,
     { error: updateshippingError, loading: updatingshippingLoading },
-  ] = useCustomMutation(SET_ORDER_SHIPPING_METHODS)
+  ] = useCustomMutation(SET_ORDER_SHIPPING_METHOD)
 
   const updateShippingMethod = useCallback(async () => {
     if (!selectedshippingMethod) return
@@ -65,7 +65,7 @@ export const ShippingMethod = ({
         eligibleShippingMethods,
         setSelectedshippingMethod,
         updateShippingMethod,
-        selectedshippingMethod, 
+        selectedshippingMethod,
       })}
     </Wrapper>
   )

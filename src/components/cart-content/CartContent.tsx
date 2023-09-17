@@ -1,13 +1,10 @@
 import { ReactNode, useEffect } from 'react'
-import {
-  ACTIVE_ORDER_LINES,
-  ACTIVE_ORDER_LINE_FRAGMENT,
-} from '@/providers/vendure/cart/activeOrders'
 import { ListedOrderLinesFragment } from '@/gql/graphql'
 import { cartChannel } from '../../eventbus/channels/cart-channel'
 import { getFragmentData } from '@/gql'
 import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
 import { useCustomQuery } from '@/hooks/useCustomQuery'
+import { GET_ACTIVE_ORDER, LISTED_ORDER_LINES_FRAGMENT } from '@/providers/vendure/order/order'
 
 export interface CartContentsProps extends CustomHTMLElement {
   children: (props: {
@@ -22,7 +19,7 @@ export const CartContent = ({
   children,
   ...rest
 }: CartContentsProps) => {
-  const { loading, error, data, refetch } = useCustomQuery(ACTIVE_ORDER_LINES)
+  const { loading, error, data, refetch } = useCustomQuery(GET_ACTIVE_ORDER)
 
   useEffect(() => {
     const unsubscribeFromCartUpdated = cartChannel.on('cart:updated', () => {
@@ -34,7 +31,8 @@ export const CartContent = ({
     }
   }, [refetch])
 
-  const activeProducts = getFragmentData(ACTIVE_ORDER_LINE_FRAGMENT, data?.activeOrder?.lines) ?? []
+  const activeProducts =
+    getFragmentData(LISTED_ORDER_LINES_FRAGMENT, data?.activeOrder?.lines) ?? []
 
   return (
     <Wrapper {...rest}>

@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import {
   NEXT_ORDER_STATES,
   TRANSISTION_ORDER_TO_STATE,
-} from '@/providers/vendure/order-states/orderStates'
+} from '@/providers/vendure/order/orderStates'
 import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
 import { useCustomMutation } from '@/hooks/useCustomMutation'
 import { useCustomQuery } from '@/hooks/useCustomQuery'

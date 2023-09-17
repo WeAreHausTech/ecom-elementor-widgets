@@ -34,15 +34,14 @@ import { Price, PriceProps } from './price/Price'
 import { isErrorResult } from '@/utils/utils'
 
 // hooks
-import {usePaymentMethods} from '@/hooks/usePaymentMethods'
-import {useShippingMethods} from '@/hooks/useShippingMethod'
-import {useOrderState} from '@/hooks/useOrderState'
-import {useBillingAddress} from '@/hooks/useBillingAddress'
-
+import { usePaymentMethods } from '@/hooks/usePaymentMethods'
+import { useShippingMethods } from '@/hooks/useShippingMethod'
+import { useOrderState } from '@/hooks/useOrderState'
+import { useBillingAddress } from '@/hooks/useBillingAddress'
+import { useActiveOrder } from '@/hooks/useActiveOrder'
 
 // Authentication
 import { Login, LoginProps } from './account/Login'
-
 
 export { isErrorResult }
 
@@ -64,11 +63,12 @@ export {
   Price,
   SearchProducts,
   SearchResults,
-  usePaymentMethods, 
-  useShippingMethods, 
-  useOrderState, 
+  usePaymentMethods,
+  useShippingMethods,
+  useOrderState,
   useBillingAddress,
-  Login
+  useActiveOrder,
+  Login,
 }
 
 export type {
@@ -88,7 +88,7 @@ export type {
   PriceProps,
   SearchProductsProps,
   SearchResultProps,
-  LoginProps
+  LoginProps,
 }
 
 export type { Pagination, Loading } from '@/types'

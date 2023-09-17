@@ -2,7 +2,6 @@ import { ReactNode, useCallback, useEffect, useState } from 'react'
 import {
   ELIGIBLE_PAYMENT_METHODS,
   ELIGIBLE_PAYMENT_METHODS_FRAGMNENT,
-  UPDATE_PAYMENT_METHOD,
 } from '@/providers/vendure/payment/payment'
 import { AddPaymentToOrderMutation, EligiblePaymentMethodsFragment } from '@/gql/graphql'
 import { getFragmentData } from '@/gql'
@@ -10,6 +9,7 @@ import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
 import { useCustomQuery } from '@/hooks/useCustomQuery'
 import { useCustomMutation } from '@/hooks/useCustomMutation'
 import { FetchResult } from '@apollo/client'
+import { ADD_PAYMENT_TO_ORDER } from '@/providers/vendure/order/order'
 
 export interface PaymentMethodsProps extends CustomHTMLElement {
   paymentMethod?: string | null
@@ -43,7 +43,7 @@ export const PaymentMethods = ({
     ) ?? null
 
   const [updatePaymentMethodFunc, { error: updatepaymentError, loading: updatingPaymentLoading }] =
-    useCustomMutation(UPDATE_PAYMENT_METHOD)
+    useCustomMutation(ADD_PAYMENT_TO_ORDER)
 
   const updatePaymentMethod = useCallback(async () => {
     if (!selectedPaymentMethod) return
