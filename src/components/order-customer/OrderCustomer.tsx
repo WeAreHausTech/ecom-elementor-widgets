@@ -1,15 +1,17 @@
 import { ReactNode } from 'react'
-import { CreateCustomerInput, SetCustomerForOrderMutation } from '@/gql/graphql'
+import { CreateCustomerInput, Customer, Order, SetCustomerForOrderMutation } from '@/gql/graphql'
 import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
 import { useCustomMutation } from '@/hooks/useCustomMutation'
 import { SET_CUSTOMER_FOR_ORDER } from '@/providers/vendure/order/order'
 import { FetchResult } from '@apollo/client'
+import { useActiveOrder } from '..'
 
 export interface OrderCustomerProps extends CustomHTMLElement {
   children: (props: {
-    loading: Loading<'order:updateCustomer'>
+    loading: Loading<'order:updateCustomer' | 'order:fetchActiveOrder'>
     error: GenericApolloError
     update: (adress: CreateCustomerInput) => Promise<FetchResult<SetCustomerForOrderMutation>>
+    savedData?: Customer | null
   }) => ReactNode
 }
 
@@ -18,6 +20,7 @@ export const OrderCustomer = ({
   children,
   ...rest
 }: OrderCustomerProps) => {
+  const { data, loading: loadingActiveOrder, error: activeOrderError } = useActiveOrder()
   const [updateCustomer, { error: updateCustomerError, loading: loadingUpdatingCustomer }] =
     useCustomMutation(SET_CUSTOMER_FOR_ORDER)
 
@@ -30,8 +33,10 @@ export const OrderCustomer = ({
       {children({
         loading: {
           'order:updateCustomer': loadingUpdatingCustomer,
+          'order:fetchActiveOrder': loadingActiveOrder,
         },
-        error: updateCustomerError,
+        error: updateCustomerError || activeOrderError,
+        savedData: (data?.activeOrder as Order)?.customer,
         update,
       })}
     </Wrapper>
