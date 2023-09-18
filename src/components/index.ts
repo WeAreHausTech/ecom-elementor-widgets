@@ -30,9 +30,6 @@ import { PaymentMethods, PaymentMethodsProps } from './payment-methods/PaymentMe
 // Price
 import { Price, PriceProps } from './price/Price'
 
-// error
-import { isErrorResult } from '@/utils/utils'
-
 // hooks
 import { usePaymentMethods } from '@/hooks/usePaymentMethods'
 import { useShippingMethods } from '@/hooks/useShippingMethod'
@@ -43,7 +40,8 @@ import { useActiveOrder } from '@/hooks/useActiveOrder'
 // Authentication
 import { Login, LoginProps } from './account/Login'
 
-export { isErrorResult }
+// error
+export { isErrorResult, isError, isApolloError } from '@/utils/utils'
 
 export {
   VendureApolloProvider,
