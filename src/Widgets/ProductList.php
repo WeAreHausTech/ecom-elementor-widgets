@@ -19,7 +19,7 @@ class ProductList extends Widget_Base
 
   public function get_icon()
   {
-    return 'eicon-code';
+    return 'eicon-post-list';
   }
 
   public function get_categories()
@@ -37,7 +37,7 @@ class ProductList extends Widget_Base
     $this->start_controls_section(
       'section_content',
       [
-        'label' => __('Settings', 'webien'),
+        'label' => __('Filter settings', 'webien'),
       ]
     );
 
@@ -100,17 +100,31 @@ class ProductList extends Widget_Base
 
   protected function render()
   {
-
     $callStartTime = microtime(true);
-
     $settings = $this->get_settings_for_display();
+    $url = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
-    var_dump($settings['collection'], $settings['facet']);
-
-    // var_dump((microtime(true) - $callStartTime) * 1000);
+    if (strpos($url, '&action=elementor') !== false) {
+      $this->content_template();
+      return;
+    }
 
     ?>
-    <p> Haus Tech &gt; Haus Webb </p>
+    <div id="productFilter" facet=<?= $settings['facet'] ?> collection=<?= $settings['collection'] ?>></div>
+    <?php
+  }
+
+
+  protected function content_template()
+  {
+    ?>
+    <div class="webien-elementor-preview">
+      <i class="<?= $this->get_icon() ?>"></i>
+      <h3 class="title">
+        <?= $this->get_title() ?>
+      </h3>
+      <small>Ingen förhandsvisning</small>
+    </div>
     <?php
   }
 }
