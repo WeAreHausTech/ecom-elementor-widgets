@@ -44,7 +44,7 @@ class ProductList extends Widget_Base
     $this->add_control(
       'collection',
       [
-        'label' => __('Kategori:', 'webien'),
+        'label' => __('Collection:', 'webien'),
         'type' => \Elementor\Controls_Manager::SELECT,
         'label_block' => true,
         'options' => $this->get_collection_options(),
@@ -69,25 +69,30 @@ class ProductList extends Widget_Base
   public function get_collection_options()
   {
     $collections = (new \Haus\Queries\Collection)->get();
-    $options = $this->get_options($collections, 'collections');
+
+    $options = [
+      'all' => __('Alla', 'webien'),
+    ];
+
+    foreach ($collections['data']['collections']['items'] as $collection) {
+      $options[$collection['id']] = $collection['name'];
+    }
+
     return $options;
   }
 
   public function get_facet_options()
   {
     $facets = (new \Haus\Queries\Facet)->get();
-    $options = $this->get_options($facets, 'facets');
-    return $options;
-  }
 
-  public function get_options($values, $type)
-  {
     $options = [
       'all' => __('Alla', 'webien'),
     ];
 
-    foreach ($values['data'][$type]['items'] as $value) {
-      $options[$value['id']] = $value['name'];
+    foreach ($facets['data']['facets']['items'] as $facet) {
+      foreach ($facet['values'] as $value) {
+        $options[$value['id']] = $facet['name'] . ' - ' . $value['name'];
+      }
     }
 
     return $options;
@@ -102,7 +107,7 @@ class ProductList extends Widget_Base
 
     var_dump($settings['collection'], $settings['facet']);
 
-    var_dump((microtime(true) - $callStartTime) * 1000);
+    // var_dump((microtime(true) - $callStartTime) * 1000);
 
     ?>
     <p> Haus Tech &gt; Haus Webb </p>
