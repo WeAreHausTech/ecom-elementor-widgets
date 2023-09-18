@@ -41,7 +41,8 @@ import { useActiveOrder } from '@/hooks/useActiveOrder'
 import { Login, LoginProps } from './account/Login'
 
 // error
-export { isErrorResult, isError, isApolloError } from '@/utils/utils'
+import { isErrorResult, isError, isApolloError } from '@/utils/utils'
+export { isErrorResult, isError, isApolloError }
 
 export {
   VendureApolloProvider,
