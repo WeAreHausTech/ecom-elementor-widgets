@@ -4,6 +4,8 @@ import { Icon } from '../../components/icon/Icon'
 import { Cart } from '../../components/cart/Cart'
 import { ProductsPage } from './pages/ProductsPage'
 import { CheckoutPage } from './pages/CheckoutPage'
+import { SearchPage } from './pages/SearchPage'
+import { Search } from '../../components/search/Search'
 import { LoginPage } from './pages/LoginPage'
 
 function App() {
@@ -13,6 +15,9 @@ function App() {
         <header>
           <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800 flex items-center justify-between">
             <div>LIVV</div>
+            <div className="w-2/3">
+              <Search />
+            </div>
             <div className="flex space-x-4 text-2xl">
               <Icon name="avatar" />
               <Cart />
@@ -38,13 +43,19 @@ function App() {
     component: () => <CheckoutPage />,
   })
 
+  const searchRoute = new Route({
+    getParentRoute: () => rootRoute,
+    path: '/search',
+    component: () => <SearchPage />,
+  })
+
   const loginRoute = new Route({
     getParentRoute: () => rootRoute,
     path: '/login',
     component: () => <LoginPage />,
   })
 
-  const routeTree = rootRoute.addChildren([loginRoute, checkoutRoute, indexRoute])
+  const routeTree = rootRoute.addChildren([loginRoute, checkoutRoute, searchRoute, indexRoute])
 
   const router = new Router({ routeTree })
 
