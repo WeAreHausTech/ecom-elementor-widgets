@@ -1,4 +1,8 @@
-import { AddItemToOrderMutation, RemoveOrderLineMutation } from '@/gql/graphql'
+import {
+  AddItemToOrderMutation,
+  AdjustOrderLineMutation,
+  RemoveOrderLineMutation,
+} from '@/gql/graphql'
 import { eventbus } from '../eventbus'
 
 export enum CartAction {
@@ -9,7 +13,7 @@ export enum CartAction {
 }
 
 interface CartChannelPayload {
-  data: AddItemToOrderMutation | RemoveOrderLineMutation
+  data: AddItemToOrderMutation | RemoveOrderLineMutation | AdjustOrderLineMutation
   action: CartAction
 }
 

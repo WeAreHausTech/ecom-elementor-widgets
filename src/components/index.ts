@@ -11,6 +11,7 @@ import { AddToCart, AddToCartProps } from './add-to-cart/AddToCart'
 import { CartContent, CartContentsProps } from './cart-content/CartContent'
 import { CartRemoveItem, CartRemoveItemProps } from './cart-remove-item/CartRemoveItem'
 import { CartTotals, CartTotalsProps } from './cart-totals/CartTotals'
+import { AdjustOrderLine, AdjustOrderLineProps } from './adjust-order-line/AdjustOrderLine'
 
 // Order
 import {
@@ -68,6 +69,7 @@ export {
   useBillingAddress,
   useActiveOrder,
   Login,
+  AdjustOrderLine,
 }
 
 export type {
@@ -88,6 +90,7 @@ export type {
   SearchProductsProps,
   SearchResultProps,
   LoginProps,
+  AdjustOrderLineProps,
 }
 
 export type { Pagination, Loading, GenericApolloError } from '@/types'
