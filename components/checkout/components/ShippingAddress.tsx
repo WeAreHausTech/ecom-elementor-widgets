@@ -1,7 +1,8 @@
 import {
-  OrderBillingAddress as BillingAddressWrapper,
+  OrderShippingAddress as ShippingAddressWrapper,
   OrderAddress,
   CreateAddressInput,
+  useBillingAddress,
 } from '@haus-tech/ecom-components'
 import { Form, Formik, FormikValues } from 'formik'
 import { omit, size, some } from 'lodash'
@@ -9,22 +10,37 @@ import * as Yup from 'yup'
 import { Input } from '../../input/Input'
 import { Button } from '../../button/Button'
 
-interface BillingAddressProps {
+interface ShippingAddressProps {
   onSuccess: () => void
+  sameBillingAddress: boolean
 }
 
-const BillingAddress = ({ onSuccess }: BillingAddressProps) => {
+const ShippingAddress = ({ onSuccess, sameBillingAddress }: ShippingAddressProps) => {
+  const { mutation: billingMethodMutation } = useBillingAddress()
   return (
-    <BillingAddressWrapper className="BillingAddress">
+    <ShippingAddressWrapper className="ShippingAddress">
       {({ update, savedData, error, loading }) => {
+        const [
+          updateBillingAddressFunc,
+          { loading: updateBillingAddressLoading, error: updateBillingAddressError },
+        ] = billingMethodMutation
+
         const handleSubmit = async (values: FormikValues) => {
           await update(values as CreateAddressInput)
 
-          if (!error) {
+          //set billingaddress same as shippingaddress
+          if (sameBillingAddress && savedData !== null) {
+            await updateBillingAddressFunc({
+              variables: { input: values as CreateAddressInput },
+            })
+          }
+
+          if (!updateBillingAddressLoading && !error && !updateBillingAddressError) {
             onSuccess()
           }
         }
 
+        // Create intitialValues from savedData, if value is null, set it to empty string
         const initialValues = savedData
           ? Object.keys(omit(savedData, ['__typename', 'country'])).reduce((acc, key) => {
               acc[key] = savedData[key as keyof OrderAddress] || ''
@@ -43,7 +59,7 @@ const BillingAddress = ({ onSuccess }: BillingAddressProps) => {
             >
               {({ errors, touched }) => {
                 return (
-                  <Form className="billing-address-form">
+                  <Form className="shipping-address-form">
                     <Input label="Namn" name="fullName" errors={errors} touched={touched} />
                     <Input label="Företag" name="company" errors={errors} touched={touched} />
                     <Input label="Adress" name="streetLine1" errors={errors} touched={touched} />
@@ -81,7 +97,7 @@ const BillingAddress = ({ onSuccess }: BillingAddressProps) => {
           </div>
         )
       }}
-    </BillingAddressWrapper>
+    </ShippingAddressWrapper>
   )
 }
 
@@ -97,4 +113,4 @@ const validationSchema = Yup.object().shape({
   phoneNumber: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Vänligen fyll i telefonummer'),
 })
 
-export default BillingAddress
+export default ShippingAddress
