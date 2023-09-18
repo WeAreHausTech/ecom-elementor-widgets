@@ -1,4 +1,8 @@
-import { PaymentMethods as PaymentMethodWrapper, isErrorResult } from '@haus-tech/ecom-components'
+import {
+  GenericApolloError,
+  PaymentMethods as PaymentMethodWrapper,
+  isErrorResult,
+} from '@haus-tech/ecom-components'
 import { some } from 'lodash'
 import { useState } from 'react'
 
@@ -18,8 +22,9 @@ const PaymentMethod = ({ onSuccess }: PaymentMethodsProps) => {
             await updatePaymentMethod().then((res) => {
               if (res === null) return
               if (isErrorResult(res?.data?.addPaymentToOrder)) {
-                const errorCode = res?.data?.addPaymentToOrder.errorCode ?? ''
-                setSubmitError(errorCode)
+                const errorMessage =
+                  (res?.data?.addPaymentToOrder as GenericApolloError)?.message ?? ''
+                setSubmitError(errorMessage)
                 return
               }
 
