@@ -153,7 +153,7 @@ export const App = () => {
         className="product-list-wrapper"
       >
         {({ loading, products, pagination }) => {
-          if (some(loading, i => i === true) && !infinitePagination) return <div>Loading...</div>
+          if (some(loading, (i) => i === true) && !infinitePagination) return <div>Loading...</div>
           return (
             <div className="product-list">
               {products && products.length > 0 ? (
@@ -396,27 +396,26 @@ export const App = () => {
 
       <OrderCustomer>
         {({ update }) => {
-        
-        return (
-          <div className="cart-totals">
-            <button
-              type="submit"
-              name="removeItem"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() =>
-                update({
-                  emailAddress: 'test@test.se',
-                  firstName: 'Test',
-                  lastName: 'testsson',
-                  phoneNumber: '0701223344',
-                  title: 'Ekonomiansvarig',
-                })
-              }
-            >
-              Update customer
-            </button>
-          </div>
-        )
+          return (
+            <div className="cart-totals">
+              <button
+                type="submit"
+                name="removeItem"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() =>
+                  update({
+                    emailAddress: 'test@test.se',
+                    firstName: 'Test',
+                    lastName: 'testsson',
+                    phoneNumber: '0701223344',
+                    title: 'Ekonomiansvarig',
+                  })
+                }
+              >
+                Update customer
+              </button>
+            </div>
+          )
         }}
       </OrderCustomer>
       <OrderMessage>

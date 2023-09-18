@@ -12,7 +12,7 @@ import {
 import { HTMLAttributes } from 'react'
 import { ErrorResult, FacetValueResult, ListedProductFragment } from './gql/graphql'
 
-export type Maybe<T> = T | undefined;
+export type Maybe<T> = T | undefined
 
 export interface CustomHTMLElement extends Omit<HTMLAttributes<HTMLOrSVGElement>, 'children'> {
   wrapperTag?: keyof JSX.IntrinsicElements
@@ -55,7 +55,10 @@ export type CustomMutationTuple<
   CustomMutationResult<TData>,
 ]
 
-export type CustomLazyQueryResultTuple<TData, TVariables extends OperationVariables> = [LazyQueryExecFunction<TData, TVariables>, Omit<QueryResult<TData, TVariables>, 'error'> & { error: GenericApolloError}];
+export type CustomLazyQueryResultTuple<TData, TVariables extends OperationVariables> = [
+  LazyQueryExecFunction<TData, TVariables>,
+  Omit<QueryResult<TData, TVariables>, 'error'> & { error: GenericApolloError },
+]
 
 export interface SearchProduct extends ListedProductFragment {
   facetValues: FacetValueResult

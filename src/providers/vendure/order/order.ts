@@ -144,7 +144,7 @@ export const ORDER_PRICE_DATA_FRAGMENT = graphql(/* GraphQL */ `
   }
 `)
 
-export const ORDER_FRAGMENT = graphql(/* GraphQL */ `
+export const ORDER_DETAIL_FRAGMENT = graphql(/* GraphQL */ `
   fragment OrderDetail on Order {
     __typename
     id

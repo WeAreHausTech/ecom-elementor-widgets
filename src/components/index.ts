@@ -41,8 +41,8 @@ import { useActiveOrder } from '@/hooks/useActiveOrder'
 import { Login, LoginProps } from './account/Login'
 
 // error
-import { isErrorResult, isError, isApolloError } from '@/utils/utils'
-export { isErrorResult, isError, isApolloError }
+import { isErrorResult, isError, isApolloError, getError } from '@/utils/utils'
+export { isErrorResult, isError, isApolloError, getError }
 
 export {
   VendureApolloProvider,
@@ -90,6 +90,6 @@ export type {
   LoginProps,
 }
 
-export type { Pagination, Loading } from '@/types'
+export type { Pagination, Loading, GenericApolloError } from '@/types'
 export type { ApolloError } from '@apollo/client'
 export * from '@/gql/graphql'

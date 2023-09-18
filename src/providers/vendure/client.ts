@@ -1,24 +1,25 @@
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
+import { onError } from '@apollo/client/link/error'
 
 const AUTH_TOKEN_KEY = 'auth_token'
 
-let dynamicURI = "http://localhost:3000/shop-api";
+let dynamicURI = 'http://localhost:3000/shop-api'
 
 const httpLink = new HttpLink({
-  credentials: 'include'
-});
+  credentials: 'include',
+})
 
 const uriMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext({
     uri: dynamicURI,
-  });
-  return forward(operation);
-});
+  })
+  return forward(operation)
+})
 
 const changeHttpLinkURI = (newURI: string) => {
-  dynamicURI = newURI;
-};
+  dynamicURI = newURI
+}
 
 const afterwareLink = new ApolloLink((operation, forward) => {
   return forward(operation).map((response) => {
@@ -31,6 +32,14 @@ const afterwareLink = new ApolloLink((operation, forward) => {
     }
     return response
   })
+})
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`),
+    )
+  if (networkError) console.log(`[Network error]: ${networkError}`)
 })
 
 const client = new ApolloClient({
@@ -51,6 +60,7 @@ const client = new ApolloClient({
     }),
     uriMiddleware,
     afterwareLink,
+    errorLink,
     httpLink,
   ]),
   cache: new InMemoryCache(),

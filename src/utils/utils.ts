@@ -27,7 +27,7 @@ export const formatPrice = (value: number, currency: CurrencyCode, fromPrice?: b
 }
 
 export const isErrorResult = (input: unknown): boolean => {
-  return some((input as object), (i) => {
+  return some(input as object, (i) => {
     return i && (i as ErrorResult).errorCode !== undefined
   })
 }
@@ -42,13 +42,6 @@ export const isError = (input: unknown): input is GenericApolloError => {
 
 export const getError = (error: GenericApolloError): GenericApolloError | null => {
   if (isErrorResult(error)) {
-    console.log(error)
-  // for (const key in (error as { [key: string]: ErrorResult })) {
-  //   if ((input as { [key: string]: ErrorResult })[key].hasOwnProperty('errorCode')) {
-  //     return 
-  //     break;
-  //   }
-  // }
     return error
   } else if (isApolloError(error)) {
     return {
