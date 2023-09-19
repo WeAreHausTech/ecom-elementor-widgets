@@ -1,11 +1,11 @@
-import { CartContentItems } from '../components/CartContentItems'
-import { CartTotalPrice } from '../components/CartTotalPrice'
+import { CartItems } from '../components/CartItems'
+import { CartPrices } from '../components/CartPrices'
 
 export const Cart = () => {
   return (
     <div className="Cart">
-      <CartContentItems />
-      <CartTotalPrice />
+      <CartItems />
+      <CartPrices />
     </div>
   )
 }

@@ -3,7 +3,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { Spinner } from '../../spinner/Spinner'
 
 // TODO use price component
-export const CartTotalPrice = () => {
+export const CartPrices = () => {
   const navigate = useNavigate()
   return (
     <CartTotals className="Cart-total-price">
@@ -40,9 +40,11 @@ export const CartTotalPrice = () => {
                         {totalPrice.taxSummary[0]?.taxTotal} {totalPrice.currencyCode}
                       </p>
                     </div>
-                    <button className="Button blue" onClick={() => navigate({ to: '/checkout' })}>
-                      Gå till kassan
-                    </button>
+                    {totalPrice && totalPrice.totalWithTax > 0 && (
+                      <button className="Button blue" onClick={() => navigate({ to: '/checkout' })}>
+                        Gå till kassan
+                      </button>
+                    )}
                   </div>
                 ) : (
                   <div>Cart is empty</div>

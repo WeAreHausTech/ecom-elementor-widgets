@@ -2,7 +2,7 @@ import { CartTotals } from '@haus-tech/ecom-components'
 import { Spinner } from '../../spinner/Spinner'
 
 // TODO use price component
-export const CartTotalPriceList = () => {
+export const CheckoutPrices = () => {
   return (
     <CartTotals className="Cart-total-price">
       {({ totalPrice, loading }) => {
