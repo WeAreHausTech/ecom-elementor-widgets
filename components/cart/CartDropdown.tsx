@@ -1,7 +1,8 @@
-import { CartContent } from '@haus-tech/ecom-components'
+import { CartContent, Price } from '@haus-tech/ecom-components'
 import { Icon } from '../icon/Icon'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
+import { AdjustOrderLine } from '../../components/adjust-order-line/AdjustOrderLine'
 
 interface CartDropdownProps {
   dropdownEnabled?: boolean
@@ -31,39 +32,44 @@ export const CartDropdown = ({ dropdownEnabled = true }: CartDropdownProps) => {
               <DropdownMenu.Content className="cart-contents" sideOffset={5}>
                 <>
                   {!activeProducts || activeProducts.length === 0 ? (
-                    <div className="text-center py-4 text-gray-600">Varukorgen är tom</div>
+                    <div className="">Varukorgen är tom</div>
                   ) : (
                     (activeProducts ?? []).map((product) => (
-                      <DropdownMenu.Item
-                        key={product.id}
-                        className="flex items-center space-x-4 border-b border-gray-300 p-4 relative"
-                      >
-                        <div className="w-25 h-25">
+                      <DropdownMenu.Item key={product.id} className="cart-product">
+                        <div className="product-data">
                           <img
-                            src={product.featuredAsset?.preview + '?preset=thumb'}
+                            src={product.featuredAsset?.preview + '?w=128&h=128'}
                             alt={product.productVariant.name}
-                            className="w-full h-full object-cover rounded-md"
+                            className="cart-product-image rounded-md"
                           />
+                          <div className="cart-product-details">
+                            <div>
+                              <p className="brand">Brand</p>
+                              <p className="product-name">{product.productVariant.name}</p>
+                            </div>
+                          </div>
                         </div>
-                        <div className="flex flex-col items-start ">
-                          <h3 className="text-lg font-semibold">
-                            <a
-                              key={product.id}
-                              href={`/products/${product.productVariant.product.slug}`}
-                              className="text-gray-700 hover:underline"
-                            >
-                              {product.productVariant.name}
-                            </a>
-                          </h3>
-                          <p className="text-gray-600">{/* Additional information goes here */}</p>
-                          <p className="text-gray-500">Antal: {product.quantity}</p>
+                        <div className="product-price">
+                          <div className="adjust-orderline">
+                            <AdjustOrderLine product={product} />
+                          </div>
+                          <Price
+                            className="cart-product-price"
+                            price={product.productVariant.price}
+                            priceWithTax={product.productVariant.priceWithTax}
+                            currencyCode={product.productVariant.currencyCode}
+                          >
+                            {({ formattedPrice }) => <>{formattedPrice}</>}
+                          </Price>
                         </div>
                       </DropdownMenu.Item>
                     ))
                   )}
                 </>
                 <DropdownMenu.Item>
-                  <Link to={'/checkout'}>Till kassan</Link>
+                  <button className="Button blue" onClick={() => navigate({ to: '/cart' })}>
+                    Gå till varukorgen
+                  </button>
                 </DropdownMenu.Item>
               </DropdownMenu.Content>
             )}

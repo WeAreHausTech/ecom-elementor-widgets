@@ -21,7 +21,7 @@ function App() {
             </div>
             <div className="flex space-x-4 text-2xl">
               <Icon name="avatar" />
-              <CartDropdown dropdownEnabled={false} />
+              <CartDropdown dropdownEnabled={true} />
             </div>
           </nav>
         </header>

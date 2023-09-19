@@ -44,7 +44,7 @@ export const CartItems = () => {
                             type="submit"
                             name="removeItem"
                             value={product.id}
-                            className="text-primary-600 hover:text-primary-500 focus:outline-none"
+                            className="cart-product-remove"
                             onClick={() => removeItem(product.id)}
                           >
                             x

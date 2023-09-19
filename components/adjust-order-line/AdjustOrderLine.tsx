@@ -22,6 +22,7 @@ export const AdjustOrderLine = ({ product }: AdjustOrderLineProps) => {
                 orderLines.find((ol) => ol.productVariant.id === product.productVariant.id)
                   ?.quantity
               }
+              onClick={(e) => e.stopPropagation()}
               onChange={(e) => adjustOrderLine(product.id, parseInt(e.target.value))}
             >
               {[...Array(50)].map((_, i) => (
