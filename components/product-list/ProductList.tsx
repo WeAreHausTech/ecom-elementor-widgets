@@ -35,6 +35,7 @@ const ProductCard = ({ product }: { product: ListedProductFragment }) => {
               >
                 {({ formattedPrice }) => <>{formattedPrice}</>}
               </Price>
+              <button className="product-add-to-cart-button">Lägg till i varukorg</button>
             </div>
           </div>
         )
