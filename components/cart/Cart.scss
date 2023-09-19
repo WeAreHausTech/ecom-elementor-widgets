@@ -1,3 +1,126 @@
+.SmallCart {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 24px;
+
+  h3 {
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%; /* 36.4px */
+    letter-spacing: -0.26px;
+  }
+
+  .bold{
+    font-weight: 700;
+  }
+
+  .Cart-content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    gap: 16px;
+
+    .cart-product {
+      display: flex;
+      align-items: center;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .cart-product-image {
+        flex: 0 0 128px;
+        margin-right: 16px;
+        max-width: 40px;
+        height: 40px;
+      }
+
+      .cart-product-details {
+        flex: 1 1 auto;
+        padding: 0 0 0 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .brand {
+          color: var(--Almost-Black, #3e4849);
+          font-weight: 400;
+          line-height: 150%; /* 24px */
+        }
+
+        .product-name {
+          color: var(--Almost-Black, #3e4849);
+          font-size: 18px;
+          font-weight: 600;
+          line-height: 140%; /* 25.2px */
+        }
+
+        .product-extra {
+          color: var(--Almost-Black, #3e4849);
+          font-weight: 400;
+          line-height: 150%; /* 24px */
+        }
+
+        .cart-product-quantity {
+          flex: 0 0 40px;
+          height: 40px;
+        }
+      }
+
+      .cart-product-price {
+        flex: 0;
+        display: flex;
+        align-items: flex-end;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 150%; /* 24px */
+      }
+    }
+  }
+
+  .Cart-total-price {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+
+    .cart-totals {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      .cart-totals-item {
+        display: flex;
+        padding: var(--varukorg, 0px);
+        justify-content: space-between;
+        align-items: flex-start;
+        align-self: stretch;
+        width: 100%;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .total-price {
+        font-size: 26px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 140%; /* 36.4px */
+        letter-spacing: -0.26px;
+      }
+    }
+  }
+}
 .Cart {
   display: flex;
   align-items: flex-start;

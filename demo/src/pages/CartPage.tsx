@@ -1,4 +1,4 @@
-import { Cart } from '../../../components/cart/Carts/Cart'
+import { Cart } from '../../../components/cart/Widgets/Cart'
 
 export const CartPage = () => {
   return (

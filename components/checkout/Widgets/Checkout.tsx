@@ -2,7 +2,7 @@ import * as Accordion from '@radix-ui/react-accordion'
 import classNames from 'classnames'
 import { ForwardedRef, Suspense, forwardRef, lazy, useMemo, useState } from 'react'
 import { includes } from 'lodash'
-import { Icon } from '../icon/Icon'
+import { Icon } from '../../icon/Icon'
 
 export const Checkout = () => {
   const [currentStep, setCurrentStep] = useState<string>('customer-information')
@@ -48,9 +48,10 @@ export const Checkout = () => {
   return (
     <>
       {!success ? (
+        <>
         <Accordion.Root className="Checkout" type="single" value={currentStep} collapsible>
           {steps.map((step, idx) => {
-            const Element = lazy(() => import(`./components/${step.component}.tsx`))
+            const Element = lazy(() => import(`../components/${step.component}.tsx`))
             return (
               <Accordion.Item
                 key={step.id}
@@ -79,6 +80,7 @@ export const Checkout = () => {
             )
           })}
         </Accordion.Root>
+        </>
       ) : (
         <div>Tack för din beställning</div>
       )}
