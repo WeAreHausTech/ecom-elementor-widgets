@@ -97,3 +97,59 @@ export const TOPSEARCH = graphql(/* GraphQL */ `
     }
   }
 `)
+
+export const PRODUCT = graphql(/* GraphQL */ `
+  query product($slug: String, $id: ID) {
+    product(slug: $slug, id: $id) {
+      ...DetailedProduct
+    }
+  }
+`)
+
+export const DETAILED_PRODUCT = graphql(/* GraphQL */ `
+  fragment DetailedProduct on Product {
+    id
+    name
+    description
+    collections {
+      id
+      slug
+      name
+      breadcrumbs {
+        id
+        name
+        slug
+      }
+    }
+    facetValues {
+      facet {
+        id
+        code
+        name
+      }
+      id
+      code
+      name
+    }
+    featuredAsset {
+      id
+      preview
+    }
+    assets {
+      id
+      preview
+    }
+    variants {
+      id
+      name
+      priceWithTax
+      currencyCode
+      sku
+      stockLevel
+      featuredAsset {
+        id
+        preview
+      }
+    }
+  }
+`)

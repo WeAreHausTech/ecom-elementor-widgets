@@ -5,6 +5,7 @@ import { ProductList, ProductListProps } from '@/components/product-list/Product
 import { ProductSort, ProductSortProps } from './products-sort/ProductSort'
 import { SearchProducts, SearchProductsProps } from './search-products/SearchProducts'
 import { SearchResults, SearchResultProps } from './search-results/SearchResults'
+import { Product, ProductProps } from './product/Product'
 
 // Cart
 import { AddToCart, AddToCartProps } from './add-to-cart/AddToCart'
@@ -70,6 +71,7 @@ export {
   useActiveOrder,
   Login,
   AdjustOrderLine,
+  Product,
 }
 
 export type {
@@ -91,6 +93,7 @@ export type {
   SearchResultProps,
   LoginProps,
   AdjustOrderLineProps,
+  ProductProps,
 }
 
 export type { Pagination, Loading, GenericApolloError } from '@/types'
