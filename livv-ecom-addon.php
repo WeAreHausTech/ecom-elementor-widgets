@@ -11,6 +11,10 @@
 define('HAUS_ECOM_PLUGIN_PATH', __DIR__);
 define('HAUS_ECOM_PLUGIN_URI', plugin_dir_url(__FILE__));
 
+if (!defined('HAUS_ECOM_VENDURE_API_URL')) {
+    define('HAUS_ECOM_VENDURE_API_URL', 'https://livv-ecom-test.azurewebsites.net/');
+}
+
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }

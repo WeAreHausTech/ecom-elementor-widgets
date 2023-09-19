@@ -2,25 +2,40 @@
 namespace Haus\Queries;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
+
 
 class BaseQuery
 {
   protected $query = '';
 
-  protected $endPoint = 'https://livv-ecom-test.azurewebsites.net/';
-
   function fetch()
   {
-    $response = (new Client([
-    'base_uri' => $this->endPoint,
-    'headers' => [
-      'Content-Type' => 'application/json',
-      ],
-    'body' => json_encode([
-        'query' => $this->query,
-      ]),
-    ]))->request('POST', 'shop-api');
+    try {
+      $response = (new Client([
+      'base_uri' => HAUS_ECOM_VENDURE_API_URL,
+      'headers' => [
+        'Content-Type' => 'application/json',
+        ],
+      'body' => json_encode([
+          'query' => $this->query,
+        ]),
+      ]))->request('POST', 'shop-api');
 
-    return json_decode($response->getBody()->getContents(), true);
+      $statusCode = $response->getStatusCode();
+      $responseBody = $response->getBody()->getContents();
+
+      if ($statusCode === 200 && $responseBody) {
+        return json_decode($responseBody, true);
+      }
+      return null;
+    } catch (RequestException $e) {
+      return null;
+    } catch (GuzzleException $e) {
+      return null;
+    } catch (\Exception $e) {
+      return null;
+    }
   }
 }

@@ -2,10 +2,11 @@
 namespace Haus\Widgets;
 
 use \Elementor\Widget_Base;
-use ElementorPro\Modules\Forms\Submissions\Database\Query;
+use \Haus\Traits\ElementorTemplate;
 
 class ProductList extends Widget_Base
 {
+  use ElementorTemplate;
 
   public function get_name()
   {
@@ -24,12 +25,12 @@ class ProductList extends Widget_Base
 
   public function get_categories()
   {
-    return ['basic'];
+    return ['ecommerce'];
   }
 
   public function get_keywords()
   {
-    return ['hello', 'world'];
+    return ['Ecommerce', 'productfilter'];
   }
 
   protected function _register_controls()
@@ -41,58 +42,64 @@ class ProductList extends Widget_Base
       ]
     );
 
-    $this->add_control(
-      'collection',
-      [
-        'label' => __('Collection:', 'webien'),
-        'type' => \Elementor\Controls_Manager::SELECT,
-        'label_block' => true,
-        'options' => $this->get_collection_options(),
-        'default' => 'all'
-      ]
-    );
-
-    $this->add_control(
-      'facet',
-      [
-        'label' => __('Facet:', 'webien'),
-        'type' => \Elementor\Controls_Manager::SELECT,
-        'label_block' => true,
-        'options' => $this->get_facet_options(),
-        'default' => 'all'
-      ]
-    );
-
+    $this->add_facet_controls();
     $this->end_controls_section();
   }
 
-  public function get_collection_options()
-  {
-    $collections = (new \Haus\Queries\Collection)->get();
-
-    $options = [
-      'all' => __('Alla', 'webien'),
-    ];
-
-    foreach ($collections['data']['collections']['items'] as $collection) {
-      $options[$collection['id']] = $collection['name'];
-    }
-
-    return $options;
-  }
-
-  public function get_facet_options()
+  public function add_facet_controls()
   {
     $facets = (new \Haus\Queries\Facet)->get();
 
+    if (!isset($facets['data']['facets']['items'])) {
+      return;
+    }
+
+    $this->add_control(
+      'facet-value',
+      [
+        'label' => __('Filtrera på: ', 'webien'),
+        'type' => \Elementor\Controls_Manager::SELECT2,
+        'label_block' => true,
+        'options' => $this->get_available_filters($facets),
+        'default' => 'all'
+      ]
+    );
+
+    foreach ($facets['data']['facets']['items'] as $facet) {
+      $this->add_control(
+        'facet-' . $facet['id'],
+        [
+          'label' => __($facet['name'] . ':', 'webien'),
+          'type' => \Elementor\Controls_Manager::SELECT2,
+          'label_block' => true,
+          'options' => $this->get_facet_options($facet),
+          'default' => 'all',
+          'condition' => ['facet-value' => $facet['id']]
+        ]
+      );
+    }
+  }
+
+  public function get_available_filters($facets)
+  {
     $options = [
       'all' => __('Alla', 'webien'),
     ];
 
     foreach ($facets['data']['facets']['items'] as $facet) {
-      foreach ($facet['values'] as $value) {
-        $options[$value['id']] = $facet['name'] . ' - ' . $value['name'];
-      }
+      $options[$facet['id']] = $facet['name'];
+    }
+
+    return $options;
+  }
+  public function get_facet_options($facet)
+  {
+    $options = [
+      'all' => __('Alla', 'webien'),
+    ];
+
+    foreach ($facet['values'] as $value) {
+      $options[$value['id']] = $value['name'];
     }
 
     return $options;
@@ -100,31 +107,23 @@ class ProductList extends Widget_Base
 
   protected function render()
   {
-    $callStartTime = microtime(true);
+
     $settings = $this->get_settings_for_display();
     $url = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
     if (strpos($url, '&action=elementor') !== false) {
-      $this->content_template();
+      $this->getTemplate();
       return;
     }
 
-    ?>
-    <div id="productFilter" facet=<?= $settings['facet'] ?> collection=<?= $settings['collection'] ?>></div>
-    <?php
-  }
+    $facet = [];
 
+    if ($settings['facet-value'] !== 'all') {
+      $facet = $settings['facet-' . $settings['facet-value']];
+    }
 
-  protected function content_template()
-  {
     ?>
-    <div class="webien-elementor-preview">
-      <i class="<?= $this->get_icon() ?>"></i>
-      <h3 class="title">
-        <?= $this->get_title() ?>
-      </h3>
-      <small>Ingen förhandsvisning</small>
-    </div>
+    <div id="productList" data-facet=<?= $facet ?>></div>
     <?php
   }
 }

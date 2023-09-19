@@ -21,8 +21,6 @@ class Facet extends BaseQuery
       }
     GRAPHQL;
 
-    $data = $this->fetch();
-
-    return $data;
+    return $this->fetch();
   }
 }
