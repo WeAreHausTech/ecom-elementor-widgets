@@ -1,12 +1,13 @@
 import { VendureApolloProvider } from '@haus-tech/ecom-components'
 import { Outlet, RootRoute, Route, Router, RouterProvider } from '@tanstack/react-router'
 import { Icon } from '../../components/icon/Icon'
-import { Cart } from '../../components/cart/Cart'
+import { CartDropdown } from '../../components/cart/CartDropdown'
 import { ProductsPage } from './pages/ProductsPage'
 import { CheckoutPage } from './pages/CheckoutPage'
 import { SearchPage } from './pages/SearchPage'
 import { Search } from '../../components/search/Search'
 import { LoginPage } from './pages/LoginPage'
+import { CartPage } from './pages/CartPage'
 
 function App() {
   const rootRoute = new RootRoute({
@@ -20,7 +21,7 @@ function App() {
             </div>
             <div className="flex space-x-4 text-2xl">
               <Icon name="avatar" />
-              <Cart />
+              <CartDropdown dropdownEnabled={false} />
             </div>
           </nav>
         </header>
@@ -49,13 +50,25 @@ function App() {
     component: () => <SearchPage />,
   })
 
+  const cartRoute = new Route({
+    getParentRoute: () => rootRoute,
+    path: '/cart',
+    component: () => <CartPage />,
+  })
+
   const loginRoute = new Route({
     getParentRoute: () => rootRoute,
     path: '/login',
     component: () => <LoginPage />,
   })
 
-  const routeTree = rootRoute.addChildren([loginRoute, checkoutRoute, searchRoute, indexRoute])
+  const routeTree = rootRoute.addChildren([
+    loginRoute,
+    checkoutRoute,
+    searchRoute,
+    cartRoute,
+    indexRoute,
+  ])
 
   const router = new Router({ routeTree })
 
