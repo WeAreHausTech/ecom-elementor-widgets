@@ -3,6 +3,7 @@ import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
 
 const AUTH_TOKEN_KEY = 'auth_token'
+export const LANG = 'lang'
 
 let dynamicURI = 'http://localhost:3000/shop-api'
 
@@ -12,7 +13,7 @@ const httpLink = new HttpLink({
 
 const uriMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext({
-    uri: dynamicURI,
+    uri: `${dynamicURI}?languageCode=${localStorage.getItem(LANG)}`,
   })
   return forward(operation)
 })
