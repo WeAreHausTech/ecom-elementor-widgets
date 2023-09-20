@@ -7,7 +7,7 @@ interface CartProps {
   price?: boolean
 }
 
-export const Cart = (props: CartProps) => {
+export const CartOrderLines = (props: CartProps) => {
   return (
     <OrderLines className={props.className}>
       {({ orderLines }) => {
@@ -17,8 +17,6 @@ export const Cart = (props: CartProps) => {
               <span>Varukorgen är tom</span>
             </div>
           )
-
-        console.log(orderLines)
         return (
           <div className="orderLines">
             {orderLines.map((orderLine) => (

@@ -1,7 +1,7 @@
 import { Icon } from '../../../components/icon/Icon'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { useNavigate } from '@tanstack/react-router'
-import { Cart } from '../../../components/cart/Cart'
+import { CartOrderLines } from '../../../components/cart-order-lines/CartOrderLines'
 
 interface CartDropdownProps {
   dropdownEnabled?: boolean
@@ -26,7 +26,7 @@ export const CartDropdown = ({ dropdownEnabled = true }: CartDropdownProps) => {
         <DropdownMenu.Content className="cart-contents" sideOffset={5}>
           <div className="cart-dropdown-demo">
             <DropdownMenu.Item>
-              <Cart className="cart-dropdown" edit />
+              <CartOrderLines className="cart-dropdown" edit />
             </DropdownMenu.Item>
             <DropdownMenu.Item>
               <button className="Button blue" onClick={() => navigate({ to: '/cart' })}>
