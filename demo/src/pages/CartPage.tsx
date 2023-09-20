@@ -1,10 +1,10 @@
-import { Cart } from '../../../components/cart/Carts/Cart'
+import { Cart } from '../../../components/cart/Cart'
 
 export const CartPage = () => {
   return (
     <div className="CartPage">
       <div className="p-20">
-        <Cart />
+        <Cart className="cart-page" edit price remove />
       </div>
     </div>
   )

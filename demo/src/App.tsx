@@ -1,7 +1,7 @@
 import { VendureApolloProvider } from '@haus-tech/ecom-components'
 import { Outlet, RootRoute, Route, Router, RouterProvider } from '@tanstack/react-router'
 import { Icon } from '../../components/icon/Icon'
-import { CartDropdown } from '../../components/cart/CartDropdown'
+import { CartDropdown } from './pages/CartDropdown'
 import { ProductsPage } from './pages/ProductsPage'
 import { CheckoutPage } from './pages/CheckoutPage'
 import { SearchPage } from './pages/SearchPage'
@@ -21,7 +21,7 @@ function App() {
             </div>
             <div className="flex space-x-4 text-2xl">
               <Icon name="avatar" />
-              <CartDropdown dropdownEnabled={false} />
+              <CartDropdown dropdownEnabled={true} />
             </div>
           </nav>
         </header>
