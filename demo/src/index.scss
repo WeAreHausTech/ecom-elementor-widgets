@@ -13,3 +13,20 @@
 }
 
 @import '../components/index.scss';
+
+.cart-contents {
+  z-index: 100;
+}
+
+.cart-dropdown-demo {
+  display: flex;
+  width: 390px;
+  padding: 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
