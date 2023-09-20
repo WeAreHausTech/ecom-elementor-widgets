@@ -3,10 +3,10 @@ namespace Haus\Queries;
 
 class Facet extends BaseQuery
 {
-  public function get()
-  {
+    public function get()
+    {
 
-    $this->query = <<<'GRAPHQL'
+        $this->query = <<<'GRAPHQL'
       query {
           facets {
               items {
@@ -21,6 +21,6 @@ class Facet extends BaseQuery
       }
     GRAPHQL;
 
-    return $this->fetch();
-  }
+        return $this->fetch();
+    }
 }

@@ -3,10 +3,10 @@ namespace Haus\Queries;
 
 class Collection extends BaseQuery
 {
-  public function get()
-  {
+    public function get()
+    {
 
-    $this->query = <<<'GRAPHQL'
+        $this->query = <<<'GRAPHQL'
       query {
           collections {
             items {
@@ -18,6 +18,6 @@ class Collection extends BaseQuery
     GRAPHQL;
 
 
-    return $this->fetch();
-  }
+        return $this->fetch();
+    }
 }
