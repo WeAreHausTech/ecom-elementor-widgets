@@ -3,6 +3,9 @@
 Add NODE_AUTH_TOKEN to your .zshrc file to install @haus-tech/ecom-components
 
 
+#build widgets 
+
+```npm run build-parcel```
 
 # React + TypeScript + Vite
 
