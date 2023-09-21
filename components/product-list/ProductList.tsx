@@ -81,9 +81,6 @@ interface ProductListProps {
 }
 
 export const ProductList = (props: ProductListProps) => {
-
-  console.log('ProductList', props.searchInputProps)
-
   return (
     <ProductListWrapper className="ProductList" infinitePagination searchInputProps={ props.searchInputProps }>
       {({ loading, products, pagination, error }) => {
