@@ -40,3 +40,10 @@ add_action('init', function () {
         ->widgets_manager
         ->register(new \Haus\Widgets\ProductList());
 });
+
+
+if (defined('WP_CLI') && WP_CLI) {
+    add_action( 'init', function(){
+        require_once HAUS_ECOM_PLUGIN_PATH . '/sync/SyncProducts.php';
+    });
+}
