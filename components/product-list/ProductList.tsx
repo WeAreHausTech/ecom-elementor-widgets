@@ -76,12 +76,17 @@ const Pagination = ({ pagination }: { pagination?: IPagination }) => {
   )
 }
 
-export const ProductList = () => {
+interface ProductListProps {
+  searchInputProps?: object
+}
+
+export const ProductList = (props: ProductListProps) => {
   return (
-    <ProductListWrapper className="ProductList" infinitePagination searchInputProps={{ take: 4 }}>
+    <ProductListWrapper className="ProductList" infinitePagination searchInputProps={ props.searchInputProps }>
       {({ loading, products, pagination, error }) => {
         if (loading['productList:search'] && products.length === 0) return <div>Loading...</div>
         if (error) return <div>Error</div>
+        if (!products.length) return <div>Inga produkter hittades</div>
         return (
           <>
             <div className="grid grid-cols-4 gap-8">
