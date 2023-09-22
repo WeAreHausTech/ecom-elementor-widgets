@@ -117,9 +117,14 @@ export const LISTED_ORDER_LINES_FRAGMENT = graphql(/* GraphQL */ `
     productVariant {
       id
       name
+      sku
       price
       priceWithTax
       currencyCode
+      featuredAsset {
+        id
+        preview
+      }
       product {
         id
         slug
@@ -131,6 +136,8 @@ export const LISTED_ORDER_LINES_FRAGMENT = graphql(/* GraphQL */ `
 export const ORDER_PRICE_DATA_FRAGMENT = graphql(/* GraphQL */ `
   fragment OrderPriceData on Order {
     subTotal
+    subTotalWithTax
+    total
     totalWithTax
     taxSummary {
       description
@@ -153,6 +160,7 @@ export const ORDER_DETAIL_FRAGMENT = graphql(/* GraphQL */ `
     createdAt
     state
     totalQuantity
+    currencyCode
     customer {
       id
       firstName

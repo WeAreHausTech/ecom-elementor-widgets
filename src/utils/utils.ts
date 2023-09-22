@@ -3,9 +3,9 @@ import { GenericApolloError } from '@/types'
 import { ApolloError } from '@apollo/client'
 import { some } from 'lodash'
 
-export const getPrice = (priceWithTax: PriceRange | SinglePrice) => {
+export const getPrice = (priceWithTax: PriceRange | SinglePrice | number): number => {
   if (priceWithTax == null) {
-    return null
+    return 0
   }
   if (typeof priceWithTax === 'number') {
     return priceWithTax
@@ -16,6 +16,8 @@ export const getPrice = (priceWithTax: PriceRange | SinglePrice) => {
   if (priceWithTax.min === priceWithTax.max) {
     return priceWithTax.min
   }
+
+  return 0
 }
 
 export const formatPrice = (value: number, currency: CurrencyCode, fromPrice?: boolean) => {

@@ -1,36 +1,57 @@
 import { VendureApolloProvider } from '@/providers/vendure/VendureApolloProvider'
 
 // Products
-import { ProductList, ProductListProps } from '@/components/product-list/ProductList'
-import { ProductSort, ProductSortProps } from './products-sort/ProductSort'
-import { SearchProducts, SearchProductsProps } from './search-products/SearchProducts'
-import { SearchResults, SearchResultProps } from './search-results/SearchResults'
-import { Product, ProductProps } from './product/Product'
+import { ProductList, ProductListProps } from '@/components/_widgets/product-list/ProductList'
+import { ProductSort, ProductSortProps } from './_store-components/products-sort/ProductSort'
+import {
+  SearchProducts,
+  SearchProductsProps,
+} from './_store-components/search-products/SearchProducts'
+import { SearchResults, SearchResultProps } from './_store-components/search-results/SearchResults'
+import { ProductDetail, ProductDetailProps } from './_widgets/product-detail/ProductDetail'
 
 // Cart
-import { AddToCart, AddToCartProps } from './add-to-cart/AddToCart'
-import { CartContent, CartContentsProps } from './cart-content/CartContent'
-import { CartRemoveItem, CartRemoveItemProps } from './cart-remove-item/CartRemoveItem'
-import { CartTotals, CartTotalsProps } from './cart-totals/CartTotals'
-import { AdjustOrderLine, AdjustOrderLineProps } from './adjust-order-line/AdjustOrderLine'
+import { AddToCart, AddToCartProps } from './_store-components/add-to-cart/AddToCart'
+import { CartContent, CartContentsProps } from './_store-components/cart-content/CartContent'
+import {
+  CartRemoveItem,
+  CartRemoveItemProps,
+} from './_store-components/cart-remove-item/CartRemoveItem'
+import { CartTotals, CartTotalsProps } from './_store-components/cart-totals/CartTotals'
+import {
+  AdjustOrderLine,
+  AdjustOrderLineProps,
+} from './_store-components/adjust-order-line/AdjustOrderLine'
 
 // Order
 import {
   OrderBillingAddress,
   OrderBillingAddressProps,
-} from './order-billing-address/OrderBillingAddress'
+} from './_store-components/order-billing-address/OrderBillingAddress'
 import {
   OrderShippingAddress,
   OrderShippingAddressProps,
-} from './order-shipping-address/OrderShippingAddress'
-import { OrderMessage, OrderMessageProps } from './order-message/OrderMessage'
-import { OrderCustomer, OrderCustomerProps } from './order-customer/OrderCustomer'
-import { ShippingMethod, ShippingMethodsProps } from './shipping-method/ShippingMethod'
-import { OrderState, OrderStateProps } from './order-state/OrderState'
-import { PaymentMethods, PaymentMethodsProps } from './payment-methods/PaymentMethods'
+} from './_store-components/order-shipping-address/OrderShippingAddress'
+import { OrderMessage, OrderMessageProps } from './_store-components/order-message/OrderMessage'
+import { OrderCustomer, OrderCustomerProps } from './_store-components/order-customer/OrderCustomer'
+import {
+  ShippingMethod,
+  ShippingMethodsProps,
+} from './_store-components/shipping-method/ShippingMethod'
+import { OrderState, OrderStateProps } from './_store-components/order-state/OrderState'
+import {
+  PaymentMethods,
+  PaymentMethodsProps,
+} from './_store-components/payment-methods/PaymentMethods'
 
 // Price
-import { Price, PriceProps } from './price/Price'
+import { Price, PriceProps } from './_store-components/price/Price'
+
+// Images
+import {
+  VendureImage,
+  VendureImageProps,
+} from '@/components/_store-components/vendure-image/VendureImage'
 
 // hooks
 import { usePaymentMethods } from '@/hooks/usePaymentMethods'
@@ -40,11 +61,13 @@ import { useBillingAddress } from '@/hooks/useBillingAddress'
 import { useActiveOrder } from '@/hooks/useActiveOrder'
 
 // Authentication
-import { Login, LoginProps } from './account/Login'
+import { Login, LoginProps } from './_widgets/account/Login'
 
 // error
 import { isErrorResult, isError, isApolloError, getError } from '@/utils/utils'
 export { isErrorResult, isError, isApolloError, getError }
+
+import { OrderLines } from '@/components/_widgets/order-lines/OrderLines'
 
 export {
   VendureApolloProvider,
@@ -71,7 +94,9 @@ export {
   useActiveOrder,
   Login,
   AdjustOrderLine,
-  Product,
+  ProductDetail,
+  OrderLines,
+  VendureImage,
 }
 
 export type {
@@ -93,7 +118,8 @@ export type {
   SearchResultProps,
   LoginProps,
   AdjustOrderLineProps,
-  ProductProps,
+  ProductDetailProps,
+  VendureImageProps,
 }
 
 export type { Pagination, Loading, GenericApolloError } from '@/types'

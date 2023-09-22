@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { CartAction, cartChannel } from '../../eventbus/channels/cart-channel'
+import { CartAction, cartChannel } from '@/eventbus/channels/cart-channel'
 import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
 import { useCustomMutation } from '@/hooks/useCustomMutation'
 import { REMOVE_ORDER_LINE } from '@/providers/vendure/order/order'

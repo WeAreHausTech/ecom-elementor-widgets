@@ -4,24 +4,24 @@ import { formatPrice, getPrice } from '@/utils/utils'
 import { ReactNode } from 'react'
 
 export interface PriceProps extends CustomHTMLElement {
-  price: PriceRange | SinglePrice
-  priceWithTax: PriceRange | SinglePrice
+  price: PriceRange | SinglePrice | number
+  priceWithTax: PriceRange | SinglePrice | number
   currencyCode: CurrencyCode
+  multiplier?: number
+  withTax?: boolean
   children: (props: { formattedPrice?: string }) => ReactNode
 }
-
-// TODO: where to get showTax from?
-const showTax = true
 
 export const Price = ({
   wrapperTag: Wrapper = 'div',
   price,
   priceWithTax,
   currencyCode,
+  withTax = false,
   children,
   ...rest
 }: PriceProps) => {
-  const activePrice = showTax ? priceWithTax : price
+  const activePrice = withTax ? priceWithTax : price
   const fromPrice =
     typeof activePrice === 'object' &&
     'min' in activePrice &&
@@ -30,5 +30,6 @@ export const Price = ({
 
   const formattedPrice = formatPrice(getPrice(activePrice), currencyCode, fromPrice)
 
+  // TODO: Price should render formatted price instead of passing it to children
   return <Wrapper {...rest}>{children({ formattedPrice })}</Wrapper>
 }

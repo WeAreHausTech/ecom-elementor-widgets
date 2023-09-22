@@ -4,7 +4,7 @@ import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
 import { useCustomMutation } from '@/hooks/useCustomMutation'
 import { SET_CUSTOMER_FOR_ORDER } from '@/providers/vendure/order/order'
 import { FetchResult } from '@apollo/client'
-import { useActiveOrder } from '..'
+import { useActiveOrder } from '@/hooks/useActiveOrder'
 
 export interface OrderCustomerProps extends CustomHTMLElement {
   children: (props: {

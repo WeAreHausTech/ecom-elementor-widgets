@@ -1,8 +1,9 @@
 import { ReactNode } from 'react'
-import { CartAction, cartChannel } from '../../eventbus/channels/cart-channel'
+
 import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
 import { useCustomMutation } from '@/hooks/useCustomMutation'
 import { ADD_ITEM_TO_ORDER } from '@/providers/vendure/order/order'
+import { CartAction, cartChannel } from '@/eventbus/channels/cart-channel'
 
 export interface AddToCartProps extends CustomHTMLElement {
   children: (props: {

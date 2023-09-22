@@ -77,6 +77,12 @@ export const SEARCH = graphql(/* GraphQL */ `
         }
         count
       }
+      collections {
+        collection {
+          ...ListedCollection
+        }
+        count
+      }
     }
   }
 `)

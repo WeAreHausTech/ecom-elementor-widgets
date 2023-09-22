@@ -1,6 +1,6 @@
 import { ReactNode, useEffect } from 'react'
 import { ListedOrderLinesFragment } from '@/gql/graphql'
-import { cartChannel } from '../../eventbus/channels/cart-channel'
+import { cartChannel } from '@/eventbus/channels/cart-channel'
 import { getFragmentData } from '@/gql'
 import { CustomHTMLElement, GenericApolloError, Loading } from '@/types'
 import { useCustomQuery } from '@/hooks/useCustomQuery'
