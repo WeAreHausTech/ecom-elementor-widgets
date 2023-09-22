@@ -24,8 +24,8 @@ if (file_exists(HAUS_ECOM_PLUGIN_PATH . '/vendor/autoload.php')) {
 }
 
 add_action('wp_enqueue_scripts', function () {
-    wp_register_style('livv-ecom-addon', plugins_url('/dist/index.332abd00.css', __FILE__));
-    wp_register_script('livv-ecom-addon', plugins_url('/dist/index.6b043051.js', __FILE__));
+    wp_register_style('livv-ecom-addon', plugins_url('/dist/index.css', __FILE__));
+    wp_register_script('livv-ecom-addon', plugins_url('/dist/index.js', __FILE__));
     wp_enqueue_style('livv-ecom-addon');
     wp_enqueue_script('livv-ecom-addon', '', [], false, ['strategy' => 'defer']);
 });

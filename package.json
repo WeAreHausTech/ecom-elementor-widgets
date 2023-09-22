@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "build-parcel": "tsc && parcel build components/index.html --no-scope-hoist --no-content-hash",
+    "build-widgets": "rm -rf ./dist && tsc && parcel build components/index.tsx --no-scope-hoist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -20,7 +20,6 @@
     "formik": "^2.4.4",
     "lodash": "^4.17.21",
     "parcel": "^2.9.3",
-    "parsel": "^0.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "yup": "^1.2.0"
