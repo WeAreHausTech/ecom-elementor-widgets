@@ -179,6 +179,87 @@ class syncProducts extends WP_CLI_Command
 
         $this->created++;
     }
+
+    public function syncTaxonomies()
+    {
+
+        $facets = (new \Haus\Queries\Facet)->get();
+
+        if (!$facets) {
+            WP_CLI::error('No facets found');
+            return;
+        }
+
+        $categories = $this->getfacets($facets, 'category');
+        $brands = $this->getfacets($facets, 'brand');
+
+        $this->syncAttributes('produkter-kategorier', $categories);
+
+
+        WP_CLI::success('syncTaxonomies success');
+    }
+
+    public function syncAttributes($taxonomy, $data)
+    {
+        global $wpdb;
+
+        foreach ($data['values'] as $value) {
+            $term_name = $value['name'];
+
+            $existing_term = $wpdb->get_row(
+                $wpdb->prepare("SELECT * FROM {$wpdb->terms} WHERE name = %s", $term_name)
+            );
+
+            if ($existing_term) {
+                continue;
+            }
+
+            $this->addNewTerm($term_name, $taxonomy);
+        }
+
+        //TODO DELETE IF NOT EXISTS
+    }
+
+    public function addNewTerm($term_name, $taxonomy)
+    {
+        global $wpdb;
+
+        $wpdb->insert(
+            $wpdb->terms,
+            array(
+                'name' => $term_name,
+                'slug' => sanitize_title($term_name),
+                'term_group' => 0,
+            ),
+            array('%s', '%s', '%d')
+        );
+
+        $term_id = $wpdb->insert_id;
+
+        $wpdb->insert(
+            $wpdb->term_taxonomy,
+            array(
+                'term_id' => $term_id,
+                'taxonomy' => $taxonomy,
+                'description' => '',
+                'parent' => 0,
+                'count' => 0,
+            ),
+            array('%d', '%s', '%s', '%d', '%d')
+        );
+    }
+
+    public function getfacets($facets, $facetType)
+    {
+        $values = $facets['data']['facets']['items'];
+
+        foreach ($values as $value) {
+            if ($value['name'] === $facetType) {
+                return $value;
+            }
+        }
+        return null;
+    }
 }
 
 WP_CLI::add_command('sync-products', 'syncProducts');
