@@ -109,7 +109,7 @@ const Input = ({ onChange, ...rest }: InputProps) => {
     () =>
       debounce(() => {
         store.setState((state) => ({ ...state, open: false }))
-      }, 100),
+      }, 250),
     [],
   )
 
