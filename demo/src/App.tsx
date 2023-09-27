@@ -5,9 +5,9 @@ import { CartDropdown } from './pages/CartDropdown'
 import { ProductsPage } from './pages/ProductsPage'
 import { CheckoutPage } from './pages/CheckoutPage'
 import { SearchPage } from './pages/SearchPage'
-import { Search } from '../../components/search/Search'
 import { LoginPage } from './pages/LoginPage'
 import { CartPage } from './pages/CartPage'
+import { SearchField } from '../../components/search-field/SearchField'
 
 function App() {
   const rootRoute = new RootRoute({
@@ -17,7 +17,7 @@ function App() {
           <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800 flex items-center justify-between">
             <div>LIVV</div>
             <div className="w-2/3">
-              <Search />
+              <SearchField />
             </div>
             <div className="flex space-x-4 text-2xl">
               <Icon name="avatar" />

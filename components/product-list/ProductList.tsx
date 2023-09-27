@@ -82,7 +82,11 @@ interface ProductListProps {
 
 export const ProductList = (props: ProductListProps) => {
   return (
-    <ProductListWrapper className="ProductList" infinitePagination searchInputProps={ props.searchInputProps }>
+    <ProductListWrapper
+      className="ProductList"
+      infinitePagination
+      searchInputProps={props.searchInputProps}
+    >
       {({ loading, products, pagination, error }) => {
         if (loading['productList:search'] && products.length === 0) return <div>Loading...</div>
         if (error) return <div>Error</div>

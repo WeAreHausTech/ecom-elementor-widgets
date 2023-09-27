@@ -8,6 +8,10 @@ const availableSortOptions = [
   { label: 'Pris stigande', value: { price: SortOrder.Asc } },
 ]
 
+const searchInputProps = {
+  take: 12,
+}
+
 export const ProductsPage = () => {
   return (
     <>
@@ -16,7 +20,7 @@ export const ProductsPage = () => {
         defaultSortOption={availableSortOptions[0]}
       />
 
-      <ProductList />
+      <ProductList searchInputProps={{ ...searchInputProps }} />
     </>
   )
 }
