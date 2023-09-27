@@ -24,17 +24,27 @@ class syncProducts extends WP_CLI_Command
 
         $this->syncProducts($vendureProducts, $wpProducts);
 
-        WP_CLI::success('Total: ' . $this->total . ', updated: ' . $this->updated . ' deleted: ' . $this->deleted . ', created: ' . $this->created);
+        WP_CLI::success(', updated: ' . $this->updated . ' deleted: ' . $this->deleted . ', created: ' . $this->created);
     }
 
-    public function getAllProductsFromVendure()
+    public function getAllProductsFromVendure($allProducts = [], int $skipCount = 0)
     {
-        $products = (new \Haus\Queries\Product)->get();
+
+        $products = (new \Haus\Queries\Product)->get($skipCount);
 
         if (!isset($products['data']['products']['items'])) {
-            return false;
+            return $allProducts;
         }
-        return $products['data']['products']['items'];
+
+        $data = $products['data']['products'];
+        $allProducts = array_merge($allProducts, $data['items']);
+
+        if (count($allProducts) < $data['totalItems']) {
+            $skip = $skipCount + count($data['items']);
+            return $this->getAllProductsFromVendure($allProducts, $skip);
+        }
+
+        return $allProducts;
     }
 
     public function getAllProductsFromWp()
@@ -46,7 +56,7 @@ class syncProducts extends WP_CLI_Command
         $post_type = 'produkter';
 
         $query = $wpdb->prepare(
-            "SELECT p.ID, p.post_title, pm.meta_key, pm.meta_value
+            "SELECT p.ID, p.post_title, p.post_name, pm.meta_key, pm.meta_value
              FROM $table_name_posts p 
              LEFT JOIN $table_name_postmeta pm ON p.ID = pm.post_id
              WHERE post_type = %s",
@@ -63,6 +73,7 @@ class syncProducts extends WP_CLI_Command
                 $productsData[$productId] = array(
                     'id' => $productId,
                     'post_title' => $product['post_title'],
+                    'post_name' => $product['post_name'],
                 );
             }
 
@@ -71,6 +82,7 @@ class syncProducts extends WP_CLI_Command
 
         return $productsData;
     }
+
 
     public function syncProducts($vendureProducts, $wpProducts)
     {
@@ -86,7 +98,6 @@ class syncProducts extends WP_CLI_Command
                 if ($wpProduct['vendure_id'] === $vendureProduct['id']) {
                     $foundInVendure = true;
                     $this->updateProduct($wpProduct, $vendureProduct);
-                    $this->total++;
                     break;
                 }
             }
@@ -132,33 +143,18 @@ class syncProducts extends WP_CLI_Command
 
     public function updateProduct($wpProduct, $vendureProduct)
     {
-
         $updateName = $wpProduct['post_title'] !== $vendureProduct['name'];
-        $updateSlug = $wpProduct['vendure_slug'] !== $vendureProduct['slug'];
-
-        global $wpdb;
-        if ($updateName) {
-            $wpdb->update(
-                $wpdb->posts,
-                array('post_title' => $vendureProduct['name']),
-                array('ID' => $wpProduct['id']),
-                array('%s'),
-                array('%d')
-            );
-        }
-
-        if ($updateSlug) {
-            $wpdb->query(
-                $wpdb->prepare(
-                    "UPDATE $wpdb->postmeta SET meta_value = %s WHERE post_id = %d AND meta_key = %s",
-                    $vendureProduct['slug'],
-                    $wpProduct['id'],
-                    'vendure_slug'
-                )
-            );
-        }
+        $updateSlug = $wpProduct['post_name'] !== $vendureProduct['slug'];
 
         if ($updateName || $updateSlug) {
+            $my_post = array(
+                'ID' => $wpProduct['id'],
+                'post_title' => $vendureProduct['name'],
+                'post_name' => $vendureProduct['slug'],
+            );
+
+            wp_insert_post($my_post);
+
             $this->updated++;
         }
     }
@@ -169,9 +165,9 @@ class syncProducts extends WP_CLI_Command
             'post_title' => $product['name'],
             'post_status' => 'publish',
             'post_type' => 'produkter',
+            'post_name' => $product['slug'],
             'meta_input' => [
                 'vendure_id' => $product['id'],
-                'vendure_slug' => $product['slug'],
             ]
         ];
 
