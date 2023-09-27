@@ -64,6 +64,9 @@ import { useActiveOrder } from '@/hooks/useActiveOrder'
 // Authentication
 import { Login, LoginProps } from './_widgets/account/Login'
 
+// Misc
+import { Brand, BrandProps } from './_store-components/brand/Brand'
+
 // error
 import { isErrorResult, isError, isApolloError, getError } from '@/utils/utils'
 export { isErrorResult, isError, isApolloError, getError }
@@ -99,6 +102,7 @@ export {
   OrderLines,
   VendureImage,
   Search,
+  Brand,
 }
 
 export type {
@@ -123,6 +127,7 @@ export type {
   ProductDetailProps,
   VendureImageProps,
   SearchProps,
+  BrandProps,
 }
 
 export type { Pagination, Loading, GenericApolloError } from '@/types'
