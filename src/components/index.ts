@@ -9,6 +9,7 @@ import {
 } from './_store-components/search-products/SearchProducts'
 import { SearchResults, SearchResultProps } from './_store-components/search-results/SearchResults'
 import { ProductDetail, ProductDetailProps } from './_widgets/product-detail/ProductDetail'
+import { Search, SearchProps } from './_widgets/search/Search'
 
 // Cart
 import { AddToCart, AddToCartProps } from './_store-components/add-to-cart/AddToCart'
@@ -97,6 +98,7 @@ export {
   ProductDetail,
   OrderLines,
   VendureImage,
+  Search,
 }
 
 export type {
@@ -120,6 +122,7 @@ export type {
   AdjustOrderLineProps,
   ProductDetailProps,
   VendureImageProps,
+  SearchProps,
 }
 
 export type { Pagination, Loading, GenericApolloError } from '@/types'

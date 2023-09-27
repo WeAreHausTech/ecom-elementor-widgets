@@ -1,6 +1,6 @@
-import { CustomHTMLElement } from '@/types'
+import { ChildrenProps, CustomHTMLElement } from '@/types'
 import { searchChannel } from '@/eventbus/channels/search-channel'
-import { debounce, get } from 'lodash'
+import { debounce } from 'lodash'
 import {
   HTMLAttributes,
   ReactEventHandler,
@@ -18,11 +18,13 @@ import {
 } from '@/providers/vendure/products/products'
 import { ListedProductFragment, ListedCollectionFragment, SearchInput } from '@/gql/graphql'
 import { getFragmentData } from '@/gql'
+import { renderChildren } from '@/utils/utils'
+import { VendureImage } from '@/components'
 
 type SearchInputProps = Pick<SearchInput, 'take' | 'groupByProduct'>
-interface SearchProps extends CustomHTMLElement {
+export interface SearchProps extends CustomHTMLElement {
   searchInputProps?: SearchInputProps
-  children: ReactNode | ((props: { term: string }) => ReactNode)
+  children: ChildrenProps<{ term: string }>
 }
 
 export const Search = ({
@@ -69,7 +71,7 @@ export const Search = ({
   const debouncedEmitter = useMemo(
     () =>
       debounce((term) => {
-        if (term) {
+        if (term && term.length > 2) {
           searchChannel.emit('search:term', term)
           getSearchResults()
         }
@@ -83,20 +85,14 @@ export const Search = ({
 
   return (
     <Wrapper {...rest} data-loading={loading} data-open={open}>
-      {typeof children === 'function'
-        ? children({
-            term,
-          })
-        : children}
+      {renderChildren(children, { term })}
     </Wrapper>
   )
 }
 
 // Input ==================================================
-interface InputProps extends CustomHTMLElement {
-  clearElement?: ReactNode
-}
-const Input = ({ wrapperTag: Wrapper = 'div', clearElement, onChange, ...rest }: InputProps) => {
+type InputProps = CustomHTMLElement<HTMLInputElement>
+const Input = ({ onChange, ...rest }: InputProps) => {
   const term = useStore(variablesStore, ({ term }) => term)
 
   const handleChange: ReactEventHandler<HTMLInputElement> = (event) => {
@@ -104,20 +100,26 @@ const Input = ({ wrapperTag: Wrapper = 'div', clearElement, onChange, ...rest }:
     setTerm(event.currentTarget.value)
   }
 
+  const debouncedOnBlur = useMemo(
+    () =>
+      debounce(() => {
+        store.setState((state) => ({ ...state, open: false }))
+      }, 100),
+    [],
+  )
+
+  const handleOnFocus = () => {
+    store.setState((state) => ({ ...state, open: true }))
+  }
+
   return (
-    <Wrapper style={{ display: 'flex', flexDirection: 'column' }}>
-      <div style={{ position: 'relative' }}>
-        <input
-          {...rest}
-          value={term}
-          onChange={handleChange}
-          onFocus={() => store.setState((state) => ({ ...state, open: true }))}
-          onBlur={() => store.setState((state) => ({ ...state, open: false }))}
-          style={{ width: '100%' }}
-        />
-        <Clear style={{ position: 'absolute', right: 0 }}>{clearElement}</Clear>
-      </div>
-    </Wrapper>
+    <input
+      {...rest}
+      value={term}
+      onChange={handleChange}
+      onFocus={handleOnFocus}
+      onBlur={debouncedOnBlur}
+    />
   )
 }
 
@@ -143,15 +145,13 @@ const Clear = ({ children = 'X', onClick, ...rest }: ClearProps) => {
 // Search Content =========================================
 
 interface SearchContentProps extends CustomHTMLElement {
-  children?:
-    | ReactNode
-    | ((props: {
-        term: string
-        totalItems: number
-        items: ListedProductFragment[]
-        collections: ListedCollectionFragment[]
-        loading: boolean
-      }) => ReactNode)
+  children?: ChildrenProps<{
+    term: string
+    totalItems: number
+    items: ListedProductFragment[]
+    collections: ListedCollectionFragment[]
+    loading: boolean
+  }>
 }
 const SearchContent = ({ wrapperTag: Wrapper = 'div', children, ...rest }: SearchContentProps) => {
   const term = useStore(variablesStore, ({ term }) => term)
@@ -161,15 +161,13 @@ const SearchContent = ({ wrapperTag: Wrapper = 'div', children, ...rest }: Searc
 
   return (
     <Wrapper {...rest} style={{ display: open ? 'inherit' : 'none' }}>
-      {typeof children === 'function'
-        ? children({
-            term,
-            totalItems,
-            items,
-            collections,
-            loading,
-          })
-        : children}
+      {renderChildren(children, {
+        term,
+        totalItems,
+        items,
+        collections,
+        loading,
+      })}
     </Wrapper>
   )
 }
@@ -207,13 +205,41 @@ const ProductImage = ({ item, imageSize, ...rest }: ProductImageProps) => {
   const { productAsset } = item
   const { preview } = productAsset || { preview: '' }
 
+  return <VendureImage src={preview} alt={item.productName} imageSize={imageSize} {...rest} />
+}
+
+interface SearchContentCollectionItemProps extends HTMLAttributes<HTMLAnchorElement> {
+  item: ListedCollectionFragment
+  children: ReactNode
+}
+const SearchContentCollectionItem = ({
+  item,
+  onClick,
+  children,
+  ...rest
+}: SearchContentCollectionItemProps) => {
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    onClick?.(event)
+    store.setState((state) => ({ ...state, open: false }))
+  }
+
   return (
-    <img
-      src={`${preview}?w=${get(imageSize, [0], '128')}&h=${get(imageSize, [1], '128')}`}
-      alt={item.productName}
-      {...rest}
-    />
+    <a href={`/collections/${item.slug}`} onClick={handleClick} {...rest}>
+      {children}
+    </a>
   )
+}
+
+interface CollectionImageProps extends HTMLAttributes<HTMLImageElement> {
+  item: ListedCollectionFragment
+  imageSize?: [number, number]
+}
+
+const CollectionImage = ({ item, imageSize, ...rest }: CollectionImageProps) => {
+  const { featuredAsset } = item
+  const { preview } = featuredAsset || { preview: '' }
+
+  return <VendureImage src={preview} alt={item.name} imageSize={imageSize} {...rest} />
 }
 
 // Store ==================================================
@@ -249,6 +275,9 @@ const searchResultsStore = new Store<SearchResultsStoreProps>({
 })
 
 Search.Input = Input
+Search.Clear = Clear
 Search.Content = SearchContent
 Search.ContentProductItem = SearchContentProductItem
 Search.ProductImage = ProductImage
+Search.ContentCollectionItem = SearchContentCollectionItem
+Search.CollectionImage = CollectionImage

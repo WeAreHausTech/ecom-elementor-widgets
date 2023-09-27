@@ -1,10 +1,10 @@
-import { ReactNode, useCallback, useEffect, useMemo } from 'react'
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 import { useImmer } from 'use-immer'
 import { ListedProductFragment, SearchInput, SortOrder } from '@/gql/graphql'
 import { LISTED_PRODUCT_FRAGMENT, SEARCH } from '@/providers/vendure/products/products'
 import { getFragmentData } from '@/gql'
 import { searchFilterChannel } from '@/eventbus/channels/search-filter-channel'
-import { isNumber } from 'lodash'
+import { isEqual, isNumber, omit } from 'lodash'
 import { CustomHTMLElement, GenericApolloError, Loading, Pagination, SearchProduct } from '@/types'
 import { usePreviousPersistent } from '@/hooks/usePreviousPersistent'
 import { useCustomLazyQuery } from '@/hooks/useCustomLazyQuery'
@@ -54,9 +54,11 @@ export const ProductList = ({
 
   const [products, setProducts] = useImmer<SearchProduct[]>([])
 
+  const [pagination, setPagination] = useState<Pagination | undefined>(undefined)
+
   const [getSearchData, { loading, error, data }] = useCustomLazyQuery(SEARCH)
 
-  const pagination = useMemo<Pagination | undefined>(() => {
+  const calculatedPagination = useMemo<Pagination | undefined>(() => {
     const { skip } = variables
     const { take } = searchInputProps || {}
 
@@ -65,7 +67,9 @@ export const ProductList = ({
       const { totalItems } = search
       const calculatedSkip = infinitePagination ? products.length : skip
       const totalPages = Math.ceil(totalItems / take)
-      const currentPage = infinitePagination ? Math.ceil(calculatedSkip / take) : Math.ceil(skip / take) + 1
+      const currentPage = infinitePagination
+        ? Math.ceil(calculatedSkip / take)
+        : Math.ceil(skip / take) + 1
       const canGoBack = currentPage > 1
       const canGoForward = currentPage < totalPages
 
@@ -100,6 +104,18 @@ export const ProductList = ({
   }, [variables, data, products, infinitePagination, searchInputProps, setVariables])
 
   useEffect(() => {
+    if (
+      calculatedPagination &&
+      !isEqual(
+        omit(calculatedPagination, ['nextPage', 'prevPage']),
+        omit(pagination, ['nextPage', 'prevPage']),
+      )
+    ) {
+      setPagination(calculatedPagination)
+    }
+  }, [calculatedPagination, pagination, setPagination])
+
+  useEffect(() => {
     const unsubscribeFromSort = searchFilterChannel.on('search-filter:sort', (data) => {
       setProducts([])
       setVariables((draft) => {
@@ -132,11 +148,13 @@ export const ProductList = ({
 
       const initialTake = searchInputProps?.take || 100
 
-      const allVariablesSet = isNumber(take) && isNumber(skip) && isNumber(prevTake) && isNumber(prevSkip)
-      const variablesChanged = (term !== prevTerm ||
+      const allVariablesSet =
+        isNumber(take) && isNumber(skip) && isNumber(prevTake) && isNumber(prevSkip)
+      const variablesChanged =
+        term !== prevTerm ||
         collectionId !== prevCollectionId ||
         facetValueFilters !== prevFacetValueFilters ||
-        sort !== prevSort)
+        sort !== prevSort
 
       // If some variables except skip and take changed, we need to refetch and then return
       if (variablesChanged) {
@@ -149,10 +167,8 @@ export const ProductList = ({
         })
         return
       }
-        
-      if (
-        (allVariablesSet && take === initialTake && take === prevTake)
-      ) {
+
+      if (allVariablesSet && take === initialTake && take === prevTake) {
         getSearchData({
           variables: { input: variables },
         })
@@ -163,7 +179,6 @@ export const ProductList = ({
         variables: { input: variables },
       })
     }
-
   }, [variables, previousVariables, searchInputProps?.take, products, getSearchData, setVariables])
 
   useEffect(() => {
