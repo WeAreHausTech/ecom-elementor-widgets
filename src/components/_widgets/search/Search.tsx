@@ -34,7 +34,6 @@ export const Search = ({
   ...rest
 }: SearchProps) => {
   const variables = useStore(variablesStore, (state) => state)
-  const { term } = variables
   const open = useStore(store, (state) => state.open)
   const { groupByProduct, take } = searchInputProps || { groupByProduct: true, take: 3 }
 
@@ -47,7 +46,6 @@ export const Search = ({
   }, [groupByProduct, take])
 
   const [getSearchResults, { loading }] = useCustomLazyQuery(SEARCH, {
-    variables: { input: variables },
     onCompleted: (data) => {
       const { items, collections, totalItems } = data.search
       const productItems = items.map((item) => getFragmentData(LISTED_PRODUCT_FRAGMENT, item))
@@ -70,22 +68,29 @@ export const Search = ({
 
   const debouncedEmitter = useMemo(
     () =>
-      debounce((term) => {
-        if (term && term.length > 2) {
-          searchChannel.emit('search:term', term)
-          getSearchResults()
+      debounce((variables) => {
+        if (variables.term && variables.term.length > 2) {
+          searchChannel.emit('search:term', variables.term)
+          getSearchResults({ variables: { input: variables } })
+        } else {
+          searchResultsStore.setState((state) => ({
+            ...state,
+            collections: [],
+            items: [],
+            totalItems: 0,
+          }))
         }
       }, 500),
     [getSearchResults],
   )
 
   useEffect(() => {
-    debouncedEmitter(term)
-  }, [term, debouncedEmitter])
+    debouncedEmitter(variables)
+  }, [variables, debouncedEmitter])
 
   return (
     <Wrapper {...rest} data-loading={loading} data-open={open}>
-      {renderChildren(children, { term })}
+      {renderChildren(children, { term: variables.term })}
     </Wrapper>
   )
 }
