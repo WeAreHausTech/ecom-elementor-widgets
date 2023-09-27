@@ -10,19 +10,19 @@ import {
   ORDER_DETAIL_FRAGMENT,
   REMOVE_ORDER_LINE,
 } from '@/providers/vendure/order/order'
-import { CustomHTMLElement } from '@/types'
+import { ChildrenProps, CustomHTMLElement } from '@/types'
 import { get, isError } from 'lodash'
 import { HTMLAttributes, ReactNode, useCallback, useEffect, useState } from 'react'
-import { formatPrice, getPrice } from '@/utils/utils'
+import { formatPrice, getPrice, renderChildren } from '@/utils/utils'
 import { Price } from '@/components/_store-components/price/Price'
 
 export interface OrderLinesProps extends CustomHTMLElement {
   itemTag?: keyof JSX.IntrinsicElements
   loadingElement?: ReactNode
-  children: (props: {
+  children: ChildrenProps<{
     orderLines: readonly ListedOrderLinesFragment[]
     totalPrice: string
-  }) => ReactNode
+  }>
 }
 
 export const OrderLines = ({
@@ -62,7 +62,9 @@ export const OrderLines = ({
     return <div {...rest}>{error.message}</div>
   }
   return (
-    <Wrapper {...rest}>{loading ? loadingElement : children({ orderLines, totalPrice })}</Wrapper>
+    <Wrapper {...rest}>
+      {loading ? loadingElement : renderChildren(children, { orderLines, totalPrice })}
+    </Wrapper>
   )
 }
 

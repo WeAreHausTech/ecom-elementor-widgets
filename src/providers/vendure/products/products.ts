@@ -146,16 +146,27 @@ export const DETAILED_PRODUCT = graphql(/* GraphQL */ `
       preview
     }
     variants {
+      ...DetailedProductVariant
+    }
+  }
+`)
+
+export const DETAILED_PRODUCT_VARIANT = graphql(/* GraphQL */ `
+  fragment DetailedProductVariant on ProductVariant {
+    id
+    name
+    price
+    priceWithTax
+    currencyCode
+    sku
+    stockLevel
+    featuredAsset {
       id
-      name
-      priceWithTax
-      currencyCode
-      sku
-      stockLevel
-      featuredAsset {
-        id
-        preview
-      }
+      preview
+    }
+    assets {
+      id
+      preview
     }
   }
 `)

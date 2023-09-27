@@ -27,35 +27,37 @@ export const useCustomMutation = <
 
   const [mutateFunction, mutationResult] = useMutation(mutation, {
     ...options,
-    onCompleted: (data) => {
-      if (options?.onCompleted) {
-        options.onCompleted(data)
-      }
-
-      if (isErrorResult(data)) {
-        for (const key in data as { [key: string]: ErrorResult }) {
-          if ((data as { [key: string]: ErrorResult })[key].hasOwnProperty('errorCode')) {
-            const err = (data as { [key: string]: ErrorResult })[key]
-            setError(err)
-            break
-          }
-        }
-      }
-    },
-    onError: (error) => {
-      if (options?.onError) {
-        options.onError(error)
-      }
-      setError(error)
-    },
   })
 
   const mutate = useCallback(
-    (
+    async (
       options?: MutationHookOptions<NoInfer<TData>, NoInfer<TVariables>, TContext, TCache>,
     ): Promise<FetchResult<TData>> => {
       setError(undefined)
-      return mutateFunction(options)
+      return mutateFunction({
+        ...options,
+        onCompleted: (data) => {
+          if (options?.onCompleted) {
+            options.onCompleted(data)
+          }
+
+          if (isErrorResult(data)) {
+            for (const key in data as { [key: string]: ErrorResult }) {
+              if ((data as { [key: string]: ErrorResult })[key].hasOwnProperty('errorCode')) {
+                const err = (data as { [key: string]: ErrorResult })[key]
+                setError(err)
+                break
+              }
+            }
+          }
+        },
+        onError: (error) => {
+          if (options?.onError) {
+            options.onError(error)
+          }
+          setError(error)
+        },
+      })
     },
     [mutateFunction],
   )

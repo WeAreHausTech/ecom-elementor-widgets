@@ -9,14 +9,10 @@ import {
   OperationVariables,
   QueryResult,
 } from '@apollo/client'
-import { HTMLAttributes } from 'react'
+import { HTMLAttributes, ReactNode } from 'react'
 import { ErrorResult, FacetValueResult, ListedProductFragment } from './gql/graphql'
 
 export type Maybe<T> = T | undefined
-
-export interface CustomHTMLElement extends Omit<HTMLAttributes<HTMLOrSVGElement>, 'children'> {
-  wrapperTag?: keyof JSX.IntrinsicElements
-}
 
 export interface Pagination {
   totalItems: number
@@ -73,3 +69,18 @@ export type RequireOnlyOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<
   {
     [K in Keys]-?: Required<Pick<T, K>> & Partial<Record<Exclude<Keys, K>, undefined>>
   }[Keys]
+
+// export type ChildrenProps<T> = ((props: T) => ReactNode | ReactElement) | ReactNode
+
+export type ChildrenProps<ChildProps = object> = ((props: ChildProps) => ReactNode) | ReactNode
+
+export type CustomHTMLElement<T = HTMLOrSVGElement, U = object> = Omit<
+  HTMLAttributes<T>,
+  'children'
+> & {
+  wrapperTag?: keyof JSX.IntrinsicElements
+} & U
+
+// export interface CustomHTMLElement extends Omit<HTMLAttributes<HTMLOrSVGElement>, 'children'> {
+//   wrapperTag?: keyof JSX.IntrinsicElements
+// }

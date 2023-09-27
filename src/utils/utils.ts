@@ -1,7 +1,8 @@
 import { CurrencyCode, ErrorCode, ErrorResult, PriceRange, SinglePrice } from '@/gql/graphql'
-import { GenericApolloError } from '@/types'
+import { GenericApolloError, ChildrenProps } from '@/types'
 import { ApolloError } from '@apollo/client'
 import { some } from 'lodash'
+import { ReactNode, ReactElement } from 'react'
 
 export const getPrice = (priceWithTax: PriceRange | SinglePrice | number): number => {
   if (priceWithTax == null) {
@@ -52,4 +53,14 @@ export const getError = (error: GenericApolloError): GenericApolloError | null =
     }
   }
   return null
+}
+
+export const renderChildren = <T extends object>(
+  children: ChildrenProps<T>,
+  props: T,
+): ReactNode | ReactElement => {
+  if (typeof children === 'function') {
+    return (children as (props: T) => ReactNode | ReactElement)(props)
+  }
+  return children
 }
