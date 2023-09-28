@@ -69,7 +69,7 @@ class syncProducts extends WP_CLI_Command
 
         //Exists in Vendure, not in WP
         $create = array_diff($vendureProducts, $wpProducts);
- 
+
         array_walk($create, function ($product) {
             $this->createProduct($product);
         });
@@ -111,13 +111,13 @@ class syncProducts extends WP_CLI_Command
         $updateSlug = $wpProduct['post_name'] !== $vendureProduct['slug'];
 
         if ($updateName || $updateSlug) {
-            $my_post = array(
+            $new = array(
                 'ID' => $wpProduct['id'],
                 'post_title' => $vendureProduct['productName'],
                 'post_name' => $vendureProduct['slug'],
             );
 
-            wp_update_post($my_post);
+            wp_update_post($new);
 
             $this->updated++;
         }
