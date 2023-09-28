@@ -61,14 +61,14 @@ class syncProducts extends WP_CLI_Command
     public function syncProducts($vendureProducts, $wpProducts)
     {
         //Exists in WP, not in Vendure
-        $delete = array_diff($wpProducts, $vendureProducts);
+        $delete = array_diff_key($wpProducts, $vendureProducts);
 
         array_walk($delete, function ($product) {
             $this->deleteProduct($product['id']);
         });
 
         //Exists in Vendure, not in WP
-        $create = array_diff($vendureProducts, $wpProducts);
+        $create = array_diff_key($vendureProducts, $wpProducts);
 
         array_walk($create, function ($product) {
             $this->createProduct($product);
