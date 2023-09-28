@@ -17,7 +17,7 @@ class syncProducts extends WP_CLI_Command
 
         $wpProducts = $this->getAllProductsFromWp();
 
-        if (!$vendureProducts) {
+        if (!$vendureProducts || count($vendureProducts) === 0) {
             WP_CLI::error('No products found');
             return;
         }
@@ -27,24 +27,15 @@ class syncProducts extends WP_CLI_Command
         WP_CLI::success(', updated: ' . $this->updated . ' deleted: ' . $this->deleted . ', created: ' . $this->created);
     }
 
-    public function getAllProductsFromVendure($allProducts = [], int $skipCount = 0)
+    public function getAllProductsFromVendure($allProducts = [])
     {
 
-        $products = (new \Haus\Queries\Product)->get($skipCount);
-
-        if (!isset($products['data']['products']['items'])) {
+        $products = (new \Haus\Queries\Product)->get();
+        if (!isset($products['data']['search']['items'])) {
             return $allProducts;
         }
 
-        $data = $products['data']['products'];
-        $allProducts = array_merge($allProducts, $data['items']);
-
-        if (count($allProducts) < $data['totalItems']) {
-            $skip = $skipCount + count($data['items']);
-            return $this->getAllProductsFromVendure($allProducts, $skip);
-        }
-
-        return $allProducts;
+        return $products['data']['search']['items'];
     }
 
     public function getAllProductsFromWp()
@@ -95,7 +86,7 @@ class syncProducts extends WP_CLI_Command
             }
 
             foreach ($vendureProducts as $vendureProduct) {
-                if ($wpProduct['vendure_id'] === $vendureProduct['id']) {
+                if ($wpProduct['vendure_id'] === $vendureProduct['productId']) {
                     $foundInVendure = true;
                     $this->updateProduct($wpProduct, $vendureProduct);
                     break;
@@ -115,7 +106,7 @@ class syncProducts extends WP_CLI_Command
                     return;
                 }
 
-                if ($vendureProduct['id'] === $wpProduct['vendure_id']) {
+                if ($vendureProduct['productId'] === $wpProduct['vendure_id']) {
                     $foundInWordPress = true;
                     break;
                 }
@@ -143,13 +134,13 @@ class syncProducts extends WP_CLI_Command
 
     public function updateProduct($wpProduct, $vendureProduct)
     {
-        $updateName = $wpProduct['post_title'] !== $vendureProduct['name'];
+        $updateName = $wpProduct['post_title'] !== $vendureProduct['productName'];
         $updateSlug = $wpProduct['post_name'] !== $vendureProduct['slug'];
 
         if ($updateName || $updateSlug) {
             $my_post = array(
                 'ID' => $wpProduct['id'],
-                'post_title' => $vendureProduct['name'],
+                'post_title' => $vendureProduct['productName'],
                 'post_name' => $vendureProduct['slug'],
             );
 
@@ -162,12 +153,12 @@ class syncProducts extends WP_CLI_Command
     public function createProduct($product)
     {
         $productPost = [
-            'post_title' => $product['name'],
+            'post_title' => $product['productName'],
             'post_status' => 'publish',
             'post_type' => 'produkter',
             'post_name' => $product['slug'],
             'meta_input' => [
-                'vendure_id' => $product['id'],
+                'vendure_id' => $product['productId'],
             ]
         ];
 
