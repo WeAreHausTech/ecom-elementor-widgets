@@ -15,6 +15,7 @@ class Product extends BaseQuery
                     productId
                     productName
                     slug
+                    facetValueIds
                 }
                 totalItems
             }
