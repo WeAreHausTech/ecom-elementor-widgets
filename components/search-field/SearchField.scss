@@ -2,6 +2,7 @@
   border-radius: 20px;
   background: var(--White);
   position: relative;
+  z-index: 99;
 
   .search-input-wrapper {
     display: flex;

@@ -14,7 +14,7 @@ document.addEventListener(
 
       if (facetsAttributes) {
         const facetArray = facetsAttributes.split(',').map(Number)
-        
+
         if (facetArray?.length > 0) {
           facetValues = facetArray.map((facet) => {
             return { and: facet }

@@ -3,44 +3,36 @@ import {
   Price,
   ProductList as ProductListWrapper,
   Pagination as IPagination,
-  AddToCart,
 } from '@haus-tech/ecom-components'
 import { Button } from '../button/Button'
 
-const ProductCard = ({ product }: { product: ListedProductFragment }) => {
-  // TODO: AddToCart should not be here, remove when single product page is implemented
+interface ProductCardProps {
+  product: ListedProductFragment
+}
+const ProductCard = ({ product }: ProductCardProps) => {
   return (
-    <AddToCart wrapperTag="section">
-      {({ addProductToCart }) => {
-        return (
-          <div
-            className="product-list-product-card"
-            onClick={() => addProductToCart(product.productId, 1)}
-          >
-            <div className="product-image-wrapper">
-              <img
-                src={product.productAsset?.preview}
-                alt={product.productName}
-                className="product-image"
-              />
-            </div>
-            <div className="product-info">
-              <div className="product-label">Brand</div>
-              <div className="product-name">{product.productName}</div>
-              <Price
-                className="product-price"
-                price={product.price}
-                priceWithTax={product.priceWithTax}
-                currencyCode={product.currencyCode}
-              >
-                {({ formattedPrice }) => <>{formattedPrice}</>}
-              </Price>
-              <button className="product-add-to-cart-button">Lägg till i varukorg</button>
-            </div>
-          </div>
-        )
-      }}
-    </AddToCart>
+    <a className="product-list-product-card" href={`/products/${product.slug}`}>
+      <div className="product-image-wrapper">
+        <img
+          src={product.productAsset?.preview}
+          alt={product.productName}
+          className="product-image"
+        />
+      </div>
+      <div className="product-info">
+        <div className="product-label">Brand</div>
+        <div className="product-name">{product.productName}</div>
+        <Price
+          className="product-price"
+          price={product.price}
+          priceWithTax={product.priceWithTax}
+          currencyCode={product.currencyCode}
+        >
+          {({ formattedPrice }) => <>{formattedPrice}</>}
+        </Price>
+        <button className="product-add-to-cart-button">Lägg till i varukorg</button>
+      </div>
+    </a>
   )
 }
 

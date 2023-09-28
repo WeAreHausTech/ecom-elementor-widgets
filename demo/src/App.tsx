@@ -3,6 +3,7 @@ import { Outlet, RootRoute, Route, Router, RouterProvider } from '@tanstack/reac
 import { Icon } from '../../components/icon/Icon'
 import { CartDropdown } from './pages/CartDropdown'
 import { ProductsPage } from './pages/ProductsPage'
+import { ProductPage } from './pages/ProductPage'
 import { CheckoutPage } from './pages/CheckoutPage'
 import { SearchPage } from './pages/SearchPage'
 import { LoginPage } from './pages/LoginPage'
@@ -38,6 +39,12 @@ function App() {
     component: () => <ProductsPage />,
   })
 
+  const productRoute = new Route({
+    getParentRoute: () => rootRoute,
+    path: '/products/*',
+    component: () => <ProductPage />,
+  })
+
   const checkoutRoute = new Route({
     getParentRoute: () => rootRoute,
     path: '/checkout',
@@ -68,6 +75,7 @@ function App() {
     searchRoute,
     cartRoute,
     indexRoute,
+    productRoute,
   ])
 
   const router = new Router({ routeTree })
