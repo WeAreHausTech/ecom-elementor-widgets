@@ -22,7 +22,7 @@ class syncProducts extends WP_CLI_Command
             return;
         }
 
-        $this->syncProducts($vendureProducts, $wpProducts);
+        // $this->syncProducts($vendureProducts, $wpProducts);
 
         WP_CLI::success(', updated: ' . $this->updated . ' deleted: ' . $this->deleted . ', created: ' . $this->created);
     }
@@ -177,63 +177,134 @@ class syncProducts extends WP_CLI_Command
             return;
         }
 
-        $categories = $this->getfacets($facets, 'category');
-        $brands = $this->getfacets($facets, 'brand');
+        $vendureBrands = $this->getfacets($facets, 'varumärke');
+        $wpBrands = $this->getAllTermsFromWp('produkter-varumarken');
 
-        $this->syncAttributes('produkter-kategorier', $categories);
+        $this->syncAttributes('produkter-varumarken', $vendureBrands, $wpBrands);
 
+        // $vendureCategories = $this->getfacets($facets, 'category');
+        // $wpTerms = $this->getAllTermsFromWp('produkter-kategorier');
+        // $this->syncAttributes('produkter-kategorier', $vendureCategories, $wpTerms);
 
         WP_CLI::success('syncTaxonomies success');
     }
 
-    public function syncAttributes($taxonomy, $data)
+    public function syncAttributes($taxonomy, $vednureTerms, $wpTerms)
     {
-        global $wpdb;
 
-        foreach ($data['values'] as $value) {
-            $term_name = $value['name'];
+        if (!$wpTerms) {
+            // foreach ($vednureTerms['values'] as $vednureTerm) {
+            //     $this->addNewTerm($vednureTerm, $taxonomy);
+            // }
+        }
 
-            $existing_term = $wpdb->get_row(
-                $wpdb->prepare("SELECT * FROM {$wpdb->terms} WHERE name = %s", $term_name)
-            );
+        foreach ($wpTerms as $wpTerm) {
+            $foundInVendure = false;
 
-            if ($existing_term) {
+            if (!isset($wpTerm['vendure_term_id'])) {
+                $this->deleteTerm($wpTerm['id'], $taxonomy);
                 continue;
             }
 
-            $this->addNewTerm($term_name, $taxonomy);
+            foreach ($vednureTerms['values'] as $vednureTerm) {
+                if ($wpTerm['vendure_term_id'] === $vednureTerm['id']) {
+                    $foundInVendure = true;
+                    $this->updateTerm($wpTerm, $vednureTerm, $taxonomy);
+                    break;
+                }
+            }
+
+            if (!$foundInVendure) {
+                $this->deleteTerm($wpTerm['id'], $taxonomy);
+            }
         }
 
-        //TODO DELETE IF NOT EXISTS
+        foreach ($vednureTerms['values'] as $vednureTerm) {
+            $foundInWordPress = false;
+
+            foreach ($wpTerms as $wpTerm) {
+                if (!isset($wpTerm['vendure_term_id'])) {
+                    return;
+                }
+
+                if ($vednureTerm['id'] === $wpTerm['vendure_term_id']) {
+                    $foundInWordPress = true;
+                    break;
+                }
+            }
+
+            if (!$foundInWordPress) {
+                $this->addNewTerm($vednureTerm, $taxonomy);
+            }
+        }
     }
 
-    public function addNewTerm($term_name, $taxonomy)
+    public function getAllTermsFromWp($taxonomy)
     {
         global $wpdb;
 
-        $wpdb->insert(
-            $wpdb->terms,
-            array(
-                'name' => $term_name,
-                'slug' => sanitize_title($term_name),
-                'term_group' => 0,
-            ),
-            array('%s', '%s', '%d')
+        $table_name_posts = $wpdb->prefix . 'terms';
+        $table_name_postmeta = $wpdb->prefix . 'termmeta';
+
+        $query = $wpdb->prepare(
+            "SELECT tt.term_id, t.name, t.slug, tm.meta_key, tm.meta_value
+             FROM wp_term_taxonomy tt
+             LEFT JOIN $table_name_posts t ON tt.term_id = t.term_id
+             LEFT JOIN $table_name_postmeta tm ON tt.term_id = tm.term_id
+             WHERE taxonomy = %s",
+            $taxonomy
         );
 
-        $term_id = $wpdb->insert_id;
+        $terms = $wpdb->get_results($query, ARRAY_A);
+        $termData = [];
 
-        $wpdb->insert(
-            $wpdb->term_taxonomy,
-            array(
-                'term_id' => $term_id,
-                'taxonomy' => $taxonomy,
-                'description' => '',
-                'parent' => 0,
-                'count' => 0,
-            ),
-            array('%d', '%s', '%s', '%d', '%d')
-        );
+        foreach ($terms as $term) {
+            $termId = $term['term_id'];
+
+            if (!isset($productsData[$termId])) {
+                $termData[$termId] = array(
+                    'id' => $termId,
+                    'name' => $term['name'],
+                    'slug' => $term['slug'],
+                );
+            }
+
+            $termData[$termId][$term['meta_key']] = $term['meta_value'];
+        }
+
+        return $termData;
+    }
+
+
+    public function updateTerm($wpTerm, $vednureTerm, $taxonomy)
+    {
+        $updateName = wp_specialchars_decode($wpTerm['name']) !== $vednureTerm['name'];
+        $updateSlug = $wpTerm['slug'] !== $vednureTerm['code'];
+
+        if ($updateName || $updateSlug) {
+            $args = array(
+                'name' => $vednureTerm['name'],
+                'slug' => $vednureTerm['code'],
+            );
+
+            wp_update_term($wpTerm['id'], $taxonomy, $args);
+        }
+    }
+
+    public function deleteTerm($id, $taxonomy)
+    {
+        wp_delete_term($id, $taxonomy);
+    }
+
+    public function addNewTerm($value, $taxonomy)
+    {
+        $term = wp_insert_term($value['name'], $taxonomy, ['slug' => $value['code']]);
+
+        if ($term['term_id']) {
+            add_term_meta($term['term_id'], 'vendure_term_id', $value['id'], true);
+        }
+
+        $this->created++;
     }
 
     public function getfacets($facets, $facetType)
