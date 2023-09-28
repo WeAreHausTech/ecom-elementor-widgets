@@ -5,22 +5,21 @@ namespace Haus\Queries;
 
 class Product extends BaseQuery
 {
-    public function get($skip)
+    public function get()
     {
 
         $this->query = <<<GRAPHQL
-            query {
-                products  (options: {skip: $skip, sort: { id: ASC }}) {
-                    items {
-                        id
-                        name
-                        slug
-                        updatedAt
-                    }
-                    totalItems
+        query  {
+            search (input: {take: 9999}) {
+                items {
+                    productId
+                    productName
+                    slug
                 }
-          
+                totalItems
             }
+      
+        }
         GRAPHQL;
 
         return $this->fetch();
