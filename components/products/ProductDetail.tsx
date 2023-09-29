@@ -5,6 +5,7 @@ import {
   ProductDetail as ProductDetailComponent,
 } from '@haus-tech/ecom-components'
 import { Icon } from '../icon/Icon'
+import { Spinner } from '../spinner/Spinner'
 
 interface ProductDetailProps {
   slug: string
@@ -33,14 +34,14 @@ export const ProductDetail = ({ slug }: ProductDetailProps) => {
             )
           }}
         </ProductDetailComponent.Content>
-        {/* <ProductDetailComponent.AddToCart className="add-to-cart">
+        <ProductDetailComponent.AddToCart className="add-to-cart">
           {({ loading }) => (
             <>
-              <Icon name="cart" />
-              <span>{loading ? <Spinner></Spinner> : 'Add to cart'}</span>
+              {loading ? <Spinner></Spinner> : <Icon name="cart" />}
+              <span>{loading ? 'Adding to cart...' : 'Add to cart'}</span>
             </>
           )}
-        </ProductDetailComponent.AddToCart> */}
+        </ProductDetailComponent.AddToCart>
         <ProductDetailComponent.InStock className="stock-level">
           {({ inStock }) => (
             <>

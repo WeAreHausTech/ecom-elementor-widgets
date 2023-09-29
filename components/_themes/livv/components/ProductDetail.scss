@@ -111,9 +111,6 @@
       &[data-error]:not([data-error='']) {
         background: var(--Red, #b3d6cd);
       }
-      &[data-loading='true'] {
-        background: var(--Gray, #b3d6cd);
-      }
 
       .icon-cart {
         width: 24px;
