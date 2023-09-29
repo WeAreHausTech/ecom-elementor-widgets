@@ -1,4 +1,4 @@
-import { Checkout } from '../../../components/checkout/Widgets/Checkout'
+import { Checkout } from '../../../components/checkout/Checkout'
 
 export const CheckoutPage = () => {
   return (

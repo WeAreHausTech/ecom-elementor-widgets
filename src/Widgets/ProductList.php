@@ -25,7 +25,7 @@ class ProductList extends Widget_Base
 
     public function get_categories()
     {
-        return ['ecommerce'];
+        return ['haus-ecom'];
     }
 
     public function get_keywords()

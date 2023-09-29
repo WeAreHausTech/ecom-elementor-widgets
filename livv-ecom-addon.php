@@ -35,10 +35,19 @@ add_action('init', function () {
         return;
     }
 
+    // Register category
+    \Elementor\Plugin::instance()
+        ->elements_manager
+        ->add_category('haus-ecom', ['title' => 'Haus ecom']);
+
     // Register widgets
     \Elementor\Plugin::instance()
         ->widgets_manager
         ->register(new \Haus\Widgets\ProductList());
+
+    \Elementor\Plugin::instance()
+        ->widgets_manager
+        ->register(new \Haus\Widgets\Checkout());
 });
 
 

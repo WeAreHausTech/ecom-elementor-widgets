@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { ProductList } from './product-list/ProductList'
+import { Checkout } from './checkout/Checkout'
 import { VendureApolloProvider } from '@haus-tech/ecom-components'
 import './index.scss'
 
@@ -26,6 +27,17 @@ document.addEventListener(
         <React.StrictMode>
           <VendureApolloProvider apiUrl="https://livv-ecom-test.azurewebsites.net/shop-api">
             <ProductList searchInputProps={{ facetValueFilters: facetValues }} />
+          </VendureApolloProvider>
+        </React.StrictMode>,
+      )
+    }
+
+    const checkout = document.getElementById('checkout')
+    if (checkout) {
+      ReactDOM.createRoot(checkout!).render(
+        <React.StrictMode>
+          <VendureApolloProvider apiUrl="https://livv-ecom-test.azurewebsites.net/shop-api">
+            <Checkout />
           </VendureApolloProvider>
         </React.StrictMode>,
       )
