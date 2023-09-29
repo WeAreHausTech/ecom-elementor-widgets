@@ -181,11 +181,11 @@ const ProductInStock = ({
   ...rest
 }: ProductInStockProps) => {
   const { selectedProductVariant } = useStore(store, (state) => state)
-
+  const inStock = selectedProductVariant?.stockLevel === 'IN_STOCK'
   return (
-    <Wrapper {...rest}>
+    <Wrapper {...rest} data-in-stock={inStock}>
       {renderChildren(children, {
-        inStock: selectedProductVariant?.stockLevel === 'IN_STOCK',
+        inStock,
       })}
     </Wrapper>
   )
