@@ -1,13 +1,19 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
-import { useImmer } from 'use-immer'
-import { ListedProductFragment, SearchInput, SortOrder } from '@/gql/graphql'
-import { LISTED_PRODUCT_FRAGMENT, SEARCH } from '@/providers/vendure/products/products'
-import { getFragmentData } from '@/gql'
 import { searchFilterChannel } from '@/eventbus/channels/search-filter-channel'
-import { isEqual, isNumber, omit } from 'lodash'
-import { CustomHTMLElement, GenericApolloError, Loading, Pagination, SearchProduct } from '@/types'
-import { usePreviousPersistent } from '@/hooks/usePreviousPersistent'
-import { useCustomLazyQuery } from '@/hooks/useCustomLazyQuery'
+import { getFragmentData } from '@/gql'
+import { ListedProductFragment, SearchInput, SearchQuery, SortOrder } from '@/gql/graphql'
+import { useCustomQuery } from '@/hooks/useCustomQuery'
+import { LISTED_PRODUCT_FRAGMENT, SEARCH } from '@/providers/vendure/products/products'
+import {
+  ChildrenProps,
+  CustomHTMLElement,
+  GenericApolloError,
+  Pagination,
+  SearchProduct,
+} from '@/types'
+import { getPrice, renderChildren } from '@/utils/utils'
+import { isNumber } from 'lodash'
+import { useCallback, useEffect, useState } from 'react'
+import { useImmer } from 'use-immer'
 
 type SearchInputProps = Pick<
   SearchInput,
@@ -16,18 +22,20 @@ type SearchInputProps = Pick<
 export interface ProductListProps extends CustomHTMLElement {
   searchInputProps?: SearchInputProps
   infinitePagination?: boolean
-  children: (props: {
-    loading: Loading<'productList:search'>
+  frontEndPagination?: boolean
+  children: ChildrenProps<{
+    loading: boolean
     error: GenericApolloError
     products: ListedProductFragment[]
     pagination?: Pagination
-  }) => ReactNode
+  }>
 }
 
 export const ProductList = ({
   wrapperTag: Wrapper = 'div',
   searchInputProps,
-  infinitePagination = false,
+  infinitePagination = true,
+  frontEndPagination = true,
   children,
   ...rest
 }: ProductListProps) => {
@@ -37,7 +45,7 @@ export const ProductList = ({
     facetValueFilters = [{ or: [] }],
     groupByProduct = true,
     sort = { name: SortOrder.Asc },
-    take = 100,
+    take = 25,
   } = searchInputProps || {}
 
   const [variables, setVariables] = useImmer<SearchInput>({
@@ -50,22 +58,45 @@ export const ProductList = ({
     skip: 0,
   })
 
-  const previousVariables = usePreviousPersistent(variables)
-
   const [products, setProducts] = useImmer<SearchProduct[]>([])
 
   const [pagination, setPagination] = useState<Pagination | undefined>(undefined)
 
-  const [getSearchData, { loading, error, data }] = useCustomLazyQuery(SEARCH)
+  const setupProductItems = useCallback((data: SearchQuery) => {
+    const productItems = data.search.items.map((item) => {
+      const productItem = getFragmentData(LISTED_PRODUCT_FRAGMENT, item) as SearchProduct
+      // TODO: Append facet values to product item
+      return productItem
+    })
 
-  const calculatedPagination = useMemo<Pagination | undefined>(() => {
-    const { skip } = variables
-    const { take } = searchInputProps || {}
+    return productItems
+  }, [])
 
-    if (data && isNumber(skip) && isNumber(take)) {
-      const { search } = data
-      const { totalItems } = search
+  const { loading, error, data } = useCustomQuery(SEARCH, {
+    variables: {
+      input: frontEndPagination
+        ? { term, collectionId, facetValueFilters, groupByProduct, sort, take: 99999999 }
+        : variables,
+    },
+    onCompleted: (data) => {
+      if (frontEndPagination) return
+      const productItems = setupProductItems(data)
+
+      setProducts((draft) => {
+        infinitePagination ? draft.push(...productItems) : (draft = productItems)
+        calculatePagination(data, draft)
+        return draft
+      })
+    },
+  })
+
+  const calculatePagination = useCallback(
+    (data: SearchQuery, products: SearchProduct[]) => {
+      const skip = variables.skip || 0
+      const take = searchInputProps?.take || 25
+      const { totalItems } = data.search
       const calculatedSkip = infinitePagination ? products.length : skip
+
       const totalPages = Math.ceil(totalItems / take)
       const currentPage = infinitePagination
         ? Math.ceil(calculatedSkip / take)
@@ -77,6 +108,7 @@ export const ProductList = ({
         if (canGoForward) {
           setVariables((draft) => {
             draft.skip = infinitePagination ? calculatedSkip : skip + take
+            draft.take = take
           })
         }
       }
@@ -85,11 +117,12 @@ export const ProductList = ({
         if (canGoBack && !infinitePagination) {
           setVariables((draft) => {
             draft.skip = skip - take
+            draft.take = take
           })
         }
       }
 
-      return {
+      setPagination({
         totalItems,
         totalPages,
         currentPage,
@@ -99,21 +132,54 @@ export const ProductList = ({
         infinitePagination,
         nextPage,
         prevPage,
-      }
-    }
-  }, [variables, data, products, infinitePagination, searchInputProps, setVariables])
+      })
+    },
+    [searchInputProps?.take, variables.skip, infinitePagination, setVariables],
+  )
 
+  // Setup data for frontend pagination
   useEffect(() => {
-    if (
-      calculatedPagination &&
-      !isEqual(
-        omit(calculatedPagination, ['nextPage', 'prevPage']),
-        omit(pagination, ['nextPage', 'prevPage']),
-      )
-    ) {
-      setPagination(calculatedPagination)
-    }
-  }, [calculatedPagination, pagination, setPagination])
+    if (!frontEndPagination || !data || !isNumber(variables.skip) || !isNumber(variables.take))
+      return
+
+    // productItems is all items that exist
+    const allProductItems = setupProductItems(data)
+    allProductItems.sort((a, b) => {
+      if (variables.sort?.name === SortOrder.Asc) {
+        return a.productName.localeCompare(b.productName)
+      }
+      if (variables.sort?.name === SortOrder.Desc) {
+        return b.productName.localeCompare(a.productName)
+      }
+      if (variables.sort?.price === SortOrder.Asc) {
+        return getPrice(a.price) - getPrice(b.price)
+      }
+      if (variables.sort?.price === SortOrder.Desc) {
+        return getPrice(b.price) - getPrice(a.price)
+      }
+      return 0
+    })
+
+    const productItems = allProductItems.slice(variables.skip, variables.skip + variables.take)
+
+    // Set products
+    setProducts((draft) => {
+      infinitePagination ? draft.push(...productItems) : (draft = productItems)
+      calculatePagination(data, draft)
+      return draft
+    })
+  }, [
+    data,
+    frontEndPagination,
+    take,
+    variables.skip,
+    variables.take,
+    variables.sort,
+    infinitePagination,
+    setProducts,
+    calculatePagination,
+    setupProductItems,
+  ])
 
   useEffect(() => {
     const unsubscribeFromSort = searchFilterChannel.on('search-filter:sort', (data) => {
@@ -133,95 +199,14 @@ export const ProductList = ({
     }
   }, [pagination?.currentPage, infinitePagination, take, setVariables, setProducts])
 
-  const fetchSearchResults = useCallback(() => {
-    // Check if we need to refetch the data
-    if (previousVariables && variables) {
-      const { term, collectionId, facetValueFilters, take, skip, sort } = variables
-      const {
-        term: prevTerm,
-        collectionId: prevCollectionId,
-        facetValueFilters: prevFacetValueFilters,
-        take: prevTake,
-        skip: prevSkip,
-        sort: prevSort,
-      } = previousVariables
-
-      const initialTake = searchInputProps?.take || 100
-
-      const allVariablesSet =
-        isNumber(take) && isNumber(skip) && isNumber(prevTake) && isNumber(prevSkip)
-      const variablesChanged =
-        term !== prevTerm ||
-        collectionId !== prevCollectionId ||
-        facetValueFilters !== prevFacetValueFilters ||
-        sort !== prevSort
-
-      // If some variables except skip and take changed, we need to refetch and then return
-      if (variablesChanged) {
-        getSearchData({
-          variables: { input: variables },
-        })
-
-        setVariables((draft) => {
-          draft.take = initialTake
-        })
-        return
-      }
-
-      if (allVariablesSet && take === initialTake && take === prevTake) {
-        getSearchData({
-          variables: { input: variables },
-        })
-      }
-    } else if (!previousVariables && products.length === 0) {
-      // Should be first fetch
-      getSearchData({
-        variables: { input: variables },
-      })
-    }
-  }, [variables, previousVariables, searchInputProps?.take, products, getSearchData, setVariables])
-
-  useEffect(() => {
-    fetchSearchResults()
-  }, [fetchSearchResults, variables])
-
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search)
-    if (searchParams.has('search')) {
-      const searchTerm = searchParams.get('search')
-      setVariables((draft) => {
-        draft.term = searchTerm
-      })
-    }
-  }, [setVariables])
-
-  useEffect(() => {
-    if (data?.search?.items) {
-      const { items } = data.search
-      const productItems = items.map((item) => {
-        const productItem = getFragmentData(LISTED_PRODUCT_FRAGMENT, item) as SearchProduct
-        // TODO: Append facet values to product item
-
-        return productItem
-      })
-      if (infinitePagination) {
-        setProducts((draft) => {
-          const existingProducts = draft.map((item) => item.productId)
-          const newProducts = productItems.filter(
-            (item) => !existingProducts.includes(item.productId),
-          )
-
-          draft.push(...newProducts)
-        })
-      } else {
-        setProducts(productItems)
-      }
-    }
-  }, [data, infinitePagination, setProducts])
-
   return (
     <Wrapper {...rest}>
-      {children({ loading: { 'productList:search': loading }, products, pagination, error })}
+      {renderChildren(children, {
+        loading: loading || false,
+        error,
+        products,
+        pagination,
+      })}
     </Wrapper>
   )
 }

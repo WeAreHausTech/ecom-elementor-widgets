@@ -2,6 +2,7 @@ import { graphql } from '../../../gql'
 
 export const LISTED_PRODUCT_FRAGMENT = graphql(/* GraphQL */ `
   fragment ListedProduct on SearchResult {
+    sku
     productId
     productVariantId
     productName
