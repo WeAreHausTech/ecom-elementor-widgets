@@ -1,8 +1,8 @@
 {
-  "name": "wearehaus/haus-elementor-ecom-widgets",
+  "name": "wearehaustech/haus-elementor-ecom-widgets",
   "description": "Component manager",
   "keywords": ["wordpress", "plugin"],
-  "homepage": "https://github.com/digitalunited/components",
+  "homepage": "https://haus.se",
   "license": "MIT",
   "authors": [
     {
