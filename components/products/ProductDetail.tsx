@@ -8,12 +8,14 @@ import { Icon } from '../icon/Icon'
 import { Spinner } from '../spinner/Spinner'
 
 interface ProductDetailProps {
-  slug: string
+  slug?: string
+  id?: string
 }
 
-export const ProductDetail = ({ slug }: ProductDetailProps) => {
+export const ProductDetail = ({ slug = "", id = ""}: ProductDetailProps) => {
+
   return (
-    <ProductDetailComponent slug={slug} className="ProductDetail">
+    <ProductDetailComponent id={id} slug={slug} className="ProductDetail">
       <div className="product-detail">
         {/* <BreadCrumbs className="breadcrumbs" /> */}
         <ProductDetailComponent.Content className="product-content">
