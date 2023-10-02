@@ -3,7 +3,7 @@ import { createElement } from 'react'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode
-  color?: 'default' | 'blue'
+  color?: 'default' | 'blue' | 'white'
   variant?: 'default' | 'outline'
   rounded?: 'default' | 'full'
 }
