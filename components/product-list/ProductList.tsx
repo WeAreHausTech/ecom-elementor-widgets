@@ -30,7 +30,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
         >
           {({ formattedPrice }) => <>{formattedPrice}</>}
         </Price>
-        <button className="product-add-to-cart-button">Lägg till i varukorg</button>
       </div>
     </a>
   )
