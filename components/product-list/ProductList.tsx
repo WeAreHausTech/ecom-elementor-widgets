@@ -3,13 +3,24 @@ import {
   Price,
   ProductList as ProductListWrapper,
   Pagination as IPagination,
+  GroupedFacetValues,
 } from '@haus-tech/ecom-components'
 import { Button } from '../button/Button'
 
 interface ProductCardProps {
   product: ListedProductFragment
+  facetValues: GroupedFacetValues
 }
-const ProductCard = ({ product }: ProductCardProps) => {
+const ProductCard = ({ product, facetValues }: ProductCardProps) => {
+  const getBrand = (facetValues: GroupedFacetValues) => {
+    const { facetValueIds } = product
+    const brandFacets = facetValues['brand']
+    if (!brandFacets) return null
+    const brandFacet = brandFacets.find((facetValue) => facetValueIds.includes(facetValue.id))
+    if (!brandFacet) return null
+    return brandFacet.name
+  }
+
   return (
     <a className="product-list-product-card" href={`/products/${product.slug}`}>
       <div className="product-image-wrapper">
@@ -20,7 +31,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         />
       </div>
       <div className="product-info">
-        <div className="product-label">Brand</div>
+        <div className="product-label">{getBrand(facetValues) || ' '}</div>
         <div className="product-name">{product.productName}</div>
         <Price
           className="product-price"
@@ -78,7 +89,8 @@ export const ProductList = (props: ProductListProps) => {
       infinitePagination
       searchInputProps={props.searchInputProps}
     >
-      {({ loading, products, pagination, error }) => {
+      {({ loading, products, facetValues, pagination, error }) => {
+        console.log(facetValues)
         if (loading && products.length === 0) return <div>Loading...</div>
         if (error) return <div>Error</div>
         if (!products.length) return <div>Inga produkter hittades</div>
@@ -86,7 +98,7 @@ export const ProductList = (props: ProductListProps) => {
           <>
             <div className="grid grid-cols-4 gap-8">
               {products.map((product) => (
-                <ProductCard key={product.productId} product={product} />
+                <ProductCard key={product.productId} product={product} facetValues={facetValues!} />
               ))}
             </div>
             <Pagination pagination={pagination} />
