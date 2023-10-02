@@ -43,4 +43,18 @@
       background: var(--Blue-Light, #e9f4f0);
     }
   }
+
+  &.white {
+    background: var(--White, #fff);
+    border-color: var(--Border-Color);
+
+    &:hover {
+      background: var(--Gray-Medium);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      background: var(--White, #fff);
+    }
+  }
 }
