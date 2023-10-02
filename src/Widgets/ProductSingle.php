@@ -52,7 +52,7 @@ class ProductSingle extends Widget_Base
         ?>
         <div class="webien-elementor-preview">
             <h1 style="display:flex; justify-content: center; align-items:center; margin: 2rem 0 2rem 0;">
-                Produkten inte kunde hittas
+                Produkten kunde inte hittas
             </h1>
         </div>
         <?php
