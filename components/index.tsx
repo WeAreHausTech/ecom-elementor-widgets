@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { ProductList } from './product-list/ProductList'
 import { Checkout } from './checkout/Checkout'
 import { VendureApolloProvider } from '@haus-tech/ecom-components'
+import { ProductDetail } from './products/ProductDetail'
 import './index.scss'
 
 document.addEventListener(
@@ -38,6 +39,18 @@ document.addEventListener(
         <React.StrictMode>
           <VendureApolloProvider apiUrl="https://livv-ecom-test.azurewebsites.net/shop-api">
             <Checkout />
+          </VendureApolloProvider>
+        </React.StrictMode>,
+      )
+    }
+
+    const ProductSingle = document.getElementById('product-single')
+    if (ProductSingle) {
+      const id = ProductSingle.attributes.getNamedItem('data-product')?.value
+      ReactDOM.createRoot(ProductSingle!).render(
+        <React.StrictMode>
+          <VendureApolloProvider apiUrl="https://livv-ecom-test.azurewebsites.net/shop-api">
+            {id && <ProductDetail id={id}></ProductDetail>}
           </VendureApolloProvider>
         </React.StrictMode>,
       )
