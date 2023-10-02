@@ -21,17 +21,17 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-@import './select/Select.scss';
+@import './product-filter-select/ProductFilterSelect.scss';
 @import './icon/Icon.scss';
 @import './button/Button.scss';
 @import './input/Input.scss';
 
-@import './product-list/ProductList.scss';
 @import './cart-order-lines/CartOrderLines.scss';
 @import './cart-price/CartPrice.scss';
 @import './checkout/Checkout.scss';
 @import './search-field/SearchField.scss';
 
+@import './_themes/livv/components/ProductList.scss';
 @import './_themes/livv/components/ProductDetail.scss';
 
 // Global styles

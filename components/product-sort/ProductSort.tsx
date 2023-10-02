@@ -2,7 +2,7 @@ import {
   ProductSort as ProductSortWrapper,
   SearchResultSortParameter,
 } from '@haus-tech/ecom-components'
-import { Select } from '../select/Select'
+import { ProductFilterSelect } from '../product-filter-select/ProductFilterSelect'
 
 type SortOption = { label: string; value: SearchResultSortParameter }
 
@@ -15,7 +15,7 @@ export const ProductSort = ({ availableSortOptions, defaultSortOption }: Product
   return (
     <ProductSortWrapper className="ProductSort mb-6 mt-6">
       {({ handleSortOptionChange }) => (
-        <Select
+        <ProductFilterSelect
           options={availableSortOptions}
           onValueChange={(value) => handleSortOptionChange(JSON.parse(value))}
           defaultValue={defaultSortOption ? JSON.stringify(defaultSortOption.value) : undefined}

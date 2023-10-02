@@ -3,19 +3,26 @@ import * as RadixSelect from '@radix-ui/react-select'
 import classnames from 'classnames'
 import { ForwardedRef, ReactNode, forwardRef } from 'react'
 import { Icon } from '../icon/Icon'
+import { Button } from '../button/Button'
 
-interface SelectProps extends RadixSelect.SelectProps {
+interface ProductFilterSelectProps extends RadixSelect.SelectProps {
   options: { label: string; value: string | SearchResultSortParameter }[]
 }
 
-export const Select = ({ options, defaultValue, onValueChange }: SelectProps) => {
+export const ProductFilterSelect = ({
+  options,
+  defaultValue,
+  onValueChange,
+}: ProductFilterSelectProps) => {
   return (
-    <RadixSelect.Root defaultValue={defaultValue} onValueChange={onValueChange}>
-      <RadixSelect.Trigger className="SelectTrigger" aria-label="Food">
-        <RadixSelect.Value placeholder="Select a fruit…" />
-        <RadixSelect.Icon className="SelectIcon">
-          <Icon name="chevron-down" />
-        </RadixSelect.Icon>
+    <RadixSelect.Root defaultValue={defaultValue} onValueChange={onValueChange} defaultOpen open>
+      <RadixSelect.Trigger className="SelectTrigger" aria-label="Food" asChild>
+        <Button className="SelectButton" variant="default" rounded="full" color="blue">
+          <RadixSelect.Value className="SelectValue" />
+          <RadixSelect.Icon className="SelectIcon">
+            <Icon name="chevron-down" />
+          </RadixSelect.Icon>
+        </Button>
       </RadixSelect.Trigger>
       <RadixSelect.Content className="SelectContent">
         <RadixSelect.ScrollUpButton className="SelectScrollButton">
