@@ -90,7 +90,6 @@ export const ProductList = (props: ProductListProps) => {
       searchInputProps={props.searchInputProps}
     >
       {({ loading, products, facetValues, pagination, error }) => {
-        console.log(facetValues)
         if (loading && products.length === 0) return <div>Loading...</div>
         if (error) return <div>Error</div>
         if (!products.length) return <div>Inga produkter hittades</div>
