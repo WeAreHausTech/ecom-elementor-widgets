@@ -6,12 +6,12 @@ export const CartPage = () => {
   const navigate = useNavigate()
   return (
     <div className="CartPage">
-      <div className="p-20 flex gap-20">
-        <div className="w-2/3">
+      <div className=" flex flex-col gap-20 sm:flex-row">
+        <div className="w-full sm:w-2/3">
           <CartOrderLines className="cart-page" edit price remove />
         </div>
-        <div className="w-1/3">
-          <CartPrice className="cart-page-price" subTotal tax shipping totalWithTax/>
+        <div className="w-full sm:w-1/3">
+          <CartPrice className="cart-page-price" subTotal tax shipping totalWithTax />
         </div>
       </div>
       <button className="Button blue" onClick={() => navigate({ to: '/checkout' })}>

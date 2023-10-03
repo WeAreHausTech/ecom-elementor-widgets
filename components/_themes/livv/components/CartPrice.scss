@@ -1,0 +1,35 @@
+:root {
+    --cart-text-color: var(--Almost-Black, #3e4849);
+}
+  
+
+.cart-page-price {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  .item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--cart-text-color);
+  }
+  .totalWithTax {
+    font-family: Inter;
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%; /* 36.4px */
+    letter-spacing: -0.26px;
+  }
+
+  .shipping,
+  .taxTotal,
+  .subTotal {
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
+  }
+}

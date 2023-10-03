@@ -53,13 +53,13 @@ $breakpoints: (
 @import './button/Button.scss';
 @import './input/Input.scss';
 
-@import './cart-order-lines/CartOrderLines.scss';
-@import './cart-price/CartPrice.scss';
 @import './checkout/Checkout.scss';
 @import './search-field/SearchField.scss';
 
 @import './_themes/livv/components/ProductDetail.scss';
 @import './_themes/livv/components/ProductList.scss';
+@import './_themes/livv/components/CartOrderLines.scss';
+@import './_themes/livv/components/CartPrice.scss';
 
 // Global styles
 input,
