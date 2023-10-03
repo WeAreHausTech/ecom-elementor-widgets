@@ -1,4 +1,5 @@
 import { OrderLines } from '@haus-tech/ecom-components'
+import { Icon } from '../icon/Icon'
 
 interface CartProps {
   className?: string
@@ -21,21 +22,26 @@ export const CartOrderLines = (props: CartProps) => {
           <div className="orderLines">
             {orderLines.map((orderLine) => (
               <OrderLines.Item className="orderline" orderLine={orderLine}>
-                {props.remove && (
-                  <OrderLines.Remove className="orderline-remove" orderLine={orderLine} />
-                )}
                 <OrderLines.Image className="orderline-image" orderLine={orderLine} />
                 <div className="orderline-content">
-                  <div className="orderline-text">
-                    <p className="orderline-brand">Brand</p>
-                    <p className="orderline-product-name">{orderLine.productVariant.name}</p>
-                    {props.edit ? (
-                      <OrderLines.Quantity className="orderline-quantity" orderLine={orderLine} />
-                    ) : (
-                      <p className="orderline-quantity">{orderLine.quantity} st</p>
-                    )}
+                  <div className="orderline-product">
+                    <div className="orderline-text">
+                      <p className="orderline-brand">Brand</p>
+                      <p className="orderline-product-name">{orderLine.productVariant.name}</p>
+                    </div>
+                    <div className="orderline-quantity-wrapper">
+                      {props.edit ? (
+                        <OrderLines.Quantity className="orderline-quantity" orderLine={orderLine} />
+                      ) : (
+                        <p className="orderline-quantity">{orderLine.quantity} st</p>
+                      )}
+                      {props.remove && (
+                        <OrderLines.Remove className="orderline-remove" orderLine={orderLine}>
+                          <Icon className="icon-remove" name="trashcan" />
+                        </OrderLines.Remove>
+                      )}{' '}
+                    </div>
                   </div>
-
                   {props.price && (
                     <OrderLines.Price className="orderline-price" orderLine={orderLine} />
                   )}

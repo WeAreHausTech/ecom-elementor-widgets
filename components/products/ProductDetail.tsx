@@ -44,14 +44,6 @@ export const ProductDetail = ({ slug = "", id = ""}: ProductDetailProps) => {
             </>
           )}
         </ProductDetailComponent.AddToCart>
-        <ProductDetailComponent.InStock className="stock-level">
-          {({ inStock }) => (
-            <>
-              <Icon name={inStock ? 'check' : 'close'} />
-              {inStock ? 'In stock' : 'Out of stock'}
-            </>
-          )}
-        </ProductDetailComponent.InStock>
 
         <ProductDetailComponent.Info className="product-info">
           <ProductDetailComponent.InfoItem className="product-info-item" value={'description'}>
@@ -60,23 +52,6 @@ export const ProductDetail = ({ slug = "", id = ""}: ProductDetailProps) => {
                 <>
                   <ProductDetailComponent.InfoTrigger className="product-info-trigger trigger">
                     <span>Description</span>
-                    <Icon name={isOpen ? 'minus' : 'plus'} />
-                  </ProductDetailComponent.InfoTrigger>
-                  <ProductDetailComponent.InfoContent
-                    value="description"
-                    className="product-info-content"
-                  />
-                </>
-              )
-            }}
-          </ProductDetailComponent.InfoItem>
-
-          <ProductDetailComponent.InfoItem className="product-info-item" value={'specifications'}>
-            {({ isOpen }) => {
-              return (
-                <>
-                  <ProductDetailComponent.InfoTrigger className="product-info-trigger trigger">
-                    <span>Specifications</span>
                     <Icon name={isOpen ? 'minus' : 'plus'} />
                   </ProductDetailComponent.InfoTrigger>
                   <ProductDetailComponent.InfoContent

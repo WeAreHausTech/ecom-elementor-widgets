@@ -31,16 +31,16 @@
   }
 
   &.blue {
-    background: var(--Blue-Light, #e9f4f0);
-    border-color: var(--Blue-Light, #e9f4f0);
+    background: var(--Turquoise, #b3d6cd);
+    border-color: var(--Turquoise, #b3d6cd);
 
     &:hover {
-      background: var(--Turquoise, #b3d6cd);
+      background: var(--Blue-hover-color, #a0c5bc);
     }
 
     &:disabled {
       opacity: 0.5;
-      background: var(--Blue-Light, #e9f4f0);
+      background: var(--Turquoise, #b3d6cd);
     }
   }
 

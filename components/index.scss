@@ -14,6 +14,7 @@
   --Turquoise: rgb(179, 214, 205);
   --Yellow: rgb(255, 213, 132);
   --Red: rgb(239, 126, 111);
+  --Blue-hover-color: #A0C5BC;
 
   --Breakpoint-Phone: 480px;
   --Breakpoint-Tablet: 768px;
@@ -53,13 +54,14 @@ $breakpoints: (
 @import './button/Button.scss';
 @import './input/Input.scss';
 
-@import './cart-order-lines/CartOrderLines.scss';
-@import './cart-price/CartPrice.scss';
 @import './checkout/Checkout.scss';
 @import './search-field/SearchField.scss';
 
 @import './_themes/livv/components/ProductDetail.scss';
 @import './_themes/livv/components/ProductList.scss';
+@import './_themes/livv/components/CartOrderLines.scss';
+@import './_themes/livv/components/CartPrice.scss';
+@import './_themes/livv/components/Cart.scss';
 
 // Global styles
 input,
