@@ -4,7 +4,7 @@ import {
   isError,
 } from '@haus-tech/ecom-components'
 import { Form, Formik, FormikValues } from 'formik'
-import { size, some } from 'lodash'
+import { some } from 'lodash'
 import * as Yup from 'yup'
 import { Input } from '../../input/Input'
 import { Button } from '../../button/Button'
@@ -36,7 +36,7 @@ const CustomerInformation = ({ onSuccess }: CustomerInformationProps) => {
           <div>
             {error && <div className="error">{error.message}</div>}
             <Formik
-              key={size(initialValues)}
+              key={savedData?.id}
               initialValues={initialValues}
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
