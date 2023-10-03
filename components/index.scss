@@ -15,24 +15,51 @@
   --Yellow: rgb(255, 213, 132);
   --Red: rgb(239, 126, 111);
 
+  --Breakpoint-Phone: 480px;
+  --Breakpoint-Tablet: 768px;
+  --Breakpoint-Desktop: 1024px;
+  --Breakpoint-Desktop-Large: 1280px;
+
+  --Border-Radius: 8px;
+  --Border-Radius-Small: 4px;
+  --Border-Radius-Large: 20px;
   --Border-Color: rgba(0, 0, 0, 0.1);
   --Border-Color-Active: rgba(0, 0, 0, 0.2);
+
+  --Padding: 8px;
+  --Padding-Small: 4px;
+  --Padding-Medium: 12px;
+  --Padding-Large: 16px;
+  --Padding-XLarge: 24px;
 }
 
+$breakpoints: (
+  'tablet': (
+    min-width: 768px,
+  ),
+  'desktop': (
+    min-width: 1024px,
+  ),
+  'desktop-large': (
+    min-width: 1280px,
+  ),
+) !default;
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import './_mixins.scss';
 
 @import './select/Select.scss';
 @import './icon/Icon.scss';
 @import './button/Button.scss';
 @import './input/Input.scss';
 
-@import './product-list/ProductList.scss';
 @import './cart-order-lines/CartOrderLines.scss';
 @import './cart-price/CartPrice.scss';
 @import './checkout/Checkout.scss';
 @import './search-field/SearchField.scss';
 
 @import './_themes/livv/components/ProductDetail.scss';
+@import './_themes/livv/components/ProductList.scss';
 
 // Global styles
 input,

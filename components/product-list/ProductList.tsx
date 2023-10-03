@@ -31,7 +31,7 @@ const ProductCard = ({ product, facetValues }: ProductCardProps) => {
         />
       </div>
       <div className="product-info">
-        <div className="product-label">{getBrand(facetValues) || ' '}</div>
+        <div className="product-brand">Brand</div>
         <div className="product-name">{product.productName}</div>
         <Price
           className="product-price"
@@ -67,7 +67,7 @@ const Pagination = ({ pagination }: { pagination?: IPagination }) => {
       <div className="pagination-buttons">
         <Button
           className="load-more-button"
-          color="blue"
+          color="white"
           disabled={!canGoForward}
           onClick={nextPage}
         >
@@ -95,11 +95,9 @@ export const ProductList = (props: ProductListProps) => {
         if (!products.length) return <div>Inga produkter hittades</div>
         return (
           <>
-            <div className="grid grid-cols-4 gap-8">
-              {products.map((product) => (
-                <ProductCard key={product.productId} product={product} facetValues={facetValues!} />
-              ))}
-            </div>
+            {products.map((product) => (
+              <ProductCard key={product.productId} product={product} facetValues={facetValues!} />
+            ))}
             <Pagination pagination={pagination} />
           </>
         )
