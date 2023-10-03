@@ -31,7 +31,7 @@ const ProductCard = ({ product, facetValues }: ProductCardProps) => {
         />
       </div>
       <div className="product-info">
-        <div className="product-brand">Brand</div>
+        <div className="product-brand">{getBrand(facetValues || '')}</div>
         <div className="product-name">{product.productName}</div>
         <Price
           className="product-price"
