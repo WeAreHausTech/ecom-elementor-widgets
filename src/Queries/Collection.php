@@ -11,6 +11,8 @@ class Collection extends BaseQuery
                     items {
                     id
                     name
+                    slug
+                    parentId
                     }
                 }
             }

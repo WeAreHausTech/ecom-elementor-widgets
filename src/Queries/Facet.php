@@ -12,8 +12,9 @@ class Facet extends BaseQuery
                         id
                         name
                         values{
-                        id
-                        name
+                            id
+                            name
+                            code
                         }
                     }
                 }
