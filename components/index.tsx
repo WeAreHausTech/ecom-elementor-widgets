@@ -4,6 +4,7 @@ import { ProductList } from './product-list/ProductList'
 import { Checkout } from './checkout/Checkout'
 import { VendureApolloProvider } from '@haus-tech/ecom-components'
 import { ProductDetail } from './products/ProductDetail'
+import { Cart } from './cart/Cart'
 import './index.scss'
 
 document.addEventListener(
@@ -51,6 +52,17 @@ document.addEventListener(
         <React.StrictMode>
           <VendureApolloProvider apiUrl="https://livv-ecom-test.azurewebsites.net/shop-api">
             {id && <ProductDetail id={id}></ProductDetail>}
+          </VendureApolloProvider>
+        </React.StrictMode>,
+      )
+    }
+
+    const CartWidget = document.getElementById('cart')
+    if (CartWidget) {
+      ReactDOM.createRoot(CartWidget!).render(
+        <React.StrictMode>
+          <VendureApolloProvider apiUrl="https://livv-ecom-test.azurewebsites.net/shop-api">
+            <Cart />
           </VendureApolloProvider>
         </React.StrictMode>,
       )
