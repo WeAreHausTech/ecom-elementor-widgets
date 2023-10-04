@@ -5,6 +5,7 @@ import {
   Pagination as IPagination,
   GroupedFacetValues,
   SearchResultSortParameter,
+  SortOrder,
 } from '@haus-tech/ecom-components'
 import { Button } from '../button/Button'
 import { Select } from '../select/Select'
@@ -84,10 +85,13 @@ type SortOption = { label: string; value: SearchResultSortParameter }
 
 interface ProductListProps {
   searchInputProps?: object
-  availableSortOptions: SortOption[]
+  availableSortOptions?: SortOption[]
 }
 
-export const ProductList = ({ searchInputProps, availableSortOptions }: ProductListProps) => {
+export const ProductList = ({
+  searchInputProps,
+  availableSortOptions = defaultSortOptions,
+}: ProductListProps) => {
   return (
     <ProductListWrapper
       className="ProductList"
@@ -118,3 +122,9 @@ export const ProductList = ({ searchInputProps, availableSortOptions }: ProductL
     </ProductListWrapper>
   )
 }
+
+const defaultSortOptions = [
+  { label: 'Namn', value: { name: SortOrder.Asc } },
+  { label: 'Pris fallande', value: { price: SortOrder.Desc } },
+  { label: 'Pris stigande', value: { price: SortOrder.Asc } },
+]
