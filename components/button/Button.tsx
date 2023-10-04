@@ -1,8 +1,8 @@
 import classNames from 'classnames'
 import { createElement, forwardRef } from 'react'
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children?: React.ReactNode
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode
   color?: 'default' | 'blue' | 'white'
   variant?: 'default' | 'outline'
   rounded?: 'default' | 'full'

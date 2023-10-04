@@ -11,6 +11,8 @@
   --pagination-progress-height: 2px;
   --pagination-progress-background-color: var(--Gray-Medium);
   --pagination-progress-bar-color: var(--Almost-Black);
+
+  --filter-trigger-background-color: var(--Blue);
 }
 
 .ProductList {
@@ -128,6 +130,15 @@
       .load-more-button {
         width: 100%;
       }
+    }
+  }
+
+  .product-list-sort {
+    grid-column: 1 / -1;
+    margin-bottom: 16px;
+
+    @include media-breakpoint('tablet') {
+      margin-bottom: 0;
     }
   }
 }
