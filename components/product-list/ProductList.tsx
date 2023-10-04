@@ -4,8 +4,10 @@ import {
   ProductList as ProductListWrapper,
   Pagination as IPagination,
   GroupedFacetValues,
+  SearchResultSortParameter,
 } from '@haus-tech/ecom-components'
 import { Button } from '../button/Button'
+import { Select } from '../select/Select'
 
 interface ProductCardProps {
   product: ListedProductFragment
@@ -78,23 +80,34 @@ const Pagination = ({ pagination }: { pagination?: IPagination }) => {
   )
 }
 
+type SortOption = { label: string; value: SearchResultSortParameter }
+
 interface ProductListProps {
   searchInputProps?: object
+  availableSortOptions: SortOption[]
 }
 
-export const ProductList = (props: ProductListProps) => {
+export const ProductList = ({ searchInputProps, availableSortOptions }: ProductListProps) => {
   return (
     <ProductListWrapper
       className="ProductList"
       infinitePagination
-      searchInputProps={props.searchInputProps}
+      searchInputProps={searchInputProps}
     >
-      {({ loading, products, facetValues, pagination, error }) => {
+      {({ loading, products, facetValues, pagination, filters, error }) => {
         if (loading && products.length === 0) return <div>Loading...</div>
         if (error) return <div>Error</div>
         if (!products.length) return <div>Inga produkter hittades</div>
         return (
           <>
+            <div className="product-list-sort">
+              <Select
+                options={availableSortOptions}
+                defaultValue={JSON.stringify(filters?.sort)}
+                onValueChange={(value) => filters?.setSort(JSON.parse(value))}
+                triggerProps={{ color: 'blue', rounded: 'full' }}
+              />
+            </div>
             {products.map((product) => (
               <ProductCard key={product.productId} product={product} facetValues={facetValues!} />
             ))}
