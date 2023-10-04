@@ -1,4 +1,5 @@
 import { SortOrder } from '@haus-tech/ecom-components'
+import { ProductSort } from '../../../components/product-sort/ProductSort'
 import { ProductList } from '../../../components/product-list/ProductList'
 
 const availableSortOptions = [
@@ -14,10 +15,12 @@ const searchInputProps = {
 export const ProductsPage = () => {
   return (
     <>
-      <ProductList
-        searchInputProps={{ ...searchInputProps }}
+      <ProductSort
         availableSortOptions={availableSortOptions}
+        defaultSortOption={availableSortOptions[0]}
       />
+
+      <ProductList searchInputProps={{ ...searchInputProps }} />
     </>
   )
 }

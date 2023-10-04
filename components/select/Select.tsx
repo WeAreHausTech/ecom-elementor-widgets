@@ -1,42 +1,29 @@
+import { SearchResultSortParameter } from '@haus-tech/ecom-components'
 import * as RadixSelect from '@radix-ui/react-select'
 import classnames from 'classnames'
 import { ForwardedRef, ReactNode, forwardRef } from 'react'
 import { Icon } from '../icon/Icon'
-import { SearchResultSortParameter } from '@haus-tech/ecom-components'
-import { Button, ButtonProps } from '../button/Button'
 
 interface SelectProps extends RadixSelect.SelectProps {
   options: { label: string; value: string | SearchResultSortParameter }[]
-  triggerProps?: Omit<ButtonProps, 'children'>
 }
 
-export const Select = ({
-  options,
-  defaultValue,
-  onValueChange,
-  triggerProps,
-  ...rest
-}: SelectProps) => {
+export const Select = ({ options, defaultValue, onValueChange }: SelectProps) => {
   return (
-    <RadixSelect.Root defaultValue={defaultValue} onValueChange={onValueChange} {...rest}>
-      <RadixSelect.Trigger className="SelectTrigger" aria-label="Select" asChild>
-        <Button {...triggerProps}>
-          <RadixSelect.Value placeholder="Select…" />
-          <RadixSelect.Icon className="SelectIcon">
-            <Icon name="chevron-down" />
-          </RadixSelect.Icon>
-        </Button>
+    <RadixSelect.Root defaultValue={defaultValue} onValueChange={onValueChange}>
+      <RadixSelect.Trigger className="SelectTrigger" aria-label="Food">
+        <RadixSelect.Value placeholder="Select a fruit…" />
+        <RadixSelect.Icon className="SelectIcon">
+          <Icon name="chevron-down" />
+        </RadixSelect.Icon>
       </RadixSelect.Trigger>
-      <RadixSelect.Content className="SelectContent" position="popper" sideOffset={8}>
+      <RadixSelect.Content className="SelectContent">
         <RadixSelect.ScrollUpButton className="SelectScrollButton">
           <Icon name="chevron-up" />
         </RadixSelect.ScrollUpButton>
         <RadixSelect.Viewport className="SelectViewport">
           {options.map((option, idx) => (
-            <SelectItem
-              key={idx}
-              value={typeof option.value === 'string' ? option.value : JSON.stringify(option.value)}
-            >
+            <SelectItem key={idx} value={JSON.stringify(option.value)}>
               {option.label}
             </SelectItem>
           ))}
