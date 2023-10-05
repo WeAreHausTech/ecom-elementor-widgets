@@ -52,37 +52,37 @@ export const Checkout = () => {
     <>
       {!success ? (
         <>
-        <Accordion.Root className="Checkout" type="single" value={currentStep} collapsible>
-          {steps.map((step, idx) => {
-            const Element = step.component;
-            return (
-              <Accordion.Item
-                key={step.id}
-                value={step.id}
-                className={classNames('checkout-step', {
-                  current: currentStep === step.id,
-                })}
-              >
-                <AccordionTrigger
-                  className={classNames('checkout-step-trigger', {
+          <Accordion.Root className="Checkout" type="single" value={currentStep} collapsible>
+            {steps.map((step, idx) => {
+              const Element = step.component
+              return (
+                <Accordion.Item
+                  key={step.id}
+                  value={step.id}
+                  className={classNames('checkout-step', {
                     current: currentStep === step.id,
                   })}
-                  onClick={() => includes(finishedSteps, step.id) && setCurrentStep(step.id)}
                 >
-                  <div className={classNames('checkout-step-number')}>
-                    {includes(finishedSteps, step.id) ? <Icon name="check" /> : idx + 1}
-                  </div>
-                  <div className="checkout-step-title">{step.title}</div>
-                </AccordionTrigger>
-                <Accordion.Content className="checkout-step-content">
-                  <Suspense fallback={<div>Loading...</div>}>
-                    {Element && <Element onSuccess={handleNextClick} />}
-                  </Suspense>
-                </Accordion.Content>
-              </Accordion.Item>
-            )
-          })}
-        </Accordion.Root>
+                  <AccordionTrigger
+                    className={classNames('checkout-step-trigger', {
+                      current: currentStep === step.id,
+                    })}
+                    onClick={() => includes(finishedSteps, step.id) && setCurrentStep(step.id)}
+                  >
+                    <div className={classNames('checkout-step-number')}>
+                      {includes(finishedSteps, step.id) ? <Icon name="check" /> : idx + 1}
+                    </div>
+                    <div className="checkout-step-title">{step.title}</div>
+                  </AccordionTrigger>
+                  <Accordion.Content className="checkout-step-content">
+                    <Suspense fallback={<div>Loading...</div>}>
+                      {Element && <Element onSuccess={handleNextClick} />}
+                    </Suspense>
+                  </Accordion.Content>
+                </Accordion.Item>
+              )
+            })}
+          </Accordion.Root>
         </>
       ) : (
         <div>Tack för din beställning</div>

@@ -1,5 +1,6 @@
 import ShippingAddress from './ShippingAddress'
 import BillingAddress from './BillingAddress'
+import AddressFields from './AddressFields'
 import { useOrderMessage } from '@haus-tech/ecom-components'
 import { useEffect } from 'react'
 
@@ -27,26 +28,27 @@ const Address = ({ onSuccess }: AddressProps) => {
   }, [submittedMessage])
 
   const success = (type: string) => {
-    if (!orgNumber) {
-      setOrgNrError('Vänligen fyll i organisationsnummer')
-      return
-    }
+    console.log('success');
+    // if (!orgNumber) {
+    //   setOrgNrError('Vänligen fyll i organisationsnummer')
+    //   return
+    // }
 
-    if (orderMessage || orgNumber) {
-      updateCustomFields()
-    }
+    // if (orderMessage || orgNumber) {
+    //   updateCustomFields()
+    // }
 
-    if (updateOrderMessageLoading && updateOrderMessageError) {
-      return
-    }
+    // if (updateOrderMessageLoading && updateOrderMessageError) {
+    //   return
+    // }
 
-    if (type === 'shipping' && !addBillingAddress) {
-      onSuccess()
-    }
+    // if (type === 'billing' && !addBillingAddress) {
+    //   onSuccess()
+    // }
 
-    if (type === 'billing' && addBillingAddress) {
-      onSuccess()
-    }
+    // if (type === 'shipping' && addBillingAddress) {
+    //   onSuccess()
+    // }
   }
 
   const updateCustomFields = () => {
@@ -68,9 +70,13 @@ const Address = ({ onSuccess }: AddressProps) => {
     { loading: updateOrderMessageLoading, error: updateOrderMessageError },
   ] = orderMessageMutation
 
+
   return (
     <div className="adress">
-      <div className="orgnumber-field">
+      <AddressFields onSuccess={() => success('billing')} />
+
+      {/* <AddressFields billingAdress={true} onSuccess={() => success('billing')} /> */}
+      {/* <div className="orgnumber-field">
         <label>Organisationsnummer</label>
         <input
           required
@@ -80,9 +86,9 @@ const Address = ({ onSuccess }: AddressProps) => {
         />
         {orgNrError && <div className="error">{orgNrError}</div>}
       </div>
-      <ShippingAddress
+      <BillingAddress
         sameBillingAddress={!addBillingAddress}
-        onSuccess={() => success('shipping')}
+        onSuccess={() => success('billing')}
       />
 
       <div className="addressCheckbox">
@@ -99,7 +105,7 @@ const Address = ({ onSuccess }: AddressProps) => {
       {addBillingAddress && (
         <div className="billingAddress">
           <h2>Faktureringsaddress</h2>
-          <BillingAddress onSuccess={() => success('billing')} />
+          <ShippingAddress sameBillingAddress={false} onSuccess={() => success('shipping')} />
         </div>
       )}
 
@@ -107,7 +113,7 @@ const Address = ({ onSuccess }: AddressProps) => {
         <label>Ordermeddelande</label>
         <textarea value={orderMessage} onChange={(e) => setOrderMessage(e.target.value)} />
       </div>
-      {updateOrderMessageError && <div className="error">{updateOrderMessageError.message}</div>}
+      {updateOrderMessageError && <div className="error">{updateOrderMessageError.message}</div>} */}
     </div>
   )
 }

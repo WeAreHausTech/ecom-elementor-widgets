@@ -2,6 +2,7 @@ import {
   OrderBillingAddress as BillingAddressWrapper,
   OrderAddress,
   CreateAddressInput,
+  useShippingAddress,
 } from '@haus-tech/ecom-components'
 import { Form, Formik, FormikValues } from 'formik'
 import { omit, size, some } from 'lodash'
@@ -11,16 +12,31 @@ import { Button } from '../../button/Button'
 
 interface BillingAddressProps {
   onSuccess: () => void
+  sameBillingAddress: boolean
 }
 
-const BillingAddress = ({ onSuccess }: BillingAddressProps) => {
+const BillingAddress = ({ onSuccess, sameBillingAddress }: BillingAddressProps) => {
+  const { mutation: shippingAddressMutation } = useShippingAddress()
+
   return (
     <BillingAddressWrapper className="BillingAddress">
       {({ update, savedData, error, loading }) => {
+        const [
+          updateShippingAddressFunc,
+          { loading: updateShippingAddressLoading, error: updateShippingAddressError },
+        ] = shippingAddressMutation
+
         const handleSubmit = async (values: FormikValues) => {
           await update(values as CreateAddressInput)
 
-          if (!error) {
+          //set billingaddress same as shippingaddress
+          if (sameBillingAddress && savedData !== null) {
+            await updateShippingAddressFunc({
+              variables: { input: values as CreateAddressInput },
+            })
+          }
+
+          if (!updateShippingAddressLoading && !updateShippingAddressError && !error) {
             onSuccess()
           }
         }
@@ -44,27 +60,13 @@ const BillingAddress = ({ onSuccess }: BillingAddressProps) => {
               {({ errors, touched }) => {
                 return (
                   <Form className="billing-address-form">
-                    <Input label="Namn" name="fullName" errors={errors} touched={touched} />
                     <Input label="Företag" name="company" errors={errors} touched={touched} />
+                    <Input label="Namn" name="fullName" errors={errors} touched={touched} />
                     <Input label="Adress" name="streetLine1" errors={errors} touched={touched} />
-                    <Input
-                      label="Adress rad 2"
-                      name="streetLine2"
-                      errors={errors}
-                      touched={touched}
-                    />
+                    <Input label="Postnummer" name="postalCode" errors={errors} touched={touched} />
                     <Input label="Stad" name="city" errors={errors} touched={touched} />
                     <Input label="Landskod" name="countryCode" errors={errors} touched={touched} />
-
-                    <Input label="Provins" name="province" errors={errors} touched={touched} />
-                    <Input label="Postnummer" name="postalCode" errors={errors} touched={touched} />
-                    <Input
-                      label="Telefonnummer"
-                      name="phoneNumber"
-                      errors={errors}
-                      touched={touched}
-                    />
-
+                    
                     <div>
                       <Button
                         color="blue"
@@ -87,14 +89,25 @@ const BillingAddress = ({ onSuccess }: BillingAddressProps) => {
 
 const validationSchema = Yup.object().shape({
   fullName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Vänligen fyll i namn'),
-  company: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Vänligen fyll i företag'),
-  streetLine1: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Vänligen fyll i address'),
-  streetLine2: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'),
+  company: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Vänligen fyll i företag'),
+  streetLine1: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Vänligen fyll i address'),
   city: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Vänligen fyll i stad'),
-  province: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'), 
+  province: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'),
   postalCode: Yup.number().required('Vänligen fyll i postnummer'),
-  countryCode: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Vänligen fyll i landskod'),
-  phoneNumber: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Vänligen fyll i telefonummer'),
+  countryCode: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Vänligen fyll i landskod'),
+  phoneNumber: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Vänligen fyll i telefonummer'),
 })
 
 export default BillingAddress
