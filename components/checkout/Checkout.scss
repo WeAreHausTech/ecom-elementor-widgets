@@ -119,6 +119,40 @@
       }
     }
 
+    .orgnumber-field {
+      margin-bottom: 24px;
+      .error {
+        font-size: 12px;
+        color: var(--Red, #ef7e6f);
+      }
+      label {
+        color: var(--Almost-Black, #3e4849);
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 150%;
+      }
+      input {
+        width: 100%;
+      }
+    }
+
+    .order-message {
+      margin-top: 20px;
+      label {
+        color: var(--Almost-Black, #3e4849);
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 150%;
+      }
+      textarea {
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        background: var(--White, #fff);
+        padding: 8px 16px;
+      }
+    }
+
     .billingAddress {
       margin-top: 24px;
 
