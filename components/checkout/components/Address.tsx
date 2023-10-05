@@ -1,5 +1,8 @@
 import ShippingAddress from './ShippingAddress'
 import BillingAddress from './BillingAddress'
+import { useOrderMessage } from '@haus-tech/ecom-components'
+import { useEffect } from 'react'
+
 import { useState } from 'react'
 
 
@@ -10,9 +13,37 @@ interface AddressProps {
 }
 
 const Address = ({ onSuccess, selectedCountry }: AddressProps) => {
+  const { mutation: orderMessageMutation, query: submittedMessage } = useOrderMessage()
   const [addBillingAddress, setAddBillingAddress] = useState<boolean>(false)
+  const [orderMessage, setOrderMessage] = useState<string>('')
+  const [orgNumber, setOrgNumber] = useState<string>('')
+  const [orgNrError, setOrgNrError] = useState<string>('')
+
+  useEffect(() => {
+    if (submittedMessage) {
+      const parts = submittedMessage.split('|')
+      const orgNumberValue = parts[0].trim()
+      const orderMessageValue = parts[1].trim()
+
+      setOrderMessage(orderMessageValue)
+      setOrgNumber(orgNumberValue)
+    }
+  }, [submittedMessage])
 
   const success = (type: string) => {
+    if (!orgNumber) {
+      setOrgNrError('Vänligen fyll i organisationsnummer')
+      return
+    }
+
+    if (orderMessage || orgNumber) {
+      updateCustomFields()
+    }
+
+    if (updateOrderMessageLoading && updateOrderMessageError) {
+      return
+    }
+
     if (type === 'shipping' && !addBillingAddress) {
       onSuccess()
     }
@@ -21,8 +52,38 @@ const Address = ({ onSuccess, selectedCountry }: AddressProps) => {
       onSuccess()
     }
   }
+
+  const updateCustomFields = () => {
+    const message = orgNumber + ' | ' + orderMessage
+
+    updateOrderMessage({
+      variables: {
+        input: {
+          customFields: {
+            CustomerMessage: message,
+          },
+        },
+      },
+    })
+  }
+
+  const [
+    updateOrderMessage,
+    { loading: updateOrderMessageLoading, error: updateOrderMessageError },
+  ] = orderMessageMutation
+
   return (
     <div className="adress">
+      <div className="orgnumber-field">
+        <label>Organisationsnummer</label>
+        <input
+          required
+          type="text"
+          value={orgNumber}
+          onChange={(e) => setOrgNumber(e.target.value)}
+        />
+        {orgNrError && <div className="error">{orgNrError}</div>}
+      </div>
       <ShippingAddress
       selectedCountry={selectedCountry}
         sameBillingAddress={!addBillingAddress}
@@ -46,6 +107,12 @@ const Address = ({ onSuccess, selectedCountry }: AddressProps) => {
           <BillingAddress selectedCountry={selectedCountry} onSuccess={() => success('billing')} />
         </div>
       )}
+
+      <div className="order-message">
+        <label>Ordermeddelande</label>
+        <textarea value={orderMessage} onChange={(e) => setOrderMessage(e.target.value)} />
+      </div>
+      {updateOrderMessageError && <div className="error">{updateOrderMessageError.message}</div>}
     </div>
   )
 }

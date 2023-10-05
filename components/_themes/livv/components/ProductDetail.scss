@@ -1,64 +1,104 @@
 .ProductDetail {
   display: flex;
+  flex-direction: column;
   gap: 48px;
   margin-top: 48px;
   margin-bottom: 32px;
 
+  @include media-breakpoint('tablet') {
+    flex-direction: row;
+  }
+
   .product-image-slider {
-    flex: 1 1 50%;
-    width: 50%;
+    @include media-breakpoint('tablet') {
+      flex: 1 1 50%;
+      width: 50%;
+    }
   }
 
   .image-slider {
     position: relative;
-    border-radius: 20px;
-    border: 1px solid var(--Border-Color, rgba(0, 0, 0, 0.1));
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
+    aspect-ratio: 1;
+    background-color: var(--White, #ffffff);
+
+    @include media-breakpoint('tablet') {
+      border-radius: 20px;
+      border: 1px solid var(--Border-Color, rgba(0, 0, 0, 0.1));
+    }
+
+    .inner-wrapper {
+      width: 100%;
+      height: calc(100% - 60px - 32px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: var(--Padding-XLarge);
+    }
 
     img {
       max-width: 100%;
-      aspect-ratio: 1/1;
+      margin: 0 auto;
+      aspect-ratio: 1;
     }
 
     .thumb-wrapper {
-      position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       gap: 8px;
-      padding: 8px;
-      background: rgba(255, 255, 255, 0.5);
+      padding: 0 0 16px;
+      overflow-x: scroll;
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 auto;
 
       .thumb {
         width: 60px;
         height: 60px;
+        aspect-ratio: 1/1;
         border-radius: 12px;
         border: 1px solid var(--Border-Color, rgba(0, 0, 0, 0.1));
+        background-color: var(--White, #ffffff);
         overflow: hidden;
         cursor: pointer;
+        flex: 0 0 60px;
 
         img {
           width: 100%;
           height: 100%;
-          object-fit: cover;
+          object-fit: contain;
         }
 
         &[data-active='true'] {
-          border-color: var(--Border-Color-Active, rgba(0, 0, 0, 0.2));
+          border-color: var(--Border-Color-Active);
+        }
+
+        &:first-of-type {
+          margin-left: 16px;
+        }
+
+        &:last-of-type {
+          margin-right: 16px;
         }
       }
     }
   }
 
   .product-detail {
-    flex: 1 1 50%;
-    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
+
+    @include media-breakpoint('tablet') {
+      flex: 1 1 50%;
+      width: 50%;
+    }
 
     .breadcrumbs {
       font-size: 12px;
@@ -74,6 +114,12 @@
         color: var(--Almost-Black, #3e4849);
         font-weight: 400;
         line-height: 150%; /* 24px */
+        margin-bottom: 16px;
+        display: inline-block;
+
+        @include media-breakpoint('tablet') {
+          margin-bottom: 0;
+        }
       }
 
       .title {
@@ -81,19 +127,27 @@
 
         /* Desktop/Headline XXL */
         font-family: Crake;
-        font-size: 50px;
+        font-size: 40px;
         font-weight: 700;
         line-height: 100%; /* 50px */
         letter-spacing: -0.5px;
         margin-bottom: 16px;
+
+        @include media-breakpoint('tablet') {
+          font-size: 50px;
+        }
       }
 
       .price {
         color: var(--Almost-Black, #3e4849);
-        font-size: 26px;
+        font-size: 22px;
         font-weight: 700;
         line-height: 140%; /* 36.4px */
         letter-spacing: -0.26px;
+
+        @include media-breakpoint('tablet') {
+          font-size: 26px;
+        }
       }
     }
 
@@ -170,10 +224,51 @@
         font-weight: 600;
         line-height: 140%; /* 25.2px */
         padding: 16px 0;
+        cursor: pointer;
       }
 
       .product-info-content {
         white-space: pre-wrap;
+        padding-bottom: 16px;
+
+        .category,
+        .sku {
+          font-weight: 400;
+          line-height: 150%;
+          display: flex;
+          margin-top: 16px;
+
+          .title {
+            font-weight: 600;
+            margin-right: 4px;
+          }
+
+          a {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
+    .quantity {
+      position: inherit;
+      z-index: 100;
+      width: 100%;
+
+      .trigger {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .quantity-content {
+      }
+
+      .quantity-viewport {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
       }
     }
   }
