@@ -1,23 +1,38 @@
 import * as Accordion from '@radix-ui/react-accordion'
 import classNames from 'classnames'
-import { ForwardedRef, Suspense, forwardRef, useMemo, useState } from 'react'
+import { ForwardedRef, Suspense, forwardRef, useEffect, useMemo, useState } from 'react'
 import { includes } from 'lodash'
 import { Icon } from '../icon/Icon'
 import CustomerInformation from './components/CustomerInformation'
 import Address from './components/Address'
 import CompleteOrder from './components/CompleteOrder'
+import { Order, useActiveOrder } from '@haus-tech/ecom-components'
 
-export const Checkout = () => {
+interface CheckoutProps {
+  redirectUrl?: string
+}
+
+export const Checkout = ({ redirectUrl = 'order-confirmation' }: CheckoutProps) => {
   const [currentStep, setCurrentStep] = useState<string>('customer-information')
   const [finishedSteps, setFinishedSteps] = useState<string[]>([])
-  const [success, setSuccess] = useState<boolean>(false)
+  const [orderCode, setOrderCode] = useState<string | null>(null)
+
+  const { data } = useActiveOrder()
+
+  useEffect(() => {
+    if (data?.activeOrder) {
+      const activeOrder = data.activeOrder as Order
+
+      setOrderCode(activeOrder.code)
+    }
+  }, [data])
 
   const handleNextClick = () => {
     const currentStepIndex = steps.findIndex((step) => step.id === currentStep)
     const nextStep = steps[currentStepIndex + 1]
 
     if (currentStepIndex === steps.length - 1) {
-      setSuccess(true)
+      window.location.href = `${redirectUrl}?orderCode=${orderCode}`
     }
 
     if (nextStep) {
@@ -49,45 +64,37 @@ export const Checkout = () => {
   }, [])
 
   return (
-    <>
-      {!success ? (
-        <>
-        <Accordion.Root className="Checkout" type="single" value={currentStep} collapsible>
-          {steps.map((step, idx) => {
-            const Element = step.component;
-            return (
-              <Accordion.Item
-                key={step.id}
-                value={step.id}
-                className={classNames('checkout-step', {
-                  current: currentStep === step.id,
-                })}
-              >
-                <AccordionTrigger
-                  className={classNames('checkout-step-trigger', {
-                    current: currentStep === step.id,
-                  })}
-                  onClick={() => includes(finishedSteps, step.id) && setCurrentStep(step.id)}
-                >
-                  <div className={classNames('checkout-step-number')}>
-                    {includes(finishedSteps, step.id) ? <Icon name="check" /> : idx + 1}
-                  </div>
-                  <div className="checkout-step-title">{step.title}</div>
-                </AccordionTrigger>
-                <Accordion.Content className="checkout-step-content">
-                  <Suspense fallback={<div>Loading...</div>}>
-                    {Element && <Element onSuccess={handleNextClick} />}
-                  </Suspense>
-                </Accordion.Content>
-              </Accordion.Item>
-            )
-          })}
-        </Accordion.Root>
-        </>
-      ) : (
-        <div>Tack för din beställning</div>
-      )}
-    </>
+    <Accordion.Root className="Checkout" type="single" value={currentStep} collapsible>
+      {steps.map((step, idx) => {
+        const Element = step.component
+        return (
+          <Accordion.Item
+            key={step.id}
+            value={step.id}
+            className={classNames('checkout-step', {
+              current: currentStep === step.id,
+            })}
+          >
+            <AccordionTrigger
+              className={classNames('checkout-step-trigger', {
+                current: currentStep === step.id,
+              })}
+              onClick={() => includes(finishedSteps, step.id) && setCurrentStep(step.id)}
+            >
+              <div className={classNames('checkout-step-number')}>
+                {includes(finishedSteps, step.id) ? <Icon name="check" /> : idx + 1}
+              </div>
+              <div className="checkout-step-title">{step.title}</div>
+            </AccordionTrigger>
+            <Accordion.Content className="checkout-step-content">
+              <Suspense fallback={<div>Loading...</div>}>
+                {Element && <Element onSuccess={handleNextClick} />}
+              </Suspense>
+            </Accordion.Content>
+          </Accordion.Item>
+        )
+      })}
+    </Accordion.Root>
   )
 }
 

@@ -1,4 +1,4 @@
-import { OrderLines } from '@haus-tech/ecom-components'
+import { Brand, FacetValue, OrderLines } from '@haus-tech/ecom-components'
 import { Icon } from '../icon/Icon'
 
 interface CartProps {
@@ -8,7 +8,7 @@ interface CartProps {
   price?: boolean
 }
 
-export const CartOrderLines = ({className, edit, remove, price}: CartProps) => {
+export const CartOrderLines = ({ className, edit, remove, price }: CartProps) => {
   return (
     <OrderLines className={className}>
       {({ orderLines }) => {
@@ -21,20 +21,23 @@ export const CartOrderLines = ({className, edit, remove, price}: CartProps) => {
         return (
           <div className="orderLines">
             {orderLines.map((orderLine) => (
-              <OrderLines.Item className="orderline" orderLine={orderLine}>
+              <OrderLines.Item key={orderLine.id} className="orderline" orderLine={orderLine}>
                 <OrderLines.Image className="orderline-image" orderLine={orderLine} />
                 <div className="orderline-content">
                   <div className="orderline-product">
                     <div className="orderline-text">
-                      <p className="orderline-brand">Brand</p>
+                      <Brand
+                        className="orderline-brand"
+                        facetValues={orderLine.productVariant.product.facetValues as FacetValue[]}
+                      />
                       <p className="orderline-product-name">{orderLine.productVariant.name}</p>
                     </div>
                     <div className="orderline-quantity-wrapper">
-                      {edit ? (
-                        <OrderLines.Quantity className="orderline-quantity" orderLine={orderLine} />
-                      ) : (
-                        <p className="orderline-quantity">{orderLine.quantity} st</p>
-                      )}
+                      <OrderLines.Quantity
+                        className="orderline-quantity"
+                        orderLine={orderLine}
+                        adjustable={edit}
+                      />
                       {remove && (
                         <OrderLines.Remove className="orderline-remove" orderLine={orderLine}>
                           <Icon className="icon-remove" name="trashcan" />
@@ -42,9 +45,7 @@ export const CartOrderLines = ({className, edit, remove, price}: CartProps) => {
                       )}{' '}
                     </div>
                   </div>
-                  {price && (
-                    <OrderLines.Price className="orderline-price" orderLine={orderLine} />
-                  )}
+                  {price && <OrderLines.Price className="orderline-price" orderLine={orderLine} />}
                 </div>
               </OrderLines.Item>
             ))}
