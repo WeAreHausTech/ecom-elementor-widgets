@@ -24,9 +24,11 @@ export const CartOrderLines = ({className, edit, remove, price}: CartProps) => {
               <OrderLines.Item className="orderline" orderLine={orderLine}>
                 <OrderLines.Image className="orderline-image" orderLine={orderLine} />
                 <div className="orderline-content">
-                  <div className="orderline-text">
-                    <p className="orderline-brand">Brand</p>
-                    <p className="orderline-product-name">{orderLine.productVariant.name}</p>
+                  <div className="orderline-product">
+                    <div className="orderline-text">
+                      <p className="orderline-brand">Brand</p>
+                      <p className="orderline-product-name">{orderLine.productVariant.name}</p>
+                    </div>
                     <div className="orderline-quantity-wrapper">
                       {edit ? (
                         <OrderLines.Quantity className="orderline-quantity" orderLine={orderLine} />
@@ -35,7 +37,7 @@ export const CartOrderLines = ({className, edit, remove, price}: CartProps) => {
                       )}
                       {remove && (
                         <OrderLines.Remove className="orderline-remove" orderLine={orderLine}>
-                          <Icon className="icon-remove" name="trashcan"/>
+                          <Icon className="icon-remove" name="trashcan" />
                         </OrderLines.Remove>
                       )}{' '}
                     </div>
