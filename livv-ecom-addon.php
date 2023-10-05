@@ -49,9 +49,14 @@ add_action('init', function () {
         ->widgets_manager
         ->register(new \Haus\Widgets\Checkout());
 
+
     \Elementor\Plugin::instance()
         ->widgets_manager
         ->register(new \Haus\Widgets\ProductSingle());
+
+        \Elementor\Plugin::instance()
+        ->widgets_manager
+        ->register(new \Haus\Widgets\Cart());
 });
 
 

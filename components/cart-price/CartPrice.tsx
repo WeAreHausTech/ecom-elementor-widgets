@@ -24,7 +24,7 @@ export const CartPrice = (props: CartTotalsProps) => {
           <>
             {props.subTotal && (
               <CartTotals.Item
-                className="item"
+                className="item subTotal"
                 item={{ label: 'Varukostnad', value: totalPrice.subTotal }}
                 order={props.order?.subTotal}
               />
@@ -32,7 +32,7 @@ export const CartPrice = (props: CartTotalsProps) => {
 
             {props.shipping && (
               <CartTotals.Item
-                className="item"
+                className="item shipping"
                 item={{ label: 'Frakt', value: totalPrice.shipping }}
                 order={props.order?.shipping}
               />
@@ -40,7 +40,7 @@ export const CartPrice = (props: CartTotalsProps) => {
 
             {props.tax && (
               <CartTotals.Item
-                className="item"
+                className="item taxTotal"
                 item={{ label: 'Moms', value: totalPrice.taxSummary[0]?.taxTotal }}
                 order={props.order?.tax}
               />
@@ -48,8 +48,8 @@ export const CartPrice = (props: CartTotalsProps) => {
 
             {props.totalWithTax && (
               <CartTotals.Item
-                className="item"
-                item={{ label: 'Att betala', value: totalPrice.totalWithTax }}
+                className="item totalWithTax"
+                item={{ label: 'Betala', value: totalPrice.totalWithTax }}
                 order={props.order?.totalWithTax}
               />
             )}

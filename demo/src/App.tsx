@@ -47,7 +47,7 @@ function App() {
 
   const checkoutRoute = new Route({
     getParentRoute: () => rootRoute,
-    path: '/checkout',
+    path: '/kassa',
     component: () => <CheckoutPage />,
   })
 
