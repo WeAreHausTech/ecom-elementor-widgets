@@ -6,14 +6,14 @@ import {
 } from '@haus-tech/ecom-components'
 import { Icon } from '../icon/Icon'
 import { Spinner } from '../spinner/Spinner'
+import { Button } from '../button/Button'
 
 interface ProductDetailProps {
   slug?: string
   id?: string
 }
 
-export const ProductDetail = ({ slug = "", id = ""}: ProductDetailProps) => {
-
+export const ProductDetail = ({ slug = '', id = '' }: ProductDetailProps) => {
   return (
     <ProductDetailComponent id={id} slug={slug} className="ProductDetail">
       <div className="product-detail">
@@ -36,6 +36,21 @@ export const ProductDetail = ({ slug = "", id = ""}: ProductDetailProps) => {
             )
           }}
         </ProductDetailComponent.Content>
+        <div className="quantity">
+          <ProductDetailComponent.Quantity
+            contentClassName="SelectContent"
+            viewportClassName="SelectViewport"
+            itemClassName="SelectItem"
+            triggerComponent={
+              <Button color="white" className="quantity-selector">
+                <Icon name="chevron-down" />
+              </Button>
+            }
+            scrollUpIcon={<Icon name="chevron-up" />}
+            scrollDownIcon={<Icon name="chevron-down" />}
+          />
+        </div>
+
         <ProductDetailComponent.AddToCart className="add-to-cart">
           {({ loading }) => (
             <>
@@ -57,7 +72,31 @@ export const ProductDetail = ({ slug = "", id = ""}: ProductDetailProps) => {
                   <ProductDetailComponent.InfoContent
                     value="description"
                     className="product-info-content"
-                  />
+                  >
+                    {({ product, selectedProductVariant }) => {
+                      return (
+                        <>
+                          <div
+                            className="description"
+                            dangerouslySetInnerHTML={{ __html: product.description }}
+                          />
+                          <div className="category">
+                            <span className="title">Kategori:</span>
+                            {product.collections.map((collection, idx) => (
+                              <div key={collection.id}>
+                                <a href={`/${collection.name}`}>{collection.name}</a>
+                                {idx < product.collections.length - 1 && ', '}
+                              </div>
+                            ))}
+                          </div>
+                          <div className="sku">
+                            <span className="title">Artikelnummer:</span>
+                            <span>{selectedProductVariant.sku}</span>
+                          </div>
+                        </>
+                      )
+                    }}
+                  </ProductDetailComponent.InfoContent>
                 </>
               )
             }}
