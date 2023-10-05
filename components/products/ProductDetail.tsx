@@ -16,6 +16,15 @@ interface ProductDetailProps {
 export const ProductDetail = ({ slug = '', id = '' }: ProductDetailProps) => {
   return (
     <ProductDetailComponent id={id} slug={slug} className="ProductDetail">
+      <div className="product-image-slider">
+        <ProductDetailComponent.ImageSlider
+          className="image-slider"
+          innerWrapperClassName="inner-wrapper"
+          thumbWrapperClassName="thumb-wrapper"
+          thumbClassName="thumb"
+          hideThumbsIfSingle={true}
+        />
+      </div>
       <div className="product-detail">
         {/* <BreadCrumbs className="breadcrumbs" /> */}
         <ProductDetailComponent.Content className="product-content">
@@ -55,7 +64,7 @@ export const ProductDetail = ({ slug = '', id = '' }: ProductDetailProps) => {
           {({ loading }) => (
             <>
               {loading ? <Spinner></Spinner> : <Icon name="cart" />}
-              <span>{loading ? 'Adding to cart...' : 'Add to cart'}</span>
+              <span>{loading ? 'Lägger till...' : 'Lägg i varukorg'}</span>
             </>
           )}
         </ProductDetailComponent.AddToCart>
