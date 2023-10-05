@@ -8,9 +8,9 @@ interface CartProps {
   price?: boolean
 }
 
-export const CartOrderLines = (props: CartProps) => {
+export const CartOrderLines = ({className, edit, remove, price}: CartProps) => {
   return (
-    <OrderLines className={props.className}>
+    <OrderLines className={className}>
       {({ orderLines }) => {
         if (orderLines.length === 0)
           return (
@@ -30,19 +30,19 @@ export const CartOrderLines = (props: CartProps) => {
                       <p className="orderline-product-name">{orderLine.productVariant.name}</p>
                     </div>
                     <div className="orderline-quantity-wrapper">
-                      {props.edit ? (
+                      {edit ? (
                         <OrderLines.Quantity className="orderline-quantity" orderLine={orderLine} />
                       ) : (
                         <p className="orderline-quantity">{orderLine.quantity} st</p>
                       )}
-                      {props.remove && (
+                      {remove && (
                         <OrderLines.Remove className="orderline-remove" orderLine={orderLine}>
                           <Icon className="icon-remove" name="trashcan" />
                         </OrderLines.Remove>
                       )}{' '}
                     </div>
                   </div>
-                  {props.price && (
+                  {price && (
                     <OrderLines.Price className="orderline-price" orderLine={orderLine} />
                   )}
                 </div>
