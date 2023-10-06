@@ -4,11 +4,15 @@ import { useEffect } from 'react'
 import { Button } from '../../button/Button'
 
 import { useState } from 'react'
+
+
 interface AddressProps {
   onSuccess: () => void
+  selectedCountry?: string
+  setSelectedCountry?: (country: string) => void
 }
 
-const Address = ({ onSuccess }: AddressProps) => {
+const Address = ({ onSuccess, selectedCountry }: AddressProps) => {
   const { mutation: orderMessageMutation, query: submittedMessage } = useOrderMessage()
   const [orderMessage, setOrderMessage] = useState<string>('')
   const [orgNumber, setOrgNumber] = useState<string>('')
@@ -82,6 +86,7 @@ const Address = ({ onSuccess }: AddressProps) => {
         onSuccess={() => success()}
         submitAddress={submitAddress}
         setSubmitAddress={setSubmitAddress}
+        selectedCountry={selectedCountry}
       />
 
       <div className="order-message">

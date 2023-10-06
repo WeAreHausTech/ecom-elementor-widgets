@@ -6,11 +6,13 @@ import { Icon } from '../icon/Icon'
 import CustomerInformation from './components/CustomerInformation'
 import Address from './components/Address'
 import CompleteOrder from './components/CompleteOrder'
+import CountryPicker from './components/CountryPicker'
 
 export const Checkout = () => {
-  const [currentStep, setCurrentStep] = useState<string>('customer-information')
+  const [currentStep, setCurrentStep] = useState<string>('country-picker')
   const [finishedSteps, setFinishedSteps] = useState<string[]>([])
   const [success, setSuccess] = useState<boolean>(false)
+  const [selectedCountry, setSelectedCountry] = useState<string>('')
 
   const handleNextClick = () => {
     const currentStepIndex = steps.findIndex((step) => step.id === currentStep)
@@ -30,6 +32,11 @@ export const Checkout = () => {
   // TODO: This should depend on state of the user?
   const steps = useMemo(() => {
     return [
+      {
+        title: 'Leverans till land',
+        id: 'country-picker',
+        component: CountryPicker,
+      },
       {
         title: 'Kontaktuppgifter',
         id: 'customer-information',
@@ -76,7 +83,13 @@ export const Checkout = () => {
                   </AccordionTrigger>
                   <Accordion.Content className="checkout-step-content">
                     <Suspense fallback={<div>Loading...</div>}>
-                      {Element && <Element onSuccess={handleNextClick} />}
+                      {Element && (
+                        <Element
+                          selectedCountry={selectedCountry}
+                          setSelectedCountry={setSelectedCountry}
+                          onSuccess={handleNextClick}
+                        />
+                      )}
                     </Suspense>
                   </Accordion.Content>
                 </Accordion.Item>

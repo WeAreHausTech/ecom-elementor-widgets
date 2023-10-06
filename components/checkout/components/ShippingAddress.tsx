@@ -13,9 +13,14 @@ import { Button } from '../../button/Button'
 interface ShippingAddressProps {
   onSuccess: () => void
   sameBillingAddress?: boolean
+  selectedCountry?: string
 }
 
-const ShippingAddress = ({ onSuccess, sameBillingAddress }: ShippingAddressProps) => {
+const ShippingAddress = ({
+  onSuccess,
+  sameBillingAddress,
+  selectedCountry,
+}: ShippingAddressProps) => {
   const { mutation: billingMethodMutation } = useBillingAddress()
   return (
     <ShippingAddressWrapper className="ShippingAddress">
@@ -26,6 +31,8 @@ const ShippingAddress = ({ onSuccess, sameBillingAddress }: ShippingAddressProps
         ] = billingMethodMutation
 
         const handleSubmit = async (values: FormikValues) => {
+          values.countryCode = selectedCountry
+
           await update(values as CreateAddressInput)
 
           //set billingaddress same as shippingaddress
@@ -70,7 +77,6 @@ const ShippingAddress = ({ onSuccess, sameBillingAddress }: ShippingAddressProps
                       touched={touched}
                     />
                     <Input label="Stad" name="city" errors={errors} touched={touched} />
-                    <Input label="Landskod" name="countryCode" errors={errors} touched={touched} />
 
                     <Input label="Provins" name="province" errors={errors} touched={touched} />
                     <Input label="Postnummer" name="postalCode" errors={errors} touched={touched} />
@@ -103,14 +109,22 @@ const ShippingAddress = ({ onSuccess, sameBillingAddress }: ShippingAddressProps
 
 const validationSchema = Yup.object().shape({
   fullName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Vänligen fyll i namn'),
-  company: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Vänligen fyll i företag'),
-  streetLine1: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Vänligen fyll i address'),
+  company: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Vänligen fyll i företag'),
+  streetLine1: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Vänligen fyll i address'),
   streetLine2: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'),
   city: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Vänligen fyll i stad'),
-  province: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'), 
+  province: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'),
   postalCode: Yup.number().required('Vänligen fyll i postnummer'),
-  countryCode: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Vänligen fyll i landskod'),
-  phoneNumber: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Vänligen fyll i telefonummer'),
+  phoneNumber: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Vänligen fyll i telefonummer'),
 })
 
 export default ShippingAddress

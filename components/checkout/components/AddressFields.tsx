@@ -17,9 +17,15 @@ interface BillingAddressProps {
   onSuccess: () => void
   submitAddress: boolean
   setSubmitAddress: (value: boolean) => void
+  selectedCountry: string
 }
 
-const AddressFields = ({ onSuccess, submitAddress, setSubmitAddress }: BillingAddressProps) => {
+const AddressFields = ({
+  onSuccess,
+  submitAddress,
+  setSubmitAddress,
+  selectedCountry,
+}: BillingAddressProps) => {
   const formikRefBilling = useRef(null) // Create a ref for billing Formik form
   const formikRefShipping = useRef(null) // Create a ref for shipping Formik form
 
@@ -46,7 +52,6 @@ const AddressFields = ({ onSuccess, submitAddress, setSubmitAddress }: BillingAd
     { loading: updateBillingAddressLoading, error: updateBillingAddressError },
   ] = billingAddressMutation
 
-  
   const initialValuesBilling = initialBillingData
     ? Object.keys(omit(initialBillingData, ['__typename', 'country'])).reduce((acc, key) => {
         acc[key] = initialBillingData[key as keyof OrderAddress] || ''
@@ -55,13 +60,18 @@ const AddressFields = ({ onSuccess, submitAddress, setSubmitAddress }: BillingAd
     : {}
 
   const initialValuesShipping = initialinitialShippingData
-    ? Object.keys(omit(initialinitialShippingData, ['__typename', 'country'])).reduce((acc, key) => {
-        acc[key] = initialinitialShippingData[key as keyof OrderAddress] || ''
-        return acc
-      }, {} as FormikValues)
+    ? Object.keys(omit(initialinitialShippingData, ['__typename', 'country'])).reduce(
+        (acc, key) => {
+          acc[key] = initialinitialShippingData[key as keyof OrderAddress] || ''
+          return acc
+        },
+        {} as FormikValues,
+      )
     : {}
 
   const handleSubmitBilling = (values: FormikValues) => {
+    values.countryCode = selectedCountry
+
     updateBillingAddressFunc({
       variables: { input: values as CreateAddressInput },
     })
@@ -83,6 +93,7 @@ const AddressFields = ({ onSuccess, submitAddress, setSubmitAddress }: BillingAd
   }
 
   const handleSubmitShipping = (values: FormikValues) => {
+    values.countryCode = selectedCountry
     updateShippingAddressFunc({
       variables: { input: values as CreateAddressInput },
     })
@@ -116,7 +127,6 @@ const AddressFields = ({ onSuccess, submitAddress, setSubmitAddress }: BillingAd
               <Input label="Adress" name="streetLine1" errors={errors} touched={touched} />
               <Input label="Postnummer" name="postalCode" errors={errors} touched={touched} />
               <Input label="Stad" name="city" errors={errors} touched={touched} />
-              <Input label="Landskod" name="countryCode" errors={errors} touched={touched} />
             </Form>
           )
         }}
@@ -158,10 +168,6 @@ const validationSchema = Yup.object().shape({
   city: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Vänligen fyll i stad'),
   province: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'),
   postalCode: Yup.number().required('Vänligen fyll i postnummer'),
-  countryCode: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Vänligen fyll i landskod'),
 })
 
 export default AddressFields

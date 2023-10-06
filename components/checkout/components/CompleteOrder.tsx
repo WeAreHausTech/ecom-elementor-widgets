@@ -10,6 +10,8 @@ import {
 
 interface AddressProps {
   onSuccess: () => void
+  selectedCountry?: string
+  setSelectedCountry?: (country: string) => void
 }
 
 const CompleteOrder = ({ onSuccess }: AddressProps) => {

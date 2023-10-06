@@ -12,12 +12,10 @@ import { Button } from '../../button/Button'
 
 interface BillingAddressProps {
   onSuccess: () => void
-  sameBillingAddress: boolean
+  selectedCountry?: string
 }
 
-const BillingAddress = ({ onSuccess, sameBillingAddress }: BillingAddressProps) => {
-  const { mutation: shippingAddressMutation } = useShippingAddress()
-
+const BillingAddress = ({ onSuccess, selectedCountry }: BillingAddressProps) => {
   return (
     <BillingAddressWrapper className="BillingAddress">
       {({ update, savedData, error, loading }) => {
@@ -27,6 +25,8 @@ const BillingAddress = ({ onSuccess, sameBillingAddress }: BillingAddressProps) 
         ] = shippingAddressMutation
 
         const handleSubmit = async (values: FormikValues) => {
+          values.countryCode = selectedCountry
+
           await update(values as CreateAddressInput)
 
           //set billingaddress same as shippingaddress
@@ -65,8 +65,16 @@ const BillingAddress = ({ onSuccess, sameBillingAddress }: BillingAddressProps) 
                     <Input label="Adress" name="streetLine1" errors={errors} touched={touched} />
                     <Input label="Postnummer" name="postalCode" errors={errors} touched={touched} />
                     <Input label="Stad" name="city" errors={errors} touched={touched} />
-                    <Input label="Landskod" name="countryCode" errors={errors} touched={touched} />
-                    
+
+                    <Input label="Provins" name="province" errors={errors} touched={touched} />
+                    <Input label="Postnummer" name="postalCode" errors={errors} touched={touched} />
+                    <Input
+                      label="Telefonnummer"
+                      name="phoneNumber"
+                      errors={errors}
+                      touched={touched}
+                    />
+
                     <div>
                       <Button
                         color="blue"
@@ -97,6 +105,7 @@ const validationSchema = Yup.object().shape({
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Vänligen fyll i address'),
+<<<<<<< HEAD
   city: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Vänligen fyll i stad'),
   province: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'),
   postalCode: Yup.number().required('Vänligen fyll i postnummer'),
@@ -104,6 +113,12 @@ const validationSchema = Yup.object().shape({
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Vänligen fyll i landskod'),
+=======
+  streetLine2: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'),
+  city: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Vänligen fyll i stad'),
+  province: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'),
+  postalCode: Yup.number().required('Vänligen fyll i postnummer'),
+>>>>>>> main
   phoneNumber: Yup.string()
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
