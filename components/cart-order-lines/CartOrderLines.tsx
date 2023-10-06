@@ -6,9 +6,16 @@ interface CartProps {
   edit?: boolean
   remove?: boolean
   price?: boolean
+  imageSize?: [number, number]
 }
 
-export const CartOrderLines = ({ className, edit, remove, price }: CartProps) => {
+export const CartOrderLines = ({
+  className,
+  edit,
+  remove,
+  price,
+  imageSize = [128, 128],
+}: CartProps) => {
   return (
     <OrderLines className={className}>
       {({ orderLines }) => {
@@ -22,7 +29,11 @@ export const CartOrderLines = ({ className, edit, remove, price }: CartProps) =>
           <div className="orderLines">
             {orderLines.map((orderLine) => (
               <OrderLines.Item key={orderLine.id} className="orderline" orderLine={orderLine}>
-                <OrderLines.Image className="orderline-image" orderLine={orderLine} />
+                <OrderLines.Image
+                  className="orderline-image"
+                  orderLine={orderLine}
+                  imageSize={imageSize}
+                />
                 <div className="orderline-content">
                   <div className="orderline-product">
                     <div className="orderline-text">

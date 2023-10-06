@@ -23,10 +23,10 @@ export const CartDropdown = ({ dropdownEnabled = true }: CartDropdownProps) => {
       </DropdownMenu.Trigger>
 
       {dropdownEnabled && (
-        <DropdownMenu.Content className="cart-contents" sideOffset={5}>
+        <DropdownMenu.Content className="cart-contents" sideOffset={5} style={{ zIndex: 98 }}>
           <div className="cart-dropdown-demo">
             <DropdownMenu.Item>
-              <CartOrderLines className="cart-dropdown" edit />
+              <CartOrderLines className="cart-dropdown" edit imageSize={[74, 74]} />
             </DropdownMenu.Item>
             <DropdownMenu.Item>
               <button className="Button blue" onClick={() => navigate({ to: '/cart' })}>
