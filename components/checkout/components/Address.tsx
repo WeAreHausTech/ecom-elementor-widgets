@@ -1,8 +1,7 @@
-import ShippingAddress from './ShippingAddress'
-import BillingAddress from './BillingAddress'
 import AddressFields from './AddressFields'
 import { useOrderMessage } from '@haus-tech/ecom-components'
 import { useEffect } from 'react'
+import { Button } from '../../button/Button'
 
 import { useState } from 'react'
 interface AddressProps {
@@ -11,10 +10,10 @@ interface AddressProps {
 
 const Address = ({ onSuccess }: AddressProps) => {
   const { mutation: orderMessageMutation, query: submittedMessage } = useOrderMessage()
-  const [addBillingAddress, setAddBillingAddress] = useState<boolean>(false)
   const [orderMessage, setOrderMessage] = useState<string>('')
   const [orgNumber, setOrgNumber] = useState<string>('')
   const [orgNrError, setOrgNrError] = useState<string>('')
+  const [submitAddress, setSubmitAddress] = useState<boolean>(false)
 
   useEffect(() => {
     if (submittedMessage) {
@@ -27,33 +26,29 @@ const Address = ({ onSuccess }: AddressProps) => {
     }
   }, [submittedMessage])
 
-  const success = (type: string) => {
-    console.log('success');
-    // if (!orgNumber) {
-    //   setOrgNrError('Vänligen fyll i organisationsnummer')
-    //   return
-    // }
+  const success = () => {
+    onSuccess()
+  }
 
-    // if (orderMessage || orgNumber) {
-    //   updateCustomFields()
-    // }
+  const handleSubmit = () => {
+    if (!orgNumber) {
+      setOrgNrError('Vänligen fyll i organisationsnummer')
+      return
+    }
 
-    // if (updateOrderMessageLoading && updateOrderMessageError) {
-    //   return
-    // }
+    if (orderMessage || orgNumber) {
+      updateCustomFields()
+    }
 
-    // if (type === 'billing' && !addBillingAddress) {
-    //   onSuccess()
-    // }
+    if (updateOrderMessageLoading && updateOrderMessageError) {
+      return
+    }
 
-    // if (type === 'shipping' && addBillingAddress) {
-    //   onSuccess()
-    // }
+    setSubmitAddress(true)
   }
 
   const updateCustomFields = () => {
     const message = orgNumber + ' | ' + orderMessage
-
     updateOrderMessage({
       variables: {
         input: {
@@ -70,13 +65,9 @@ const Address = ({ onSuccess }: AddressProps) => {
     { loading: updateOrderMessageLoading, error: updateOrderMessageError },
   ] = orderMessageMutation
 
-
   return (
     <div className="adress">
-      <AddressFields onSuccess={() => success('billing')} />
-
-      {/* <AddressFields billingAdress={true} onSuccess={() => success('billing')} /> */}
-      {/* <div className="orgnumber-field">
+      <div className="orgnumber-field">
         <label>Organisationsnummer</label>
         <input
           required
@@ -86,34 +77,22 @@ const Address = ({ onSuccess }: AddressProps) => {
         />
         {orgNrError && <div className="error">{orgNrError}</div>}
       </div>
-      <BillingAddress
-        sameBillingAddress={!addBillingAddress}
-        onSuccess={() => success('billing')}
+
+      <AddressFields
+        onSuccess={() => success()}
+        submitAddress={submitAddress}
+        setSubmitAddress={setSubmitAddress}
       />
-
-      <div className="addressCheckbox">
-        <label>
-          <input
-            type="checkbox"
-            checked={addBillingAddress}
-            onChange={() => setAddBillingAddress(!addBillingAddress)}
-          />{' '}
-          Jag har separat faktureringsadress
-        </label>
-      </div>
-
-      {addBillingAddress && (
-        <div className="billingAddress">
-          <h2>Faktureringsaddress</h2>
-          <ShippingAddress sameBillingAddress={false} onSuccess={() => success('shipping')} />
-        </div>
-      )}
 
       <div className="order-message">
         <label>Ordermeddelande</label>
         <textarea value={orderMessage} onChange={(e) => setOrderMessage(e.target.value)} />
       </div>
-      {updateOrderMessageError && <div className="error">{updateOrderMessageError.message}</div>} */}
+      {updateOrderMessageError && <div className="error">{updateOrderMessageError.message}</div>}
+
+      <Button color="blue" className="button" onClick={handleSubmit}>
+        Fortsätt
+      </Button>
     </div>
   )
 }

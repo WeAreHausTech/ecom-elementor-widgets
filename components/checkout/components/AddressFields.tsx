@@ -10,20 +10,31 @@ import { omit, size, some } from 'lodash'
 import * as Yup from 'yup'
 import { Input } from '../../input/Input'
 import { Button } from '../../button/Button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import React, { useRef } from 'react'
 
 interface BillingAddressProps {
   onSuccess: () => void
-  sameBillingAddress?: boolean
-  shippingAddress?: boolean
-  billingAddress?: boolean
+  submitAddress: boolean
+  setSubmitAddress: (value: boolean) => void
 }
 
-const AddressFields = ({ onSuccess }: BillingAddressProps) => {
-  const [addSeperateShippingAddress, setAddSeperateShippingAddress] = useState<boolean>(false)
+const AddressFields = ({ onSuccess, submitAddress, setSubmitAddress }: BillingAddressProps) => {
+  const formikRefBilling = useRef(null) // Create a ref for billing Formik form
+  const formikRefShipping = useRef(null) // Create a ref for shipping Formik form
 
+  const [addSeperateShippingAddress, setAddSeperateShippingAddress] = useState<boolean>(false)
   const { mutation: shippingAddressMutation, query: shippingAddressData } = useShippingAddress()
   const { mutation: billingAddressMutation, query: billingAddressData } = useBillingAddress()
+  const initialBillingData = billingAddressData?.data?.activeOrder?.billingAddress
+  const initialinitialShippingData = shippingAddressData?.data?.activeOrder?.shippingAddress
+
+  useEffect(() => {
+    if (submitAddress) {
+      triggerFormSubmission()
+      setSubmitAddress(false)
+    }
+  }, [submitAddress, setSubmitAddress])
 
   const [
     updateShippingAddressFunc,
@@ -33,42 +44,69 @@ const AddressFields = ({ onSuccess }: BillingAddressProps) => {
   const [
     updateBillingAddressFunc,
     { loading: updateBillingAddressLoading, error: updateBillingAddressError },
-  ] = shippingAddressMutation
+  ] = billingAddressMutation
 
-  const handleSubmit = (values: FormikValues) => {
-    updateShippingAddressFunc({
+  
+  const initialValuesBilling = initialBillingData
+    ? Object.keys(omit(initialBillingData, ['__typename', 'country'])).reduce((acc, key) => {
+        acc[key] = initialBillingData[key as keyof OrderAddress] || ''
+        return acc
+      }, {} as FormikValues)
+    : {}
+
+  const initialValuesShipping = initialinitialShippingData
+    ? Object.keys(omit(initialinitialShippingData, ['__typename', 'country'])).reduce((acc, key) => {
+        acc[key] = initialinitialShippingData[key as keyof OrderAddress] || ''
+        return acc
+      }, {} as FormikValues)
+    : {}
+
+  const handleSubmitBilling = (values: FormikValues) => {
+    updateBillingAddressFunc({
       variables: { input: values as CreateAddressInput },
     })
 
     if (!addSeperateShippingAddress) {
-      updateBillingAddressFunc({
+      updateShippingAddressFunc({
         variables: { input: values as CreateAddressInput },
       })
     }
+
+    if (
+      !updateBillingAddressLoading &&
+      !updateShippingAddressLoading &&
+      !updateBillingAddressError &&
+      !updateShippingAddressError
+    ) {
+      onSuccess()
+    }
   }
 
-  const initialValuesBilling = shippingAddressData
-    ? Object.keys(omit(shippingAddressData, ['__typename', 'country'])).reduce((acc, key) => {
-        acc[key] = shippingAddressData[key as keyof OrderAddress] || ''
-        return acc
-      }, {} as FormikValues)
-    : {}
+  const handleSubmitShipping = (values: FormikValues) => {
+    updateShippingAddressFunc({
+      variables: { input: values as CreateAddressInput },
+    })
+  }
 
-  const initialValuesShipping = shippingAddressData
-    ? Object.keys(omit(shippingAddressData, ['__typename', 'country'])).reduce((acc, key) => {
-        acc[key] = shippingAddressData[key as keyof OrderAddress] || ''
-        return acc
-      }, {} as FormikValues)
-    : {}
+  const triggerFormSubmission = () => {
+    if (addSeperateShippingAddress && formikRefShipping.current) {
+      formikRefShipping.current?.handleSubmit()
+    }
 
-  return (
-    <div>
-      {/* {error && <div className="error">{error.message}</div>} */}
+    if (formikRefBilling.current) {
+      formikRefBilling.current.handleSubmit()
+    }
+  }
+
+  const addressForm = (id: string, intitialvalues: FormikValues, ref, submit) => {
+    return (
       <Formik
-        key={size(initialValuesBilling)}
-        initialValues={initialValuesBilling}
+        id={id}
+        key={size(intitialvalues)}
+        initialValues={intitialvalues}
         validationSchema={validationSchema}
-        onSubmit={handleSubmit}
+        onSubmit={submit}
+        innerRef={ref}
       >
         {({ errors, touched }) => {
           return (
@@ -79,20 +117,16 @@ const AddressFields = ({ onSuccess }: BillingAddressProps) => {
               <Input label="Postnummer" name="postalCode" errors={errors} touched={touched} />
               <Input label="Stad" name="city" errors={errors} touched={touched} />
               <Input label="Landskod" name="countryCode" errors={errors} touched={touched} />
-
-              <div>
-                <Button
-                  color="blue"
-                  type="submit"
-                  // disabled={some(loading, (value) => value === true)}
-                >
-                  Fortsätt
-                </Button>
-              </div>
             </Form>
           )
         }}
       </Formik>
+    )
+  }
+
+  return (
+    <div>
+      {addressForm('billing', initialValuesBilling, formikRefBilling, handleSubmitBilling)}
 
       <div className="addressCheckbox">
         <label>
@@ -105,25 +139,8 @@ const AddressFields = ({ onSuccess }: BillingAddressProps) => {
         </label>
       </div>
 
-      {addSeperateShippingAddress && (
-        <Formik
-          key="shippingForm"
-          initialValues={initialValuesShipping}
-          validationSchema={initialValuesShipping}
-          onSubmit={handleSubmit}
-        >
-          {({ errors: shippingErrors, touched: shippingTouched }) => (
-            <Form className="shipping-address-form">
-              {/* Your separate shipping form fields go here */}
-              <div>
-                <Button color="blue" type="submit">
-                  Fortsätt
-                </Button>
-              </div>
-            </Form>
-          )}
-        </Formik>
-      )}
+      {addSeperateShippingAddress &&
+        addressForm('shipping', initialValuesShipping, formikRefShipping, handleSubmitShipping)}
     </div>
   )
 }
@@ -145,10 +162,6 @@ const validationSchema = Yup.object().shape({
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Vänligen fyll i landskod'),
-  phoneNumber: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Vänligen fyll i telefonummer'),
 })
 
 export default AddressFields
