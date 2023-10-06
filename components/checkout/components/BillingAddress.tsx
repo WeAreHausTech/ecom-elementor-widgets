@@ -2,7 +2,6 @@ import {
   OrderBillingAddress as BillingAddressWrapper,
   OrderAddress,
   CreateAddressInput,
-  useShippingAddress,
 } from '@haus-tech/ecom-components'
 import { Form, Formik, FormikValues } from 'formik'
 import { omit, size, some } from 'lodash'
@@ -19,26 +18,14 @@ const BillingAddress = ({ onSuccess, selectedCountry }: BillingAddressProps) => 
   return (
     <BillingAddressWrapper className="BillingAddress">
       {({ update, savedData, error, loading }) => {
-        const [
-          updateShippingAddressFunc,
-          { loading: updateShippingAddressLoading, error: updateShippingAddressError },
-        ] = shippingAddressMutation
-
         const handleSubmit = async (values: FormikValues) => {
           values.countryCode = selectedCountry
 
           await update(values as CreateAddressInput)
 
           //set billingaddress same as shippingaddress
-          if (sameBillingAddress && savedData !== null) {
-            await updateShippingAddressFunc({
-              variables: { input: values as CreateAddressInput },
-            })
-          }
 
-          if (!updateShippingAddressLoading && !updateShippingAddressError && !error) {
-            onSuccess()
-          }
+          onSuccess()
         }
 
         const initialValues = savedData
@@ -105,20 +92,10 @@ const validationSchema = Yup.object().shape({
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Vänligen fyll i address'),
-<<<<<<< HEAD
-  city: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Vänligen fyll i stad'),
-  province: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'),
-  postalCode: Yup.number().required('Vänligen fyll i postnummer'),
-  countryCode: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Vänligen fyll i landskod'),
-=======
   streetLine2: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'),
   city: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Vänligen fyll i stad'),
   province: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!'),
   postalCode: Yup.number().required('Vänligen fyll i postnummer'),
->>>>>>> main
   phoneNumber: Yup.string()
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')

@@ -1,23 +1,21 @@
 import {
-  OrderBillingAddress as BillingAddressWrapper,
   OrderAddress,
   CreateAddressInput,
   useShippingAddress,
   useBillingAddress,
 } from '@haus-tech/ecom-components'
-import { Form, Formik, FormikValues } from 'formik'
-import { omit, size, some } from 'lodash'
+import { Form, Formik, FormikValues, FormikProps } from 'formik'
+import { omit, size } from 'lodash'
 import * as Yup from 'yup'
 import { Input } from '../../input/Input'
-import { Button } from '../../button/Button'
 import { useEffect, useState } from 'react'
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 
 interface BillingAddressProps {
   onSuccess: () => void
   submitAddress: boolean
   setSubmitAddress: (value: boolean) => void
-  selectedCountry: string
+  selectedCountry?: string
 }
 
 const AddressFields = ({
@@ -26,8 +24,8 @@ const AddressFields = ({
   setSubmitAddress,
   selectedCountry,
 }: BillingAddressProps) => {
-  const formikRefBilling = useRef(null) // Create a ref for billing Formik form
-  const formikRefShipping = useRef(null) // Create a ref for shipping Formik form
+  const formikRefBilling = useRef<FormikProps<OrderAddress>>(null) // Create a ref for billing Formik form
+  const formikRefShipping = useRef<FormikProps<OrderAddress>>(null) // Create a ref for shipping Formik form
 
   const [addSeperateShippingAddress, setAddSeperateShippingAddress] = useState<boolean>(false)
   const { mutation: shippingAddressMutation, query: shippingAddressData } = useShippingAddress()
@@ -52,17 +50,20 @@ const AddressFields = ({
     { loading: updateBillingAddressLoading, error: updateBillingAddressError },
   ] = billingAddressMutation
 
-  const initialValuesBilling = initialBillingData
-    ? Object.keys(omit(initialBillingData, ['__typename', 'country'])).reduce((acc, key) => {
-        acc[key] = initialBillingData[key as keyof OrderAddress] || ''
-        return acc
-      }, {} as FormikValues)
-    : {}
+  const initialValuesBilling =
+    initialBillingData && initialBillingData !== undefined && initialBillingData !== null
+      ? Object.keys(omit(initialBillingData, ['__typename', 'country'])).reduce((acc, key) => {
+            const orderAddressKey = key as keyof OrderAddress;
+            acc[orderAddressKey] = (initialBillingData as OrderAddress)[orderAddressKey] || '';
+            return acc;
+          }, {} as FormikValues)
+      : {}
 
   const initialValuesShipping = initialinitialShippingData
     ? Object.keys(omit(initialinitialShippingData, ['__typename', 'country'])).reduce(
         (acc, key) => {
-          acc[key] = initialinitialShippingData[key as keyof OrderAddress] || ''
+          const orderAddressKey = key as keyof OrderAddress;
+          acc[orderAddressKey] = (initialinitialShippingData as OrderAddress)[orderAddressKey] || '';
           return acc
         },
         {} as FormikValues,
@@ -109,7 +110,12 @@ const AddressFields = ({
     }
   }
 
-  const addressForm = (id: string, intitialvalues: FormikValues, ref, submit) => {
+  const addressForm = (
+    id: string,
+    intitialvalues: FormikValues,
+    ref: React.RefObject<FormikProps<FormikValues>>,
+    submit: (values: FormikValues) => void,
+  ) => {
     return (
       <Formik
         id={id}
@@ -126,8 +132,8 @@ const AddressFields = ({
               <Input label="Namn" name="fullName" errors={errors} touched={touched} />
               <Input label="Adress" name="streetLine1" errors={errors} touched={touched} />
               <div className="wrapper-2-inputs">
-              <Input label="Postnummer" name="postalCode" errors={errors} touched={touched} />
-              <Input label="Ort" name="city" errors={errors} touched={touched} />
+                <Input label="Postnummer" name="postalCode" errors={errors} touched={touched} />
+                <Input label="Ort" name="city" errors={errors} touched={touched} />
               </div>
             </Form>
           )
