@@ -12,6 +12,8 @@ class syncProductData extends WP_CLI_Command
 {
     public function sync()
     {
+        $taxonomiesInstance = new Taxonomies();
+        $prooductsInstance = new Products();
 
         $facets = (new \Haus\Queries\Facet)->get();
 
@@ -20,35 +22,36 @@ class syncProductData extends WP_CLI_Command
         }
 
         // sync taxonomies
-        (new Taxonomies)->syncTaxonomies($facets);
+        $taxonomiesInstance->syncTaxonomies($facets);
 
-        $vendureProducts = (new Products)->getAllProductsFromVendure();
+        $vendureProducts = $prooductsInstance->getAllProductsFromVendure();
 
         if (!isset($vendureProducts)) {
             WP_CLI::error('No products found in vendure');
         }
 
-        $wpProducts = (new Products)->getAllProductsFromWp();
+        $wpProducts = $prooductsInstance->getAllProductsFromWp();
 
         // sync products
-        (new Products)->syncProductsData($vendureProducts, $wpProducts);
+        $prooductsInstance->syncProductsData($vendureProducts, $wpProducts);
 
         // add taxonomies to products
         (new Relations)->syncRelationships($vendureProducts);
 
         $productsSummary = sprintf(
             'Products: Created: %d Updated: %d Deleted: %d',
-            (new Products)->created,
-            (new Products)->updated,
-            (new Products)->deleted
+            $prooductsInstance->created,
+            $prooductsInstance->updated,
+            $prooductsInstance->deleted
         );
 
         $taxonomiesSummary = sprintf(
             'Taxonomies: Created: %d Updated: %d Deleted: %d',
-            (new Taxonomies)->created,
-            (new Taxonomies)->updated,
-            (new Taxonomies)->deleted
+            $taxonomiesInstance->createdTaxonomies,
+            $taxonomiesInstance->updatedTaxonimies,
+            $taxonomiesInstance->deletedTaxonomies
         );
+
 
         WP_CLI::success("\n" . $productsSummary . "\n" . $taxonomiesSummary);
     }

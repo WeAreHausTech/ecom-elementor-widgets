@@ -4,9 +4,9 @@ namespace Haus\sync\Classes;
 class Taxonomies
 {
 
-    public $created = 0;
-    public $updated = 0;
-    public $deleted = 0;
+    public $createdTaxonomies = 0;
+    public $updatedTaxonimies = 0;
+    public $deletedTaxonomies = 0;
     private $taxonomies = [
         'brand' => [
             'wp' => 'produkter-varumarken',
@@ -183,7 +183,7 @@ class Taxonomies
 
             wp_update_term($wpTerm['term_id'], $taxonomy, $args);
 
-            $this->updated++;
+            $this->updatedTaxonimies++;
         }
     }
 
@@ -197,17 +197,16 @@ class Taxonomies
 
         wp_delete_term($id, $taxonomy);
 
-        $this->deleted++;
+        $this->deletedTaxonomies++;
     }
 
     public function addNewTerm($value, $taxonomy)
     {
-
         if ($taxonomy === 'produkter-kategorier') {
             $term = wp_insert_term($value['name'], $taxonomy, ['slug' => $value['slug']]);
 
             if (is_wp_error($term)) {
-                //TODO fix error problem
+                //TODO log error somewhere
                 return;
             }
 
@@ -217,8 +216,7 @@ class Taxonomies
             add_term_meta($term['term_id'], 'vendure_term_id', $value['id'], true);
         }
 
-
-        $this->created++;
+        $this->createdTaxonomies++;
     }
 
     public function getTermIdByVendureId($vendureId)
