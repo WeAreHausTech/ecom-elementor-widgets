@@ -125,8 +125,10 @@ const AddressFields = ({
               <Input label="Företag" name="company" errors={errors} touched={touched} />
               <Input label="Namn" name="fullName" errors={errors} touched={touched} />
               <Input label="Adress" name="streetLine1" errors={errors} touched={touched} />
+              <div className="wrapper-2-inputs">
               <Input label="Postnummer" name="postalCode" errors={errors} touched={touched} />
-              <Input label="Stad" name="city" errors={errors} touched={touched} />
+              <Input label="Ort" name="city" errors={errors} touched={touched} />
+              </div>
             </Form>
           )
         }}
@@ -145,7 +147,7 @@ const AddressFields = ({
             checked={addSeperateShippingAddress}
             onChange={() => setAddSeperateShippingAddress(!addSeperateShippingAddress)}
           />{' '}
-          Jag har separat faktureringsadress
+          Annan Leveransadress
         </label>
       </div>
 

@@ -24,7 +24,7 @@ const CountryPicker = ({ onSuccess, selectedCountry, setSelectedCountry }: Count
   if (!countries) return <div>Laddar</div>
   return (
     <div className="country-picker">
-      <div>
+      <div className="country-picker-content">
         <label htmlFor="country">Land</label>
         <select
           value={selectedCountry}

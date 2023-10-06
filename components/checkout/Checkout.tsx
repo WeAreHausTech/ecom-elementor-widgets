@@ -37,18 +37,19 @@ export const Checkout = () => {
         id: 'country-picker',
         component: CountryPicker,
       },
-      {
-        title: 'Kontaktuppgifter',
-        id: 'customer-information',
-        component: CustomerInformation,
-      },
+
       {
         title: 'Leveransadress',
         id: 'shipping-adress',
         component: Address,
       },
       {
-        title: 'Betalning',
+        title: 'Kontaktuppgifter',
+        id: 'customer-information',
+        component: CustomerInformation,
+      },
+      {
+        title: 'Slutför beställning',
         id: 'payment',
         component: CompleteOrder,
       },
@@ -74,12 +75,21 @@ export const Checkout = () => {
                     className={classNames('checkout-step-trigger', {
                       current: currentStep === step.id,
                     })}
-                    onClick={() => includes(finishedSteps, step.id) && setCurrentStep(step.id)}
                   >
-                    <div className={classNames('checkout-step-number')}>
-                      {includes(finishedSteps, step.id) ? <Icon name="check" /> : idx + 1}
+                    <div className="checkout-step-value">
+                      <div className={classNames('checkout-step-number')}>
+                        {includes(finishedSteps, step.id) ? <Icon name="check" /> : idx + 1}
+                      </div>
+                      <div className="checkout-step-title">{step.title}</div>
                     </div>
-                    <div className="checkout-step-title">{step.title}</div>
+                    {includes(finishedSteps, step.id) && (
+                      <button
+                        className="checkout-step-edit"
+                        onClick={() => setCurrentStep(step.id)}
+                      >
+                        Ändra
+                      </button>
+                    )}
                   </AccordionTrigger>
                   <Accordion.Content className="checkout-step-content">
                     <Suspense fallback={<div>Loading...</div>}>
