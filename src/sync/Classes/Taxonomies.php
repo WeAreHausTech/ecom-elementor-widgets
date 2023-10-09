@@ -1,9 +1,9 @@
 <?php
-namespace Haus\sync\Classes;
+
+namespace Haus\Sync\Classes;
 
 class Taxonomies
 {
-
     public $createdTaxonomies = 0;
     public $updatedTaxonimies = 0;
     public $deletedTaxonomies = 0;
@@ -144,33 +144,23 @@ class Taxonomies
         }
     }
 
-    public function getvendureTermSlug($vendureTerm)
+    public function getVendureTermSlug($vendureTerm)
     {
         // Different key if collection or facet
-        switch (true) {
-            case isset($vendureTerm['code']):
-                return $vendureTerm['code'];
-            case isset($vendureTerm['slug']):
-                return $vendureTerm['slug'];
-            default:
-                return null;
+        if (isset($vendureTerm['code'])) {
+            return $vendureTerm['code'];
         }
-    }
 
-    public function getVendureParentId($vendureTerm)
-    {
-        // Only exist for collections
-        switch (true) {
-            case isset($vendureTerm['parentId']):
-                return $vendureTerm['parentId'];
-            default:
-                return 0;
+        if (isset($vendureTerm['slug'])) {
+            return $vendureTerm['slug'];
         }
+
+        return null;
     }
 
     public function updateTerm($wpTerm, $vendureTerm, $taxonomy)
     {
-        $vendureSlug = $this->getvendureTermSlug($vendureTerm);
+        $vendureSlug = $this->getVendureTermSlug($vendureTerm);
 
         $updateSlug = $wpTerm['slug'] !== $vendureSlug;
         $updateName = wp_specialchars_decode($wpTerm['name']) !== $vendureTerm['name'];
@@ -189,12 +179,10 @@ class Taxonomies
 
     public function deleteTerm($id, $taxonomy)
     {
-        if ($taxonomy === 'produkter_kategorier') {
-            delete_term_meta($id, 'vendure_collection_id');
-        } else {
-            delete_term_meta($id, 'vendure_term_id');
-        }
-
+        //TODO use this SQL to make it safer:
+        //TODO 'DELETE FROM termmeta WHERE term_id NOT IN (SELECT term_id FROM terms)'
+        delete_term_meta($id, 'vendure_collection_id');
+        delete_term_meta($id, 'vendure_term_id');
         wp_delete_term($id, $taxonomy);
 
         $this->deletedTaxonomies++;
@@ -207,12 +195,13 @@ class Taxonomies
 
             if (is_wp_error($term)) {
                 //TODO log error somewhere
+                error_log($term->get_error_message());
                 return;
             }
 
             add_term_meta($term['term_id'], 'vendure_collection_id', $value['id'], true);
         } else {
-            $term = wp_insert_term($value['name'], $taxonomy, ['slug' => $this->getvendureTermSlug($value)]);
+            $term = wp_insert_term($value['name'], $taxonomy, ['slug' => $this->getVendureTermSlug($value)]);
             add_term_meta($term['term_id'], 'vendure_term_id', $value['id'], true);
         }
 
@@ -249,7 +238,6 @@ class Taxonomies
             );
 
             return $wpdb->get_var($query);
-
         }
     }
 
@@ -260,5 +248,4 @@ class Taxonomies
 
         wp_update_term($termId, $taxonomy, ['parent' => $parentId]);
     }
-
 }

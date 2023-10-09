@@ -1,14 +1,15 @@
 <?php
 
 /*
- wp sync-products sync
-*/
+ * WP-CLI Command
+ * $ wp sync-products sync
+ */
 
-use Haus\sync\Classes\Products;
-use Haus\sync\Classes\Taxonomies;
-use Haus\sync\Classes\Relations;
+use Haus\Sync\Classes\Products;
+use Haus\Sync\Classes\Taxonomies;
+use Haus\Sync\Classes\Relations;
 
-class syncProductData extends WP_CLI_Command
+class SyncProductData extends WP_CLI_Command
 {
     public function sync()
     {

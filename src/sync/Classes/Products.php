@@ -1,5 +1,5 @@
 <?php
-namespace Haus\sync\Classes;
+namespace Haus\Sync\Classes;
 
 class Products
 {
@@ -65,7 +65,7 @@ class Products
 
     public function createProduct($product)
     {
-        $productPost = [
+        wp_insert_post([
             'post_title' => $product['productName'],
             'post_status' => 'publish',
             'post_type' => 'produkter',
@@ -73,9 +73,7 @@ class Products
             'meta_input' => [
                 'vendure_id' => $product['productId'],
             ]
-        ];
-
-        wp_insert_post($productPost);
+        ]);
 
         $this->created++;
     }
@@ -92,13 +90,11 @@ class Products
         $updateSlug = $wpProduct['post_name'] !== $vendureProduct['slug'];
 
         if ($updateName || $updateSlug) {
-            $my_post = array(
+            wp_update_post([
                 'ID' => $wpProduct['id'],
                 'post_title' => $vendureProduct['productName'],
                 'post_name' => $vendureProduct['slug'],
-            );
-
-            wp_update_post($my_post);
+            ]);
 
             $this->updated++;
         }
