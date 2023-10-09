@@ -128,3 +128,5 @@ const defaultSortOptions = [
   { label: 'Pris fallande', value: { price: SortOrder.Desc } },
   { label: 'Pris stigande', value: { price: SortOrder.Asc } },
 ]
+
+export default ProductList

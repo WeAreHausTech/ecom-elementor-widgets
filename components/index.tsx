@@ -1,72 +1,63 @@
-import React from 'react'
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable no-case-declarations */
+import React, { ReactNode, Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
-import { ProductList } from './product-list/ProductList'
-import { Checkout } from './checkout/Checkout'
 import { VendureApolloProvider } from '@haus-tech/ecom-components'
-import { ProductDetail } from './products/ProductDetail'
-import { Cart } from './cart/Cart'
+
 import './index.scss'
+
+// Lazy load widgets
+const ProductList = React.lazy(() => import('./product-list/ProductList'))
+const Checkout = React.lazy(() => import('./checkout/Checkout'))
+const ProductDetail = React.lazy(() => import('./products/ProductDetail'))
+
+const renderElement = (element: Element, children: ReactNode) => {
+  return ReactDOM.createRoot(element).render(
+    <React.StrictMode>
+      <VendureApolloProvider apiUrl="https://livv-ecom-test.azurewebsites.net/shop-api">
+        <Suspense>{children}</Suspense>
+      </VendureApolloProvider>
+    </React.StrictMode>,
+  )
+}
 
 document.addEventListener(
   'DOMContentLoaded',
   function () {
-    const productList = document.getElementById('productList')
-    if (productList) {
-      const facetsAttributes = productList.attributes.getNamedItem('data-facet')?.value
-      let facetValues = undefined
+    const elements: Element[] = Array.from(document.getElementsByClassName('ecom-components-root'))
+    elements.forEach((element: Element) => {
+      const dataAttributes = element.attributes
+      const widgetType = dataAttributes.getNamedItem('data-widget-type')?.value
 
-      if (facetsAttributes) {
-        const facetArray = facetsAttributes.split(',').map(Number)
+      switch (widgetType) {
+        case 'product-list':
+          const facetsAttributes = dataAttributes.getNamedItem('data-facet')?.value
+          let facetValues = undefined
+          if (facetsAttributes) {
+            const facetArray = facetsAttributes.split(',').map(Number)
 
-        if (facetArray?.length > 0) {
-          facetValues = facetArray.map((facet) => {
-            return { and: facet }
-          })
-        }
+            if (facetArray?.length > 0) {
+              facetValues = facetArray.map((facet) => {
+                return { and: facet }
+              })
+            }
+          }
+          renderElement(
+            element,
+            <ProductList searchInputProps={{ facetValueFilters: facetValues }} />,
+          )
+          break
+
+        case 'checkout':
+          renderElement(element, <Checkout />)
+          break
+
+        case 'product-detail':
+          const id = dataAttributes.getNamedItem('data-product')?.value
+          renderElement(element, id && <ProductDetail id={id}></ProductDetail>)
+          break
       }
-
-      ReactDOM.createRoot(productList!).render(
-        <React.StrictMode>
-          <VendureApolloProvider apiUrl="https://livv-ecom-test.azurewebsites.net/shop-api">
-            <ProductList searchInputProps={{ facetValueFilters: facetValues }} />
-          </VendureApolloProvider>
-        </React.StrictMode>,
-      )
-    }
-
-    const checkout = document.getElementById('checkout')
-    if (checkout) {
-      ReactDOM.createRoot(checkout!).render(
-        <React.StrictMode>
-          <VendureApolloProvider apiUrl="https://livv-ecom-test.azurewebsites.net/shop-api">
-            <Checkout />
-          </VendureApolloProvider>
-        </React.StrictMode>,
-      )
-    }
-
-    const ProductSingle = document.getElementById('product-single')
-    if (ProductSingle) {
-      const id = ProductSingle.attributes.getNamedItem('data-product')?.value
-      ReactDOM.createRoot(ProductSingle!).render(
-        <React.StrictMode>
-          <VendureApolloProvider apiUrl="https://livv-ecom-test.azurewebsites.net/shop-api">
-            {id && <ProductDetail id={id}></ProductDetail>}
-          </VendureApolloProvider>
-        </React.StrictMode>,
-      )
-    }
-
-    const CartWidget = document.getElementById('cart')
-    if (CartWidget) {
-      ReactDOM.createRoot(CartWidget!).render(
-        <React.StrictMode>
-          <VendureApolloProvider apiUrl="https://livv-ecom-test.azurewebsites.net/shop-api">
-            <Cart />
-          </VendureApolloProvider>
-        </React.StrictMode>,
-      )
-    }
+    })
   },
   false,
 )

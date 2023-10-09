@@ -99,8 +99,11 @@ class ProductList extends Widget_Base
             }
         }
 
+        $widget_id = 'ecom_' . $this->get_id();
+        echo '<div id="' . $widget_id . '" class="ecom-components-root" data-widget-type="product-list" data-facet="' . implode(", ", $facets) . '"></div>';
+
         ?>
-        <div id="productList" data-facet="<?= implode(", ", $facets) ?>"></div>
+
         <?php
     }
 }

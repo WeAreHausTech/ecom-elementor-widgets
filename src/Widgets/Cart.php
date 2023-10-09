@@ -41,8 +41,10 @@ class Cart extends Widget_Base
             $this->getTemplate();
             return;
         }
+        $widget_id = 'ecom_' . $this->get_id();
+        echo '<div id="' . $widget_id . '" class="ecom-components-root" data-widget-type="cart"></div>';
         ?>
-        <div id="cart"></div>
+
         <?php
     }
 }

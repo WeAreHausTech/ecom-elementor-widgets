@@ -42,8 +42,10 @@ class ProductSingle extends Widget_Base
             $this->getMissingProductTemplate();
             return;
         }
+        
+        $widget_id = 'ecom_' . $this->get_id();
+        echo '<div id="' . $widget_id . '" class="ecom-components-root" data-widget-type="product-detail" data-product="' . $vendureId . '"></div>';
         ?>
-        <div id="product-single" data-product="<?= $vendureId ?>"></div>
         <?php
     }
 

@@ -121,3 +121,5 @@ const AccordionTrigger = forwardRef(
     </Accordion.Header>
   ),
 )
+
+export default Checkout
