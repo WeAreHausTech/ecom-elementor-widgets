@@ -6,6 +6,7 @@ import {
   GroupedFacetValues,
   SearchResultSortParameter,
   SortOrder,
+  SearchInput,
 } from '@haus-tech/ecom-components'
 import { Button } from '../button/Button'
 import { Select } from '../select/Select'
@@ -82,15 +83,22 @@ const Pagination = ({ pagination }: { pagination?: IPagination }) => {
 }
 
 type SortOption = { label: string; value: SearchResultSortParameter }
-
+type SearchInputProps = Pick<
+  SearchInput,
+  'term' | 'collectionId' | 'facetValueFilters' | 'groupByProduct' | 'sort' | 'take'
+>
 interface ProductListProps {
-  searchInputProps?: object
+  searchInputProps?: SearchInputProps
   availableSortOptions?: SortOption[]
+  enablepagination?: boolean
+  enableSort?: boolean
 }
 
 export const ProductList = ({
   searchInputProps,
   availableSortOptions = defaultSortOptions,
+  enablepagination,
+  enableSort,
 }: ProductListProps) => {
   return (
     <ProductListWrapper
@@ -105,17 +113,19 @@ export const ProductList = ({
         return (
           <>
             <div className="product-list-sort">
-              <Select
-                options={availableSortOptions}
-                defaultValue={JSON.stringify(filters?.sort)}
-                onValueChange={(value) => filters?.setSort(JSON.parse(value))}
-                triggerProps={{ color: 'blue', rounded: 'full' }}
-              />
+              {enableSort && (
+                <Select
+                  options={availableSortOptions}
+                  defaultValue={JSON.stringify(filters?.sort)}
+                  onValueChange={(value) => filters?.setSort(JSON.parse(value))}
+                  triggerProps={{ color: 'blue', rounded: 'full' }}
+                />
+              )}
             </div>
             {products.map((product) => (
               <ProductCard key={product.productId} product={product} facetValues={facetValues!} />
             ))}
-            <Pagination pagination={pagination} />
+            {enablepagination && <Pagination pagination={pagination} />}
           </>
         )
       }}

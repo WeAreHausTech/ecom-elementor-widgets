@@ -44,6 +44,15 @@ class ProductList extends Widget_Base
 
         $this->add_facet_controls();
         $this->end_controls_section();
+
+        $this->start_controls_section(
+            'section_pagination',
+            [
+                'label' => __('Pagination', 'webien'),
+            ]
+        );
+        $this->add_pagination_controls();
+        $this->end_controls_section();
     }
 
     public function add_facet_controls()
@@ -81,6 +90,44 @@ class ProductList extends Widget_Base
         return $options;
     }
 
+    public function add_pagination_controls()
+    {
+        $this->add_control(
+            'sort_enabled',
+            [
+                'label' => __('Enable Sort', 'webien'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => '0',
+                'options' => [
+                    '0' => __('No', 'webien'),
+                    '1' => __('Yes', 'webien'),
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'pagination_enabled',
+            [
+                'label' => __('Enable Pagination', 'webien'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => '0',
+                'options' => [
+                    '0' => __('No', 'webien'),
+                    '1' => __('Yes', 'webien'),
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'products_per_page',
+            [
+                'label' => __('Products per page', 'webien'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'default' => '12',
+            ]
+        );
+    }
+
     protected function render()
     {
         $settings = $this->get_settings_for_display();
@@ -100,10 +147,19 @@ class ProductList extends Widget_Base
         }
 
         $widget_id = 'ecom_' . $this->get_id();
-        echo '<div id="' . $widget_id . '" class="ecom-components-root" data-widget-type="product-list" data-facet="' . implode(", ", $facets) . '"></div>';
-
         ?>
 
+
+        <div 
+            id="<?= $widget_id ?>"
+            class="ecom-components-root" 
+            data-widget-type="product-list"
+            data-facet="<?= implode(", ", $facets) ?>" 
+            data-take="<?= $settings['products_per_page'] ?>" 
+            data-sort-enabled="<?= $settings['sort_enabled'] ?>"
+            data-pagination-enabled="<?= $settings['pagination_enabled'] ?>"
+        >
+        </div>
         <?php
     }
 }
