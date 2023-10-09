@@ -1,30 +1,12 @@
 <?php
+namespace Haus\Sync\Classes;
 
-/*
- wp sync-products sync
-*/
-
-class syncProducts extends WP_CLI_Command
+class Products
 {
-    private $created = 0;
-    private $updated = 0;
-    private $deleted = 0;
-
-    public function sync()
-    {
-        $vendureProducts = $this->getAllProductsFromVendure();
-
-        $wpProducts = $this->getAllProductsFromWp();
-
-        if (!$vendureProducts || count($vendureProducts) === 0) {
-            return WP_CLI::error('No products found');
-        }
-
-        $this->syncProducts($vendureProducts, $wpProducts);
-
-        WP_CLI::success('Updated: ' . $this->updated . ', Deleted: ' . $this->deleted . ', Created: ' . $this->created);
-    }
-
+    public $created = 0;
+    public $updated = 0;
+    public $deleted = 0;
+    
     public function getAllProductsFromVendure()
     {
         $products = (new \Haus\Queries\Product)->get();
@@ -56,9 +38,7 @@ class syncProducts extends WP_CLI_Command
         // Change array key to vendure_id from $wpProducts
         return array_combine(array_column($products, 'vendure_id'), $products);
     }
-
-
-    public function syncProducts($vendureProducts, $wpProducts)
+    public function syncProductsData($vendureProducts, $wpProducts)
     {
         //Exists in WP, not in Vendure
         $delete = array_diff_key($wpProducts, $vendureProducts);
@@ -80,11 +60,12 @@ class syncProducts extends WP_CLI_Command
         foreach ($update as $vendureId => $vendureProduct) {
             $this->updateProduct($wpProducts[$vendureId], $vendureProduct);
         }
+
     }
 
     public function createProduct($product)
     {
-        $productPost = [
+        wp_insert_post([
             'post_title' => $product['productName'],
             'post_status' => 'publish',
             'post_type' => 'produkter',
@@ -92,9 +73,7 @@ class syncProducts extends WP_CLI_Command
             'meta_input' => [
                 'vendure_id' => $product['productId'],
             ]
-        ];
-
-        wp_insert_post($productPost);
+        ]);
 
         $this->created++;
     }
@@ -111,17 +90,13 @@ class syncProducts extends WP_CLI_Command
         $updateSlug = $wpProduct['post_name'] !== $vendureProduct['slug'];
 
         if ($updateName || $updateSlug) {
-            $new = array(
+            wp_update_post([
                 'ID' => $wpProduct['id'],
                 'post_title' => $vendureProduct['productName'],
                 'post_name' => $vendureProduct['slug'],
-            );
-
-            wp_update_post($new);
+            ]);
 
             $this->updated++;
         }
     }
 }
-
-WP_CLI::add_command('sync-products', 'syncProducts');
