@@ -10,6 +10,7 @@ import './index.scss'
 const ProductList = React.lazy(() => import('./product-list/ProductList'))
 const Checkout = React.lazy(() => import('./checkout/Checkout'))
 const ProductDetail = React.lazy(() => import('./products/ProductDetail'))
+const Cart = React.lazy(() => import('./cart/Cart'))
 
 const renderElement = (element: Element, children: ReactNode) => {
   return ReactDOM.createRoot(element).render(
@@ -55,6 +56,10 @@ document.addEventListener(
         case 'product-detail':
           const id = dataAttributes.getNamedItem('data-product')?.value
           renderElement(element, id && <ProductDetail id={id}></ProductDetail>)
+          break
+
+        case 'cart':
+          renderElement(element, <Cart />)
           break
       }
     })
