@@ -40,9 +40,7 @@ const Address = ({ onSuccess, selectedCountry }: AddressProps) => {
       return
     }
 
-    if (orderMessage || orgNumber) {
-      updateCustomFields()
-    }
+    updateCustomFields()
 
     if (updateOrderMessageLoading && updateOrderMessageError) {
       return
@@ -52,7 +50,7 @@ const Address = ({ onSuccess, selectedCountry }: AddressProps) => {
   }
 
   const updateCustomFields = () => {
-    const message = orgNumber + ' | ' + orderMessage
+    const message = orgNumber + ' | ' + orderMessage;
     updateOrderMessage({
       variables: {
         input: {
@@ -88,12 +86,6 @@ const Address = ({ onSuccess, selectedCountry }: AddressProps) => {
         setSubmitAddress={setSubmitAddress}
         selectedCountry={selectedCountry}
       />
-
-      <div className="order-message">
-        <label>Ordermeddelande</label>
-        <textarea value={orderMessage} onChange={(e) => setOrderMessage(e.target.value)} />
-      </div>
-      {updateOrderMessageError && <div className="error">{updateOrderMessageError.message}</div>}
 
       <Button color="blue" className="button" onClick={handleSubmit}>
         Fortsätt

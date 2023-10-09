@@ -7,6 +7,8 @@ import {
   isError,
   GenericApolloError,
 } from '@haus-tech/ecom-components'
+import { useEffect } from 'react'
+import { useOrderMessage } from '@haus-tech/ecom-components'
 
 interface AddressProps {
   onSuccess: () => void
@@ -19,6 +21,28 @@ const CompleteOrder = ({ onSuccess }: AddressProps) => {
   const { mutation: shippingMethodMutation } = useShippingMethods()
   const { mutation: useOrderStateMutation } = useOrderState()
   const [submitError, setSubmitError] = useState('')
+  const [orderMessage, setOrderMessage] = useState<string>('')
+  const [orgNumber, setOrgNumber] = useState<string>('')
+  const { mutation: orderMessageMutation, query: submittedMessage } = useOrderMessage()
+  const [acceptConditions, setAcceptConditions] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (submittedMessage) {
+      const parts = submittedMessage.split('|')
+      const orgNumberValue = parts[0].trim()
+      const orderMessageValue = parts[1].trim()
+
+      setOrderMessage(orderMessageValue)
+      setOrgNumber(orgNumberValue)
+
+      console.log(window.location.origin);
+    }
+  }, [submittedMessage])
+
+  const [
+    updateOrderMessageFunc,
+    { loading: updateOrderMessageLoading, error: updateOrderMessageError },
+  ] = orderMessageMutation
 
   const [
     updateShippingMethodFunc,
@@ -33,7 +57,26 @@ const CompleteOrder = ({ onSuccess }: AddressProps) => {
   const [updateOrderStateFunc, { loading: updateOrderStateLoading, error: updateOrderStateError }] =
     useOrderStateMutation
 
+  const updateOrderMessage = () => {
+    const message = orgNumber + ' | ' + orderMessage
+    updateOrderMessageFunc({
+      variables: {
+        input: {
+          customFields: {
+            CustomerMessage: message,
+          },
+        },
+      },
+    })
+  }
+
   const handleSubmit = async () => {
+    if (!acceptConditions) {
+      setSubmitError('Du måste godkänna köpvillkoren')
+      return
+    }
+    updateOrderMessage()
+
     const tasks = [
       () =>
         updateShippingMethodFunc({
@@ -62,7 +105,8 @@ const CompleteOrder = ({ onSuccess }: AddressProps) => {
         updatePaymentMethodError ||
         updateOrderStateError ||
         updateShippingMethodError ||
-        submitError
+        submitError ||
+        updateOrderMessageError
       )
     ) {
       onSuccess()
@@ -72,14 +116,37 @@ const CompleteOrder = ({ onSuccess }: AddressProps) => {
   return (
     <div className="completeOrder">
       {submitError && <div className="error">{submitError}</div>}
+
+      <div className="accept-conditions">
+        <label>
+          <input
+            type="checkbox"
+            checked={acceptConditions}
+            onChange={() => setAcceptConditions(!acceptConditions)}
+          />{' '}
+          Jag godkänner 
+          <a href={window.location.origin + '/kopvillkor'}>köpvillkoren
+            </a> och intygar att angivna uppgifter är korrekt.
+        </label>
+      </div>
+      <div className="order-message">
+        <label>Ordermeddelande</label>
+        <textarea value={orderMessage} onChange={(e) => setOrderMessage(e.target.value)} />
+      </div>
       <Button
         color="blue"
         onClick={handleSubmit}
         disabled={
-          updateShippingtMethodLoading || updatePaymentMethodLoading || updateOrderStateLoading
+          updateShippingtMethodLoading ||
+          updatePaymentMethodLoading ||
+          updateOrderStateLoading ||
+          updateOrderMessageLoading
         }
       >
-        {updateShippingtMethodLoading || updatePaymentMethodLoading || updateOrderStateLoading
+        {updateShippingtMethodLoading ||
+        updatePaymentMethodLoading ||
+        updateOrderStateLoading ||
+        updateOrderMessageLoading
           ? 'Laddar...'
           : 'Slutför beställning'}
       </Button>
