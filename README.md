@@ -33,3 +33,15 @@ If you are developing a production application, we recommend updating the config
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
 - Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+#Local testing in wordpress
+Go to the wordpress root folder
+
+Remove the plugin folder
+$ rm -rf web/app/plugins/livv-ecom-elementor-widgets/
+
+Symlink widgets repo
+$ ln -s ~/<path-to-where-repo-exists>/livv-ecom-elementor-widgets web/app/plugins/livv-ecom-elementor-widgets
+
+Do your changes in livv-ecom-elementor-widgets and run this comand to see the changes
+$ npm run build-widgets
