@@ -2,9 +2,10 @@
 /* eslint-disable no-case-declarations */
 import React, { ReactNode, Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
-import { VendureApolloProvider } from '@haus-tech/ecom-components'
+import { FacetValueFilterInput, VendureApolloProvider } from '@haus-tech/ecom-components'
 
 import './index.scss'
+import { get } from 'lodash'
 
 // Lazy load widgets
 const ProductList = React.lazy(() => import('./product-list/ProductList'))
@@ -33,19 +34,34 @@ document.addEventListener(
       switch (widgetType) {
         case 'product-list':
           const facetsAttributes = dataAttributes.getNamedItem('data-facet')?.value
-          let facetValues = undefined
+          let facetValues: FacetValueFilterInput[] = [{ or: [] }]
           if (facetsAttributes) {
             const facetArray = facetsAttributes.split(',').map(Number)
 
             if (facetArray?.length > 0) {
               facetValues = facetArray.map((facet) => {
-                return { and: facet }
+                return { and: String(facet) } as FacetValueFilterInput
               })
             }
           }
+
+          const enablePagination = +get(
+            dataAttributes.getNamedItem('data-pagination-enabled'),
+            'value',
+            0,
+          )
+          const enableSort = +get(dataAttributes.getNamedItem('data-sort-enabled'), 'value', 0)
+
           renderElement(
             element,
-            <ProductList searchInputProps={{ facetValueFilters: facetValues }} />,
+            <ProductList
+              searchInputProps={{
+                facetValueFilters: facetValues,
+                take: +get(dataAttributes.getNamedItem('data-take'), 'value', 12),
+              }}
+              enablepagination={Boolean(enablePagination)}
+              enableSort={Boolean(enableSort)}
+            />,
           )
           break
 
