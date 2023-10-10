@@ -9,6 +9,7 @@ import { SearchPage } from './pages/SearchPage'
 import { LoginPage } from './pages/LoginPage'
 import { CartPage } from './pages/CartPage'
 import { SearchField } from '../../components/search-field/SearchField'
+import { OrderConfirmationPage } from './pages/OrderConfirmationPage'
 import { CurrencySelect } from '../../components/CurrencySelect/CurrencySelect'
 
 function App() {
@@ -55,6 +56,12 @@ function App() {
     component: () => <CheckoutPage />,
   })
 
+  const orderConfirmationRoute = new Route({
+    getParentRoute: () => rootRoute,
+    path: '/order-confirmation',
+    component: () => <OrderConfirmationPage />,
+  })
+
   const searchRoute = new Route({
     getParentRoute: () => rootRoute,
     path: '/search',
@@ -76,6 +83,7 @@ function App() {
   const routeTree = rootRoute.addChildren([
     loginRoute,
     checkoutRoute,
+    orderConfirmationRoute,
     searchRoute,
     cartRoute,
     indexRoute,

@@ -5,7 +5,6 @@ import {
   useShippingMethods,
   useOrderState,
   isError,
-  GenericApolloError,
 } from '@haus-tech/ecom-components'
 
 interface AddressProps {
@@ -51,8 +50,13 @@ const CompleteOrder = ({ onSuccess }: AddressProps) => {
 
     for (const task of tasks) {
       const { data } = await task()
-      if (isError(data)) {
-        setSubmitError((data as GenericApolloError)?.message || 'Error')
+      if (isError(data) || !data) {
+        setSubmitError(
+          updateShippingMethodError?.message ||
+            updateOrderStateError?.message ||
+            updatePaymentMethodError?.message ||
+            'Error',
+        )
         return
       }
     }

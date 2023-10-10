@@ -1,25 +1,41 @@
 import * as Accordion from '@radix-ui/react-accordion'
 import classNames from 'classnames'
-import { ForwardedRef, Suspense, forwardRef, useMemo, useState } from 'react'
+import { ForwardedRef, Suspense, forwardRef, useEffect, useMemo, useState } from 'react'
 import { includes } from 'lodash'
 import { Icon } from '../icon/Icon'
 import CustomerInformation from './components/CustomerInformation'
 import Address from './components/Address'
 import CompleteOrder from './components/CompleteOrder'
+import { Order, useActiveOrder } from '@haus-tech/ecom-components'
 import CountryPicker from './components/CountryPicker'
 
-export const Checkout = () => {
+interface CheckoutProps {
+  redirectUrl?: string
+}
+
+export const Checkout = ({ redirectUrl = 'order-confirmation' }: CheckoutProps) => {
   const [currentStep, setCurrentStep] = useState<string>('country-picker')
   const [finishedSteps, setFinishedSteps] = useState<string[]>([])
-  const [success, setSuccess] = useState<boolean>(false)
+  const [orderCode, setOrderCode] = useState<string | null>(null)
   const [selectedCountry, setSelectedCountry] = useState<string>('')
+
+  const { data } = useActiveOrder()
+
+  useEffect(() => {
+    if (data?.activeOrder) {
+      const activeOrder = data.activeOrder as Order
+
+      setOrderCode(activeOrder.code)
+    }
+  }, [data])
+
 
   const handleNextClick = () => {
     const currentStepIndex = steps.findIndex((step) => step.id === currentStep)
     const nextStep = steps[currentStepIndex + 1]
 
     if (currentStepIndex === steps.length - 1) {
-      setSuccess(true)
+      window.location.href = `${redirectUrl}?orderCode=${orderCode}`
     }
 
     if (nextStep) {
@@ -56,9 +72,6 @@ export const Checkout = () => {
   }, [])
 
   return (
-    <>
-      {!success ? (
-        <>
           <Accordion.Root className="Checkout" type="single" value={currentStep} collapsible>
             {steps.map((step, idx) => {
               const Element = step.component
@@ -96,11 +109,6 @@ export const Checkout = () => {
               )
             })}
           </Accordion.Root>
-        </>
-      ) : (
-        <div>Tack för din beställning</div>
-      )}
-    </>
   )
 }
 
