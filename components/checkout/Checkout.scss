@@ -176,6 +176,7 @@
   .adress {
     .addressCheckbox {
       margin-top: 24px;
+      margin-bottom: 32px;
 
       label {
         display: flex;
@@ -210,6 +211,10 @@
       flex-direction: column;
       gap: 24px;
     }
+  }
+
+  .billing-address-form{
+    margin-bottom: 32px;
   }
 
   .completeOrder {

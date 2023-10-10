@@ -53,17 +53,17 @@ const AddressFields = ({
   const initialValuesBilling =
     initialBillingData && initialBillingData !== undefined && initialBillingData !== null
       ? Object.keys(omit(initialBillingData, ['__typename', 'country'])).reduce((acc, key) => {
-            const orderAddressKey = key as keyof OrderAddress;
-            acc[orderAddressKey] = (initialBillingData as OrderAddress)[orderAddressKey] || '';
-            return acc;
-          }, {} as FormikValues)
+          const orderAddressKey = key as keyof OrderAddress
+          acc[orderAddressKey] = (initialBillingData as OrderAddress)[orderAddressKey] || ''
+          return acc
+        }, {} as FormikValues)
       : {}
 
   const initialValuesShipping = initialinitialShippingData
     ? Object.keys(omit(initialinitialShippingData, ['__typename', 'country'])).reduce(
         (acc, key) => {
-          const orderAddressKey = key as keyof OrderAddress;
-          acc[orderAddressKey] = (initialinitialShippingData as OrderAddress)[orderAddressKey] || '';
+          const orderAddressKey = key as keyof OrderAddress
+          acc[orderAddressKey] = (initialinitialShippingData as OrderAddress)[orderAddressKey] || ''
           return acc
         },
         {} as FormikValues,
@@ -131,10 +131,8 @@ const AddressFields = ({
               <Input label="Företag" name="company" errors={errors} touched={touched} />
               <Input label="Namn" name="fullName" errors={errors} touched={touched} />
               <Input label="Adress" name="streetLine1" errors={errors} touched={touched} />
-              <div className="wrapper-2-inputs">
-                <Input label="Postnummer" name="postalCode" errors={errors} touched={touched} />
-                <Input label="Ort" name="city" errors={errors} touched={touched} />
-              </div>
+              <Input label="Postnummer" name="postalCode" errors={errors} touched={touched} />
+              <Input label="Ort" name="city" errors={errors} touched={touched} />
             </Form>
           )
         }}
