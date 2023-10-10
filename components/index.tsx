@@ -45,6 +45,11 @@ document.addEventListener(
             }
           }
 
+    
+
+          const collectionId = dataAttributes.getNamedItem('data-collection')?.value
+
+
           const enablePagination = +get(
             dataAttributes.getNamedItem('data-pagination-enabled'),
             'value',
@@ -58,6 +63,7 @@ document.addEventListener(
               searchInputProps={{
                 facetValueFilters: facetValues,
                 take: +get(dataAttributes.getNamedItem('data-take'), 'value', 12),
+                collectionId: collectionId
               }}
               enablepagination={Boolean(enablePagination)}
               enableSort={Boolean(enableSort)}

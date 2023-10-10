@@ -63,6 +63,23 @@ class ProductList extends Widget_Base
             return;
         }
 
+
+        $this->add_control(
+            'autoFacet',
+            [
+                'label' => __('Autoset taxonomy:', 'webien'),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'label_block' => true,
+                'options' => [
+                    '0' => '-',
+                    'department' => 'Department',
+                    'brand' => 'Brand',
+                    'category' => 'Category',
+                ],
+                'default' => '0',
+            ]
+        );
+
         foreach ($facets['data']['facets']['items'] as $facet) {
             $this->add_control(
                 'facetType-' . $facet['name'],
@@ -138,27 +155,37 @@ class ProductList extends Widget_Base
             return;
         }
 
+        $taxonomy = '';
         $facets = [];
 
+        $autoSetTaxonomy = $settings['autoFacet'] !== '0';
+
+        if ($autoSetTaxonomy) {
+            $currentTerm = get_queried_object();
+            $termId = $currentTerm->term_id;
+            $termTaxonomy = $currentTerm->taxonomy;
+
+            if ($termId && $termTaxonomy === 'produkter-kategorier') {
+                $taxonomy = get_term_meta($termId, 'vendure_collection_id', true);
+            } else {
+                $facetId = get_term_meta($termId, 'vendure_term_id', true);
+                $facets[] = $facetId;
+            }
+        }
+
         foreach ($settings as $key => $value) {
-            if (strpos($key, 'facetType-') !== false && $value !== '0') {
-                $facets[] = $value;
+            if (strpos($key, 'facetType-') !== false && $value !== '0' && ($autoSetTaxonomy && $key !== 'facetType-' . $settings['autoFacet'])) {
+                    $facets[] = $value;
             }
         }
 
         $widget_id = 'ecom_' . $this->get_id();
         ?>
 
-
-        <div 
-            id="<?= $widget_id ?>"
-            class="ecom-components-root" 
-            data-widget-type="product-list"
-            data-facet="<?= implode(", ", $facets) ?>" 
-            data-take="<?= $settings['products_per_page'] ?>" 
-            data-sort-enabled="<?= $settings['sort_enabled'] ?>"
-            data-pagination-enabled="<?= $settings['pagination_enabled'] ?>"
-        >
+        <div id="<?= $widget_id ?>" class="ecom-components-root" data-widget-type="product-list"
+            data-facet="<?= implode(", ", $facets) ?>" data-collection="<?= $taxonomy ?>"
+            data-take="<?= $settings['products_per_page'] ?>" data-sort-enabled="<?= $settings['sort_enabled'] ?>"
+            data-pagination-enabled="<?= $settings['pagination_enabled'] ?>">
         </div>
         <?php
     }
