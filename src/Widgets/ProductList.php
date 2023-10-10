@@ -89,6 +89,9 @@ class ProductList extends Widget_Base
                     'label_block' => true,
                     'options' => $this->get_facet_options($facet),
                     'default' => '0',
+                    'condition' => [
+                        'autoFacet!' =>  $facet['name'],
+                    ],
                 ]
             );
         }
