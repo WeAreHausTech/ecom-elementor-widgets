@@ -34,8 +34,6 @@ const CompleteOrder = ({ onSuccess }: AddressProps) => {
 
       setOrderMessage(orderMessageValue)
       setOrgNumber(orgNumberValue)
-
-      console.log(window.location.origin);
     }
   }, [submittedMessage])
 
@@ -75,7 +73,10 @@ const CompleteOrder = ({ onSuccess }: AddressProps) => {
       setSubmitError('Du måste godkänna köpvillkoren')
       return
     }
-    updateOrderMessage()
+
+    if (orderMessage !== '') {
+      updateOrderMessage()
+    }
 
     const tasks = [
       () =>
@@ -124,9 +125,11 @@ const CompleteOrder = ({ onSuccess }: AddressProps) => {
             checked={acceptConditions}
             onChange={() => setAcceptConditions(!acceptConditions)}
           />{' '}
-          Jag godkänner 
-          <a href={window.location.origin + '/kopvillkor'}>köpvillkoren
-            </a> och intygar att angivna uppgifter är korrekt.
+          <span>
+            Jag godkänner
+            <a href={window.location.origin + '/kopvillkor'}> köpvillkoren</a> och intygar att
+            angivna uppgifter är korrekt.{' '}
+          </span>
         </label>
       </div>
       <div className="order-message">

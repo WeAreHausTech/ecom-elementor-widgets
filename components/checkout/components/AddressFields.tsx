@@ -149,6 +149,7 @@ const AddressFields = ({
       <div className="addressCheckbox">
         <label>
           <input
+            className="custom-checkbox"
             type="checkbox"
             checked={addSeperateShippingAddress}
             onChange={() => setAddSeperateShippingAddress(!addSeperateShippingAddress)}

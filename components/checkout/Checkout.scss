@@ -27,7 +27,6 @@
     height: 20px;
     border: 1px solid rgba(0, 0, 0, 0.1);
   }
-
   .input {
     display: flex;
     flex-direction: column;
@@ -182,6 +181,7 @@
         display: flex;
         flex-direction: row;
         gap: 10px;
+        font-weight: 400;
       }
     }
 
@@ -239,6 +239,10 @@
           gap: 10px;
           font-size: 16px;
           font-weight: 400;
+
+          a {
+            text-decoration: underline;
+          }
         }
     }
   }
