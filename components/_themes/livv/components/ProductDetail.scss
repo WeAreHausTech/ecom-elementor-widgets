@@ -252,7 +252,7 @@
 
     .quantity {
       position: inherit;
-      z-index: 100;
+
       width: 100%;
 
       .trigger {
@@ -262,6 +262,7 @@
       }
 
       .quantity-content {
+        z-index: 100;
       }
 
       .quantity-viewport {
