@@ -1,7 +1,7 @@
-import ShippingAddress from './ShippingAddress'
-import BillingAddress from './BillingAddress'
+import AddressFields from './AddressFields'
 import { useOrderMessage } from '@haus-tech/ecom-components'
 import { useEffect } from 'react'
+import { Button } from '../../button/Button'
 
 import { useState } from 'react'
 
@@ -14,10 +14,10 @@ interface AddressProps {
 
 const Address = ({ onSuccess, selectedCountry }: AddressProps) => {
   const { mutation: orderMessageMutation, query: submittedMessage } = useOrderMessage()
-  const [addBillingAddress, setAddBillingAddress] = useState<boolean>(false)
   const [orderMessage, setOrderMessage] = useState<string>('')
   const [orgNumber, setOrgNumber] = useState<string>('')
   const [orgNrError, setOrgNrError] = useState<string>('')
+  const [submitAddress, setSubmitAddress] = useState<boolean>(false)
 
   useEffect(() => {
     if (submittedMessage) {
@@ -30,32 +30,27 @@ const Address = ({ onSuccess, selectedCountry }: AddressProps) => {
     }
   }, [submittedMessage])
 
-  const success = (type: string) => {
+  const success = () => {
+    onSuccess()
+  }
+
+  const handleSubmit = () => {
     if (!orgNumber) {
       setOrgNrError('Vänligen fyll i organisationsnummer')
       return
     }
 
-    if (orderMessage || orgNumber) {
-      updateCustomFields()
-    }
+    updateCustomFields()
 
     if (updateOrderMessageLoading && updateOrderMessageError) {
       return
     }
 
-    if (type === 'shipping' && !addBillingAddress) {
-      onSuccess()
-    }
-
-    if (type === 'billing' && addBillingAddress) {
-      onSuccess()
-    }
+    setSubmitAddress(true)
   }
 
   const updateCustomFields = () => {
-    const message = orgNumber + ' | ' + orderMessage
-
+    const message = orgNumber + ' | ' + orderMessage;
     updateOrderMessage({
       variables: {
         input: {
@@ -84,35 +79,17 @@ const Address = ({ onSuccess, selectedCountry }: AddressProps) => {
         />
         {orgNrError && <div className="error">{orgNrError}</div>}
       </div>
-      <ShippingAddress
-      selectedCountry={selectedCountry}
-        sameBillingAddress={!addBillingAddress}
-        onSuccess={() => success('shipping')}
+
+      <AddressFields
+        onSuccess={() => success()}
+        submitAddress={submitAddress}
+        setSubmitAddress={setSubmitAddress}
+        selectedCountry={selectedCountry}
       />
 
-      <div className="addressCheckbox">
-        <label>
-          <input
-            type="checkbox"
-            checked={addBillingAddress}
-            onChange={() => setAddBillingAddress(!addBillingAddress)}
-          />{' '}
-          Jag har separat faktureringsadress
-        </label>
-      </div>
-
-      {addBillingAddress && (
-        <div className="billingAddress">
-          <h2>Faktureringsaddress</h2>
-          <BillingAddress selectedCountry={selectedCountry} onSuccess={() => success('billing')} />
-        </div>
-      )}
-
-      <div className="order-message">
-        <label>Ordermeddelande</label>
-        <textarea value={orderMessage} onChange={(e) => setOrderMessage(e.target.value)} />
-      </div>
-      {updateOrderMessageError && <div className="error">{updateOrderMessageError.message}</div>}
+      <Button color="blue" className="button" onClick={handleSubmit}>
+        Fortsätt
+      </Button>
     </div>
   )
 }

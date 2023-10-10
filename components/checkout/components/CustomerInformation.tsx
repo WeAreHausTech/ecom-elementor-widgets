@@ -45,7 +45,7 @@ const CustomerInformation = ({ onSuccess }: CustomerInformationProps) => {
             >
               {({ errors, touched }) => {
                 return (
-                  <Form className="billing-address-form">
+                  <Form className="customer-information-form">
                     <Input label="Förnamn" name="firstName" errors={errors} touched={touched} />
                     <Input label="Efternamn" name="lastName" errors={errors} touched={touched} />
                     <Input label="E-post" name="emailAddress" errors={errors} touched={touched} />

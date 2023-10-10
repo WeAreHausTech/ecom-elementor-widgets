@@ -23,9 +23,9 @@ const BillingAddress = ({ onSuccess, selectedCountry }: BillingAddressProps) => 
 
           await update(values as CreateAddressInput)
 
-          if (!error) {
-            onSuccess()
-          }
+          //set billingaddress same as shippingaddress
+
+          onSuccess()
         }
 
         const initialValues = savedData
@@ -47,15 +47,10 @@ const BillingAddress = ({ onSuccess, selectedCountry }: BillingAddressProps) => 
               {({ errors, touched }) => {
                 return (
                   <Form className="billing-address-form">
-                    <Input label="Namn" name="fullName" errors={errors} touched={touched} />
                     <Input label="Företag" name="company" errors={errors} touched={touched} />
+                    <Input label="Namn" name="fullName" errors={errors} touched={touched} />
                     <Input label="Adress" name="streetLine1" errors={errors} touched={touched} />
-                    <Input
-                      label="Adress rad 2"
-                      name="streetLine2"
-                      errors={errors}
-                      touched={touched}
-                    />
+                    <Input label="Postnummer" name="postalCode" errors={errors} touched={touched} />
                     <Input label="Stad" name="city" errors={errors} touched={touched} />
 
                     <Input label="Provins" name="province" errors={errors} touched={touched} />

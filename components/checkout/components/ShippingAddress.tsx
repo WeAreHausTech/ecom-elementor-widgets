@@ -12,7 +12,7 @@ import { Button } from '../../button/Button'
 
 interface ShippingAddressProps {
   onSuccess: () => void
-  sameBillingAddress: boolean
+  sameBillingAddress?: boolean
   selectedCountry?: string
 }
 

@@ -2,40 +2,118 @@
   background-color: var(--White);
   border-radius: 20px;
 
+  input {
+    width: 20px;
+    height: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: var(--White, #fff);
+    display: flex;
+    height: 40px;
+    padding: 8px 16px;
+    align-items: center;
+    gap: 10px;
+    align-self: stretch;
+    width: 100%;
+  }
+
+  input:checked {
+    border: none;
+  }
+
+  input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  .input {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .wrapper-2-inputs {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    width: 100%;
+
+    .Input {
+      width: 50%;
+    }
+  }
+
+  label {
+    color: var(--Almost-Black, #3e4849);
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
   .checkout-step {
     overflow: hidden;
     padding: 0 24px;
+    border-bottom: 1px solid var(--cart-orderlines-border-color);
+
+    &:last-child {
+      border-bottom: none;
+    }
 
     .checkout-step-header {
       display: flex;
 
+      .checkout-step-edit {
+        color: var(--Almost-Black, #3e4849);
+        font-family: Inter;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 150%;
+        text-decoration-line: underline;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
       .checkout-step-trigger {
         display: flex;
         align-items: center;
-        justify-content: flex-start;
-        padding: 24px 0;
-        gap: 8px;
+        justify-content: space-between;
+        padding: 40px 0 24px 0;
+        width: 100%;
 
-        .checkout-step-number {
-          align-items: center;
-          background-color: var(--White);
-          border-radius: 50%;
-          color: var(--Almost-Black);
+        .checkout-step-value {
           display: flex;
-          font-size: 14px;
-          font-weight: 600;
-          height: 36px;
-          width: 36px;
-          justify-content: center;
-          border: 1px solid rgba(0, 0, 0, 0.1);
-        }
+          flex-direction: row;
+          align-items: center;
+          justify-self: flex-start;
 
-        .checkout-step-title {
-          color: var(--AlmostBlack);
-          font-size: 22px;
-          font-style: normal;
-          font-weight: 700;
-          line-height: 130%;
+          gap: 8px;
+          .checkout-step-number {
+            align-items: center;
+            background-color: var(--White);
+            border-radius: 50%;
+            color: var(--Almost-Black);
+            display: flex;
+            font-size: 14px;
+            font-weight: 600;
+            height: 36px;
+            width: 36px;
+            justify-content: center;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+          }
+
+          .checkout-step-title {
+            color: var(--AlmostBlack);
+            font-size: 22px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 130%;
+          }
         }
 
         &.current {
@@ -49,7 +127,6 @@
 
     .checkout-step-content {
       padding-bottom: 24px;
-      border-bottom: 1px solid var(--Gray-Light);
     }
   }
 
@@ -58,18 +135,15 @@
     flex-direction: column;
     gap: 32px;
 
+    .country-picker-content {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
     .error {
       color: red;
       font-size: 12px;
-    }
-
-    label {
-      color: var(--Almost-Black, #3e4849);
-      font-family: Inter;
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 150%;
     }
 
     select {
@@ -77,14 +151,10 @@
     }
   }
 
-  .BillingAddress,
-  .ShippingAddress,
-  .CustomerInformation {
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
   }
 
   .PaymentMethod {
@@ -100,80 +170,30 @@
       display: flex;
       flex-direction: column;
       gap: 24px;
-
-      label {
-        gap: 10px;
-        display: flex;
-        flex-direction: row;
-      }
-
-      input {
-        width: 20px;
-        height: 20px;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-      }
-
-      input:checked {
-        border: none;
-      }
     }
   }
 
   .adress {
     .addressCheckbox {
       margin-top: 24px;
+      margin-bottom: 32px;
+
       label {
         display: flex;
         flex-direction: row;
         gap: 10px;
-        color: var(--Almost-Black, #3e4849);
-        font-size: 16px;
-        font-style: normal;
         font-weight: 400;
-        line-height: 150%; /* 24px */
-      }
-      input[type='checkbox'] {
-        width: 20px;
-        height: 20px;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-
-        input:checked {
-          background-color: red;
-        }
       }
     }
 
     .orgnumber-field {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
       margin-bottom: 24px;
       .error {
         font-size: 12px;
         color: var(--Red, #ef7e6f);
-      }
-      label {
-        color: var(--Almost-Black, #3e4849);
-        font-size: 16px;
-        font-weight: 600;
-        line-height: 150%;
-      }
-      input {
-        width: 100%;
-      }
-    }
-
-    .order-message {
-      margin-top: 20px;
-      label {
-        color: var(--Almost-Black, #3e4849);
-        font-size: 16px;
-        font-weight: 600;
-        line-height: 150%;
-      }
-      textarea {
-        width: 100%;
-        border-radius: 8px;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        background: var(--White, #fff);
-        padding: 8px 16px;
       }
     }
 
@@ -190,6 +210,45 @@
       display: flex;
       flex-direction: column;
       gap: 24px;
+    }
+  }
+
+  .billing-address-form{
+    margin-bottom: 32px;
+  }
+
+  .completeOrder {
+    .order-message {
+      margin-top: 20px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      label {
+        margin-bottom: 10px;
+      }
+      textarea {
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        background: var(--White, #fff);
+        padding: 8px 16px;
+      }
+    }
+
+    .accept-conditions {
+        margin-top: 24px;
+  
+        label {
+          display: flex;
+          flex-direction: row;
+          gap: 10px;
+          font-size: 16px;
+          font-weight: 400;
+
+          a {
+            text-decoration: underline;
+          }
+        }
     }
   }
 }
