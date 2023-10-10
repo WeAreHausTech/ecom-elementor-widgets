@@ -4,11 +4,15 @@ import { useOrderMessage } from '@haus-tech/ecom-components'
 import { useEffect } from 'react'
 
 import { useState } from 'react'
+
+
 interface AddressProps {
   onSuccess: () => void
+  selectedCountry?: string
+  setSelectedCountry?: (country: string) => void
 }
 
-const Address = ({ onSuccess }: AddressProps) => {
+const Address = ({ onSuccess, selectedCountry }: AddressProps) => {
   const { mutation: orderMessageMutation, query: submittedMessage } = useOrderMessage()
   const [addBillingAddress, setAddBillingAddress] = useState<boolean>(false)
   const [orderMessage, setOrderMessage] = useState<string>('')
@@ -81,6 +85,7 @@ const Address = ({ onSuccess }: AddressProps) => {
         {orgNrError && <div className="error">{orgNrError}</div>}
       </div>
       <ShippingAddress
+      selectedCountry={selectedCountry}
         sameBillingAddress={!addBillingAddress}
         onSuccess={() => success('shipping')}
       />
@@ -99,7 +104,7 @@ const Address = ({ onSuccess }: AddressProps) => {
       {addBillingAddress && (
         <div className="billingAddress">
           <h2>Faktureringsaddress</h2>
-          <BillingAddress onSuccess={() => success('billing')} />
+          <BillingAddress selectedCountry={selectedCountry} onSuccess={() => success('billing')} />
         </div>
       )}
 

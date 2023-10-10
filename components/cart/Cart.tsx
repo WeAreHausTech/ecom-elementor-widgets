@@ -3,7 +3,6 @@ import { CartPrice } from '../cart-price/CartPrice'
 import { Button } from '../button/Button'
 import { CartTotals } from '@haus-tech/ecom-components'
 
-
 export const Cart = () => {
   const order = {
     totalWithTax: 1,
@@ -57,3 +56,5 @@ export const Cart = () => {
     </div>
   )
 }
+
+export default Cart

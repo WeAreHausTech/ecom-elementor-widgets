@@ -115,3 +115,5 @@ export const ProductDetail = ({ slug = '', id = '' }: ProductDetailProps) => {
     </ProductDetailComponent>
   )
 }
+
+export default ProductDetail

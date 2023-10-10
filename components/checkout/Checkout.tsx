@@ -7,15 +7,17 @@ import CustomerInformation from './components/CustomerInformation'
 import Address from './components/Address'
 import CompleteOrder from './components/CompleteOrder'
 import { Order, useActiveOrder } from '@haus-tech/ecom-components'
+import CountryPicker from './components/CountryPicker'
 
 interface CheckoutProps {
   redirectUrl?: string
 }
 
 export const Checkout = ({ redirectUrl = 'order-confirmation' }: CheckoutProps) => {
-  const [currentStep, setCurrentStep] = useState<string>('customer-information')
+  const [currentStep, setCurrentStep] = useState<string>('country-picker')
   const [finishedSteps, setFinishedSteps] = useState<string[]>([])
   const [orderCode, setOrderCode] = useState<string | null>(null)
+  const [selectedCountry, setSelectedCountry] = useState<string>('')
 
   const { data } = useActiveOrder()
 
@@ -26,6 +28,7 @@ export const Checkout = ({ redirectUrl = 'order-confirmation' }: CheckoutProps) 
       setOrderCode(activeOrder.code)
     }
   }, [data])
+
 
   const handleNextClick = () => {
     const currentStepIndex = steps.findIndex((step) => step.id === currentStep)
@@ -46,6 +49,11 @@ export const Checkout = ({ redirectUrl = 'order-confirmation' }: CheckoutProps) 
   const steps = useMemo(() => {
     return [
       {
+        title: 'Leverans till land',
+        id: 'country-picker',
+        component: CountryPicker,
+      },
+      {
         title: 'Kontaktuppgifter',
         id: 'customer-information',
         component: CustomerInformation,
@@ -64,37 +72,43 @@ export const Checkout = ({ redirectUrl = 'order-confirmation' }: CheckoutProps) 
   }, [])
 
   return (
-    <Accordion.Root className="Checkout" type="single" value={currentStep} collapsible>
-      {steps.map((step, idx) => {
-        const Element = step.component
-        return (
-          <Accordion.Item
-            key={step.id}
-            value={step.id}
-            className={classNames('checkout-step', {
-              current: currentStep === step.id,
+          <Accordion.Root className="Checkout" type="single" value={currentStep} collapsible>
+            {steps.map((step, idx) => {
+              const Element = step.component
+              return (
+                <Accordion.Item
+                  key={step.id}
+                  value={step.id}
+                  className={classNames('checkout-step', {
+                    current: currentStep === step.id,
+                  })}
+                >
+                  <AccordionTrigger
+                    className={classNames('checkout-step-trigger', {
+                      current: currentStep === step.id,
+                    })}
+                    onClick={() => includes(finishedSteps, step.id) && setCurrentStep(step.id)}
+                  >
+                    <div className={classNames('checkout-step-number')}>
+                      {includes(finishedSteps, step.id) ? <Icon name="check" /> : idx + 1}
+                    </div>
+                    <div className="checkout-step-title">{step.title}</div>
+                  </AccordionTrigger>
+                  <Accordion.Content className="checkout-step-content">
+                    <Suspense fallback={<div>Loading...</div>}>
+                      {Element && (
+                        <Element
+                          selectedCountry={selectedCountry}
+                          setSelectedCountry={setSelectedCountry}
+                          onSuccess={handleNextClick}
+                        />
+                      )}
+                    </Suspense>
+                  </Accordion.Content>
+                </Accordion.Item>
+              )
             })}
-          >
-            <AccordionTrigger
-              className={classNames('checkout-step-trigger', {
-                current: currentStep === step.id,
-              })}
-              onClick={() => includes(finishedSteps, step.id) && setCurrentStep(step.id)}
-            >
-              <div className={classNames('checkout-step-number')}>
-                {includes(finishedSteps, step.id) ? <Icon name="check" /> : idx + 1}
-              </div>
-              <div className="checkout-step-title">{step.title}</div>
-            </AccordionTrigger>
-            <Accordion.Content className="checkout-step-content">
-              <Suspense fallback={<div>Loading...</div>}>
-                {Element && <Element onSuccess={handleNextClick} />}
-              </Suspense>
-            </Accordion.Content>
-          </Accordion.Item>
-        )
-      })}
-    </Accordion.Root>
+          </Accordion.Root>
   )
 }
 
@@ -115,3 +129,5 @@ const AccordionTrigger = forwardRef(
     </Accordion.Header>
   ),
 )
+
+export default Checkout

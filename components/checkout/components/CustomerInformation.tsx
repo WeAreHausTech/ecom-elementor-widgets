@@ -11,6 +11,8 @@ import { Button } from '../../button/Button'
 
 interface CustomerInformationProps {
   onSuccess: () => void
+  selectedCountry?: string
+  setSelectedCountry?: (country: string) => void
 }
 
 const CustomerInformation = ({ onSuccess }: CustomerInformationProps) => {

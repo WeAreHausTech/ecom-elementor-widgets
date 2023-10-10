@@ -10,11 +10,12 @@ import { LoginPage } from './pages/LoginPage'
 import { CartPage } from './pages/CartPage'
 import { SearchField } from '../../components/search-field/SearchField'
 import { OrderConfirmationPage } from './pages/OrderConfirmationPage'
+import { CurrencySelect } from '../../components/CurrencySelect/CurrencySelect'
 
 function App() {
   const rootRoute = new RootRoute({
     component: () => (
-      <div>
+      <div className="flex flex-col h-screen">
         <header>
           <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800 flex items-center justify-between">
             <div>LIVV</div>
@@ -27,9 +28,12 @@ function App() {
             </div>
           </nav>
         </header>
-        <div className="container mx-auto px-4 lg:px-6 py-2.5">
+        <div className="container mx-auto px-4 lg:px-6 py-2.5 flex-1">
           <Outlet />
         </div>
+        <footer className="bg-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800 flex items-center justify-end">
+          <CurrencySelect />
+        </footer>
       </div>
     ),
   })
