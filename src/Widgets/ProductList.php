@@ -63,7 +63,6 @@ class ProductList extends Widget_Base
             return;
         }
 
-
         $this->add_control(
             'autoFacet',
             [
@@ -182,12 +181,17 @@ class ProductList extends Widget_Base
             }
         }
 
-        $widget_id = 'ecom_' . $this->get_id();
+        $widgetId = 'ecom_' . $this->get_id();
+        
         ?>
-
-        <div id="<?= $widget_id ?>" class="ecom-components-root" data-widget-type="product-list"
-            data-facet="<?= implode(", ", $facets) ?>" data-collection="<?= $taxonomy ?>"
-            data-take="<?= $settings['products_per_page'] ?>" data-sort-enabled="<?= $settings['sort_enabled'] ?>"
+        <div
+            id="<?= $widgetId ?>"
+            class="ecom-components-root"
+            data-widget-type="product-list"
+            data-facet="<?= implode(", ", $facets) ?>"
+            data-collection="<?= $taxonomy ?>"
+            data-take="<?= $settings['products_per_page'] ?>"
+            data-sort-enabled="<?= $settings['sort_enabled'] ?>"
             data-pagination-enabled="<?= $settings['pagination_enabled'] ?>">
         </div>
         <?php
