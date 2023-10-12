@@ -77,6 +77,17 @@ class Header extends Widget_Base
             ]
         );
 
+
+        $this->add_control(
+            'menu_id',
+            [
+                'label' => __('Id på meny:', 'webien'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'label_block' => true,
+            ]
+        );
+
+
         $this->end_controls_section();
 
     }
@@ -87,6 +98,7 @@ class Header extends Widget_Base
             'logo' => $this->get_settings_for_display('logo'),
             'contact_us_text' => $this->get_settings_for_display('contact_us_text'),
             'contact_us_link' => $this->get_settings_for_display('contact_us_link'),
+            'menu_id' => $this->get_settings_for_display('menu_id'),
         ];
 
 
