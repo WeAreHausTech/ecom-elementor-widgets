@@ -56,6 +56,10 @@ add_action('init', function () {
 
         \Elementor\Plugin::instance()
         ->widgets_manager
+        ->register(new \Haus\Widgets\Header());
+
+        \Elementor\Plugin::instance()
+        ->widgets_manager
         ->register(new \Haus\Widgets\Cart());
 });
 
