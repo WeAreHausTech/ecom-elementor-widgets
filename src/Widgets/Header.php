@@ -58,7 +58,7 @@ class Header extends Widget_Base
         $this->add_control(
             'contact_us_link',
             [
-                'label' =>  __('Knapplänk', 'webien'),
+                'label' => __('Knapplänk', 'webien'),
                 'type' => \Elementor\Controls_Manager::URL,
                 'options' => ['url'],
                 'default' => [
@@ -89,7 +89,29 @@ class Header extends Widget_Base
 
 
         $this->end_controls_section();
+    }
 
+    public function getAllProductCategories()
+    {
+        $term_args = array(
+            'taxonomy' => 'produkter-kategorier',
+        );
+        $termData = get_terms($term_args);
+
+        if (!is_array($termData) || empty($termData)) {
+            return null;
+        }
+
+        $terms = [];
+
+        foreach ($termData as $key => $term) {
+            if ($term->parent == 0) {
+                $terms[$term->term_id]['data'] = $term;
+            } else {
+                $terms[$term->parent]['children'][] = $term;
+            }
+        }
+        return$terms;
     }
 
     protected function render()
@@ -101,6 +123,7 @@ class Header extends Widget_Base
             'menu_id' => $this->get_settings_for_display('menu_id'),
         ];
 
+        $categories = $this->getAllProductCategories();
 
         $url = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 

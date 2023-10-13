@@ -125,6 +125,49 @@
     </div>
 </div>
 
+<div class="dropdown-menu" id="dropdown-menu">
+
+
+    <div>
+        <ul class="categories">
+            <?php
+
+            if ($categories) {
+                foreach ($categories as $mainCategory) {
+                    ?>
+                    <li class="parent">
+                        <a href="produkter/kategorier/<?= $mainCategory['data']->slug ?>">
+                            <?= $mainCategory['data']->name ?>
+                        </a>
+
+                        <?php
+
+                        if ($mainCategory['children']) {
+                            ?>
+                            <ul class="category">
+                                <?php
+                                foreach ($mainCategory['children'] as $child) {
+                                    ?>
+                                    <li class="child">
+                                        <a href="produkter/kategorier/<?= $child->slug ?>">
+                                            <?= $child->name ?>
+                                        </a>
+                                    </li>
+                                    <?php
+                                }
+                                ?>
+                            </ul>
+                            <?php
+                        } ?>
+                    </li>
+                    <?php
+                }
+            }
+            ?>
+        </ul>
+    </div>
+</div>
+
 <script>
     onOpenModal = () => {
         document.getElementById('header-content').classList.toggle('active')
@@ -137,9 +180,58 @@
         document.body.style.overflowY = 'auto';
         document.body.style.height = 'auto';
     }
+
+    const products = document.getElementById('menu-item-12372')
+    products.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.getElementById('dropdown-menu').classList.toggle('active-dropdown')
+    });
 </script>
 
 <style>
+    .dropdown-menu {
+        /* display: none; */
+    }
+
+    .dropdown-menu .categories {
+        display: flex;
+        flex-direction: row;
+        width: 100vw;
+        flex-wrap: wrap;
+        row-gap: 48px;
+    }
+
+    .dropdown-menu .parent {
+        font-weight: bold;
+        flex: 0 0 33.333333%;
+    }
+
+    .dropdown-menu .child {
+        font-weight: 400;
+    }
+
+
+    .dropdown-menu .category {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .active-dropdown {
+        display: flex;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .dropdown-menu .parent {
+            flex: 0 0 50%;
+        }
+    }
+
+    @media only screen and (max-width: 480px) {
+        .dropdown-menu .parent {
+            flex: 0 0 100%;
+        }
+    }
+
     .mobile-heaader {
         display: flex;
         width: 100vw;
