@@ -155,7 +155,7 @@
                                             <?php
                                         } else {
                                             ?>
-                                            <li class="child" style="display: none;">
+                                            <li data-parent="<?= $mainCategory['data']->term_id ?>" class="child" style="display: none;">
                                                 <a href="produkter/kategorier/<?= $child->slug ?>">
                                                     <?= $child->name ?>
                                                 </a>
@@ -166,9 +166,9 @@
                                         if ($index === 5) {
                                             ?>
                                             <li class="child">
-                                                <button id="see-more-<?= $mainCategory['data']->term_id ?>" onClick="showMore(this)">Visa
-                                                    alla (
-                                                    <?= count($mainCategory['children']) ?> )
+                                                <button class="see-more-button" id="see-more-<?= $mainCategory['data']->term_id ?>"
+                                                    onClick="showMore(this)">Visa
+                                                    alla (<?= count($mainCategory['children']) ?>)
                                                 </button>
                                             </li>
                                             <?php
@@ -196,6 +196,12 @@
     showMore = (buttonElement) => {
         var buttonId = buttonElement.id;
         var id = buttonId.split('-')[2];
+        document.querySelectorAll(`[data-parent="${id}"]`).forEach((element) => {
+            console.log(element);
+            element.style.display = 'block'
+        })
+
+        document.getElementById(buttonId).style.display = 'none'
     }
     onOpenModal = () => {
         document.getElementById('header-content').classList.toggle('active')
@@ -233,10 +239,20 @@
     }
 
     .dropdown-categories {
-        border-right: 1px solid black;
+        border-right: 1px solid rgba(0, 0, 0, 0.10);;
         padding-right: 48px;
         margin-right: 48px;
 
+    }
+
+    .child .see-more-button {
+        padding: 0;
+        margin: 0;
+        font-weight: 400;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 150%;
     }
 
     .dropdown-type {}
@@ -248,6 +264,7 @@
         row-gap: 48px;
     }
 
+
     .dropdown-menu .parent {
         font-weight: bold;
         flex: 0 0 33.333333%;
@@ -255,12 +272,17 @@
 
     .dropdown-menu .child {
         font-weight: 400;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 150%;
     }
-
 
     .dropdown-menu .category {
         display: flex;
         flex-direction: column;
+        gap: 8px;
+        margin-top: 8px;
     }
 
     .active-dropdown {
