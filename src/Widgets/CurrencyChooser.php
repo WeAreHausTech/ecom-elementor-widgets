@@ -20,7 +20,7 @@ class CurrencyChooser extends Widget_Base
 
     public function get_icon()
     {
-        return 'eicon-currency-converter';
+        return 'eicon-purchase-summary';
     }
 
     public function get_categories()

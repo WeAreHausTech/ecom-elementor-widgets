@@ -61,6 +61,10 @@ add_action('init', function () {
         \Elementor\Plugin::instance()
         ->widgets_manager
         ->register(new \Haus\Widgets\Cart());
+
+    \Elementor\Plugin::instance()
+        ->widgets_manager
+        ->register(new \Haus\Widgets\CurrencyChooser());
 });
 
 
