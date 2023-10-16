@@ -111,8 +111,25 @@ class Header extends Widget_Base
                 $terms[$term->parent]['children'][] = $term;
             }
         }
-        return$terms;
+        return $terms;
     }
+
+    public function getTaxonomies($taxonomy)
+    {
+        $term_args = array(
+            'taxonomy' => $taxonomy,
+        );
+        $termData = get_terms($term_args);
+
+        if (!is_array($termData) || empty($termData)) {
+            return null;
+        }
+
+        return $termData;
+    }
+
+
+    // produkter-avdelningar
 
     protected function render()
     {
@@ -124,6 +141,8 @@ class Header extends Widget_Base
         ];
 
         $categories = $this->getAllProductCategories();
+        $brands = $this->getTaxonomies('produkter-varumarken');
+        $departments = $this->getTaxonomies('produkter-avdelningar');
 
         $url = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 

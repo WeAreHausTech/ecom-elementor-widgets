@@ -168,7 +168,8 @@
                                             <li class="child">
                                                 <button class="see-more-button" id="see-more-<?= $mainCategory['data']->term_id ?>"
                                                     onClick="showMore(this)">Visa
-                                                    alla (<?= count($mainCategory['children']) ?>)
+                                                    alla (
+                                                    <?= count($mainCategory['children']) ?>)
                                                 </button>
                                             </li>
                                             <?php
@@ -186,8 +187,33 @@
             </ul>
         </div>
         <div class="dropdown-type">
-            Avdelning
+            <div class="department">
+                <label>Avdelning</label>
+                <ul>
+                    <?php foreach ($departments as $department) {
+                        ?>
+                        <li class="child">
+                            <a href="produkter/varumarken/<?= $department->slug ?>">
+                                <?= $department->name ?>
+                            </a>
+                        </li>
+                    <?php } ?>
+                </ul>
+            </div>
 
+            <div class="brand">
+                <label>Varumärke</label>
+                <ul>
+                    <?php foreach ($brands as $brand) {
+                        ?>
+                        <li class="child">
+                            <a href="produkter/varumarken/<?= $brand->slug ?>">
+                                <?= $brand->name ?>
+                            </a>
+                        </li>
+                    <?php } ?>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
@@ -239,7 +265,8 @@
     }
 
     .dropdown-categories {
-        border-right: 1px solid rgba(0, 0, 0, 0.10);;
+        border-right: 1px solid rgba(0, 0, 0, 0.10);
+        ;
         padding-right: 48px;
         margin-right: 48px;
 
@@ -278,7 +305,25 @@
         line-height: 150%;
     }
 
-    .dropdown-menu .category {
+    .dropdown-menu .brand label,
+    .dropdown-menu .department label {
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 150%;
+        /* 24px */
+    }
+
+    .dropdown-type {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        min-width: 227px;
+    }
+
+    .dropdown-menu .category,
+    .dropdown-menu .brand ul,
+    .dropdown-menu .department ul {
         display: flex;
         flex-direction: column;
         gap: 8px;
