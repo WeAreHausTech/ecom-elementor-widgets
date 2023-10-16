@@ -124,7 +124,6 @@
         </div>
     </div>
 </div>
-
 <div class="dropdown-menu" id="dropdown-menu">
     <div class="dropdown-content">
         <div class="dropdown-categories">
@@ -134,41 +133,30 @@
                     foreach ($categories as $mainCategory) {
                         ?>
                         <li class="parent">
-                            <a href="produkter/kategorier/<?= $mainCategory['data']->slug ?>">
+                            <a class="parent-link" href="produkter/kategorier/<?= $mainCategory['data']->slug ?>">
                                 <?= $mainCategory['data']->name ?>
                             </a>
-
                             <?php
-
                             if ($mainCategory['children']) {
                                 ?>
                                 <ul class="category">
                                     <?php
                                     foreach ($mainCategory['children'] as $index => $child) {
-                                        if ($index < 5) {
-                                            ?>
-                                            <li class="child">
-                                                <a href="produkter/kategorier/<?= $child->slug ?>">
-                                                    <?= $child->name ?>
-                                                </a>
-                                            </li>
-                                            <?php
-                                        } else {
-                                            ?>
-                                            <li data-parent="<?= $mainCategory['data']->term_id ?>" class="child" style="display: none;">
-                                                <a href="produkter/kategorier/<?= $child->slug ?>">
-                                                    <?= $child->name ?>
-                                                </a>
-                                            </li>
-                                            <?php
-                                        }
+                                        ?>
+                                        <li class="child-link" data-parent="<?= $mainCategory['data']->term_id ?>" class="child"
+                                            style="display: <?= $index < 5 ? 'block' : 'none'; ?>">
+                                            <a href="produkter/kategorier/<?= $child->slug ?>">
+                                                <?= $child->name ?>
+                                            </a>
+                                        </li>
+                                        <?php
 
                                         if ($index === 5) {
                                             ?>
                                             <li class="child">
                                                 <button class="see-more-button" id="see-more-<?= $mainCategory['data']->term_id ?>"
-                                                    onClick="showMore(this)">Visa
-                                                    alla (
+                                                    onClick="showMore(this)">
+                                                    Visa alla (
                                                     <?= count($mainCategory['children']) ?>)
                                                 </button>
                                             </li>
@@ -190,28 +178,58 @@
             <div class="department">
                 <label>Avdelning</label>
                 <ul>
-                    <?php foreach ($departments as $department) {
+                    <?php foreach ($departments as $index => $department) {
                         ?>
-                        <li class="child">
-                            <a href="produkter/varumarken/<?= $department->slug ?>">
+                        <li class="child-link" data-parent="department" class="child"
+                            style="display: <?= $index < 7 ? 'block' : 'none'; ?>">
+                            <a href="produkter/avdelningar/<?= $department->slug ?>">
                                 <?= $department->name ?>
                             </a>
                         </li>
-                    <?php } ?>
+
+                        <?php
+
+                        if ($index === 8) {
+                            ?>
+                            <li class="child">
+                                <button class="see-more-button" id="see-more-department" onClick="showMore(this)">
+                                    Visa alla (
+                                    <?= count($departments) ?>)
+                                </button>
+                            </li>
+                            <?php
+                        }
+                    }
+                    ?>
                 </ul>
             </div>
 
             <div class="brand">
-                <label>Varumärke</label>
+                <label>Varumärken</label>
                 <ul>
-                    <?php foreach ($brands as $brand) {
+                    <?php foreach ($brands as $index => $brand) {
                         ?>
-                        <li class="child">
+                        <li class="child-link" data-parent="brand" class="child"
+                            style="display: <?= $index < 7 ? 'block' : 'none'; ?>">
                             <a href="produkter/varumarken/<?= $brand->slug ?>">
                                 <?= $brand->name ?>
                             </a>
                         </li>
-                    <?php } ?>
+
+                        <?php
+
+                        if ($index === 8) {
+                            ?>
+                            <li class="child">
+                                <button class="see-more-button" id="see-more-brand" onClick="showMore(this)">
+                                    Visa alla (
+                                    <?= count($brands) ?>)
+                                </button>
+                            </li>
+                            <?php
+                        }
+                    }
+                    ?>
                 </ul>
             </div>
         </div>
@@ -227,6 +245,7 @@
             element.style.display = 'block'
         })
 
+
         document.getElementById(buttonId).style.display = 'none'
     }
     onOpenModal = () => {
@@ -234,26 +253,41 @@
         document.body.style.overflowY = 'hidden';
         document.body.style.height = '100vh';
     }
-
     onCloseModal = () => {
         document.getElementById('header-content').classList.toggle('active')
         document.body.style.overflowY = 'auto';
         document.body.style.height = 'auto';
     }
-
     const products = document.getElementById('menu-item-12372')
     products.addEventListener('click', function (e) {
         e.preventDefault();
         document.getElementById('dropdown-menu').classList.toggle('active-dropdown')
+        var body = document.body;
+
+        if (body.style.overflowY === 'hidden') {
+            body.style.overflowY = 'auto';
+            body.style.height = 'auto';
+        } else {
+            body.style.overflowY = 'hidden';
+            body.style.height = '100vh';
+        }
     });
 </script>
 
 <style>
     .dropdown-menu {
-        display: flex;
+        display: none;
         flex-direction: row;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.40);
+        min-height: 100vh;
+    }
+
+    .active-dropdown {
+        display: flex;
+        position: absolute;
     }
 
     .dropdown-content {
@@ -261,15 +295,18 @@
         flex-direction: row;
         justify-content: center;
         align-items: flex-start;
-        max-width: 1022px;
+        padding: 46px 24px;
+        border-radius: 0px 0px 20px 20px;
+        background: var(--White, #FFF);
+        width: 100%;
+        overflow-y: auto;
+        max-height: 100vh;
     }
 
     .dropdown-categories {
         border-right: 1px solid rgba(0, 0, 0, 0.10);
-        ;
         padding-right: 48px;
         margin-right: 48px;
-
     }
 
     .child .see-more-button {
@@ -281,8 +318,6 @@
         font-weight: 400;
         line-height: 150%;
     }
-
-    .dropdown-type {}
 
     .dropdown-menu .categories {
         display: flex;
@@ -296,6 +331,23 @@
         font-weight: bold;
         flex: 0 0 33.333333%;
     }
+
+    .child-link {
+        font-weight: 400;
+        color: var(--Almost-Black, #3E4849) !important;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 150%;
+    }
+
+
+    .parent-link:hover,
+    .child-link:hover {
+        text-decoration: underline;
+        color: var(--Almost-Black, #3E4849) !important;
+    }
+
 
     .dropdown-menu .child {
         font-weight: 400;
@@ -311,7 +363,6 @@
         font-style: normal;
         font-weight: 600;
         line-height: 150%;
-        /* 24px */
     }
 
     .dropdown-type {
@@ -330,13 +381,15 @@
         margin-top: 8px;
     }
 
-    .active-dropdown {
-        display: flex;
+    @media only screen and (min-width: 1024px) {
+        .dropdown-menu .parent {
+            flex: 0 0 25%;
+        }
     }
 
     @media only screen and (max-width: 768px) {
         .dropdown-menu .parent {
-            flex: 0 0 50%;
+            flex: 0 0 100%;
         }
     }
 
@@ -429,6 +482,11 @@
     }
 
     .menu li:hover {
+        border-radius: 20px;
+        background: var(--Gray-Light, #F2F2F2);
+    }
+
+    .menu .current-menu-item {
         border-radius: 20px;
         background: var(--Gray-Light, #F2F2F2);
     }
@@ -558,6 +616,17 @@
             left: 0;
             width: 100%;
             padding: 24px;
+        }
+
+        .dropdown-content {
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 0;
+        }
+
+        .dropdown-categories, .dropdown-type{
+            padding: 20px 24px 24px 24px;
+            border-right: none;
         }
     }
 </style>
