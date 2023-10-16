@@ -1,75 +1,35 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 :root {
-  --Black: rgb(0, 0, 0);
-  --White: rgb(255, 255, 255);
-  --Gray-Light: rgb(242, 242, 242);
-  --Gray: rgb(153, 153, 153);
-  --Gray-Medium: rgb(222, 222, 222);
-  --Almost-Black: rgb(62, 72, 73);
-  --Blue-Dark: rgb(116, 151, 155);
-  --Blue-Light: rgb(233, 244, 240);
-  --Turquoise: rgb(179, 214, 205);
-  --Yellow: rgb(255, 213, 132);
-  --Red: rgb(239, 126, 111);
-  --Blue-hover-color: #a0c5bc;
+  --primary-color-50: #f4f9f8;
+  --primary-color-100: #dbece7;
+  --primary-color-200: #b3d6cd;
+  --primary-color-300: #8bbdb2;
+  --primary-color-400: #639e93;
+  --primary-color-500: #498379;
+  --primary-color-600: #386961;
+  --primary-color-700: #305550;
+  --primary-color-800: #2a4541;
+  --primary-color-900: #263b39;
+  --primary-color-950: #122120;
 
-  --Breakpoint-Phone: 480px;
-  --Breakpoint-Tablet: 768px;
-  --Breakpoint-Desktop: 1024px;
-  --Breakpoint-Desktop-Large: 1280px;
-
-  --Border-Radius: 8px;
-  --Border-Radius-Small: 4px;
-  --Border-Radius-Large: 20px;
-  --Border-Color: rgba(0, 0, 0, 0.1);
-  --Border-Color-Active: var(--Almost-Black, #3e4849);
-
-  --Padding: 8px;
-  --Padding-Small: 4px;
-  --Padding-Medium: 12px;
-  --Padding-Large: 16px;
-  --Padding-XLarge: 24px;
+  --heading-font: 'Crake', serif;
+  --body-font: 'Inter', sans-serif;
+  --default-font-color: rgb(62, 72, 73);
+  --border-color: rgba(0, 0, 0, 0.1);
+  --primary-color: var(--primary-color-200);
 }
 
-$breakpoints: (
-  'tablet': (
-    min-width: 768px,
-  ),
-  'desktop': (
-    min-width: 1024px,
-  ),
-  'desktop-large': (
-    min-width: 1280px,
-  ),
-) !default;
+html,
+body {
+  line-height: 1.5;
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--default-font-color);
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-@import './_mixins.scss';
-
-@import './select/Select.scss';
-@import './icon/Icon.scss';
-@import './button/Button.scss';
-@import './input/Input.scss';
-
-@import './checkout/Checkout.scss';
-@import './search-field/SearchField.scss';
-
-@import './_themes/livv/components/ProductDetail.scss';
-@import './_themes/livv/components/ProductList.scss';
-@import './_themes/livv/components/Cart.scss';
-@import './_themes/livv/components/CartOrderLines.scss';
-@import './_themes/livv/components/CartPrice.scss';
-@import './_themes/livv/components/OrderConfirmation.scss';
-@import './_themes/livv/components/CurrencySelect.scss';
-
-// Global styles
-input,
-select {
-  border-radius: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background: var(--White, #fff);
-  padding: 8px 16px;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
 }
