@@ -126,49 +126,77 @@
 </div>
 
 <div class="dropdown-menu" id="dropdown-menu">
+    <div class="dropdown-content">
+        <div class="dropdown-categories">
+            <ul class="categories">
+                <?php
+                if ($categories) {
+                    foreach ($categories as $mainCategory) {
+                        ?>
+                        <li class="parent">
+                            <a href="produkter/kategorier/<?= $mainCategory['data']->slug ?>">
+                                <?= $mainCategory['data']->name ?>
+                            </a>
 
-
-    <div>
-        <ul class="categories">
-            <?php
-
-            if ($categories) {
-                foreach ($categories as $mainCategory) {
-                    ?>
-                    <li class="parent">
-                        <a href="produkter/kategorier/<?= $mainCategory['data']->slug ?>">
-                            <?= $mainCategory['data']->name ?>
-                        </a>
-
-                        <?php
-
-                        if ($mainCategory['children']) {
-                            ?>
-                            <ul class="category">
-                                <?php
-                                foreach ($mainCategory['children'] as $child) {
-                                    ?>
-                                    <li class="child">
-                                        <a href="produkter/kategorier/<?= $child->slug ?>">
-                                            <?= $child->name ?>
-                                        </a>
-                                    </li>
-                                    <?php
-                                }
-                                ?>
-                            </ul>
                             <?php
-                        } ?>
-                    </li>
-                    <?php
+
+                            if ($mainCategory['children']) {
+                                ?>
+                                <ul class="category">
+                                    <?php
+                                    foreach ($mainCategory['children'] as $index => $child) {
+                                        if ($index < 5) {
+                                            ?>
+                                            <li class="child">
+                                                <a href="produkter/kategorier/<?= $child->slug ?>">
+                                                    <?= $child->name ?>
+                                                </a>
+                                            </li>
+                                            <?php
+                                        } else {
+                                            ?>
+                                            <li class="child" style="display: none;">
+                                                <a href="produkter/kategorier/<?= $child->slug ?>">
+                                                    <?= $child->name ?>
+                                                </a>
+                                            </li>
+                                            <?php
+                                        }
+
+                                        if ($index === 5) {
+                                            ?>
+                                            <li class="child">
+                                                <button id="see-more-<?= $mainCategory['data']->term_id ?>" onClick="showMore(this)">Visa
+                                                    alla (
+                                                    <?= count($mainCategory['children']) ?> )
+                                                </button>
+                                            </li>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </ul>
+                                <?php
+                            } ?>
+                        </li>
+                        <?php
+                    }
                 }
-            }
-            ?>
-        </ul>
+                ?>
+            </ul>
+        </div>
+        <div class="dropdown-type">
+            Avdelning
+
+        </div>
     </div>
 </div>
 
 <script>
+    showMore = (buttonElement) => {
+        var buttonId = buttonElement.id;
+        var id = buttonId.split('-')[2];
+    }
     onOpenModal = () => {
         document.getElementById('header-content').classList.toggle('active')
         document.body.style.overflowY = 'hidden';
@@ -190,13 +218,32 @@
 
 <style>
     .dropdown-menu {
-        /* display: none; */
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
     }
+
+    .dropdown-content {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        max-width: 1022px;
+    }
+
+    .dropdown-categories {
+        border-right: 1px solid black;
+        padding-right: 48px;
+        margin-right: 48px;
+
+    }
+
+    .dropdown-type {}
 
     .dropdown-menu .categories {
         display: flex;
         flex-direction: row;
-        width: 100vw;
         flex-wrap: wrap;
         row-gap: 48px;
     }
