@@ -87,6 +87,15 @@ class Header extends Widget_Base
             ]
         );
 
+        $this->add_control(
+            'products_menu_id',
+            [
+                'label' => __('Id på produkter:', 'webien'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'label_block' => true,
+            ]
+        );
+
 
         $this->end_controls_section();
     }
@@ -138,7 +147,8 @@ class Header extends Widget_Base
             'contact_us_text' => $this->get_settings_for_display('contact_us_text'),
             'contact_us_link' => $this->get_settings_for_display('contact_us_link'),
             'menu_id' => $this->get_settings_for_display('menu_id'),
-        ];
+            'product_menu_id' => $this->get_settings_for_display('products_menu_id'),
+          ];
 
         $categories = $this->getAllProductCategories();
         $brands = $this->getTaxonomies('produkter-varumarken');

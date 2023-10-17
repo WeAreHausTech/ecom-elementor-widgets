@@ -17,36 +17,9 @@
         </div>
         <div class="menu-links">
             <div class="icons">
-                <div>
-                    <a href="/search">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path
-                                d="M10.25 3.5C6.25482 3.5 3 6.75482 3 10.75C3 14.7452 6.25482 18 10.25 18C11.9782 18 13.5669 17.3895 14.8145 16.375L19.7197 21.2803C19.7888 21.3523 19.8716 21.4097 19.9632 21.4493C20.0548 21.4889 20.1534 21.5098 20.2532 21.5108C20.3529 21.5118 20.4519 21.4929 20.5443 21.4552C20.6367 21.4175 20.7206 21.3617 20.7912 21.2912C20.8617 21.2206 20.9175 21.1367 20.9552 21.0443C20.9929 20.9519 21.0118 20.8529 21.0108 20.7532C21.0098 20.6534 20.9889 20.5548 20.9493 20.4632C20.9097 20.3716 20.8523 20.2888 20.7803 20.2197L15.875 15.3145C16.8895 14.0669 17.5 12.4782 17.5 10.75C17.5 6.75482 14.2452 3.5 10.25 3.5ZM10.25 5C13.4345 5 16 7.56548 16 10.75C16 12.3013 15.3881 13.7029 14.3955 14.7354C14.3343 14.7803 14.2803 14.8343 14.2354 14.8955C13.2029 15.8881 11.8013 16.5 10.25 16.5C7.06548 16.5 4.5 13.9345 4.5 10.75C4.5 7.56548 7.06548 5 10.25 5Z"
-                                fill="#3E4849" />
-                        </svg>
-                    </a>
-                </div>
-                <div>
-                    <a href="/mina-sidor">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path
-                                d="M12 3.75C9.1084 3.75 6.75 6.1084 6.75 9C6.75 10.8076 7.67285 12.4131 9.07031 13.3594C6.39551 14.5078 4.5 17.1621 4.5 20.25H6C6 16.9277 8.67773 14.25 12 14.25C15.3223 14.25 18 16.9277 18 20.25H19.5C19.5 17.1621 17.6045 14.5078 14.9297 13.3594C16.3271 12.4131 17.25 10.8076 17.25 9C17.25 6.1084 14.8916 3.75 12 3.75ZM12 5.25C14.0801 5.25 15.75 6.91992 15.75 9C15.75 11.0801 14.0801 12.75 12 12.75C9.91992 12.75 8.25 11.0801 8.25 9C8.25 6.91992 9.91992 5.25 12 5.25Z"
-                                fill="#3E4849" />
-                        </svg>
-                    </a>
-                </div>
-                <div>
-                    <a href="/varukorg">
-                        <symbol viewBox="0 0 24 24" fill="#000" id="varukorg">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none">
-                                <path
-                                    d="M2.84211 4C2.37829 4 2 4.38184 2 4.85C2 5.31816 2.37829 5.7 2.84211 5.7H4.71053L6.92105 14.625C7.10855 15.382 7.7796 15.9 8.55263 15.9H18.2105C18.9704 15.9 19.6151 15.392 19.8158 14.6516L22 6.55H7.89474L8.31579 8.25H19.8158L18.2105 14.2H8.55263L6.34211 5.275C6.15461 4.51797 5.48355 4 4.71053 4H2.84211ZM17.1579 15.9C15.773 15.9 14.6316 17.0521 14.6316 18.45C14.6316 19.8479 15.773 21 17.1579 21C18.5428 21 19.6842 19.8479 19.6842 18.45C19.6842 17.0521 18.5428 15.9 17.1579 15.9ZM9.57895 15.9C8.19408 15.9 7.05263 17.0521 7.05263 18.45C7.05263 19.8479 8.19408 21 9.57895 21C10.9638 21 12.1053 19.8479 12.1053 18.45C12.1053 17.0521 10.9638 15.9 9.57895 15.9ZM9.57895 17.6C10.0526 17.6 10.4211 17.9719 10.4211 18.45C10.4211 18.9281 10.0526 19.3 9.57895 19.3C9.10526 19.3 8.73684 18.9281 8.73684 18.45C8.73684 17.9719 9.10526 17.6 9.57895 17.6ZM17.1579 17.6C17.6316 17.6 18 17.9719 18 18.45C18 18.9281 17.6316 19.3 17.1579 19.3C16.6842 19.3 16.3158 18.9281 16.3158 18.45C16.3158 17.9719 16.6842 17.6 17.1579 17.6Z"
-                                    fill="#3E4849" />
-                            </svg>
-                    </a>
-                    </symbol>
-                </div>
+                <?php include('Search.php') ?>
+                <?php include('MyPages.php') ?>
+                <?php include('Cart.php') ?>
             </div>
             <div class="close-button">
                 <button onClick="onCloseModal()">
@@ -76,35 +49,9 @@
             </a>
         </div>
         <div class="mobile-icons">
-            <div>
-                <a href="/search">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M10.25 3.5C6.25482 3.5 3 6.75482 3 10.75C3 14.7452 6.25482 18 10.25 18C11.9782 18 13.5669 17.3895 14.8145 16.375L19.7197 21.2803C19.7888 21.3523 19.8716 21.4097 19.9632 21.4493C20.0548 21.4889 20.1534 21.5098 20.2532 21.5108C20.3529 21.5118 20.4519 21.4929 20.5443 21.4552C20.6367 21.4175 20.7206 21.3617 20.7912 21.2912C20.8617 21.2206 20.9175 21.1367 20.9552 21.0443C20.9929 20.9519 21.0118 20.8529 21.0108 20.7532C21.0098 20.6534 20.9889 20.5548 20.9493 20.4632C20.9097 20.3716 20.8523 20.2888 20.7803 20.2197L15.875 15.3145C16.8895 14.0669 17.5 12.4782 17.5 10.75C17.5 6.75482 14.2452 3.5 10.25 3.5ZM10.25 5C13.4345 5 16 7.56548 16 10.75C16 12.3013 15.3881 13.7029 14.3955 14.7354C14.3343 14.7803 14.2803 14.8343 14.2354 14.8955C13.2029 15.8881 11.8013 16.5 10.25 16.5C7.06548 16.5 4.5 13.9345 4.5 10.75C4.5 7.56548 7.06548 5 10.25 5Z"
-                            fill="#3E4849" />
-                    </svg>
-                </a>
-            </div>
-            <div>
-                <a href="/mina-sidor">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M12 3.75C9.1084 3.75 6.75 6.1084 6.75 9C6.75 10.8076 7.67285 12.4131 9.07031 13.3594C6.39551 14.5078 4.5 17.1621 4.5 20.25H6C6 16.9277 8.67773 14.25 12 14.25C15.3223 14.25 18 16.9277 18 20.25H19.5C19.5 17.1621 17.6045 14.5078 14.9297 13.3594C16.3271 12.4131 17.25 10.8076 17.25 9C17.25 6.1084 14.8916 3.75 12 3.75ZM12 5.25C14.0801 5.25 15.75 6.91992 15.75 9C15.75 11.0801 14.0801 12.75 12 12.75C9.91992 12.75 8.25 11.0801 8.25 9C8.25 6.91992 9.91992 5.25 12 5.25Z"
-                            fill="#3E4849" />
-                    </svg>
-                </a>
-            </div>
-            <div>
-                <a href="/varukorg">
-                    <symbol viewBox="0 0 24 24" fill="#000" id="varukorg">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path
-                                d="M2.84211 4C2.37829 4 2 4.38184 2 4.85C2 5.31816 2.37829 5.7 2.84211 5.7H4.71053L6.92105 14.625C7.10855 15.382 7.7796 15.9 8.55263 15.9H18.2105C18.9704 15.9 19.6151 15.392 19.8158 14.6516L22 6.55H7.89474L8.31579 8.25H19.8158L18.2105 14.2H8.55263L6.34211 5.275C6.15461 4.51797 5.48355 4 4.71053 4H2.84211ZM17.1579 15.9C15.773 15.9 14.6316 17.0521 14.6316 18.45C14.6316 19.8479 15.773 21 17.1579 21C18.5428 21 19.6842 19.8479 19.6842 18.45C19.6842 17.0521 18.5428 15.9 17.1579 15.9ZM9.57895 15.9C8.19408 15.9 7.05263 17.0521 7.05263 18.45C7.05263 19.8479 8.19408 21 9.57895 21C10.9638 21 12.1053 19.8479 12.1053 18.45C12.1053 17.0521 10.9638 15.9 9.57895 15.9ZM9.57895 17.6C10.0526 17.6 10.4211 17.9719 10.4211 18.45C10.4211 18.9281 10.0526 19.3 9.57895 19.3C9.10526 19.3 8.73684 18.9281 8.73684 18.45C8.73684 17.9719 9.10526 17.6 9.57895 17.6ZM17.1579 17.6C17.6316 17.6 18 17.9719 18 18.45C18 18.9281 17.6316 19.3 17.1579 19.3C16.6842 19.3 16.3158 18.9281 16.3158 18.45C16.3158 17.9719 16.6842 17.6 17.1579 17.6Z"
-                                fill="#3E4849" />
-                        </svg>
-                </a>
-                </symbol>
-            </div>
+            <?php include('Search.php') ?>
+            <?php include('MyPages.php') ?>
+            <?php include('Cart.php') ?>
 
             <div class="open-button">
                 <button onClick="onOpenModal()">
@@ -124,129 +71,46 @@
         </div>
     </div>
 </div>
-<div class="dropdown-menu" id="dropdown-menu">
-    <div class="dropdown-content">
-        <div class="dropdown-categories">
-            <ul class="categories">
-                <?php
-                if ($categories) {
-                    foreach ($categories as $mainCategory) {
-                        ?>
-                        <li class="parent">
-                            <a class="parent-link" href="produkter/kategorier/<?= $mainCategory['data']->slug ?>">
-                                <?= $mainCategory['data']->name ?>
-                            </a>
-                            <?php
-                            if ($mainCategory['children']) {
-                                ?>
-                                <ul class="category">
-                                    <?php
-                                    foreach ($mainCategory['children'] as $index => $child) {
-                                        ?>
-                                        <li class="child-link" data-parent="<?= $mainCategory['data']->term_id ?>" class="child"
-                                            style="display: <?= $index < 5 ? 'block' : 'none'; ?>">
-                                            <a href="produkter/kategorier/<?= $child->slug ?>">
-                                                <?= $child->name ?>
-                                            </a>
-                                        </li>
-                                        <?php
 
-                                        if ($index === 5) {
-                                            ?>
-                                            <li class="child">
-                                                <button class="see-more-button" id="see-more-<?= $mainCategory['data']->term_id ?>"
-                                                    onClick="showMore(this)">
-                                                    Visa alla (
-                                                    <?= count($mainCategory['children']) ?>)
-                                                </button>
-                                            </li>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-                                </ul>
-                                <?php
-                            } ?>
-                        </li>
-                        <?php
-                    }
-                }
-                ?>
-            </ul>
-        </div>
-        <div class="dropdown-type">
-            <div class="department">
-                <label>Avdelning</label>
-                <ul>
-                    <?php foreach ($departments as $index => $department) {
-                        ?>
-                        <li class="child-link" data-parent="department" class="child"
-                            style="display: <?= $index < 7 ? 'block' : 'none'; ?>">
-                            <a href="produkter/avdelningar/<?= $department->slug ?>">
-                                <?= $department->name ?>
-                            </a>
-                        </li>
-
-                        <?php
-
-                        if ($index === 8) {
-                            ?>
-                            <li class="child">
-                                <button class="see-more-button" id="see-more-department" onClick="showMore(this)">
-                                    Visa alla (
-                                    <?= count($departments) ?>)
-                                </button>
-                            </li>
-                            <?php
-                        }
-                    }
-                    ?>
-                </ul>
-            </div>
-
-            <div class="brand">
-                <label>Varumärken</label>
-                <ul>
-                    <?php foreach ($brands as $index => $brand) {
-                        ?>
-                        <li class="child-link" data-parent="brand" class="child"
-                            style="display: <?= $index < 7 ? 'block' : 'none'; ?>">
-                            <a href="produkter/varumarken/<?= $brand->slug ?>">
-                                <?= $brand->name ?>
-                            </a>
-                        </li>
-
-                        <?php
-
-                        if ($index === 8) {
-                            ?>
-                            <li class="child">
-                                <button class="see-more-button" id="see-more-brand" onClick="showMore(this)">
-                                    Visa alla (
-                                    <?= count($brands) ?>)
-                                </button>
-                            </li>
-                            <?php
-                        }
-                    }
-                    ?>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
+<?php include('CategoriesDropdown.php') ?>
 
 <script>
+    const productMenuId = '<?= $data['product_menu_id'] ?>';
+</script>
+
+<script>
+    //TODO move to separate external file
     showMore = (buttonElement) => {
-        var buttonId = buttonElement.id;
-        var id = buttonId.split('-')[2];
+        const buttonId = buttonElement.id;
+        const id = buttonId.split('-')[2];
         document.querySelectorAll(`[data-parent="${id}"]`).forEach((element) => {
-            console.log(element);
             element.style.display = 'block'
         })
 
-
         document.getElementById(buttonId).style.display = 'none'
+    }
+    closeProductModal = () => {
+        const dropdown = document.getElementById('dropdown')
+        const dropdownMenu = document.getElementById('dropdown-menu');
+        const dropdownContent = document.getElementById('dropdown-content');
+
+        if (dropdown.classList.contains('active-dropdown')) {
+            dropdown.classList.remove('active-dropdown');
+        }
+
+        if (dropdownMenu.classList.contains('active-dropdown-menu')) {
+            dropdownMenu.classList.remove('active-dropdown-menu')
+        }
+
+        if (dropdownContent.classList.contains('active-dropdown-content')) {
+            dropdownContent.classList.remove('active-dropdown-content')
+        }
+    }
+    closeMobileMenuModal = () => {
+        const mobileMenu = document.getElementById('header-content');
+        if (mobileMenu.classList.contains('active')) {
+            mobileMenu.classList.remove('active');
+        }
     }
     onOpenModal = () => {
         document.getElementById('header-content').classList.toggle('active')
@@ -255,15 +119,33 @@
     }
     onCloseModal = () => {
         document.getElementById('header-content').classList.toggle('active')
+
+        closeMobileMenuModal();
+        closeProductModal();
         document.body.style.overflowY = 'auto';
         document.body.style.height = 'auto';
     }
-    const products = document.getElementById('menu-item-12372')
-    products.addEventListener('click', function (e) {
-        e.preventDefault();
+    onGoBackButton = () => {
         document.getElementById('dropdown-menu').classList.toggle('active-dropdown')
-        var body = document.body;
+        onCloseModal();
+        onOpenModal();
+    }
 
+    const menuItemProducts = document.getElementById('menu-item-' + productMenuId)
+
+    menuItemProducts.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        document.getElementById('dropdown').classList.toggle('active-dropdown')
+        document.getElementById('dropdown-menu').classList.toggle('active-dropdown-menu')
+
+        setTimeout(() => {
+            document.getElementById('dropdown-content').classList.toggle('active-dropdown-content')
+        }, 50);
+
+        closeMobileMenuModal();
+
+        const body = document.body;
         if (body.style.overflowY === 'hidden') {
             body.style.overflowY = 'auto';
             body.style.height = 'auto';
@@ -272,9 +154,26 @@
             body.style.height = '100vh';
         }
     });
+
+    const dropdown = document.getElementById('dropdown')
+
+    dropdown.addEventListener('click', function (e) {
+        if (e.target.className === 'dropdown-menu active-dropdown-menu') {
+            closeProductModal();
+        }
+    });
 </script>
 
 <style>
+    .dropdown {
+        position: relative;
+        display: none;
+    }
+
+    .active-dropdown {
+        display: flex;
+    }
+
     .dropdown-menu {
         display: none;
         flex-direction: row;
@@ -283,11 +182,14 @@
         width: 100%;
         background: rgba(0, 0, 0, 0.40);
         min-height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
     }
 
-    .active-dropdown {
+    .active-dropdown-menu {
         display: flex;
-        position: absolute;
+        overflow: hidden;
     }
 
     .dropdown-content {
@@ -295,12 +197,23 @@
         flex-direction: row;
         justify-content: center;
         align-items: flex-start;
-        padding: 46px 24px;
         border-radius: 0px 0px 20px 20px;
         background: var(--White, #FFF);
         width: 100%;
         overflow-y: auto;
+        max-height: 0;
+        height: 0;
+        opacity: 0;
+        transform: translateY(-30%);
+        transition: transform 0.4s ease, opacity 0.4s ease;
+        padding: 46px 24px;
+    }
+
+    .active-dropdown-content {
         max-height: 100vh;
+        height: auto;
+        opacity: 1;
+        transform: translateY(0);
     }
 
     .dropdown-categories {
@@ -317,6 +230,49 @@
         font-style: normal;
         font-weight: 400;
         line-height: 150%;
+        border: none;
+        display: flex;
+        flex-direction: row;
+        gap: 4px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .dropdown-content .go-back-button {
+        background: none;
+        border: none;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 140%;
+        font-family: Inter;
+        color: var(--Almost-Black, #3E4849);
+        padding: 8px 0;
+        padding: 8px 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .dropdown-content .go-back-button:hover {
+        background: none;
+        border: none;
+        text-decoration: underline;
+        color: #000;
+    }
+
+    .child .see-more-button:hover {
+        background: none;
+        border: none;
+        color: #000;
+    }
+
+    .child .see-more-button:focus {
+        background: none;
+        border: none;
+        text-decoration: underline;
     }
 
     .dropdown-menu .categories {
@@ -324,12 +280,12 @@
         flex-direction: row;
         flex-wrap: wrap;
         row-gap: 48px;
+        column-gap: 24px;
     }
-
 
     .dropdown-menu .parent {
         font-weight: bold;
-        flex: 0 0 33.333333%;
+        flex: 0 0 30%;
     }
 
     .child-link {
@@ -341,11 +297,10 @@
         line-height: 150%;
     }
 
-
     .parent-link:hover,
-    .child-link:hover {
+    .child-link:hover a {
         text-decoration: underline;
-        color: var(--Almost-Black, #3E4849) !important;
+        color: #000 !important;
     }
 
 
@@ -370,6 +325,7 @@
         flex-direction: column;
         gap: 24px;
         min-width: 227px;
+        margin-left: 48px;
     }
 
     .dropdown-menu .category,
@@ -383,7 +339,7 @@
 
     @media only screen and (min-width: 1024px) {
         .dropdown-menu .parent {
-            flex: 0 0 25%;
+            flex: 0 0 23%;
         }
     }
 
@@ -414,6 +370,7 @@
         justify-content: space-between;
         padding: 0 24px;
         flex-wrap: wrap;
+        position: relative;
     }
 
     .logo,
@@ -555,6 +512,10 @@
 
     }
 
+    .dropdown-categories-header {
+        display: none;
+    }
+
     @media only screen and (min-width: 768px) {
         .mobile-heaader {
             display: none;
@@ -562,6 +523,7 @@
     }
 
     @media only screen and (max-width: 768px) {
+
         .header-content {
             display: none;
         }
@@ -573,7 +535,8 @@
             right: 24px;
         }
 
-        .active {
+        .active,
+        .active-dropdown {
             width: 100vw;
             height: 100vh;
             display: flex;
@@ -583,10 +546,13 @@
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 900;
             background-color: #fff;
             overflow-y: hidden;
             padding: 20px 24px 24px 24px;
+        }
+
+        .active-dropdown {
+            padding: 0;
         }
 
         .menu {
@@ -598,6 +564,25 @@
             width: calc(100vw - 24px - 24px);
             flex-wrap: nowrap;
             gap: 0;
+        }
+
+        .dropdown-content {
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            overflow: auto;
+            flex-wrap: nowrap;
+            gap: 0;
+            padding: 20px 24px 24px 24px;
+        }
+
+        .dropdown-categories-header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 32px;
         }
 
         .menu li {
@@ -618,15 +603,35 @@
             padding: 24px;
         }
 
-        .dropdown-content {
-            flex-direction: column;
-            justify-content: flex-start;
-            padding: 0;
+        .dropdown-menu .categories {
+            row-gap: 24px;
         }
 
-        .dropdown-categories, .dropdown-type{
-            padding: 20px 24px 24px 24px;
+        .dropdown-type {
+            margin-top: 24px;
+            margin-left: 0px;
+        }
+
+        .dropdown-categories,
+        .dropdown-type {
             border-right: none;
+        }
+
+        .menu .current-menu-item {
+            border: none;
+            background: none;
+        }
+
+        .dropdown-content,
+        .active-dropdown-content {
+            transform: none;
+        }
+
+        .dropdown-content {
+            opacity: 1;
+            max-height: 100vh;
+            height: auto;
+            border-radius: 0px;
         }
     }
 </style>
