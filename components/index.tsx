@@ -7,6 +7,7 @@ import {
   Cart,
   Checkout,
   CurrencyChooser,
+  OrderConfirmation,
   ProductDetail,
   ProductList,
   VendureApolloProvider,
@@ -99,6 +100,10 @@ document.addEventListener(
 
         case 'currency-chooser':
           renderElement(element, <CurrencyChooser />)
+          break
+
+        case 'order-confirmation':
+          renderElement(element, <OrderConfirmation />)
           break
       }
     })
