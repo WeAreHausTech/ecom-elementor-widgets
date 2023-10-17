@@ -281,11 +281,12 @@
         flex-wrap: wrap;
         row-gap: 48px;
         column-gap: 24px;
+        justify-content: flex-end;
     }
 
     .dropdown-menu .parent {
         font-weight: bold;
-        flex: 0 0 30%;
+        min-width: 200px;
     }
 
     .child-link {
@@ -337,19 +338,7 @@
         margin-top: 8px;
     }
 
-    @media only screen and (min-width: 1024px) {
-        .dropdown-menu .parent {
-            flex: 0 0 23%;
-        }
-    }
-
     @media only screen and (max-width: 768px) {
-        .dropdown-menu .parent {
-            flex: 0 0 100%;
-        }
-    }
-
-    @media only screen and (max-width: 480px) {
         .dropdown-menu .parent {
             flex: 0 0 100%;
         }
