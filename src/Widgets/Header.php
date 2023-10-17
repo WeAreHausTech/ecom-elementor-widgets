@@ -137,9 +137,6 @@ class Header extends Widget_Base
         return $termData;
     }
 
-
-    // produkter-avdelningar
-
     protected function render()
     {
         $data = [
@@ -148,7 +145,7 @@ class Header extends Widget_Base
             'contact_us_link' => $this->get_settings_for_display('contact_us_link'),
             'menu_id' => $this->get_settings_for_display('menu_id'),
             'product_menu_id' => $this->get_settings_for_display('products_menu_id'),
-          ];
+        ];
 
         $categories = $this->getAllProductCategories();
         $brands = $this->getTaxonomies('produkter-varumarken');

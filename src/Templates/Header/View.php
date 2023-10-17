@@ -281,11 +281,14 @@
         flex-wrap: wrap;
         row-gap: 48px;
         column-gap: 24px;
+        justify-content: flex-end;
+        padding-left: 0;
+        list-style: none;
     }
 
     .dropdown-menu .parent {
         font-weight: bold;
-        flex: 0 0 30%;
+        min-width: 200px;
     }
 
     .child-link {
@@ -335,21 +338,11 @@
         flex-direction: column;
         gap: 8px;
         margin-top: 8px;
-    }
-
-    @media only screen and (min-width: 1024px) {
-        .dropdown-menu .parent {
-            flex: 0 0 23%;
-        }
+        padding-left: 0;
+        list-style: none;
     }
 
     @media only screen and (max-width: 768px) {
-        .dropdown-menu .parent {
-            flex: 0 0 100%;
-        }
-    }
-
-    @media only screen and (max-width: 480px) {
         .dropdown-menu .parent {
             flex: 0 0 100%;
         }
@@ -427,6 +420,11 @@
         justify-content: center;
         gap: 8px;
         flex-wrap: wrap;
+    }
+
+    .menu ul {
+        padding-left: 0;
+        list-style: none;
     }
 
     .menu li {
@@ -524,7 +522,6 @@
     }
 
     @media only screen and (max-width: 768px) {
-
         .header-content {
             display: none;
         }
