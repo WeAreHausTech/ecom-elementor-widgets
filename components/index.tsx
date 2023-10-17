@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom/client'
 import {
   Cart,
   Checkout,
+  OrderConfirmation,
   ProductDetail,
   ProductList,
   VendureApolloProvider,
@@ -94,6 +95,10 @@ document.addEventListener(
 
         case 'cart':
           renderElement(element, <Cart />)
+          break
+
+        case 'order-confirmation':
+          renderElement(element, <OrderConfirmation />)
           break
       }
     })
