@@ -458,6 +458,7 @@
         justify-content: space-between;
         align-items: center;
         width: 100%;
+        z-index:9999;
     }
 
     .header .icons {
@@ -549,6 +550,7 @@
             background-color: #fff;
             overflow-y: hidden;
             padding: 20px 24px 24px 24px;
+            z-index: 9999;
         }
 
         .active-dropdown {
