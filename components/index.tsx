@@ -1,20 +1,35 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable no-case-declarations */
 import React, { ReactNode, Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
-import { FacetValueFilterInput, VendureApolloProvider } from '@haus-tech/ecom-components'
+import {
+  Cart,
+  Checkout,
+  ProductDetail,
+  ProductList,
+  VendureApolloProvider,
+} from '@haus-tech/ecom-components'
 
 import './index.scss'
 import { get } from 'lodash'
+import { FacetValueFilterInput } from '@haus-tech/ecom-components/dist/gql/graphql'
+import styles from '@haus-tech/ecom-components/dist/ecom-main.css'
 
-// Lazy load widgets
-const ProductList = React.lazy(() => import('./product-list/ProductList'))
-const Checkout = React.lazy(() => import('./checkout/Checkout'))
-const ProductDetail = React.lazy(() => import('./products/ProductDetail'))
-const Cart = React.lazy(() => import('./cart/Cart'))
+async function fetchCSSContent() {
+  const response = await fetch(styles)
+  return await response.text()
+}
 
-const renderElement = (element: Element, children: ReactNode) => {
-  return ReactDOM.createRoot(element).render(
+const renderElement = async (element: Element, children: ReactNode) => {
+  const css = await fetchCSSContent()
+  const shadowRoot = element.attachShadow({ mode: 'open' })
+
+  const styleEl = document.createElement('style')
+  styleEl.textContent = css
+  shadowRoot.appendChild(styleEl)
+
+  return ReactDOM.createRoot(shadowRoot).render(
     <React.StrictMode>
       <VendureApolloProvider apiUrl="https://livv-ecom-test.azurewebsites.net/shop-api">
         <Suspense>{children}</Suspense>
@@ -46,7 +61,7 @@ document.addEventListener(
           }
 
           const collectionId = dataAttributes.getNamedItem('data-collection')?.value
-          
+
           const enablePagination = +get(
             dataAttributes.getNamedItem('data-pagination-enabled'),
             'value',
@@ -60,10 +75,10 @@ document.addEventListener(
               searchInputProps={{
                 facetValueFilters: facetValues,
                 take: +get(dataAttributes.getNamedItem('data-take'), 'value', 12),
-                collectionId: collectionId
+                collectionId: collectionId,
               }}
-              enablepagination={Boolean(enablePagination)}
-              enableSort={Boolean(enableSort)}
+              enablePagination={Boolean(enablePagination)}
+              enableSorting={Boolean(enableSort)}
             />,
           )
           break
@@ -74,7 +89,7 @@ document.addEventListener(
 
         case 'product-detail':
           const id = dataAttributes.getNamedItem('data-product')?.value
-          renderElement(element, id && <ProductDetail id={id}></ProductDetail>)
+          renderElement(element, id && <ProductDetail id={id} />)
           break
 
         case 'cart':

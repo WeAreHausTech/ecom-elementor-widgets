@@ -282,6 +282,8 @@
         row-gap: 48px;
         column-gap: 24px;
         justify-content: flex-end;
+        padding-left: 0;
+        list-style: none;
     }
 
     .dropdown-menu .parent {
@@ -336,6 +338,8 @@
         flex-direction: column;
         gap: 8px;
         margin-top: 8px;
+        padding-left: 0;
+        list-style: none;
     }
 
     @media only screen and (max-width: 768px) {
@@ -416,6 +420,11 @@
         justify-content: center;
         gap: 8px;
         flex-wrap: wrap;
+    }
+
+    .menu ul {
+        padding-left: 0;
+        list-style: none;
     }
 
     .menu li {
@@ -512,7 +521,6 @@
     }
 
     @media only screen and (max-width: 768px) {
-
         .header-content {
             display: none;
         }
