@@ -9,6 +9,7 @@ import {
   ProductDetail,
   ProductList,
   VendureApolloProvider,
+  SearchField,
 } from '@haus-tech/ecom-components'
 
 import './index.scss'
@@ -94,6 +95,10 @@ document.addEventListener(
 
         case 'cart':
           renderElement(element, <Cart />)
+          break
+
+        case 'searchField':
+          renderElement(element, <SearchField />)
           break
       }
     })
