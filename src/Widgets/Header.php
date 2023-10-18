@@ -58,7 +58,7 @@ class Header extends Widget_Base
         $this->add_control(
             'contact_us_link',
             [
-                'label' =>  __('Knapplänk', 'webien'),
+                'label' => __('Knapplänk', 'webien'),
                 'type' => \Elementor\Controls_Manager::URL,
                 'options' => ['url'],
                 'default' => [
@@ -87,9 +87,54 @@ class Header extends Widget_Base
             ]
         );
 
+        $this->add_control(
+            'products_menu_id',
+            [
+                'label' => __('Id på produkter:', 'webien'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'label_block' => true,
+            ]
+        );
+
 
         $this->end_controls_section();
+    }
 
+    public function getAllProductCategories()
+    {
+        $term_args = array(
+            'taxonomy' => 'produkter-kategorier',
+        );
+        $termData = get_terms($term_args);
+
+        if (!is_array($termData) || empty($termData)) {
+            return null;
+        }
+
+        $terms = [];
+
+        foreach ($termData as $key => $term) {
+            if ($term->parent == 0) {
+                $terms[$term->term_id]['data'] = $term;
+            } else {
+                $terms[$term->parent]['children'][] = $term;
+            }
+        }
+        return $terms;
+    }
+
+    public function getTaxonomies($taxonomy)
+    {
+        $term_args = array(
+            'taxonomy' => $taxonomy,
+        );
+        $termData = get_terms($term_args);
+
+        if (!is_array($termData) || empty($termData)) {
+            return null;
+        }
+
+        return $termData;
     }
 
     protected function render()
@@ -99,8 +144,12 @@ class Header extends Widget_Base
             'contact_us_text' => $this->get_settings_for_display('contact_us_text'),
             'contact_us_link' => $this->get_settings_for_display('contact_us_link'),
             'menu_id' => $this->get_settings_for_display('menu_id'),
+            'product_menu_id' => $this->get_settings_for_display('products_menu_id'),
         ];
 
+        $categories = $this->getAllProductCategories();
+        $brands = $this->getTaxonomies('produkter-varumarken');
+        $departments = $this->getTaxonomies('produkter-avdelningar');
 
         $url = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
