@@ -6,6 +6,8 @@ import ReactDOM from 'react-dom/client'
 import {
   Cart,
   Checkout,
+  CurrencyChooser,
+  OrderConfirmation,
   ProductDetail,
   ProductList,
   VendureApolloProvider,
@@ -99,6 +101,14 @@ document.addEventListener(
 
         case 'searchField':
           renderElement(element, <SearchField />)
+          break
+
+        case 'currency-chooser':
+          renderElement(element, <CurrencyChooser />)
+          break
+
+        case 'order-confirmation':
+          renderElement(element, <OrderConfirmation />)
           break
       }
     })
