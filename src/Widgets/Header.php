@@ -172,6 +172,7 @@ class Header extends Widget_Base
             'contact_us_link' => $this->get_settings_for_display('contact_us_link'),
             'menu_id' => $this->get_settings_for_display('menu_id'),
             'product_menu_id' => $this->get_settings_for_display('products_menu_id'),
+            'cart_redirect_to' => $this->get_settings_for_display('cart_redirect_to') ? $this->get_settings_for_display('cart_redirect_to') : '/varukorg',
         ];
 
         $categories = $this->getAllProductCategories();

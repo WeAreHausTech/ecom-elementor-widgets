@@ -1,11 +1,10 @@
 <?php
     $widgetId = 'ecom_' . uniqid();
-    $widgetRedirectTo = '/varukorg';
     echo '<div 
-        id="' . $widget_id . '" 
+        id="' . $widgetId . '" 
         class="ecom-components-root" 
         data-widget-type="cart-icon"
-        data-redirect-to="' . $widgetRedirectTo . '"
+        data-redirect-to="' . $data['cart_redirect_to'] . '"
         >
     </div>';
 ?>
