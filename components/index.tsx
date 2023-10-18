@@ -10,6 +10,7 @@ import {
   OrderConfirmation,
   ProductDetail,
   ProductList,
+  DropdownCart, 
   VendureApolloProvider,
 } from '@haus-tech/ecom-components'
 
@@ -104,6 +105,12 @@ document.addEventListener(
 
         case 'order-confirmation':
           renderElement(element, <OrderConfirmation />)
+          break
+
+        case 'cart-icon':
+
+          const redirect = dataAttributes.getNamedItem('data-redirect-to')?.value
+          renderElement(element, <DropdownCart dropdownEnabled={false} redirectTo={redirect}/>)
           break
       }
     })

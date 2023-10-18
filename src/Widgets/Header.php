@@ -37,9 +37,9 @@ class Header extends Widget_Base
     {
 
         $this->start_controls_section(
-            'content_section',
+            'header_section',
             [
-                'label' => __('Content', 'webien'),
+                'label' => __('Header', 'webien'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
@@ -77,6 +77,14 @@ class Header extends Widget_Base
             ]
         );
 
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+            'menu-section',
+            [
+                'label' => __('Meny', 'webien'),
+            ]
+        );
 
         $this->add_control(
             'menu_id',
@@ -96,6 +104,24 @@ class Header extends Widget_Base
             ]
         );
 
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+            'cart-section',
+            [
+                'label' => __('Varukorg', 'webien'),
+            ]
+        );
+
+        $this->add_control(
+            'cart_redirect_to',
+            [
+                'label' => __('Varukorg länk:', 'webien'),
+                'description' => __('Länk till varukorgen, tex /varukorg', 'webien'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'label_block' => true,
+            ]
+        );
 
         $this->end_controls_section();
     }
