@@ -134,7 +134,8 @@ class Header extends Widget_Base
             return null;
         }
 
-        return $termData;
+        // Use array_values to reset the array keys
+        return array_values($termData);
     }
 
     protected function render()
@@ -148,8 +149,19 @@ class Header extends Widget_Base
         ];
 
         $categories = $this->getAllProductCategories();
-        $brands = $this->getTaxonomies('produkter-varumarken');
-        $departments = $this->getTaxonomies('produkter-avdelningar');
+
+        $taxonomies = [
+            [
+                'heading' => 'Varumärken',
+                'data' => $this->getTaxonomies('produkter-varumarken'),
+                'class' => 'brand'
+            ],
+            [
+                'heading' => 'Avdelningar',
+                'data' => $this->getTaxonomies('produkter-avdelningar'),
+                'class' => 'department'
+            ]
+        ];
 
         $url = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
