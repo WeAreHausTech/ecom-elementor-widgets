@@ -194,6 +194,7 @@
     .active-dropdown-menu {
         display: flex;
         overflow: hidden;
+        z-index: 9999;
     }
 
     .dropdown-content {
@@ -218,6 +219,7 @@
         height: auto;
         opacity: 1;
         transform: translateY(0);
+        z-index: 9999;
     }
 
     .dropdown-categories {
@@ -464,6 +466,20 @@
         z-index: 9999;
     }
 
+    .header-content .logo a,
+    .mobile-heaader .mobile-logo a {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .header-content img,
+    .mobile-logo img {
+        max-height: 36px;
+        border-radius: 0;
+    }
+
     .header .icons {
         display: flex;
         flex-direction: row;
@@ -564,7 +580,7 @@
             align-items: flex-start;
             justify-content: flex-start;
             overflow: auto;
-            height: calc(100vh - 54px -  var(--header-height));
+            height: calc(100vh - 54px - var(--header-height));
             width: calc(100vw - 24px - 24px);
             flex-wrap: nowrap;
             gap: 0;
