@@ -248,6 +248,28 @@
         align-items: center;
     }
 
+    .see-more-button {
+        color: var(--Almost-Black, #3E4849) !important;
+        font-size: 14px !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+        line-height: 150% !important;
+        padding: 0 !important;
+        margin: 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        border: none !important;
+    }
+
+    .see-more-button:hover {
+        background-color: transparent !important;
+        border: none !important;
+        text-decoration: underline !important;
+        color: #000 !important;
+    }
+
     .dropdown-content .go-back-button {
         background: none;
         border: none;
