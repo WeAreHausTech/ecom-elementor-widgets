@@ -690,6 +690,7 @@
             max-height: 100vh;
             height: auto;
             border-radius: 0px;
+            padding-bottom: 50px;
         }
     }
 </style>
