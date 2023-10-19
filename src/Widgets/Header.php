@@ -37,9 +37,9 @@ class Header extends Widget_Base
     {
 
         $this->start_controls_section(
-            'content_section',
+            'header_section',
             [
-                'label' => __('Content', 'webien'),
+                'label' => __('Header', 'webien'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
@@ -77,6 +77,14 @@ class Header extends Widget_Base
             ]
         );
 
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+            'menu-section',
+            [
+                'label' => __('Meny', 'webien'),
+            ]
+        );
 
         $this->add_control(
             'menu_id',
@@ -91,6 +99,51 @@ class Header extends Widget_Base
             'products_menu_id',
             [
                 'label' => __('Id på produkter:', 'webien'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'label_block' => true,
+            ]
+        );
+
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+            'cart-section',
+            [
+                'label' => __('Varukorg', 'webien'),
+            ]
+        );
+
+        $this->add_control(
+            'cart_redirect_to',
+            [
+                'label' => __('Varukorg länk:', 'webien'),
+                'description' => __('Länk till varukorgen, tex /varukorg', 'webien'),
+
+            ]
+        );
+
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+            'search-section',
+            [
+                'label' => __('Sök', 'webien'),
+            ]
+        );
+
+        $this->add_control(
+            'search_placeholder',
+            [
+                'label' => __('Placeholder:', 'webien'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'label_block' => true,
+            ]
+        );
+
+        $this->add_control(
+            'search_redirect',
+            [
+                'label' => __('Söksidan:', 'webien'),
                 'type' => \Elementor\Controls_Manager::TEXT,
                 'label_block' => true,
             ]
@@ -146,6 +199,9 @@ class Header extends Widget_Base
             'contact_us_link' => $this->get_settings_for_display('contact_us_link'),
             'menu_id' => $this->get_settings_for_display('menu_id'),
             'product_menu_id' => $this->get_settings_for_display('products_menu_id'),
+            'cart_redirect_to' => $this->get_settings_for_display('cart_redirect_to') ? $this->get_settings_for_display('cart_redirect_to') : '/varukorg',
+            'search_placeholder' => $this->get_settings_for_display('search_placeholder'),
+            'search_redirect' => $this->get_settings_for_display('search_redirect'),
         ];
 
         $categories = $this->getAllProductCategories();
