@@ -1,6 +1,6 @@
 <?php
 
-namespace Haus\Sync\Classes;
+namespace Haus\SyncData\Classes;
 
 class Relations
 {

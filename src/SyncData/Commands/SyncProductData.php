@@ -5,9 +5,9 @@
  * $ wp sync-products sync
  */
 
-use Haus\Sync\Classes\Products;
-use Haus\Sync\Classes\Taxonomies;
-use Haus\Sync\Classes\Relations;
+use Haus\SyncData\Classes\Products;
+use Haus\SyncData\Classes\Taxonomies;
+use Haus\SyncData\Classes\Relations;
 
 class SyncProductData extends WP_CLI_Command
 {
