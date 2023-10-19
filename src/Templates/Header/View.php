@@ -114,16 +114,16 @@
     }
     onOpenModal = () => {
         document.getElementById('header-content').classList.toggle('active')
-        document.body.style.overflow = 'hidden';
-        document.body.style.height = '100vh';
+        // document.body.style.overflow = 'hidden';
+        // document.body.style.height = '100vh';
     }
     onCloseModal = () => {
         document.getElementById('header-content').classList.toggle('active')
 
         closeMobileMenuModal();
         closeProductModal();
-        document.body.style.overflow = 'auto';
-        document.body.style.height = 'auto';
+        // document.body.style.overflow = 'auto';
+        // document.body.style.height = 'auto';
     }
     onGoBackButton = () => {
         document.getElementById('dropdown-menu').classList.toggle('active-dropdown')
@@ -145,14 +145,6 @@
 
         closeMobileMenuModal();
 
-        const body = document.body;
-        if (body.style.overflowY === 'hidden') {
-            body.style.overflowY = 'auto';
-            body.style.height = 'auto';
-        } else {
-            body.style.overflowY = 'hidden';
-            body.style.height = '100vh';
-        }
     });
 
     const dropdown = document.getElementById('dropdown')
@@ -167,6 +159,10 @@
 <style>
     :root {
         --header-height: 84px;
+    }
+
+    body {
+        padding-top: var(--header-height);
     }
 
     .dropdown {
@@ -186,8 +182,8 @@
         width: 100%;
         background: rgba(0, 0, 0, 0.40);
         min-height: 100vh;
-        position: absolute;
-        top: 0;
+        position: fixed;
+        top: var(--header-height);
         left: 0;
     }
 
@@ -370,7 +366,10 @@
         justify-content: space-between;
         padding: 0 24px;
         flex-wrap: wrap;
-        position: relative;
+        position: fixed;
+        top: 0;
+        background: white;
+        z-index: 9999;
     }
 
     .logo,
@@ -621,6 +620,10 @@
             left: 0;
             width: 100%;
             padding: 24px;
+        }
+
+        .dropdown-menu {
+            top: 0;
         }
 
         .dropdown-menu .categories {
