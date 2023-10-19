@@ -1,12 +1,11 @@
 <?php
-namespace Haus\Sync\Classes;
+namespace Haus\SyncData\Classes;
 
 class Products
 {
     public $created = 0;
     public $updated = 0;
     public $deleted = 0;
-    
     public function getAllProductsFromVendure()
     {
         $products = (new \Haus\Queries\Product)->get();
@@ -25,11 +24,14 @@ class Products
         global $wpdb;
 
         $query = $wpdb->prepare(
-            "SELECT p.ID as id, p.post_title, p.post_name, pm.meta_value as vendure_id
+            "SELECT p.ID as id, p.post_title, p.post_name, pm.meta_value as vendure_id, pm2.meta_value as exclude_from_sync
              FROM {$wpdb->prefix}posts p 
              LEFT JOIN  {$wpdb->prefix}postmeta pm
                 ON p.ID = pm.post_id
                 AND pm.meta_key = 'vendure_id'
+            LEFT JOIN {$wpdb->prefix}postmeta pm2
+                ON p.ID = pm2.post_id
+                AND pm2.meta_key = 'exclude_from_sync'
              WHERE post_type ='produkter'"
         );
 
@@ -44,6 +46,12 @@ class Products
         $delete = array_diff_key($wpProducts, $vendureProducts);
 
         array_walk($delete, function ($product) {
+
+            $shouldBeExcluded = "1";
+            if ($product['exclude_from_sync'] === $shouldBeExcluded){
+                return;
+            }
+
             $this->deleteProduct($product['id']);
         });
 
