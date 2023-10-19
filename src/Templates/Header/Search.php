@@ -6,7 +6,7 @@
     echo '<div 
         id="' . $widget_id . '" 
         class="ecom-components-root" 
-        data-widget-type="searchField"
+        data-widget-type="search-field"
         data-redirect-to="' . $data['search_redirect'] . '"
         data-placeholder="' . $data['search_placeholder'] . '"
         >

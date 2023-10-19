@@ -100,7 +100,7 @@ document.addEventListener(
           renderElement(element, <Cart />)
           break
 
-        case 'searchField':
+        case 'search-field':
           const redirect = dataAttributes.getNamedItem('data-redirect-to')?.value
           const placeholder = dataAttributes.getNamedItem('data-placeholder')?.value
 
@@ -123,7 +123,7 @@ document.addEventListener(
           renderElement(element, <OrderConfirmation />)
           break
 
-        case 'cart-icon':
+        case 'dropdown-cart':
           const cartUrl = dataAttributes.getNamedItem('data-redirect-to')?.value;
 
           renderElement(element, <DropdownCart dropdownEnabled={false} cartUrl={cartUrl}/>)
