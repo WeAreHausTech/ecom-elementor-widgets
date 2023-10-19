@@ -153,11 +153,13 @@ class Header extends Widget_Base
         $taxonomies = [
             [
                 'heading' => 'Varumärken',
+                'link' => '/produkter/varumarken/', 
                 'data' => $this->getTaxonomies('produkter-varumarken'),
                 'class' => 'brand'
             ],
             [
                 'heading' => 'Avdelningar',
+                'link' => '/produkter/avdelningar/', 
                 'data' => $this->getTaxonomies('produkter-avdelningar'),
                 'class' => 'department'
             ]
