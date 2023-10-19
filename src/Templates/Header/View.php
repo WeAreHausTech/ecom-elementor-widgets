@@ -18,7 +18,6 @@
         <div class="menu-links">
             <div class="icons">
                 <?php include('Search.php') ?>
-                <?php include('MyPages.php') ?>
                 <?php include('Cart.php') ?>
             </div>
             <div class="close-button">
@@ -50,7 +49,6 @@
         </div>
         <div class="mobile-icons">
             <?php include('Search.php') ?>
-            <?php include('MyPages.php') ?>
             <?php include('Cart.php') ?>
 
             <div class="open-button">
@@ -167,6 +165,13 @@
 <style>
     :root {
         --header-height: 84px;
+    }
+
+    .icon-wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
     }
 
     .dropdown {
@@ -483,7 +488,7 @@
     .header .icons {
         display: flex;
         flex-direction: row;
-        gap: 16px;
+        gap: 8px;
     }
 
     .header .icons a {

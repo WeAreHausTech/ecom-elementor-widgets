@@ -1,4 +1,5 @@
-<?php
+<div class="icon-wrapper">
+    <?php
     $widgetId = 'ecom_' . uniqid();
     echo '<div 
         id="' . $widgetId . '" 
@@ -7,4 +8,5 @@
         data-redirect-to="' . $data['cart_redirect_to'] . '"
         >
     </div>';
-?>
+    ?>
+</div>

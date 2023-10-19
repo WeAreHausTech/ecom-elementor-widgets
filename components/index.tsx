@@ -12,6 +12,7 @@ import {
   ProductList,
   DropdownCart, 
   VendureApolloProvider,
+  SearchField,
 } from '@haus-tech/ecom-components'
 
 import './index.scss'
@@ -99,6 +100,21 @@ document.addEventListener(
           renderElement(element, <Cart />)
           break
 
+        case 'searchField':
+          const redirect = dataAttributes.getNamedItem('data-redirect-to')?.value
+          const placeholder = dataAttributes.getNamedItem('data-placeholder')?.value
+
+          renderElement(
+            element,
+            <SearchField 
+              openOnButton={true} 
+              autofocus={true} 
+              searchUrl={redirect} 
+              placeholder={placeholder} 
+            />,
+          )
+          break
+
         case 'currency-chooser':
           renderElement(element, <CurrencyChooser />)
           break
@@ -108,9 +124,9 @@ document.addEventListener(
           break
 
         case 'cart-icon':
+          const cartUrl = dataAttributes.getNamedItem('data-redirect-to')?.value;
 
-          const redirect = dataAttributes.getNamedItem('data-redirect-to')?.value
-          renderElement(element, <DropdownCart dropdownEnabled={false} redirectTo={redirect}/>)
+          renderElement(element, <DropdownCart dropdownEnabled={false} cartUrl={cartUrl}/>)
           break
       }
     })
