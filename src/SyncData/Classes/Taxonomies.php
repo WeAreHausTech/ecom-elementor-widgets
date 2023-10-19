@@ -1,6 +1,6 @@
 <?php
 
-namespace Haus\Sync\Classes;
+namespace Haus\SyncData\Classes;
 
 class Taxonomies
 {
@@ -10,7 +10,7 @@ class Taxonomies
     private $taxonomies = [
         'brand' => [
             'wp' => 'produkter-varumarken',
-            'vendure' => 'brand',
+            'vendure' => 'brand'
         ],
         'department' => [
             'wp' => 'produkter-avdelningar',
