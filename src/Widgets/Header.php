@@ -96,6 +96,24 @@ class Header extends Widget_Base
             ]
         );
 
+        $this->add_control(
+            'search_placeholder',
+            [
+                'label' => __('Placeholder:', 'webien'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'label_block' => true,
+            ]
+        );
+
+        $this->add_control(
+            'search_redirect',
+            [
+                'label' => __('Söksidan:', 'webien'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'label_block' => true,
+            ]
+        );
+
 
         $this->end_controls_section();
     }
@@ -146,6 +164,8 @@ class Header extends Widget_Base
             'contact_us_link' => $this->get_settings_for_display('contact_us_link'),
             'menu_id' => $this->get_settings_for_display('menu_id'),
             'product_menu_id' => $this->get_settings_for_display('products_menu_id'),
+            'search_placeholder' => $this->get_settings_for_display('search_placeholder'),
+            'search_redirect' => $this->get_settings_for_display('search_redirect'),
         ];
 
         $categories = $this->getAllProductCategories();

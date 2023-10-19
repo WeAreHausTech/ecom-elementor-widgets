@@ -1,4 +1,13 @@
 <?php
     $widget_id = 'ecom_' . uniqid();
-    echo '<div id="' . $widget_id . '" class="ecom-components-root" data-widget-type="searchField"></div>';
+    $placeholder = $data['search_placeholder'];
+    $redirect = $data['search_redirect'];
+    echo '<div 
+        id="' . $widget_id . '" 
+        class="ecom-components-root" 
+        data-widget-type="searchField"
+        data-redirect-to="' . $data['search_redirect'] . '"
+        data-placeholder="' . $data['search_placeholder'] . '"
+        >
+    </div>';
 ?>

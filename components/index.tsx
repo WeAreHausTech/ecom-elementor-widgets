@@ -100,7 +100,18 @@ document.addEventListener(
           break
 
         case 'searchField':
-          renderElement(element, <SearchField />)
+          const redirect = dataAttributes.getNamedItem('data-redirect-to')?.value
+          const placeholder = dataAttributes.getNamedItem('data-placeholder')?.value
+
+          renderElement(
+            element,
+            <SearchField 
+              openOnButton={true} 
+              autofocus={true} 
+              searchUrl={redirect} 
+              placeholder={placeholder} 
+            />,
+          )
           break
 
         case 'currency-chooser':
