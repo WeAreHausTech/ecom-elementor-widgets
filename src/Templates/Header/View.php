@@ -114,16 +114,12 @@
     }
     onOpenModal = () => {
         document.getElementById('header-content').classList.toggle('active')
-        // document.body.style.overflow = 'hidden';
-        // document.body.style.height = '100vh';
     }
     onCloseModal = () => {
         document.getElementById('header-content').classList.toggle('active')
 
         closeMobileMenuModal();
         closeProductModal();
-        // document.body.style.overflow = 'auto';
-        // document.body.style.height = 'auto';
     }
     onGoBackButton = () => {
         document.getElementById('dropdown-menu').classList.toggle('active-dropdown')
@@ -135,6 +131,16 @@
 
     menuItemProducts.addEventListener('click', function (e) {
         e.preventDefault();
+
+        const elements = document.querySelectorAll('[id^="menu-item-"]');
+
+        elements.forEach(element => {
+            if (element.id !== 'menu-item-' + productMenuId && element.classList.contains('current-menu-item')) {
+                element.classList.remove('current-menu-item');
+            }
+        });
+
+        menuItemProducts.classList.toggle('current-menu-item')
 
         document.getElementById('dropdown').classList.toggle('active-dropdown')
         document.getElementById('dropdown-menu').classList.toggle('active-dropdown-menu')
@@ -151,6 +157,7 @@
 
     dropdown.addEventListener('click', function (e) {
         if (e.target.className === 'dropdown-menu active-dropdown-menu') {
+            menuItemProducts.classList.remove('current-menu-item')
             closeProductModal();
         }
     });
