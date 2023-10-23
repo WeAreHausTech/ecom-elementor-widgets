@@ -152,6 +152,7 @@
     });
 
     const dropdown = document.getElementById('dropdown')
+    const searchElement = document.getElementById('search-widget')
 
     dropdown.addEventListener('click', function (e) {
         if (e.target.className === 'dropdown-menu active-dropdown-menu') {
@@ -159,6 +160,11 @@
             closeProductModal();
         }
     });
+
+    searchElement.addEventListener('click', function (e) {
+        closeProductModal();
+    });
+
 </script>
 
 <style>

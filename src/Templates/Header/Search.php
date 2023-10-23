@@ -1,4 +1,4 @@
-<div class="icon-wrapper">
+<div class="icon-wrapper" id="search-widget">
     <?php
     $widget_id = 'ecom_' . uniqid();
     $placeholder = $data['search_placeholder'];
