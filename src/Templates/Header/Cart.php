@@ -4,7 +4,7 @@
     echo '<div 
         id="' . $widgetId . '"
         class="ecom-components-root" 
-        data-vendure-token="' . get_option( 'haus_ecom_options' )['vendure-token'] .'"
+        data-vendure-token="' . $_ENV["VENDURE_TOKEN"] .'"
         data-widget-type="dropdown-cart"
         data-redirect-to="' . $data['cart_redirect_to'] . '"
         >

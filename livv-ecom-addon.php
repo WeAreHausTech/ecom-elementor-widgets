@@ -35,8 +35,6 @@ add_action('init', function () {
         return;
     }
 
-    require_once HAUS_ECOM_PLUGIN_PATH . '/src/Settings/EcomWidgetsAddonSettings.php';
-
     // Register category
     \Elementor\Plugin::instance()
         ->elements_manager
