@@ -152,9 +152,7 @@
     });
 
     const dropdown = document.getElementById('dropdown')
-    const searchEvent = document.getElementById('search-widget')
-
-    console.log(searchEvent);
+    const searchElement = document.getElementById('search-widget')
 
     dropdown.addEventListener('click', function (e) {
         if (e.target.className === 'dropdown-menu active-dropdown-menu') {
@@ -163,7 +161,7 @@
         }
     });
 
-    searchEvent.addEventListener('click', function (e) {
+    searchElement.addEventListener('click', function (e) {
         closeProductModal();
     });
 
