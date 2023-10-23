@@ -10,15 +10,15 @@ import {
   OrderConfirmation,
   ProductDetail,
   ProductList,
-  DropdownCart, 
+  DropdownCart,
   VendureApolloProvider,
   SearchField,
 } from '@haus-tech/ecom-components'
 
 import './index.scss'
 import { get } from 'lodash'
-import { FacetValueFilterInput } from '@haus-tech/ecom-components/dist/gql/graphql'
 import styles from '@haus-tech/ecom-components/dist/ecom-main.css'
+import { FacetValueFilterInput } from '@haus-tech/ecom-components/dist/gql/graphql'
 
 async function fetchCSSContent() {
   const response = await fetch(styles)
@@ -33,9 +33,14 @@ const renderElement = async (element: Element, children: ReactNode) => {
   styleEl.textContent = css
   shadowRoot.appendChild(styleEl)
 
+  const vendureToken = element.attributes.getNamedItem('data-vendure-token')?.value
+
   return ReactDOM.createRoot(shadowRoot).render(
     <React.StrictMode>
-      <VendureApolloProvider apiUrl="https://livv-ecom-test.azurewebsites.net/shop-api">
+      <VendureApolloProvider
+        apiUrl="https://livv-ecom-test.azurewebsites.net/shop-api"
+        vendureToken={vendureToken}
+      >
         <Suspense>{children}</Suspense>
       </VendureApolloProvider>
     </React.StrictMode>,
@@ -44,7 +49,7 @@ const renderElement = async (element: Element, children: ReactNode) => {
 
 document.addEventListener(
   'DOMContentLoaded',
-  function () {
+  async function () {
     const elements: Element[] = Array.from(document.getElementsByClassName('ecom-components-root'))
     elements.forEach((element: Element) => {
       const dataAttributes = element.attributes
@@ -106,11 +111,11 @@ document.addEventListener(
 
           renderElement(
             element,
-            <SearchField 
-              openOnButton={true} 
-              autofocus={true} 
-              searchUrl={redirect} 
-              placeholder={placeholder} 
+            <SearchField
+              openOnButton={true}
+              autofocus={true}
+              searchUrl={redirect}
+              placeholder={placeholder}
             />,
           )
           break
@@ -124,9 +129,9 @@ document.addEventListener(
           break
 
         case 'dropdown-cart':
-          const cartUrl = dataAttributes.getNamedItem('data-redirect-to')?.value;
+          const cartUrl = dataAttributes.getNamedItem('data-redirect-to')?.value
 
-          renderElement(element, <DropdownCart dropdownEnabled={false} cartUrl={cartUrl}/>)
+          renderElement(element, <DropdownCart dropdownEnabled={false} cartUrl={cartUrl} />)
           break
       }
     })
