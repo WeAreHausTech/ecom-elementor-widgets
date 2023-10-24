@@ -33,9 +33,14 @@ const renderElement = async (element: Element, children: ReactNode) => {
   styleEl.textContent = css
   shadowRoot.appendChild(styleEl)
 
+  const vendureToken = element.attributes.getNamedItem('data-vendure-token')?.value
+
   return ReactDOM.createRoot(shadowRoot).render(
     <React.StrictMode>
-      <VendureApolloProvider apiUrl="https://livv-ecom-test.azurewebsites.net/shop-api">
+      <VendureApolloProvider
+        apiUrl="https://livv-ecom-test.azurewebsites.net/shop-api"
+        vendureToken={vendureToken}
+      >
         <Suspense>{children}</Suspense>
       </VendureApolloProvider>
     </React.StrictMode>,
@@ -44,7 +49,7 @@ const renderElement = async (element: Element, children: ReactNode) => {
 
 document.addEventListener(
   'DOMContentLoaded',
-  function () {
+  async function () {
     const elements: Element[] = Array.from(document.getElementsByClassName('ecom-components-root'))
     elements.forEach((element: Element) => {
       const dataAttributes = element.attributes

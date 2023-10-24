@@ -42,7 +42,7 @@ class CurrencyChooser extends Widget_Base
             return;
         }
         $widget_id = 'ecom_' . $this->get_id();
-        echo '<div id="' . $widget_id . '" class="ecom-components-root" data-widget-type="currency-chooser"></div>';
+        echo '<div id="' . $widget_id . '" data-vendure-token="' . $_ENV["VENDURE_TOKEN"] .'" class="ecom-components-root" data-widget-type="currency-chooser"></div>';
         ?>
 
         <?php
