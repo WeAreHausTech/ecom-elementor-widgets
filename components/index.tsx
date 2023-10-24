@@ -17,8 +17,8 @@ import {
 
 import './index.scss'
 import { get } from 'lodash'
+import styles from '@haus-tech/ecom-components/dist/ecom-style.css'
 import { FacetValueFilterInput } from '@haus-tech/ecom-components/vendure'
-import styles from '@haus-tech/ecom-components/dist/ecom-main.css'
 
 async function fetchCSSContent() {
   const response = await fetch(styles)

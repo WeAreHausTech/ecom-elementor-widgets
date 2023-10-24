@@ -1,7 +1,7 @@
 {
   "extends": "@parcel/config-default",
   "transformers": {
-    "ecom-main.css": [
+    "ecom-*.css": [
       "@parcel/transformer-raw"
     ]
   }
