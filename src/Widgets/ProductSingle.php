@@ -44,7 +44,7 @@ class ProductSingle extends Widget_Base
         }
         
         $widget_id = 'ecom_' . $this->get_id();
-        echo '<div id="' . $widget_id . '" class="ecom-components-root" data-widget-type="product-detail" data-product="' . $vendureId . '"></div>';
+        echo '<div id="' . $widget_id . '" data-vendure-token="' . $_ENV["VENDURE_TOKEN"] .'" data-vendure-api-url="' . $_ENV["VENDURE_API_URL"] .'" class="ecom-components-root" data-widget-type="product-detail" data-product="' . $vendureId . '"></div>';
         ?>
         <?php
     }
