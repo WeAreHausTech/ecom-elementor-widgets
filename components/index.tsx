@@ -10,14 +10,14 @@ import {
   OrderConfirmation,
   ProductDetail,
   ProductList,
-  DropdownCart, 
+  DropdownCart,
   VendureApolloProvider,
   SearchField,
 } from '@haus-tech/ecom-components'
 
 import './index.scss'
 import { get } from 'lodash'
-import { FacetValueFilterInput } from '@haus-tech/ecom-components/dist/gql/graphql'
+import { FacetValueFilterInput } from '@haus-tech/ecom-components/vendure'
 import styles from '@haus-tech/ecom-components/dist/ecom-main.css'
 
 async function fetchCSSContent() {
@@ -106,11 +106,11 @@ document.addEventListener(
 
           renderElement(
             element,
-            <SearchField 
-              openOnButton={true} 
-              autofocus={true} 
-              searchUrl={redirect} 
-              placeholder={placeholder} 
+            <SearchField
+              openOnButton={true}
+              autofocus={true}
+              searchUrl={redirect}
+              placeholder={placeholder}
             />,
           )
           break
@@ -124,9 +124,9 @@ document.addEventListener(
           break
 
         case 'dropdown-cart':
-          const cartUrl = dataAttributes.getNamedItem('data-redirect-to')?.value;
+          const cartUrl = dataAttributes.getNamedItem('data-redirect-to')?.value
 
-          renderElement(element, <DropdownCart dropdownEnabled={false} cartUrl={cartUrl}/>)
+          renderElement(element, <DropdownCart dropdownEnabled={false} cartUrl={cartUrl} />)
           break
       }
     })
