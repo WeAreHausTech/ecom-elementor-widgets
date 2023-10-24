@@ -3,14 +3,13 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "main": "dist/index.js",
   "scripts": {
     "build-widgets": "rm -rf ./dist && rm -rf ./.parcel-cache && tsc && parcel build components/index.tsx --no-scope-hoist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@haus-tech/ecom-components": "^0.0.74",
+    "@haus-tech/ecom-components": "^0.0.76",
     "classnames": "^2.3.2",
     "lodash": "^4.17.21",
     "parcel": "^2.10.0",
@@ -37,5 +36,8 @@
     "postcss": "^8.4.29",
     "sass": "^1.66.1",
     "typescript": "^5.0.2"
+  },
+  "@parcel/resolver-default": {
+    "packageExports": false
   }
 }
