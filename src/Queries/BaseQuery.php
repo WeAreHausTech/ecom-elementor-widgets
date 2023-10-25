@@ -14,14 +14,14 @@ class BaseQuery
     {
         try {
             $response = (new Client([
-            'base_uri' => HAUS_ECOM_VENDURE_API_URL,
-            'headers' => [
-                'Content-Type' => 'application/json',
+                'base_uri' => $_ENV["VENDURE_API_URL"],
+                'headers' => [
+                    'Content-Type' => 'application/json',
                 ],
-            'body' => json_encode([
+                'body' => json_encode([
                     'query' => $this->query,
                 ]),
-            ]))->request('POST', 'shop-api');
+            ]))->request('POST', '');
 
             $statusCode = $response->getStatusCode();
             $responseBody = $response->getBody()->getContents();
