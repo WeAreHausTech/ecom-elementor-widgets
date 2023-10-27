@@ -102,7 +102,20 @@ document.addEventListener(
           break
 
         case 'cart':
-          renderElement(element, <Cart />)
+
+          const cartPriceProps = {
+            subTotal: dataAttributes.getNamedItem('data-show-subtotal')?.value === "yes" ? true : false,
+            tax: dataAttributes.getNamedItem('data-show-tax')?.value  === "yes"  ? true : false,
+            shipping: dataAttributes.getNamedItem('data-show-shipping')?.value === "yes"  ? true : false,
+            total: dataAttributes.getNamedItem('data-show-total')?.value  === "yes"  ? true : false,
+            customMessage: dataAttributes.getNamedItem('data-custom-message')?.value,
+          }
+
+          console.log(cartPriceProps);
+
+          //TODO add CartPriceProps={cartPriceProps} to Cart and remove console.log (build errors if I do it now)
+
+          renderElement(element, <Cart/>)
           break
 
         case 'search-field':
