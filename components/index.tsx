@@ -39,7 +39,7 @@ const renderElement = async (element: Element, children: ReactNode) => {
   return ReactDOM.createRoot(shadowRoot).render(
     <React.StrictMode>
       <VendureApolloProvider
-        apiUrl={vendureUrl || 'https://livv-ecom-test.azurewebsites.net/shop-api'}
+        apiUrl={vendureUrl ? vendureUrl : ''}
         vendureToken={vendureToken}
       >
         <Suspense>{children}</Suspense>

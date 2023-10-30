@@ -187,8 +187,8 @@ class ProductList extends Widget_Base
         <div
             id="<?= $widgetId ?>"
             class="ecom-components-root"
-            data-vendure-api-url="<?= $_ENV["VENDURE_API_URL"] ?>"
-            data-vendure-token="<?= $_ENV["VENDURE_TOKEN"] ?>"
+            data-vendure-api-url="<?= VENDURE_API_URL ?>" 
+            data-vendure-token="<?= VENDURE_TOKEN ?>"
             data-widget-type="product-list"
             data-facet="<?= implode(", ", $facets) ?>"
             data-collection="<?= $taxonomy ?>"

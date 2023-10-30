@@ -6,8 +6,8 @@
     echo '<div 
         id="' . $widget_id . '" 
         class="ecom-components-root" 
-        data-vendure-token="' . $_ENV["VENDURE_TOKEN"] .'"
-        data-vendure-api-url="' . $_ENV["VENDURE_API_URL"] .'"
+        data-vendure-token="' . VENDURE_TOKEN .'"
+        data-vendure-api-url="' . VENDURE_API_URL .'"
         data-widget-type="search-field"
         data-redirect-to="' . $data['search_redirect'] . '"
         data-placeholder="' . $data['search_placeholder'] . '"

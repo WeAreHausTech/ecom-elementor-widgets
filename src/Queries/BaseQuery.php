@@ -14,7 +14,7 @@ class BaseQuery
     {
         try {
             $response = (new Client([
-                'base_uri' => $_ENV["VENDURE_API_URL"],
+                'base_uri' => VENDURE_API_URL,
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ],
