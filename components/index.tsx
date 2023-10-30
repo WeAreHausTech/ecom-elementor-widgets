@@ -93,6 +93,17 @@ document.addEventListener(
           break
 
         case 'checkout':
+          const cartPricePropsCheckout = {
+            subTotal: dataAttributes.getNamedItem('data-show-subtotal')?.value === "yes" ? true : false,
+            tax: dataAttributes.getNamedItem('data-show-tax')?.value  === "yes"  ? true : false,
+            shipping: dataAttributes.getNamedItem('data-show-shipping')?.value === "yes"  ? true : false,
+            total: dataAttributes.getNamedItem('data-show-total')?.value  === "yes"  ? true : false,
+            customMessage: dataAttributes.getNamedItem('data-custom-message')?.value,
+          }
+          console.log(cartPricePropsCheckout)
+
+            //TODO add CartPriceProps={cartPriceProps} to checkout and remove console.log (build errors if I do it now)
+
           renderElement(element, <Checkout />)
           break
 
@@ -103,7 +114,7 @@ document.addEventListener(
 
         case 'cart':
 
-          const cartPriceProps = {
+          const cartPricePropsCart = {
             subTotal: dataAttributes.getNamedItem('data-show-subtotal')?.value === "yes" ? true : false,
             tax: dataAttributes.getNamedItem('data-show-tax')?.value  === "yes"  ? true : false,
             shipping: dataAttributes.getNamedItem('data-show-shipping')?.value === "yes"  ? true : false,
@@ -111,9 +122,9 @@ document.addEventListener(
             customMessage: dataAttributes.getNamedItem('data-custom-message')?.value,
           }
 
-          console.log(cartPriceProps);
+          console.log(cartPricePropsCart);
 
-          //TODO add CartPriceProps={cartPriceProps} to Cart and remove console.log (build errors if I do it now)
+          //TODO add CartPriceProps={cartPricePropsCart} to Cart and remove console.log (build errors if I do it now)
 
           renderElement(element, <Cart/>)
           break
