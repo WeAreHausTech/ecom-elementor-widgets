@@ -6,9 +6,30 @@ class Products
     public $created = 0;
     public $updated = 0;
     public $deleted = 0;
-    public function getAllProductsFromVendure()
+    public function getAllProductsFromVendure($defaultLang, $avalibleTranslations)
     {
-        $products = (new \Haus\Queries\Product)->get();
+        $p = $this->getVendureDefaultLang($defaultLang);
+        $translations = [];
+
+        foreach ($avalibleTranslations as $lang) {
+            $translations[$lang] = $this->getVendureDefaultLang($lang);
+        }
+
+        foreach ($translations as $lang => $translation) {
+            foreach ($translation as $key => $value) {
+                $p[$key][$lang] = [
+                    'productName' => $value['productName'],
+                    'slug' => $value['slug'],
+                ];
+            }
+        }
+
+        return $p;
+    }
+
+    public function getVendureDefaultLang($lang)
+    {
+        $products = (new \Haus\Queries\Product)->get($lang);
 
         if (!isset($products['data']['search']['items'])) {
             return [];
@@ -19,7 +40,37 @@ class Products
         return array_combine(array_column($items, 'productId'), $items);
     }
 
-    public function getAllProductsFromWp()
+    public function getAllProductsFromWp($avalibleTranslations)
+    {
+        $p = $this->getDefaultLang();
+
+        foreach ($avalibleTranslations as $lang) {
+            foreach ($p as $key => $value) {
+                $p[$key][$lang] = $this->getTranslations($value['id'], $lang);
+            }
+        }
+
+        return $p;
+    }
+
+    public function getTranslations($postId, $lang)
+    {
+
+        $translated_post_id = apply_filters('wpml_object_id', $postId, 'post', true, $lang);
+        $translated_post = get_post($translated_post_id);
+
+        $data = [];
+
+        if ($translated_post) {
+            $data = array(
+                'post_title' => $translated_post->post_title,
+                'post_name' => $translated_post->post_name,
+            );
+        }
+        return $data;
+    }
+
+    public function getDefaultLang()
     {
         global $wpdb;
 
@@ -32,12 +83,10 @@ class Products
             LEFT JOIN {$wpdb->prefix}postmeta pm2
                 ON p.ID = pm2.post_id
                 AND pm2.meta_key = 'exclude_from_sync'
-             WHERE post_type ='produkter'"
+                WHERE post_type ='produkter'",
         );
 
         $products = $wpdb->get_results($query, ARRAY_A);
-
-        // Change array key to vendure_id from $wpProducts
         return array_combine(array_column($products, 'vendure_id'), $products);
     }
     public function syncProductsData($vendureProducts, $wpProducts)

@@ -16,6 +16,9 @@ class SyncProductData extends WP_CLI_Command
         $taxonomiesInstance = new Taxonomies();
         $prooductsInstance = new Products();
 
+        $avalibleTranslations = ['en'];
+        $defaultLang = 'sv';
+
         $facets = (new \Haus\Queries\Facet)->get();
 
         if (!isset($facets['data']['facets']['items'])) {
@@ -25,13 +28,15 @@ class SyncProductData extends WP_CLI_Command
         // sync taxonomies
         $taxonomiesInstance->syncTaxonomies($facets);
 
-        $vendureProducts = $prooductsInstance->getAllProductsFromVendure();
+        $vendureProducts= [];
+
+        $vendureProducts = $prooductsInstance->getAllProductsFromVendure($defaultLang, $avalibleTranslations);  
 
         if (!isset($vendureProducts)) {
             WP_CLI::error('No products found in vendure');
         }
 
-        $wpProducts = $prooductsInstance->getAllProductsFromWp();
+        $wpProducts = $prooductsInstance->getAllProductsFromWp($avalibleTranslations);
 
         // sync products
         $prooductsInstance->syncProductsData($vendureProducts, $wpProducts);
