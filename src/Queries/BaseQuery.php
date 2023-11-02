@@ -10,13 +10,14 @@ class BaseQuery
 {
     protected $query = '';
 
-    function fetch($languageCode = 'se')
+    function fetch($languageCode = 'sv')
     {
         try {
             $response = (new Client([
-            'base_uri' => HAUS_ECOM_VENDURE_API_URL .'/shop-api?languageCode=' . $languageCode,
+            'base_uri' => HAUS_ECOM_VENDURE_API_URL .'shop-api?languageCode=' . $languageCode,
             'headers' => [
                 'Content-Type' => 'application/json',
+                'vendure-token'=> 'livv-3at76503kq',
                 ],
             'body' => json_encode([
                     'query' => $this->query,
