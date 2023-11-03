@@ -3,7 +3,7 @@ namespace Haus\Queries;
 
 class Collection extends BaseQuery
 {
-    public function get()
+    public function get($lang)
     {
         $this->query = <<<'GRAPHQL'
             query {
@@ -18,6 +18,6 @@ class Collection extends BaseQuery
             }
         GRAPHQL;
 
-        return $this->fetch();
+        return $this->fetch($lang);
     }
 }

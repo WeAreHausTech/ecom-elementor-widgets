@@ -1,15 +1,27 @@
 <?php
 namespace Haus\SyncData\Classes;
 
+use Haus\SyncData\Classes\WpmlHelper;
+
 class Products
 {
     public $created = 0;
     public $updated = 0;
     public $deleted = 0;
 
-    public $defaultLang = 'sv';
-    public function getAllProductsFromVendure($avalibleTranslations)
+    public $defaultLang = '';
+
+
+    public function __construct()
     {
+        $wpmlHelper = new WpmlHelper();
+        $wpmlHelper->getDefaultLanguage();
+        $this->defaultLang = $wpmlHelper->getDefaultLanguage();
+    }
+    public function getAllProductsFromVendure()
+    {
+        $wpmlHelper = new WpmlHelper();
+        $avalibleTranslations = $wpmlHelper->getAvalibleTranslations();
 
         $products = $this->getVendureDefaultLang($this->defaultLang);
         $translations = [];
@@ -65,9 +77,11 @@ class Products
         return array_combine(array_column($unique, 'productId'), $unique);
     }
 
-    public function getAllProductsFromWp($avalibleTranslations)
+    public function getAllProductsFromWp()
     {
         $p = $this->getDefaultLang();
+        $wpmlHelper = new WpmlHelper();
+        $avalibleTranslations = $wpmlHelper->getAvalibleTranslations();
 
         foreach ($avalibleTranslations as $lang) {
             foreach ($p as $key => $value) {
@@ -136,7 +150,6 @@ class Products
     {
         //Exists in WP, not in Vendure
         $delete = array_diff_key($wpProducts, $vendureProducts);
-        
 
         array_walk($delete, function ($product) {
 
@@ -146,8 +159,8 @@ class Products
             }
 
             $this->deleteProduct($product['id']);
-            
-            forEach($product['translations'] as $lang => $translation) {
+
+            foreach ($product['translations'] as $lang => $translation) {
                 if ($translation['id']) {
                     $this->deleteProduct($translation['id']);
                 }
@@ -170,51 +183,33 @@ class Products
 
     }
 
-    public function createProduct($product)
-    {
-        $orignal = wp_insert_post([
-            'post_title' => $product['productName'],
+    public function insertPost($ProductName, $slug, $vendureId){
+
+        $post = wp_insert_post([
+            'post_title' => $ProductName,
             'post_status' => 'publish',
             'post_type' => 'produkter',
-            'post_name' => $product['slug'],
+            'post_name' => $slug,
             'meta_input' => [
-                'vendure_id' => $product['productId'],
+                'vendure_id' => $vendureId,
             ]
         ]);
 
-        foreach ($product['translations'] as $lang => $translation) {
-            $translations[$lang] = wp_insert_post([
-                'post_title' => $translation['productName'],
-                'post_status' => 'publish',
-                'post_type' => 'produkter',
-                'post_name' => $translation['slug'],
-                'meta_input' => [
-                    'vendure_id' => $product['productId'],
-                ]
-            ]);
-        }
+        return $post;
 
-        $this->setLanguageDetails($orignal, $translations);
-
-        $this->created++;
     }
 
-    public function setLanguageDetails($orignal, $translations)
+    public function createProduct($product)
     {
-        $wpmlElementType = apply_filters('wpmlElementType', 'post_produkter');
-        $getLanguageArgs = array('element_id' => $orignal, 'element_type' => 'post_produkter');
-        $goriginalPostLanguageInfo = apply_filters('wpml_element_language_details', null, $getLanguageArgs);
+        $orignal = $this->insertPost($product['productName'], $product['slug'], $product['productId']);
 
-        foreach ($translations as $lang => $translation) {
-            $setLanguageArgs = array(
-                'element_id' => $translation,
-                'element_type' => $wpmlElementType,
-                'trid' => $goriginalPostLanguageInfo->trid,
-                'language_code' => $lang,
-                'source_language_code' => $goriginalPostLanguageInfo->language_code
-            );
-            do_action('wpml_set_element_language_details', $setLanguageArgs);
+        foreach ($product['translations'] as $lang => $translation) {
+            $translations[$lang] = $this->insertPost($translation['productName'], $translation['slug'], $product['productId']);
         }
+
+        $wpmlHelper = new WpmlHelper();
+        $wpmlHelper->setLanguageDetails($orignal, $translations, 'post_produkter');
+        $this->created++;
     }
 
     public function deleteProduct($postId)
@@ -253,17 +248,9 @@ class Products
 
     public function createTranslatedPost($vendureProduct, $originalId, $lang)
     {
-        $newPost[$lang] = wp_insert_post([
-            'post_title' => $vendureProduct['translations'][$lang]['productName'],
-            'post_status' => 'publish',
-            'post_type' => 'produkter',
-            'post_name' => $vendureProduct['translations'][$lang]['slug'],
-            'meta_input' => [
-                'vendure_id' => $vendureProduct['productId'],
-            ]
-        ]);
-
-        $this->setLanguageDetails($originalId['id'], $newPost);
+        $newPost[$lang] = $this->insertPost($vendureProduct['translations'][$lang]['productName'], $vendureProduct['translations'][$lang]['slug'], $vendureProduct['productId']);
+        $wpmlHelper = new WpmlHelper();
+        $wpmlHelper->setLanguageDetails($originalId['id'], $newPost, 'post_produkter');
         $this->created++;
 
     }

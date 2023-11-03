@@ -8,6 +8,7 @@
 use Haus\SyncData\Classes\Products;
 use Haus\SyncData\Classes\Taxonomies;
 use Haus\SyncData\Classes\Relations;
+use Haus\SyncData\Classes\WpmlHelper;
 
 class SyncProductData extends WP_CLI_Command
 {
@@ -15,11 +16,8 @@ class SyncProductData extends WP_CLI_Command
     public function sync()
     {
         $taxonomiesInstance = new Taxonomies();
-        $prooductsInstance = new Products();
-
-        $avalibleTranslations = $this->getAvalibleTranslations();
-
-        // $defaultLanguage = apply_filters('wpml_default_language', null);
+        $productsInstance = new Products();
+        $wpmlHelper = new WpmlHelper();
 
         // $facets = (new \Haus\Queries\Facet)->get();
 
@@ -28,28 +26,28 @@ class SyncProductData extends WP_CLI_Command
         // }
 
         // sync taxonomies
-        // $taxonomiesInstance->syncTaxonomies($facets);
+        $taxonomiesInstance->syncTaxonomies();
 
-        $vendureProducts = $prooductsInstance->getAllProductsFromVendure($avalibleTranslations);
+        $vendureProducts = $productsInstance->getAllProductsFromVendure();
 
 
         if (!isset($vendureProducts)) {
             WP_CLI::error('No products found in vendure');
         }
 
-        $wpProducts = $prooductsInstance->getAllProductsFromWp($avalibleTranslations);
+        $wpProducts = $productsInstance->getAllProductsFromWp();
 
         // sync products
-        $prooductsInstance->syncProductsData($vendureProducts, $wpProducts);
+        $productsInstance->syncProductsData($vendureProducts, $wpProducts);
 
         // // add taxonomies to products
         // (new Relations)->syncRelationships($vendureProducts);
 
         $productsSummary = sprintf(
             'Products: Created: %d Updated: %d Deleted: %d',
-            $prooductsInstance->created,
-            $prooductsInstance->updated,
-            $prooductsInstance->deleted
+            $productsInstance->created,
+            $productsInstance->updated,
+            $productsInstance->deleted
         );
 
         $taxonomiesSummary = sprintf(
@@ -61,21 +59,6 @@ class SyncProductData extends WP_CLI_Command
 
 
         WP_CLI::success("\n" . $productsSummary . "\n" . $taxonomiesSummary);
-    }
-
-    public function getAvalibleTranslations()
-    {
-        $wpmlLanguages = apply_filters('wpml_active_languages', null, 'skip_missing=0');
-
-        if (!isset($wpmlLanguages)) {
-           return [];
-        }
-
-        foreach ($wpmlLanguages as $lang) {
-            $avalibleTranslations[] = $lang['code'];
-        }
-
-        return $avalibleTranslations;
     }
 }
 

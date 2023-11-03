@@ -3,7 +3,7 @@ namespace Haus\Queries;
 
 class Facet extends BaseQuery
 {
-    public function get()
+    public function get($lang)
     {
         $this->query = <<<'GRAPHQL'
             query {
@@ -21,6 +21,6 @@ class Facet extends BaseQuery
             }
         GRAPHQL;
 
-        return $this->fetch();
+        return $this->fetch($lang);
     }
 }
