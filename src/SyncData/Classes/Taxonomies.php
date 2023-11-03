@@ -13,7 +13,7 @@ class Taxonomies
     private $taxonomies = [
         'brand' => [
             'wp' => 'produkter-varumarken',
-            'vendure' => 'brand'
+            'vendure' => 'brand',
         ],
         'department' => [
             'wp' => 'produkter-avdelningar',
@@ -34,42 +34,27 @@ class Taxonomies
 
     public function syncTaxonomies()
     {
-        $facets = [];
+
+        $facets = $this->getfacets();
+
         foreach ($this->taxonomies as $taxonomyType => $taxonomyInfo) {
 
             if ($taxonomyType === 'collection') {
                 $vendureValues = $this->getCollectionsFromVendure();
                 $wpTerms = $this->getAllCollectionsFromWp($taxonomyInfo['wp']);
-                $this->syncAttributes($taxonomyInfo['wp'], $vendureValues, $wpTerms);
+
+            } else {
+                $vendureValues = $facets[$taxonomyInfo['vendure']];
+                $wpTerms = $this->getAllTermsFromWp($taxonomyInfo['wp']);
+
             }
-            // switch ($taxonomyType) {
-            //     case 'collection':
-            //         $vendureValues = $this->getCollectionsFromVendure($avalibleTranslations);
-            //         $wpTerms = $this->getAllCollectionsFromWp($taxonomyInfo['wp'], $avalibleTranslations);
-            //         break;
-            //     default:
-            //         // $vendureValues = $this->getFacetsFromvendureByType($facets, $taxonomyInfo['vendure']);
-            //         // $wpTerms = $this->getAllTermsFromWp($taxonomyInfo['wp']);
-            //         break;
-            // }
 
-            // $this->syncAttributes($taxonomyInfo['wp'], $vendureValues, $wpTerms);
-        }
-    }
-
-    public function getFacetsFromvendureByType($facets, $facetType)
-    {
-        $values = $facets['data']['facets']['items'];
-        $matchingValues = null;
-
-        foreach ($values as $value) {
-            if ($value['name'] === $facetType) {
-                $matchingValues = $value;
-                break;
-            }
+            //TODO fix for facets
+            die();
+            $this->syncAttributes($taxonomyInfo['wp'], $vendureValues, $wpTerms);
         }
 
-        return array_combine(array_column($matchingValues['values'], 'id'), $matchingValues['values']);
+        die();
     }
 
     public function getCollectionsFromVendure()
@@ -97,6 +82,53 @@ class Taxonomies
 
         return $collections;
     }
+
+    public function getfacets()
+    {
+        $wpmlHelper = new WpmlHelper();
+        $avalibleTranslations = $wpmlHelper->getAvalibleTranslations();
+        $translations = [];
+        $facets = $this->getFacetsFromVendure($this->defaultLang);
+
+
+        foreach ($avalibleTranslations as $lang) {
+            if ($lang === $this->defaultLang) {
+                continue;
+            }
+            $translations[$lang] = $this->getFacetsFromVendure($lang);
+        }
+
+        foreach ($translations as $lang => $translation) {
+            foreach ($translation as $key => $facet) {
+                foreach ($facet as $facetValues) {
+                    $facets[$key][$facetValues['id']]['translations'][$lang] = [
+                        "name" => $facetValues['name'],
+                    ];
+                }
+            }
+        }
+
+        return $facets;
+    }
+
+    public function getFacetsFromVendure($lang)
+    {
+        $facets = (new \Haus\Queries\Facet)->get($lang);
+
+        if (!isset($facets['data']['facets']['items'])) {
+            return [];
+        }
+
+        $items = $facets['data']['facets']['items'];
+        $sorted = [];
+
+        foreach ($items as $facetType) {
+            $sorted[$facetType['name']] = array_combine(array_column($facetType['values'], 'id'), $facetType['values']);
+        }
+
+        return $sorted;
+    }
+
 
     public function getVendureCollectionData($lang)
     {
@@ -171,24 +203,47 @@ class Taxonomies
 
         $terms = $wpdb->prefix . 'terms';
         $termmeta = $wpdb->prefix . 'termmeta';
+        $wpFacets = [];
 
         $query = $wpdb->prepare(
-            "SELECT tt.term_id, tt.parent, t.name, t.slug, tm.meta_value as vendure_term_id
-             FROM wp_term_taxonomy tt 
-             LEFT JOIN $terms t ON tt.term_id = t.term_id 
-             LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
-             AND tm.meta_key = 'vendure_term_id'
-             LEFT JOIN {$wpdb->prefix}icl_translations t2
-                ON t.term_id = t2.element_id
-                AND t2.element_type = 'tax_produkter_kategorier'
-                AND t2.language_code IS NOT NULL
-             WHERE taxonomy = %s",
+            "SELECT tt.term_id, t.name, tm.meta_value as vendure_term_id, tr.language_code as lang
+            FROM wp_term_taxonomy tt 
+            LEFT JOIN $terms t ON tt.term_id = t.term_id 
+            LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
+                AND tm.meta_key = 'vendure_term_id'
+            LEFT JOIN {$wpdb->prefix}icl_translations tr 
+                ON tt.term_taxonomy_id = tr.element_id
+                AND tr.element_type = 'tax_{$taxonomy}'
+                WHERE tr.language_code IS NOT NULL
+            AND tm.meta_value IS NOT NULL
+            AND taxonomy = %s",
             $taxonomy
         );
 
         $terms = $wpdb->get_results($query, ARRAY_A);
 
-        return array_combine(array_column($terms, 'vendure_term_id'), $terms);
+        foreach ($terms as $term) {
+            $vendureFacetId = $term['vendure_term_id'];
+            $lang = $term['lang'];
+
+            if (!isset($wpCollections[$vendureFacetId]) && $lang === $this->defaultLang) {
+                $wpFacets[$vendureFacetId] = array(
+                    "term_id" => $term["term_id"],
+                    "name" => $term["name"],
+                    "vendure_term_id" => $term["vendure_term_id"],
+                    "lang" => $this->defaultLang,
+                );
+            }
+            ;
+
+            if ($lang && $lang !== $this->defaultLang) {
+                $wpFacets[$vendureFacetId]['translations'][$lang] = array(
+                    "name" => $term["name"],
+                );
+            }
+        }
+
+        return $wpFacets;
     }
 
     public function syncAttributes($taxonomy, $vendureTerms, $wpTerms)
