@@ -10,7 +10,7 @@ class WpmlHelper
         $wpmlLanguages = apply_filters('wpml_active_languages', null, 'skip_missing=0');
 
         if (!isset($wpmlLanguages)) {
-           return [];
+            return [];
         }
 
         foreach ($wpmlLanguages as $lang) {
@@ -20,7 +20,8 @@ class WpmlHelper
         return $avalibleTranslations;
     }
 
-    public function getDefaultLanguage(){
+    public function getDefaultLanguage()
+    {
         return apply_filters('wpml_default_language', null);
     }
 
@@ -54,6 +55,7 @@ class WpmlHelper
             );
 
             do_action('wpml_set_element_language_details', $setLanguageArgs);
+
         }
     }
 
