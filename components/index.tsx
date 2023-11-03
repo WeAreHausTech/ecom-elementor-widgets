@@ -97,7 +97,18 @@ document.addEventListener(
           break
 
         case 'checkout':
-          renderElement(element, <Checkout />)
+
+        const checkoutMessage =  dataAttributes.getNamedItem('data-custom-message')?.value
+        
+          const cartPricePropsCheckout = {
+            subTotal: dataAttributes.getNamedItem('data-show-subtotal')?.value === "yes" ? true : false,
+            tax: dataAttributes.getNamedItem('data-show-tax')?.value  === "yes"  ? true : false,
+            shipping: dataAttributes.getNamedItem('data-show-shipping')?.value === "yes"  ? true : false,
+            total: dataAttributes.getNamedItem('data-show-total')?.value  === "yes"  ? true : false,
+            customMessage: checkoutMessage ? checkoutMessage : ''
+          }
+
+          renderElement(element, <Checkout  CartPriceProps={cartPricePropsCheckout} />)
           break
 
         case 'product-detail':
@@ -106,7 +117,16 @@ document.addEventListener(
           break
 
         case 'cart':
-          renderElement(element, <Cart />)
+          const cartMessage =  dataAttributes.getNamedItem('data-custom-message')?.value
+          const cartPricePropsCart = {
+            subTotal: dataAttributes.getNamedItem('data-show-subtotal')?.value === "yes" ? true : false,
+            tax: dataAttributes.getNamedItem('data-show-tax')?.value  === "yes"  ? true : false,
+            shipping: dataAttributes.getNamedItem('data-show-shipping')?.value === "yes"  ? true : false,
+            total: dataAttributes.getNamedItem('data-show-total')?.value  === "yes"  ? true : false,
+            customMessage: cartMessage ? cartMessage : '',
+          }
+
+          renderElement(element, <Cart CartPriceProps={cartPricePropsCart}/>)
           break
 
         case 'search-field':
