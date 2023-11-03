@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable no-case-declarations */
-import React, { ReactNode, Suspense } from 'react'
+import React, { ReactNode } from 'react'
 import ReactDOM from 'react-dom/client'
 import {
   Cart,
@@ -13,12 +13,15 @@ import {
   DropdownCart,
   VendureApolloProvider,
   SearchField,
+  LocalizationProvider,
 } from '@haus-tech/ecom-components'
 
 import './index.scss'
 import { get } from 'lodash'
 import styles from '@haus-tech/ecom-components/dist/ecom-style.css'
 import { FacetValueFilterInput } from '@haus-tech/ecom-components/vendure'
+import localeSv from './locales/sv/translation.json'
+import localeEn from './locales/en/translation.json'
 
 async function fetchCSSContent() {
   const response = await fetch(styles)
@@ -42,7 +45,7 @@ const renderElement = async (element: Element, children: ReactNode) => {
         apiUrl={vendureUrl ? vendureUrl : ''}
         vendureToken={vendureToken}
       >
-        <Suspense>{children}</Suspense>
+        <LocalizationProvider resourceBundles={resourceBundles}>{children}</LocalizationProvider>
       </VendureApolloProvider>
     </React.StrictMode>,
   )
@@ -94,7 +97,18 @@ document.addEventListener(
           break
 
         case 'checkout':
-          renderElement(element, <Checkout />)
+
+        const checkoutMessage =  dataAttributes.getNamedItem('data-custom-message')?.value
+        
+          const cartPricePropsCheckout = {
+            subTotal: dataAttributes.getNamedItem('data-show-subtotal')?.value === "yes" ? true : false,
+            tax: dataAttributes.getNamedItem('data-show-tax')?.value  === "yes"  ? true : false,
+            shipping: dataAttributes.getNamedItem('data-show-shipping')?.value === "yes"  ? true : false,
+            total: dataAttributes.getNamedItem('data-show-total')?.value  === "yes"  ? true : false,
+            customMessage: checkoutMessage ? checkoutMessage : ''
+          }
+
+          renderElement(element, <Checkout  CartPriceProps={cartPricePropsCheckout} />)
           break
 
         case 'product-detail':
@@ -103,7 +117,16 @@ document.addEventListener(
           break
 
         case 'cart':
-          renderElement(element, <Cart />)
+          const cartMessage =  dataAttributes.getNamedItem('data-custom-message')?.value
+          const cartPricePropsCart = {
+            subTotal: dataAttributes.getNamedItem('data-show-subtotal')?.value === "yes" ? true : false,
+            tax: dataAttributes.getNamedItem('data-show-tax')?.value  === "yes"  ? true : false,
+            shipping: dataAttributes.getNamedItem('data-show-shipping')?.value === "yes"  ? true : false,
+            total: dataAttributes.getNamedItem('data-show-total')?.value  === "yes"  ? true : false,
+            customMessage: cartMessage ? cartMessage : '',
+          }
+
+          renderElement(element, <Cart CartPriceProps={cartPricePropsCart}/>)
           break
 
         case 'search-field':
@@ -139,3 +162,20 @@ document.addEventListener(
   },
   false,
 )
+
+const resourceBundles = [
+  {
+    lng: 'sv',
+    ns: 'translation',
+    resources: {
+      ...localeSv,
+    },
+  },
+  {
+    lng: 'en',
+    ns: 'translation',
+    resources: {
+      ...localeEn,
+    },
+  },
+]
