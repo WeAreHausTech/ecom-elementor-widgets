@@ -24,7 +24,7 @@
                     <?php if ($categories) { ?>
                         <?php foreach ($categories as $mainCategory) { ?>
                             <li class="parent">
-                                <a class="parent-link" href="produkter/kategorier/<?= $mainCategory['data']->slug ?>">
+                                <a class="parent-link" href="/produkter/kategorier/<?= $mainCategory['data']->slug ?>">
                                     <?= $mainCategory['data']->name ?>
                                 </a>
                                 <?php if (!empty($mainCategory['children'])) { ?>
@@ -70,9 +70,7 @@
                                         <?= $value->name ?>
                                     </a>
                                 </li>
-
                                 <?php if ($index === 8) { ?>
-
                                     <button class="see-more-button" id="see-more-<?= $taxonomy['class'] ?>"
                                         onClick="showMore(this)">
                                         <?= 'Visa alla (' . count($taxonomy['data']) . ')' ?>
@@ -83,7 +81,6 @@
                                                 fill="#3E4849" />
                                         </svg>
                                     </button>
-
                                 <?php } ?>
                             <?php } ?>
                         </ul>

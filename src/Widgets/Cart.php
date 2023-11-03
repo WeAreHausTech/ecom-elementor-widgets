@@ -48,13 +48,13 @@ class Cart extends Widget_Base
             $this->getTemplate();
             return;
         }
-        $widgetId = 'ecom_' . $this->get_id();
-        ?>
+        $widgetId = 'ecom_' . $this->get_id(); ?>
 
         <div 
             id="<?= $widgetId ?>"
             class="ecom-components-root" 
-            data-vendure-token="<?= $_ENV["VENDURE_TOKEN"] ?>"
+            data-vendure-token="<?= VENDURE_TOKEN ?>"
+            data-vendure-api-url="<?= VENDURE_API_URL ?>"
             data-show-subtotal="<?= $settings['show_subTotal']  ?>"
             data-show-tax="<?= $settings['show_tax']  ?>"
             data-show-shipping="<?=  $settings['show_shipping'] ?>"

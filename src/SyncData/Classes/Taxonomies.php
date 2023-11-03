@@ -24,7 +24,6 @@ class Taxonomies
 
     public function syncTaxonomies($facets)
     {
-
         foreach ($this->taxonomies as $taxonomyType => $taxonomyInfo) {
             switch ($taxonomyType) {
                 case 'collection':
@@ -51,6 +50,10 @@ class Taxonomies
                 $matchingValues = $value;
                 break;
             }
+        }
+
+        if ($matchingValues === null) {
+            return [];
         }
 
         return array_combine(array_column($matchingValues['values'], 'id'), $matchingValues['values']);
