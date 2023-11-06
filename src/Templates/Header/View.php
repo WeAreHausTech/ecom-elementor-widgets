@@ -18,6 +18,7 @@
         <div class="menu-links">
             <div class="icons">
                 <?php include('Search.php') ?>
+                <?php include('Login.php') ?>
                 <?php include('Cart.php') ?>
             </div>
             <div class="close-button">

@@ -69,6 +69,10 @@ add_action('init', function () {
     \Elementor\Plugin::instance()
         ->widgets_manager
         ->register(new \Haus\Widgets\OrderConfirmation());
+    
+    \Elementor\Plugin::instance()
+        ->widgets_manager
+        ->register(new \Haus\Widgets\Login());
 });
 
 
