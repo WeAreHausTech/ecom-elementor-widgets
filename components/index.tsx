@@ -37,12 +37,12 @@ const renderElement = async (element: Element, children: ReactNode) => {
   shadowRoot.appendChild(styleEl)
 
   const vendureToken = element.attributes.getNamedItem('data-vendure-token')?.value
-  // console.log('localeUrl', new URL('./locales/sv/translation.json', import.meta.url))
+  const vendureUrl = element.attributes.getNamedItem('data-vendure-api-url')?.value
 
   return ReactDOM.createRoot(shadowRoot).render(
     <React.StrictMode>
       <VendureApolloProvider
-        apiUrl="https://livv-ecom-test.azurewebsites.net/shop-api"
+        apiUrl={vendureUrl ? vendureUrl : ''}
         vendureToken={vendureToken}
       >
         <LocalizationProvider resourceBundles={resourceBundles}>{children}</LocalizationProvider>

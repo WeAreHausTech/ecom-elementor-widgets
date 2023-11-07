@@ -14,15 +14,15 @@ class BaseQuery
     {
         try {
             $response = (new Client([
-            'base_uri' => HAUS_ECOM_VENDURE_API_URL .'shop-api?languageCode=' . $languageCode,
+            'base_uri' => VENDURE_API_URL .'?languageCode=' . $languageCode,
             'headers' => [
                 'Content-Type' => 'application/json',
                 'vendure-token'=> 'livv-3at76503kq',
                 ],
-            'body' => json_encode([
+                'body' => json_encode([
                     'query' => $this->query,
                 ]),
-            ]))->request('POST');
+            ]))->request('POST', '');
 
             $statusCode = $response->getStatusCode();
             $responseBody = $response->getBody()->getContents();
