@@ -33,18 +33,36 @@ class Checkout extends Widget_Base
         return ['Ecommerce', 'checkout'];
     }
 
+    protected function register_controls()
+    {
+        (new \Haus\Controls\OrderLines)->getControlsForCartPrice($this);
+    }
+
     protected function render()
     {
         $url = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+        $settings = $this->get_settings_for_display();
 
         if (strpos($url, '&action=elementor') !== false) {
             $this->getTemplate();
             return;
         }
 
-        $widget_id = 'ecom_' . $this->get_id();
-        echo '<div id="' . $widget_id . '" data-vendure-token="' . $_ENV["VENDURE_TOKEN"] .'" class="ecom-components-root" data-widget-type="checkout"></div>';
+        $widgetId = 'ecom_' . $this->get_id();
+
         ?>
+
+        <div 
+            id="<?= $widgetId ?>"
+            class="ecom-components-root" 
+            data-vendure-token="<?= $_ENV["VENDURE_TOKEN"] ?>"
+            data-show-subtotal="<?= $settings['show_subTotal']  ?>"
+            data-show-tax="<?= $settings['show_tax']  ?>"
+            data-show-shipping="<?=  $settings['show_shipping'] ?>"
+            data-show-total="<?=  $settings['show_total'] ?>"
+            data-custom-message="<?= $settings['custom-message']?>"
+            data-widget-type="checkout">
+        </div>
         <?php
     }
 }
