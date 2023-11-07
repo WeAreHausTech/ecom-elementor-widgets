@@ -5,7 +5,7 @@ namespace Haus\Queries;
 
 class Product extends BaseQuery
 {
-    public function get($languageCode)
+    public function get($lang)
     {
 
         $this->query = <<<GRAPHQL
@@ -23,6 +23,6 @@ class Product extends BaseQuery
         }
         GRAPHQL;
 
-        return $this->fetch($languageCode);
+        return $this->fetch($lang);
     }
 }

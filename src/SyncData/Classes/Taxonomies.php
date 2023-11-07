@@ -36,25 +36,20 @@ class Taxonomies
     {
 
         $facets = $this->getfacets();
-
         foreach ($this->taxonomies as $taxonomyType => $taxonomyInfo) {
-
             if ($taxonomyType === 'collection') {
-                // $vendureValues = $this->getCollectionsFromVendure();
-                // $wpTerms = $this->getAllCollectionsFromWp($taxonomyInfo['wp']);
+                $this->deleteTermsWithMissingValues($taxonomyInfo['wp']);
+                $vendureValues = $this->getCollectionsFromVendure();
+                $wpTerms = $this->getAllCollectionsFromWp($taxonomyInfo['wp']);
+                $this->syncAttributes($taxonomyInfo['wp'], $vendureValues, $wpTerms);
                 continue;
-
             } else {
+                $this->deleteTermsWithMissingValues($taxonomyInfo['wp']);
                 $vendureValues = $facets[$taxonomyInfo['vendure']];
                 $wpTerms = $this->getAllTermsFromWp($taxonomyInfo['wp']);
                 $this->syncAttributes($taxonomyInfo['wp'], $vendureValues, $wpTerms);
-
             }
-
-
         }
-
-        die();
     }
 
     public function getCollectionsFromVendure()
@@ -71,15 +66,25 @@ class Taxonomies
             $translations[$lang] = $this->getVendureCollectionData($lang);
         }
 
-        foreach ($translations as $lang => $translation) {
-            foreach ($translation as $key => $value) {
-                $collections[$key]['translations'][$lang] = [
-                    "name" => $value['name'],
-                    "slug" => $value['slug'] . '-en',
-                ];
+
+        //TO remove when vendure bug is fixed
+        foreach ($collections as $coll) {
+            if (!$coll['name']){
+                $collections[$coll['id']]['name'] = 'Saknar namn ' . rand();
+                $collections[$coll['id']]['slug'] = 'saknar-namn-' . rand();
             }
         }
 
+        foreach ($translations as $lang => $translation) {
+            foreach ($translation as $key => $value) {
+
+                $collections[$key]['translations'][$lang] = [
+                       //TO remove custom name when vendure bug is fixed
+                    "name" => $value['name'] ? $value['name'] : 'Missing name ' . rand(),
+                    "slug" => $value['slug'] ? $value['slug'] . '-' . $lang : 'missing-name-' . rand() . '-' . $lang,
+                ];
+            }
+        }
         return $collections;
     }
 
@@ -128,19 +133,25 @@ class Taxonomies
         return $sorted;
     }
 
-
-    public function getVendureCollectionData($lang)
+    public function getVendureCollectionData($lang, $data = [], $skip = 0, $take = 100)
     {
-        $collections = (new \Haus\Queries\Collection)->get($lang);
+        $collections = (new \Haus\Queries\Collection)->get($lang, $skip, $take);
 
         if (!isset($collections['data']['collections']['items'])) {
             return [];
         }
 
         $items = $collections['data']['collections']['items'];
+        $totalItems = $collections['data']['collections']['totalItems'];
 
+        $data = array_merge($data, $items);
+        
+        if (count($data) === $totalItems) {
+            return array_combine(array_column($data, 'id'), $data);
+        } else {
+            return $this->getVendureCollectionData($lang, $data, $skip + 100, $take);
+        }
 
-        return array_combine(array_column($items, 'id'), $items);
     }
 
     public function getAllCollectionsFromWp($taxonomy)
@@ -197,6 +208,39 @@ class Taxonomies
         return $wpCollections;
     }
 
+    public function deleteTermsWithMissingValues($taxonomy)
+    {
+        // Delete taxonomies with no vendure id and taxonomies with no translation language
+        global $wpdb;
+        $terms = $wpdb->prefix . 'terms';
+
+        $vendureType = $taxonomy === 'produkter-kategorier' ? 'vendure_collection_id' : 'vendure_term_id';
+        $wpmlType = 'tax_' . $taxonomy;
+
+        $query = $wpdb->prepare(
+            "SELECT tt.term_id
+            FROM wp_term_taxonomy tt
+                WHERE taxonomy = %s
+                AND (
+                    tt.term_id NOT IN (SELECT term_id FROM {$wpdb->prefix}termmeta WHERE meta_key = %s)
+                    OR tt.term_id IN (SELECT term_id FROM {$wpdb->prefix}termmeta WHERE meta_key = %s AND (meta_value IS NULL OR meta_value = ''))
+                    OR tt.term_id IN (SELECT element_id FROM {$wpdb->prefix}icl_translations WHERE element_type = %s AND language_code = '')
+                )",
+            $taxonomy,
+            $vendureType,
+            $vendureType,
+            $wpmlType
+        );
+
+        $termsToDelete = $wpdb->get_results($query, ARRAY_A);
+
+        if (isset($termsToDelete) && count($termsToDelete) > 0) {
+            foreach ($termsToDelete as $term) {
+                $this->deleteTerm($term['term_id'], $taxonomy);
+            }
+        }
+    }
+
     public function getAllTermsFromWp($taxonomy)
     {
         global $wpdb;
@@ -216,7 +260,7 @@ class Taxonomies
                 AND tr.element_type = 'tax_{$taxonomy}'
                 WHERE tr.language_code IS NOT NULL
             AND tm.meta_value IS NOT NULL
-            AND taxonomy = %s",
+            AND taxonomy= %s",
             $taxonomy
         );
 
@@ -234,7 +278,8 @@ class Taxonomies
                     "lang" => $this->defaultLang,
                     "translations" => [],
                 );
-            };
+            }
+            ;
 
             if ($lang && $lang !== $this->defaultLang) {
                 $wpFacets[$vendureFacetId]['translations'][$lang] = array(
@@ -277,8 +322,6 @@ class Taxonomies
             $this->updateTerm($wpTerms[$vendureId], $vendureTerm, $taxonomy);
         }
 
-        die();
-
         // Add parents, only for collections, needs to be done after all terms are created/updated
         if ($taxonomy === 'produkter-kategorier') {
             foreach ($vendureTerms as $vendureId => $vendureTerm) {
@@ -293,7 +336,7 @@ class Taxonomies
             return $vendureTerm['slug'];
         } else {
             return sanitize_title($vendureTerm['name']);
-        }   
+        }
         return null;
     }
 
@@ -308,27 +351,22 @@ class Taxonomies
 
         foreach ($update as $lang) {
             $vendureSlug = $this->getVendureTermSlug($vendureTerm);
-            
+
             if ($lang === $this->defaultLang) {
                 $this->updateTaxonomy($wpTerm['term_id'], $taxonomy, $vendureTerm['name'], $vendureSlug);
                 continue;
             }
 
-            if (isset( $wpTerm['translations'][$lang]['term_id'])) {
-                $translatedTermId = $wpTerm['translations'][$lang]['term_id'];
+            if (isset($wpTerm['translations'][$lang]['term_id'])) {
+                $translatedTermId = (int) $wpTerm['translations'][$lang]['term_id'];
                 $translatedName = $vendureTerm['translations'][$lang]['name'];
-                $translatedSlug = $this->getSlugForTranslations($vendureTerm['name'], $vendureTerm, $lang);
-                
+                $name = $vendureTerm['translations'][$lang]['name'];
+                $data =  $vendureTerm['translations'][$lang];
+
+                $translatedSlug = $this->getSlugForTranslations($name, $data, $lang);
                 $this->updateTaxonomy($translatedTermId, $taxonomy, $translatedName, $translatedSlug);
             } else {
-
-                if ($taxonomy === 'produkter-kategorier') {
-                    $vendureType = 'vendure_collection_id';
-                } else {
-                    $vendureType = 'vendure_term_id';
-                }
-                var_dump('create');
-                //TODO for facets, add term_id to vendure_term_id and slug
+                $vendureType = $taxonomy === 'produkter-kategorier' ? 'vendure_collection_id' : 'vendure_term_id';
                 $this->createTranslatedTerm($vendureTerm, $taxonomy, $wpTerm['term_id'], $lang, $vendureType);
             }
 
@@ -354,13 +392,14 @@ class Taxonomies
         $slug = $this->getSlugForTranslations($vendureTerm['name'], $vendureTerm['translations'][$lang], $lang);
 
         $term = $this->insertTerm($vendureTerm['id'], $name, $slug, $taxonomy, $vendureType);
+
         $translations[$lang] = $term;
         $wmplType = 'tax_' . $taxonomy;
+        $originalIdInt = (int) $originalId;
 
         $wpmlHelper = new WpmlHelper();
 
-        //TODO does not get translated for some reason
-        $wpmlHelper->setLanguageDetails($originalId, $translations, $wmplType);
+        $wpmlHelper->setLanguageDetails($originalIdInt, $translations, $wmplType);
         $this->createdTaxonomies++;
     }
 
@@ -380,7 +419,7 @@ class Taxonomies
             $updateLang[] = $this->defaultLang;
         }
 
-        if ($wpTerm['translations'] === []){
+        if ($wpTerm['translations'] === []) {
             if ($vendureTerm['translations'] !== []) {
                 $updateLang[] = array_keys($vendureTerm['translations'])[0];
             }
@@ -428,9 +467,11 @@ class Taxonomies
         $original = $this->addNewTermOriginal($value, $taxonomy, $vendureType);
         $translations = $this->addNewTermTranslations($value, $taxonomy, $vendureType);
 
-        $wpmlHelper = new WpmlHelper();
-        $wpmlHelper->setLanguageDetails($original, $translations, $wmplType);
-        
+
+        if ($original && $translations) {
+            $wpmlHelper = new WpmlHelper();
+            $wpmlHelper->setLanguageDetails($original, $translations, $wmplType);
+        }
 
         $this->createdTaxonomies++;
     }

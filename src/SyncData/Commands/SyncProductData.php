@@ -8,7 +8,6 @@
 use Haus\SyncData\Classes\Products;
 use Haus\SyncData\Classes\Taxonomies;
 use Haus\SyncData\Classes\Relations;
-use Haus\SyncData\Classes\WpmlHelper;
 
 class SyncProductData extends WP_CLI_Command
 {
@@ -17,19 +16,11 @@ class SyncProductData extends WP_CLI_Command
     {
         $taxonomiesInstance = new Taxonomies();
         $productsInstance = new Products();
-        $wpmlHelper = new WpmlHelper();
-
-        // $facets = (new \Haus\Queries\Facet)->get();
-
-        // if (!isset($facets['data']['facets']['items'])) {
-        //     WP_CLI::error('No facets found');
-        // }
 
         // sync taxonomies
         $taxonomiesInstance->syncTaxonomies();
 
         $vendureProducts = $productsInstance->getAllProductsFromVendure();
-
 
         if (!isset($vendureProducts)) {
             WP_CLI::error('No products found in vendure');
@@ -41,7 +32,7 @@ class SyncProductData extends WP_CLI_Command
         $productsInstance->syncProductsData($vendureProducts, $wpProducts);
 
         // // add taxonomies to products
-        // (new Relations)->syncRelationships($vendureProducts);
+        (new Relations)->syncRelationships($vendureProducts);
 
         $productsSummary = sprintf(
             'Products: Created: %d Updated: %d Deleted: %d',
@@ -56,7 +47,6 @@ class SyncProductData extends WP_CLI_Command
             $taxonomiesInstance->updatedTaxonimies,
             $taxonomiesInstance->deletedTaxonomies
         );
-
 
         WP_CLI::success("\n" . $productsSummary . "\n" . $taxonomiesSummary);
     }
