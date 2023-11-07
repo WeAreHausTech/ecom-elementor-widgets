@@ -14,7 +14,7 @@ import {
   VendureApolloProvider,
   SearchField,
   LocalizationProvider,
-  Login,
+  AccountDropdown,
 } from '@haus-tech/ecom-components'
 
 import './index.scss'
@@ -160,22 +160,16 @@ document.addEventListener(
           break
 
         case 'login':
-          const loginRedirectTo = dataAttributes.getNamedItem('data-redirect-to')?.value
-          const showAsModal = Boolean(dataAttributes.getNamedItem('data-show-as-modal')?.value)
+          // const loginRedirectTo = dataAttributes.getNamedItem('data-redirect-to')?.value
+          // const showAsModal = Boolean(dataAttributes.getNamedItem('data-show-as-modal')?.value)
 
-          const handleTriggerClick = () => {
-            if (loginRedirectTo) {
-              window.location.href = loginRedirectTo
-            }
-          }
+          // const handleTriggerClick = () => {
+          //   if (loginRedirectTo) {
+          //     window.location.href = loginRedirectTo
+          //   }
+          // }
 
-          renderElement(
-            element,
-            <Login
-              asModal={showAsModal}
-              onTriggerClick={loginRedirectTo ? handleTriggerClick : undefined}
-            />,
-          )
+          renderElement(element, <AccountDropdown loginUrl="/auth/login" useLoginModal={true} />)
           break
       }
     })
