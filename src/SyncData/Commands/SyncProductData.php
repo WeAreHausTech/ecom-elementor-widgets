@@ -8,6 +8,8 @@
 use Haus\SyncData\Classes\Products;
 use Haus\SyncData\Classes\Taxonomies;
 use Haus\SyncData\Classes\Relations;
+use Haus\SyncData\Helpers\WpHelper;
+use Haus\SyncData\Helpers\VendureHelper;
 
 class SyncProductData extends WP_CLI_Command
 {
@@ -16,17 +18,19 @@ class SyncProductData extends WP_CLI_Command
     {
         $taxonomiesInstance = new Taxonomies();
         $productsInstance = new Products();
+        $wpHelper = new WpHelper();
+        $VendureHelper = new VendureHelper();
 
         // sync taxonomies
         $taxonomiesInstance->syncTaxonomies();
 
-        $vendureProducts = $productsInstance->getAllProductsFromVendure();
+        $vendureProducts = $VendureHelper->getAllProductsFromVendure();
 
         if (!isset($vendureProducts)) {
             WP_CLI::error('No products found in vendure');
         }
 
-        $wpProducts = $productsInstance->getAllProductsFromWp();
+        $wpProducts = $wpHelper->getAllProductsFromWp();
 
         // sync products
         $productsInstance->syncProductsData($vendureProducts, $wpProducts);

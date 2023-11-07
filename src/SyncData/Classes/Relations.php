@@ -4,7 +4,6 @@ namespace Haus\SyncData\Classes;
 
 class Relations
 {
-
     public function syncRelationships($vendureProducts)
     {
         $products = $this->getProductIds();
@@ -116,10 +115,10 @@ class Relations
             }
 
             foreach ($wpProduct['ids'] as $lang => $wpProductId) {
-
                 if (!isset($collections[$collectionValueId]["ids"][$lang])) {
                     continue;
                 }
+
                 $collectionsData[$wpProductId][] = (int) $collections[$collectionValueId]["ids"][$lang];
             }
         }
@@ -131,15 +130,12 @@ class Relations
 
     public function assignFacetValues($wpProduct, $facetValuesIds, $facets)
     {
-
-
         foreach ($facetValuesIds as $facetValueId) {
             if (!isset($facets[$facetValueId])) {
                 continue;
             }
 
             foreach ($wpProduct['ids'] as $lang => $wpProductId) {
-
                 if (!isset($facets[$facetValueId]["ids"][$lang])) {
                     continue;
                 }

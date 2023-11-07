@@ -1,6 +1,6 @@
 <?php
 
-namespace Haus\SyncData\Classes;
+namespace Haus\SyncData\Helpers;
 
 class WpmlHelper
 {
@@ -58,7 +58,5 @@ class WpmlHelper
 
         }
     }
-
-
 }
 
