@@ -114,10 +114,13 @@ class WpHelper
         // Add all translations into default lang object
         foreach ($terms as $term) {
             $vendureCollectionId = $term['vendure_collection_id'];
-            $lang = $term['lang'];
 
-            if (!isset($wpCollections[$vendureCollectionId]) && $lang === $this->defaultLang) {
-                $wpCollections[$vendureCollectionId] = array(
+            if ($vendureCollectionId === '0' || $term['lang'] !== $this->defaultLang) {
+                continue;
+            }
+
+            if (!isset($wpCollections[$vendureCollectionId])) {
+                $wpCollections[$vendureCollectionId] = [
                     "term_id" => $term["term_id"],
                     "parent" => $term["parent"],
                     "name" => $term["name"],
@@ -125,15 +128,24 @@ class WpHelper
                     "vendure_collection_id" => $term["vendure_collection_id"],
                     "lang" => $this->defaultLang,
                     "translations" => [],
-                );
+                ];
+            }
+        }
+
+        foreach ($terms as $term) {
+            $vendureCollectionId = $term['vendure_collection_id'];
+
+            if ($vendureCollectionId === '0') {
+                continue;
             }
 
+            $lang = $term['lang'];
             if ($lang && $lang !== $this->defaultLang) {
-                $wpCollections[$vendureCollectionId]['translations'][$lang] = array(
+                $wpCollections[$vendureCollectionId]['translations'][$lang] = [
                     "name" => $term["name"],
                     "slug" => $term["slug"],
                     "term_id" => $term["term_id"],
-                );
+                ];
             }
         }
 
