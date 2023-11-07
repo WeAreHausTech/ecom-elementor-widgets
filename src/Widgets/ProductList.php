@@ -57,7 +57,7 @@ class ProductList extends Widget_Base
 
     public function add_facet_controls()
     {
-        $facets = (new \Haus\Queries\Facet)->get();
+        $facets = (new \Haus\Queries\Facet)->get('sv');
 
         if (!isset($facets['data']['facets']['items'])) {
             return;
