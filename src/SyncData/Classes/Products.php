@@ -1,44 +1,22 @@
 <?php
 namespace Haus\SyncData\Classes;
 
+use Haus\SyncData\Helpers\WpmlHelper;
+
 class Products
 {
     public $created = 0;
     public $updated = 0;
     public $deleted = 0;
-    public function getAllProductsFromVendure()
+
+    public $defaultLang = '';
+
+
+    public function __construct()
     {
-        $products = (new \Haus\Queries\Product)->get();
-
-        if (!isset($products['data']['search']['items'])) {
-            return [];
-        }
-
-        $items = $products['data']['search']['items'];
-
-        return array_combine(array_column($items, 'productId'), $items);
-    }
-
-    public function getAllProductsFromWp()
-    {
-        global $wpdb;
-
-        $query = $wpdb->prepare(
-            "SELECT p.ID as id, p.post_title, p.post_name, pm.meta_value as vendure_id, pm2.meta_value as exclude_from_sync
-             FROM {$wpdb->prefix}posts p 
-             LEFT JOIN  {$wpdb->prefix}postmeta pm
-                ON p.ID = pm.post_id
-                AND pm.meta_key = 'vendure_id'
-            LEFT JOIN {$wpdb->prefix}postmeta pm2
-                ON p.ID = pm2.post_id
-                AND pm2.meta_key = 'exclude_from_sync'
-             WHERE post_type ='produkter'"
-        );
-
-        $products = $wpdb->get_results($query, ARRAY_A);
-
-        // Change array key to vendure_id from $wpProducts
-        return array_combine(array_column($products, 'vendure_id'), $products);
+        $wpmlHelper = new WpmlHelper();
+        $wpmlHelper->getDefaultLanguage();
+        $this->defaultLang = $wpmlHelper->getDefaultLanguage();
     }
     public function syncProductsData($vendureProducts, $wpProducts)
     {
@@ -46,13 +24,18 @@ class Products
         $delete = array_diff_key($wpProducts, $vendureProducts);
 
         array_walk($delete, function ($product) {
-
             $shouldBeExcluded = "1";
-            if ($product['exclude_from_sync'] === $shouldBeExcluded){
+            if ($product['exclude_from_sync'] === $shouldBeExcluded) {
                 return;
             }
 
             $this->deleteProduct($product['id']);
+
+            foreach ($product['translations'] as $lang => $translation) {
+                if ($translation['id']) {
+                    $this->deleteProduct($translation['id']);
+                }
+            }
         });
 
         //Exists in Vendure, not in WP
@@ -71,18 +54,33 @@ class Products
 
     }
 
-    public function createProduct($product)
+    public function insertPost($ProductName, $slug, $vendureId)
     {
-        wp_insert_post([
-            'post_title' => $product['productName'],
+
+        $post = wp_insert_post([
+            'post_title' => $ProductName,
             'post_status' => 'publish',
             'post_type' => 'produkter',
-            'post_name' => $product['slug'],
+            'post_name' => $slug,
             'meta_input' => [
-                'vendure_id' => $product['productId'],
+                'vendure_id' => $vendureId,
             ]
         ]);
 
+        return $post;
+
+    }
+
+    public function createProduct($product)
+    {
+        $orignal = $this->insertPost($product['productName'], $product['slug'], $product['productId']);
+
+        foreach ($product['translations'] as $lang => $translation) {
+            $translations[$lang] = $this->insertPost($translation['productName'], $translation['slug'], $product['productId']);
+        }
+
+        $wpmlHelper = new WpmlHelper();
+        $wpmlHelper->setLanguageDetails($orignal, $translations, 'post_produkter');
         $this->created++;
     }
 
@@ -94,17 +92,75 @@ class Products
 
     public function updateProduct($wpProduct, $vendureProduct)
     {
+        $update = $this->isUpdatedInVendure($wpProduct, $vendureProduct);
+
+        if ($update === []) {
+            return;
+        }
+
+        foreach ($update as $lang) {
+            if ($lang === $this->defaultLang) {
+                $this->updatePost($wpProduct['id'], $vendureProduct['productName'], $vendureProduct['slug']);
+                continue;
+            }
+
+            $langExistsInWp = $wpProduct['translations'][$lang];
+
+            if ($langExistsInWp && $langExistsInWp['id']) {
+                $translatedPostId = $wpProduct['translations'][$lang]['id'];
+                $translatedSlug = $vendureProduct['translations'][$lang]['slug'];
+                $translatedName = $vendureProduct['translations'][$lang]['productName'];
+
+                $this->updatePost($translatedPostId, $translatedName, $translatedSlug);
+            } else {
+                $this->createTranslatedPost($vendureProduct, $wpProduct['id'], $lang);
+            }
+        }
+    }
+
+    public function createTranslatedPost($vendureProduct, $originalId, $lang)
+    {
+        $newPost[$lang] = $this->insertPost($vendureProduct['translations'][$lang]['productName'], $vendureProduct['translations'][$lang]['slug'], $vendureProduct['productId']);
+        $wpmlHelper = new WpmlHelper();
+        $wpmlHelper->setLanguageDetails($originalId['id'], $newPost, 'post_produkter');
+        $this->created++;
+
+    }
+
+    public function updatePost($postId, $postTitle, $postName)
+    {
+        wp_update_post([
+            'ID' => $postId,
+            'post_title' => $postTitle,
+            'post_name' => $postName
+        ]);
+        $this->updated++;
+    }
+
+    public function isUpdatedInVendure($wpProduct, $vendureProduct)
+    {
+        $updateLang = [];
         $updateName = wp_specialchars_decode($wpProduct['post_title']) !== $vendureProduct['productName'];
         $updateSlug = $wpProduct['post_name'] !== $vendureProduct['slug'];
 
         if ($updateName || $updateSlug) {
-            wp_update_post([
-                'ID' => $wpProduct['id'],
-                'post_title' => $vendureProduct['productName'],
-                'post_name' => $vendureProduct['slug'],
-            ]);
-
-            $this->updated++;
+            $updateLang[] = $this->defaultLang;
         }
+
+        foreach ($wpProduct['translations'] as $lang => $translation) {
+            if ($wpProduct['translations'] === []) {
+                $updateLang[] = $lang;
+                continue;
+            }
+
+            $updateTranslationName = wp_specialchars_decode($translation['post_title']) !== $vendureProduct['translations'][$lang]['productName'];
+            $updateTranslationSlug = $translation['post_name'] !== $vendureProduct['translations'][$lang]['slug'];
+
+            if ($updateTranslationName || $updateTranslationSlug) {
+                $updateLang[] = $lang;
+            }
+        }
+
+        return $updateLang;
     }
 }

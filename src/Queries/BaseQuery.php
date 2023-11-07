@@ -10,13 +10,14 @@ class BaseQuery
 {
     protected $query = '';
 
-    function fetch()
+    function fetch($languageCode = 'sv')
     {
         try {
             $response = (new Client([
-                'base_uri' => VENDURE_API_URL,
-                'headers' => [
-                    'Content-Type' => 'application/json',
+            'base_uri' => VENDURE_API_URL .'?languageCode=' . $languageCode,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'vendure-token'=> 'livv-3at76503kq',
                 ],
                 'body' => json_encode([
                     'query' => $this->query,

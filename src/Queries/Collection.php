@@ -3,11 +3,17 @@ namespace Haus\Queries;
 
 class Collection extends BaseQuery
 {
-    public function get()
+    public function get($lang, $skip, $take)
     {
-        $this->query = <<<'GRAPHQL'
-            query {
-                collections {
+        $options = "(options: {
+            take: $take,
+            skip: $skip
+        })";
+
+        $this->query = 
+           "query{
+                collections $options{
+                    totalItems
                     items {
                     id
                     name
@@ -15,9 +21,8 @@ class Collection extends BaseQuery
                     parentId
                     }
                 }
-            }
-        GRAPHQL;
+            }";
 
-        return $this->fetch();
+        return $this->fetch($lang);
     }
 }
