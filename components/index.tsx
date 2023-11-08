@@ -15,6 +15,7 @@ import {
   SearchField,
   LocalizationProvider,
   AccountDropdown,
+  Login,
 } from '@haus-tech/ecom-components'
 
 import './index.scss'
@@ -160,16 +161,32 @@ document.addEventListener(
           break
 
         case 'login':
-          // const loginRedirectTo = dataAttributes.getNamedItem('data-redirect-to')?.value
-          // const showAsModal = Boolean(dataAttributes.getNamedItem('data-show-as-modal')?.value)
+          const handleTriggerClick = () => {
+            window.location.href = '/';
+          }
+          
+          renderElement(
+            element,
+            <Login onContinueAsGuest={handleTriggerClick} onLoggedIn={handleTriggerClick} />,
+          )
+          break
 
-          // const handleTriggerClick = () => {
-          //   if (loginRedirectTo) {
-          //     window.location.href = loginRedirectTo
-          //   }
-          // }
+        case 'account-dropdown':
+          const items = dataAttributes.getNamedItem('data-dropdown-items')?.value
+          let accountDropdownItems = []
 
-          renderElement(element, <AccountDropdown loginUrl="/auth/login" useLoginModal={true} />)
+          if (items) {
+            accountDropdownItems = JSON.parse(items)
+          }
+
+          renderElement(
+            element,
+            <AccountDropdown
+              loginUrl="/logga-in/"
+              useLoginModal={false}
+              dropdownItems={accountDropdownItems}
+            />,
+          )
           break
       }
     })

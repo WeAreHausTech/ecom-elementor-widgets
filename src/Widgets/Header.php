@@ -158,7 +158,7 @@ class Header extends Widget_Base
             ]
         );
 
-         $this->add_control(
+        $this->add_control(
             'login_show_as_modal',
             [
                 'label' => esc_html__('Visa som modal', 'webien'),
@@ -179,6 +179,15 @@ class Header extends Widget_Base
                 'condition' => [
                     'login_show_as_modal!' => 'yes',
                 ],
+            ]
+        );
+
+        $this->add_control(
+            'login_in_menu_id',
+            [
+                'label' => __('Id på meny för inloggade:', 'webien'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'label_block' => true,
             ]
         );
 
@@ -223,6 +232,20 @@ class Header extends Widget_Base
         return array_values($termData);
     }
 
+    protected function getFormatedMenuItems($menuId){
+        $loggedInMenu = wp_get_nav_menu_items($menuId);
+        $formattedMenuItems = array();
+
+        foreach ($loggedInMenu as $item) {
+            $formattedMenuItems[] = array(
+                'label' => $item->title,
+                'href' => $item->url,
+            );
+        }
+
+        return $formattedMenuItems;
+    }
+
     protected function render()
     {
         $data = [
@@ -238,18 +261,21 @@ class Header extends Widget_Base
             'login_show_as_modal' => $this->get_settings_for_display('login_show_as_modal'),
         ];
 
+        $loggedInmenuId = $this->get_settings_for_display('login_in_menu_id');
+        $formattedMenuItems = $this->getFormatedMenuItems($loggedInmenuId);
+
         $categories = $this->getAllProductCategories();
 
         $taxonomies = [
             [
                 'heading' => 'Varumärken',
-                'link' => '/produkter/varumarken/', 
+                'link' => '/produkter/varumarken/',
                 'data' => $this->getTaxonomies('produkter-varumarken'),
                 'class' => 'brand'
             ],
             [
                 'heading' => 'Avdelningar',
-                'link' => '/produkter/avdelningar/', 
+                'link' => '/produkter/avdelningar/',
                 'data' => $this->getTaxonomies('produkter-avdelningar'),
                 'class' => 'department'
             ]
