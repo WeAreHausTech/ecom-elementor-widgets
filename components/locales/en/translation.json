@@ -3,5 +3,13 @@
     "showMore": "Show more",
     "showing": "Showing",
     "of": "of"
+  },
+  "account": {
+    "login": {
+      "dialogTitle": "Login for a better experience"
+    }
+  },
+  "urls": {
+    "login": "/login/"
   }
 }

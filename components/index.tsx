@@ -108,7 +108,7 @@ document.addEventListener(
             customMessage: checkoutMessage ? checkoutMessage : '',
           }
 
-          renderElement(element, <Checkout CartPriceProps={cartPricePropsCheckout} />)
+          renderElement(element, <Checkout showLoginModal cartPriceProps={cartPricePropsCheckout} />)
           break
 
         case 'product-detail':
@@ -128,7 +128,7 @@ document.addEventListener(
             customMessage: cartMessage ? cartMessage : '',
           }
 
-          renderElement(element, <Cart CartPriceProps={cartPricePropsCart} />)
+          renderElement(element, <Cart cartPriceProps={cartPricePropsCart} />)
           break
 
         case 'search-field':
@@ -161,16 +161,15 @@ document.addEventListener(
           break
 
         case 'login':
+          //TODO move url to translation file
           const handleTriggerClick = () => {
             window.location.href = '/';
           }
-          
           renderElement(
             element,
             <Login onContinueAsGuest={handleTriggerClick} onLoggedIn={handleTriggerClick} />,
           )
           break
-
         case 'account-dropdown':
           const items = dataAttributes.getNamedItem('data-dropdown-items')?.value
           let accountDropdownItems = []
@@ -181,11 +180,7 @@ document.addEventListener(
 
           renderElement(
             element,
-            <AccountDropdown
-              loginUrl="/logga-in/"
-              useLoginModal={false}
-              dropdownItems={accountDropdownItems}
-            />,
+            <AccountDropdown useLoginModal={false} dropdownItems={accountDropdownItems} />,
           )
           break
       }

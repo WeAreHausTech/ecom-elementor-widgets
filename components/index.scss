@@ -103,12 +103,15 @@ body {
     --product-list-grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 
-  @media screen and (min-width: 768px) {
-    --order-lines-item-image-width: 128px;
-    --order-lines-item-image-height: 128px;
+  @media screen and (max-width: 768px) {
     --order-lines-remove-position: absolute;
     --order-lines-remove-top: 0;
     --order-lines-remove-right: 0;
+  }
+
+  @media screen and (min-width: 768px) {
+    --order-lines-item-image-width: 128px;
+    --order-lines-item-image-height: 128px;
 
     --cart-price-flex: 0 0 30%;
     --cart-price-align-self: flex-start;

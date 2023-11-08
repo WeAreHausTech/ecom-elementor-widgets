@@ -3,5 +3,13 @@
     "showMore": "Visa mer",
     "showing": "Visar",
     "of": "av"
+  },
+  "account": {
+    "login": {
+      "dialogTitle": "Logga in för en bättre upplevelse"
+    }
+  },
+  "urls": {
+    "login": "/logga-in/"
   }
 }
