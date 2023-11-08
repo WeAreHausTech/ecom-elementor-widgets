@@ -54,30 +54,32 @@ add_action('init', function () {
         ->widgets_manager
         ->register(new \Haus\Widgets\ProductSingle());
 
-        \Elementor\Plugin::instance()
+    \Elementor\Plugin::instance()
         ->widgets_manager
         ->register(new \Haus\Widgets\Header());
-
-        \Elementor\Plugin::instance()
+       \Elementor\Plugin::instance()
         ->widgets_manager
         ->register(new \Haus\Widgets\Cart());
 
     \Elementor\Plugin::instance()
         ->widgets_manager
         ->register(new \Haus\Widgets\CurrencyChooser());
-        
     \Elementor\Plugin::instance()
         ->widgets_manager
         ->register(new \Haus\Widgets\OrderConfirmation());
-    
     \Elementor\Plugin::instance()
         ->widgets_manager
         ->register(new \Haus\Widgets\Login());
+
+    \Elementor\Plugin::instance()
+        ->widgets_manager
+        ->register(new \Haus\Widgets\AccountDetails());
+
 });
 
 
 if (defined('WP_CLI') && WP_CLI) {
-    add_action( 'init', function() {
+    add_action('init', function () {
         require_once HAUS_ECOM_PLUGIN_PATH . '/src/SyncData/Commands/SyncProductData.php';
     });
 }
