@@ -16,6 +16,7 @@ import {
   LocalizationProvider,
   AccountDropdown,
   Login,
+  CustomerDetails
 } from '@haus-tech/ecom-components'
 
 import './index.scss'
@@ -108,7 +109,10 @@ document.addEventListener(
             customMessage: checkoutMessage ? checkoutMessage : '',
           }
 
-          renderElement(element, <Checkout showLoginModal cartPriceProps={cartPricePropsCheckout} />)
+          renderElement(
+            element,
+            <Checkout showLoginModal cartPriceProps={cartPricePropsCheckout} />,
+          )
           break
 
         case 'product-detail':
@@ -163,7 +167,7 @@ document.addEventListener(
         case 'login':
           //TODO move url to translation file
           const handleTriggerClick = () => {
-            window.location.href = '/';
+            window.location.href = '/'
           }
           renderElement(
             element,
@@ -182,6 +186,11 @@ document.addEventListener(
             element,
             <AccountDropdown useLoginModal={false} dropdownItems={accountDropdownItems} />,
           )
+          break
+
+          //TODO import CustomerDetails from @haus-tech/ecom-components when version is updated
+        case 'account-details':
+          renderElement(element, <CustomerDetails />)
           break
       }
     })
