@@ -149,6 +149,47 @@ class Header extends Widget_Base
             ]
         );
 
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+            'login-section',
+            [
+                'label' => __('Login', 'webien'),
+            ]
+        );
+
+        $this->add_control(
+            'login_show_as_modal',
+            [
+                'label' => esc_html__('Visa som modal', 'webien'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('Ja', 'webien'),
+                'label_off' => esc_html__('Nej', 'webien'),
+                'return_value' => 'yes',
+                'default' => 'yes',
+            ]
+        );
+
+        $this->add_control(
+            'login_redirect',
+            [
+                'label' => __('Loginsidan:', 'webien'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'label_block' => true,
+                'condition' => [
+                    'login_show_as_modal!' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'login_in_menu_id',
+            [
+                'label' => __('Id på meny för inloggade:', 'webien'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'label_block' => true,
+            ]
+        );
 
         $this->end_controls_section();
     }
@@ -191,6 +232,20 @@ class Header extends Widget_Base
         return array_values($termData);
     }
 
+    protected function getFormatedMenuItems($menuId){
+        $loggedInMenu = wp_get_nav_menu_items($menuId);
+        $formattedMenuItems = array();
+
+        foreach ($loggedInMenu as $item) {
+            $formattedMenuItems[] = array(
+                'label' => $item->title,
+                'href' => $item->url,
+            );
+        }
+
+        return $formattedMenuItems;
+    }
+
     protected function render()
     {
         $data = [
@@ -202,20 +257,25 @@ class Header extends Widget_Base
             'cart_redirect_to' => $this->get_settings_for_display('cart_redirect_to') ? $this->get_settings_for_display('cart_redirect_to') : '/varukorg',
             'search_placeholder' => $this->get_settings_for_display('search_placeholder'),
             'search_redirect' => $this->get_settings_for_display('search_redirect'),
+            'login_redirect' => $this->get_settings_for_display('login_redirect'),
+            'login_show_as_modal' => $this->get_settings_for_display('login_show_as_modal'),
         ];
+
+        $loggedInmenuId = $this->get_settings_for_display('login_in_menu_id');
+        $formattedMenuItems = $this->getFormatedMenuItems($loggedInmenuId);
 
         $categories = $this->getAllProductCategories();
 
         $taxonomies = [
             [
                 'heading' => 'Varumärken',
-                'link' => '/produkter/varumarken/', 
+                'link' => '/produkter/varumarken/',
                 'data' => $this->getTaxonomies('produkter-varumarken'),
                 'class' => 'brand'
             ],
             [
                 'heading' => 'Avdelningar',
-                'link' => '/produkter/avdelningar/', 
+                'link' => '/produkter/avdelningar/',
                 'data' => $this->getTaxonomies('produkter-avdelningar'),
                 'class' => 'department'
             ]

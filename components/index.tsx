@@ -14,6 +14,8 @@ import {
   VendureApolloProvider,
   SearchField,
   LocalizationProvider,
+  AccountDropdown,
+  Login,
 } from '@haus-tech/ecom-components'
 
 import './index.scss'
@@ -41,10 +43,7 @@ const renderElement = async (element: Element, children: ReactNode) => {
 
   return ReactDOM.createRoot(shadowRoot).render(
     <React.StrictMode>
-      <VendureApolloProvider
-        apiUrl={vendureUrl ? vendureUrl : ''}
-        vendureToken={vendureToken}
-      >
+      <VendureApolloProvider apiUrl={vendureUrl ? vendureUrl : ''} vendureToken={vendureToken}>
         <LocalizationProvider resourceBundles={resourceBundles}>{children}</LocalizationProvider>
       </VendureApolloProvider>
     </React.StrictMode>,
@@ -97,18 +96,19 @@ document.addEventListener(
           break
 
         case 'checkout':
+          const checkoutMessage = dataAttributes.getNamedItem('data-custom-message')?.value
 
-        const checkoutMessage =  dataAttributes.getNamedItem('data-custom-message')?.value
-        
           const cartPricePropsCheckout = {
-            subTotal: dataAttributes.getNamedItem('data-show-subtotal')?.value === "yes" ? true : false,
-            tax: dataAttributes.getNamedItem('data-show-tax')?.value  === "yes"  ? true : false,
-            shipping: dataAttributes.getNamedItem('data-show-shipping')?.value === "yes"  ? true : false,
-            total: dataAttributes.getNamedItem('data-show-total')?.value  === "yes"  ? true : false,
-            customMessage: checkoutMessage ? checkoutMessage : ''
+            subTotal:
+              dataAttributes.getNamedItem('data-show-subtotal')?.value === 'yes' ? true : false,
+            tax: dataAttributes.getNamedItem('data-show-tax')?.value === 'yes' ? true : false,
+            shipping:
+              dataAttributes.getNamedItem('data-show-shipping')?.value === 'yes' ? true : false,
+            total: dataAttributes.getNamedItem('data-show-total')?.value === 'yes' ? true : false,
+            customMessage: checkoutMessage ? checkoutMessage : '',
           }
 
-          renderElement(element, <Checkout  CartPriceProps={cartPricePropsCheckout} />)
+          renderElement(element, <Checkout showLoginModal cartPriceProps={cartPricePropsCheckout} />)
           break
 
         case 'product-detail':
@@ -117,16 +117,18 @@ document.addEventListener(
           break
 
         case 'cart':
-          const cartMessage =  dataAttributes.getNamedItem('data-custom-message')?.value
+          const cartMessage = dataAttributes.getNamedItem('data-custom-message')?.value
           const cartPricePropsCart = {
-            subTotal: dataAttributes.getNamedItem('data-show-subtotal')?.value === "yes" ? true : false,
-            tax: dataAttributes.getNamedItem('data-show-tax')?.value  === "yes"  ? true : false,
-            shipping: dataAttributes.getNamedItem('data-show-shipping')?.value === "yes"  ? true : false,
-            total: dataAttributes.getNamedItem('data-show-total')?.value  === "yes"  ? true : false,
+            subTotal:
+              dataAttributes.getNamedItem('data-show-subtotal')?.value === 'yes' ? true : false,
+            tax: dataAttributes.getNamedItem('data-show-tax')?.value === 'yes' ? true : false,
+            shipping:
+              dataAttributes.getNamedItem('data-show-shipping')?.value === 'yes' ? true : false,
+            total: dataAttributes.getNamedItem('data-show-total')?.value === 'yes' ? true : false,
             customMessage: cartMessage ? cartMessage : '',
           }
 
-          renderElement(element, <Cart CartPriceProps={cartPricePropsCart}/>)
+          renderElement(element, <Cart cartPriceProps={cartPricePropsCart} />)
           break
 
         case 'search-field':
@@ -156,6 +158,30 @@ document.addEventListener(
           const cartUrl = dataAttributes.getNamedItem('data-redirect-to')?.value
 
           renderElement(element, <DropdownCart dropdownEnabled={false} cartUrl={cartUrl} />)
+          break
+
+        case 'login':
+          //TODO move url to translation file
+          const handleTriggerClick = () => {
+            window.location.href = '/';
+          }
+          renderElement(
+            element,
+            <Login onContinueAsGuest={handleTriggerClick} onLoggedIn={handleTriggerClick} />,
+          )
+          break
+        case 'account-dropdown':
+          const items = dataAttributes.getNamedItem('data-dropdown-items')?.value
+          let accountDropdownItems = []
+
+          if (items) {
+            accountDropdownItems = JSON.parse(items)
+          }
+
+          renderElement(
+            element,
+            <AccountDropdown useLoginModal={false} dropdownItems={accountDropdownItems} />,
+          )
           break
       }
     })
