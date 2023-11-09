@@ -16,13 +16,14 @@ import {
   LocalizationProvider,
   AccountDropdown,
   Login,
-  CustomerDetails
+  CustomerDetails,
+  Orders,
 } from '@haus-tech/ecom-components'
 
 import './index.scss'
 import { get } from 'lodash'
 import styles from '@haus-tech/ecom-components/dist/ecom-style.css'
-import { FacetValueFilterInput } from '@haus-tech/ecom-components/vendure'
+import { FacetValueFilterInput, OrderListOptions } from '@haus-tech/ecom-components/vendure'
 import localeSv from './locales/sv/translation.json'
 import localeEn from './locales/en/translation.json'
 
@@ -174,6 +175,7 @@ document.addEventListener(
             <Login onContinueAsGuest={handleTriggerClick} onLoggedIn={handleTriggerClick} />,
           )
           break
+
         case 'account-dropdown':
           const items = dataAttributes.getNamedItem('data-dropdown-items')?.value
           let accountDropdownItems = []
@@ -188,9 +190,26 @@ document.addEventListener(
           )
           break
 
-          //TODO import CustomerDetails from @haus-tech/ecom-components when version is updated
         case 'account-details':
           renderElement(element, <CustomerDetails />)
+          break
+
+        case 'orders':
+          const take = dataAttributes.getNamedItem('data-orders-take')?.value
+          const sort = dataAttributes.getNamedItem('data-orders-sort')?.value
+          const stateFilter = dataAttributes.getNamedItem('data-orders-state-filter')?.value
+
+          const orderListOptions: OrderListOptions = {
+            take: take ? +take : 10,
+            sort: { [sort ? sort : 'createdAt']: 'DESC' },
+            filter: {
+              state: {
+                eq: stateFilter ? stateFilter : undefined,
+              },
+            },
+          }
+
+          renderElement(element, <Orders orderListOptions={orderListOptions} />)
           break
       }
     })

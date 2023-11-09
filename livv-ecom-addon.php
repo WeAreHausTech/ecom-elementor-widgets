@@ -75,6 +75,10 @@ add_action('init', function () {
         ->widgets_manager
         ->register(new \Haus\Widgets\AccountDetails());
 
+    \Elementor\Plugin::instance()
+        ->widgets_manager
+        ->register(new \Haus\Widgets\Orders());
+
 });
 
 
