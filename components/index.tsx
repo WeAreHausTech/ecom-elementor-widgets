@@ -175,7 +175,6 @@ document.addEventListener(
             <Login onContinueAsGuest={handleTriggerClick} onLoggedIn={handleTriggerClick} />,
           )
           break
-
         case 'account-dropdown':
           const items = dataAttributes.getNamedItem('data-dropdown-items')?.value
           let accountDropdownItems = []
