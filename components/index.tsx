@@ -16,12 +16,14 @@ import {
   LocalizationProvider,
   AccountDropdown,
   Login,
+  CustomerDetails,
+  Orders,
 } from '@haus-tech/ecom-components'
 
 import './index.scss'
 import { get } from 'lodash'
 import styles from '@haus-tech/ecom-components/dist/ecom-style.css'
-import { FacetValueFilterInput } from '@haus-tech/ecom-components/vendure'
+import { FacetValueFilterInput, OrderListOptions } from '@haus-tech/ecom-components/vendure'
 import localeSv from './locales/sv/translation.json'
 import localeEn from './locales/en/translation.json'
 
@@ -108,7 +110,10 @@ document.addEventListener(
             customMessage: checkoutMessage ? checkoutMessage : '',
           }
 
-          renderElement(element, <Checkout showLoginModal cartPriceProps={cartPricePropsCheckout} />)
+          renderElement(
+            element,
+            <Checkout showLoginModal cartPriceProps={cartPricePropsCheckout} />,
+          )
           break
 
         case 'product-detail':
@@ -163,7 +168,7 @@ document.addEventListener(
         case 'login':
           //TODO move url to translation file
           const handleTriggerClick = () => {
-            window.location.href = '/';
+            window.location.href = '/'
           }
           renderElement(
             element,
@@ -182,6 +187,28 @@ document.addEventListener(
             element,
             <AccountDropdown useLoginModal={false} dropdownItems={accountDropdownItems} />,
           )
+          break
+
+        case 'account-details':
+          renderElement(element, <CustomerDetails />)
+          break
+
+        case 'orders':
+          const take = dataAttributes.getNamedItem('data-orders-take')?.value
+          const sort = dataAttributes.getNamedItem('data-orders-sort')?.value
+          const stateFilter = dataAttributes.getNamedItem('data-orders-state-filter')?.value
+
+          const orderListOptions: OrderListOptions = {
+            take: take ? +take : 10,
+            sort: { [sort ? sort : 'createdAt']: 'DESC' },
+            filter: {
+              state: {
+                eq: stateFilter ? stateFilter : undefined,
+              },
+            },
+          }
+
+          renderElement(element, <Orders orderListOptions={orderListOptions} />)
           break
       }
     })

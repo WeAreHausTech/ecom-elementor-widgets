@@ -1,15 +1,132 @@
 {
+  "general": {
+    "subTotal": "Varukostnad",
+    "tax": "Moms",
+    "shipping": "Frakt",
+    "continue": "Fortsätt",
+    "edit": "Ändra",
+    "message": "Meddelande",
+    "completeOrder": "Slutför beställning",
+    "customMessage": "Kostnad för frakt tillkommer",
+    "email": "E-post",
+    "phone": "Telefonnummer",
+    "orgNr": "Organisationsnummer",
+    "fullName": "Namn",
+    "street": "Adress",
+    "postalCode": "Postnummer",
+    "city": "Ort"
+  },
   "pagination": {
     "showMore": "Visa mer",
     "showing": "Visar",
     "of": "av"
   },
   "account": {
+    "accountDropdown": {
+      "myOrders": "Mina ordrar",
+      "accountInfo": "Mina uppgifter"
+    },
     "login": {
       "dialogTitle": "Logga in för en bättre upplevelse"
+    },
+    "billingAddress": {
+      "billingAddress": "Faktureringsadress",
+      "noSavedBillingAddress": "Du  har ingen sparad faktureringsadress"
+    },
+    "shippingAddress": {
+      "shippingAddress": "Leveransadress",
+      "noSavedShippingAddress": "Du har ingen sparad leveransadress"
+    },
+    "addressForm": {
+      "company": "Företag",
+      "country": "Land"
+    },
+    "customerDetails": {
+      "customerInformation": "Kundinformation",
+      "accountDetails": "Mina uppgifter"
+    },
+    "orders": {
+      "myOrders": "Mina ordrar"
     }
   },
+  "order": {
+    "orderCode": "Ordernummer",
+    "dueDate": "Förfallodatum",
+    "totalPrice": "Belopp",
+    "orderStatus": "Orderstatus"
+  },
+  "productDetail": {
+    "addToCart": "Lägg i varukorg",
+    "articleNumber": "Artikelnummer",
+    "category": "Kategori",
+    "description": "Beskrivning"
+  },
+  "dropdownCart": {
+    "goToCart": "Gå till varukorgen"
+  },
+  "checkout": {
+    "shipToCountry": "Leverans till land",
+    "shippingBillingAddress": "Leverans- & faktureringsadress",
+    "contactInfo": "Kontaktuppgifter",
+    "cart": "Varukorg",
+    "amountToPay": "Att betala"
+  },
+  "cartPrice": {
+    "total": "Betala",
+    "toCheckout": "Gå till kassan"
+  },
+  "setOrderAddress": {
+    "orgNr": "Organisationsnummer",
+    "vatNr": "VAT-nummer",
+    "companyName": "Företag",
+    "separateShippingAddress": "Annan levaransadress",
+    "orgNrValidationMessageRequired": "Vänligen fyll i organisationsnummber",
+    "orgNrValidationMessageMatches": "Ogiltigt format för organisationsnummer (XXXXXX-XXXX)",
+    "vatNrValidationMessage": "Vänligen fyll i VAT-nummer",
+    "nameValidationMessage": "Vänligen fyll i namn",
+    "companyValidationMessage": "Vänligen fyll i företag",
+    "streetValidationMessage": "Vänligen fyll i adress",
+    "cityValidationMessage": "Vänligen fyll i stad",
+    "postalCodeValidationMessageRequired": "Vänligen fyll i postnummer",
+    "postalCodeValidationMessageTypeError": "Vänligen fyll i postnummer med enbart siffror"
+  },
+  "setCustomerForOrder": {
+    "firstName": "Förnamn",
+    "lastName": "Efternamn",
+    "firstNameValidationMessage": "Vänligen fyll i förnamn",
+    "lastNameValidationMessage:": "Vänligen fyll i efternamn",
+    "emailValidationMessageRequired": "Vänligen fyll i e-post",
+    "emailValidationMessageMatches": "Vänligen fyll i en giltig e-post",
+    "phoneValidationMessageRequired": "Vänligen fyll i telefonnummer",
+    "phoneValidationMessageMatches": "Ogiltigt telefonnummer"
+  },
+  "selectCountry": {
+    "selectCountry": "Välj land"
+  },
+  "completeOrder": {
+    "acceptTermsPrompt": "Du måste godkänna köpvillkoren",
+    "acceptTerms": "Jag accepterar <1>köpvillkoren</1> och intygar att angivna uppgifter är korrekt"
+  },
+  "orderConfirmation": {
+    "noOrderFound": "Hittade ingen order",
+    "orderCode": "Ordernummer",
+    "dueDate": "Förfallodatum",
+    "amount": "Belopp",
+    "orderStatus": "Orderstatus"
+  },
+  "orderLines": {
+    "cartIsEmpty": "Varukorgen är tom"
+  },
+  "searchField": {
+    "searchPlaceholder": "Vad letar du efter?"
+  },
+  "sort": {
+    "name": "Namn",
+    "priceDescending": "Pris, fallande",
+    "priceAscending": "Pris, stigande"
+  },
   "urls": {
-    "login": "/logga-in/"
+    "login": "/logga-in/",
+    "terms": "/kopvillkor/"
   }
 }
