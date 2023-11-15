@@ -103,24 +103,21 @@ body {
     --product-list-grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 
-  @media screen and (max-width: 768px) {
-    --order-lines-remove-position: absolute;
-    --order-lines-remove-top: 0;
-    --order-lines-remove-right: 0;
-  }
-
   @media screen and (min-width: 768px) {
     --order-lines-item-image-width: 128px;
     --order-lines-item-image-height: 128px;
+    --order-lines-remove-position: absolute;
+    --order-lines-remove-top: 0;
+    --order-lines-remove-right: 0;
 
     --cart-price-flex: 0 0 30%;
     --cart-price-align-self: flex-start;
 
-    --order-confirmation-header-flex-direction: row;
-    --order-confirmation-header-justify-content: flex-start;
-    --order-confirmation-header-gap: 48px;
-    --order-confirmation-header-item-flex-direction: column;
-    --order-confirmation-header-item-width: auto;
+    --order-header-flex-direction: row;
+    --order-header-justify-content: flex-start;
+    --order-header-gap: 48px;
+    --order-header-item-flex-direction: column;
+    --order-header-item-width: auto;
 
     --product-detail-brand-margin-bottom: 8px;
     --product-detail-title-font-size: 50px;
