@@ -24,7 +24,7 @@
                     <?php if ($categories) { ?>
                         <?php foreach ($categories as $mainCategory) { ?>
                             <li class="parent">
-                                <a class="parent-link" href="/produkter/kategorier/<?= $mainCategory['data']->slug ?>">
+                                <a class="parent-link" href="/produkter/kategorier/<?= $mainCategory['data']->slug ?>/">
                                     <?= $mainCategory['data']->name ?>
                                 </a>
                                 <?php if (!empty($mainCategory['children'])) { ?>
@@ -32,7 +32,7 @@
                                         <?php foreach ($mainCategory['children'] as $index => $child) { ?>
                                             <li class="child-link" data-parent="<?= $mainCategory['data']->term_id ?>" class="child"
                                                 style="display: <?= $index < 5 ? 'block' : 'none'; ?>">
-                                                <a href="/produkter/kategorier/<?= $child->slug ?>">
+                                                <a href="/produkter/kategorier/<?= $child->slug ?>/">
                                                     <?= $child->name ?>
                                                 </a>
                                             </li>
@@ -66,7 +66,7 @@
                             <?php foreach ($taxonomy['data'] as $index => $value) { ?>
                                 <li class="child-link" data-parent="<?= $taxonomy['class'] ?>" class="child"
                                     style="display: <?= $index < 7 ? 'block' : 'none'; ?>">
-                                    <a href="<?= $taxonomy['link'] . $value->slug ?>">
+                                    <a href="<?= $taxonomy['link'] . $value->slug ?>/">
                                         <?= $value->name ?>
                                     </a>
                                 </li>
