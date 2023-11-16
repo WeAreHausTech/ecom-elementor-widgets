@@ -13,20 +13,20 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: NPM Token
-        run: |
-          echo "@haus-tech:registry=https://registry.npmjs.org
-          //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
-          always-auth=true" > .npmrc
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Confirm NPM Token
-        run: cat .npmrc
-      # - name: Setup Node
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: 20
-      #     registry-url: https://registry.npmjs.org/
+      # - name: NPM Token
+      #   run: |
+      #     echo "@haus-tech:registry=https://registry.npmjs.org
+      #     //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
+      #     always-auth=true" > .npmrc
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - name: Confirm NPM Token
+      #   run: cat .npmrc
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
       - name: Install Dependencies
         run: npm install
         env:
