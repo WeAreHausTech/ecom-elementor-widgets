@@ -20,6 +20,16 @@ class WpmlHelper
         return $avalibleTranslations;
     }
 
+    public function getCurrentLang(){
+        $currentLang = apply_filters( 'wpml_current_language', null );
+
+        if (!isset($currentLang)) {
+            return 'sv';
+        }
+
+        return $currentLang;
+    }
+
     public function getDefaultLanguage()
     {
         return apply_filters('wpml_default_language', null);

@@ -24,20 +24,20 @@
                     <?php if ($categories) { ?>
                         <?php foreach ($categories as $mainCategory) { ?>
                             <li class="parent">
-                                <a class="parent-link" href="/produkter/kategorier/<?= $mainCategory['data']->slug ?>/">
-                                    <?= $mainCategory['data']->name ?>
+                                <a class="parent-link" href="<?= $mainCategory['data']['slug'] ?>/">
+                                    <?= $mainCategory['data']['name'] ?>
                                 </a>
                                 <?php if (!empty($mainCategory['children'])) { ?>
                                     <ul class="category">
                                         <?php foreach ($mainCategory['children'] as $index => $child) { ?>
-                                            <li class="child-link" data-parent="<?= $mainCategory['data']->term_id ?>" class="child"
+                                            <li class="child-link" data-parent="<?= $mainCategory['data']['term_id'] ?>" class="child"
                                                 style="display: <?= $index < 5 ? 'block' : 'none'; ?>">
-                                                <a href="/produkter/kategorier/<?= $child->slug ?>/">
-                                                    <?= $child->name ?>
+                                                <a href="<?= $child['slug'] ?>/">
+                                                    <?= $child['name'] ?>
                                                 </a>
                                             </li>
                                             <?php if ($index === 5) { ?>
-                                                <button class="see-more-button" id="see-more-<?= $mainCategory['data']->term_id ?>"
+                                                <button class="see-more-button" id="see-more-<?= $mainCategory['data']['term_id'] ?>"
                                                     onClick="showMore(this)">
                                                     <?= 'Visa alla (' . count($mainCategory['children']) . ')' ?>
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17"
@@ -66,8 +66,8 @@
                             <?php foreach ($taxonomy['data'] as $index => $value) { ?>
                                 <li class="child-link" data-parent="<?= $taxonomy['class'] ?>" class="child"
                                     style="display: <?= $index < 7 ? 'block' : 'none'; ?>">
-                                    <a href="<?= $taxonomy['link'] . $value->slug ?>/">
-                                        <?= $value->name ?>
+                                    <a href="<?= $value['slug'] ?>/">
+                                        <?= $value['name'] ?>
                                     </a>
                                 </li>
                                 <?php if ($index === 8) { ?>
