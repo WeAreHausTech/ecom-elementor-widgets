@@ -1,7 +1,7 @@
 {
   "name": "livv-ecom-elementor-widgets",
   "private": true,
-  "version": "0.0.9-1.2",
+  "version": "0.0.9-1.3",
   "type": "module",
   "scripts": {
     "build-widgets": "rm -rf ./dist && rm -rf ./.parcel-cache && tsc && parcel build components/index.tsx --no-scope-hoist",
