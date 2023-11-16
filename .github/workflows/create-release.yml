@@ -22,11 +22,11 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Confirm NPM Token
         run: cat .npmrc
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
-          registry-url: https://registry.npmjs.org/
+      # - name: Setup Node
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 20
+      #     registry-url: https://registry.npmjs.org/
       - name: Install Dependencies
         run: npm install
         env:
