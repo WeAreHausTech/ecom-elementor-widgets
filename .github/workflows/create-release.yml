@@ -11,19 +11,19 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     steps:
-      - name: Dump NPM Token
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-          NODE_TOKEN: ${{secrets.NPM_TOKEN}}
-        run: |
-          echo "$NODE_AUTH_TOKEN"
-          cat $NPM_CONFIG_USERCONFIG
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: NPM Token
+        run: |
+          echo "@haus-tech:registry=https://npm.pkg.github.com/ORG
+          //npm.pkg.github.com/:_authToken=$NODE_AUTH_TOKEN
+          always-auth=true" > .npmrc
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Confirm NPM Token
+        run: cat .npmrc
       - name: Setup Node
         uses: actions/setup-node@v3
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
