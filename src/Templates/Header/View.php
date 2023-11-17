@@ -32,7 +32,7 @@
             </div>
             <?php if ($data['contact_us_link'] && $data['contact_us_text']) { ?>
                 <div class="contact-button">
-                    <a href="<?= $data['contact_us_link']['url'] ?>">
+                    <a href="<?= $data['contact_us_link'] ?>">
                         <?= $data['contact_us_text'] ?>
                     </a>
                 </div>
@@ -74,7 +74,7 @@
 <?php include('CategoriesDropdown.php') ?>
 
 <script>
-    const productMenuId = '<?= $data['product_menu_id'] ?>';
+    const productMenuIds = <?= json_encode($data['products_menu_ids']) ?>;
 </script>
 
 <script>
@@ -125,22 +125,8 @@
         onCloseModal();
         onOpenModal();
     }
-
-    const menuItemProducts = document.getElementById('menu-item-' + productMenuId)
-
-    menuItemProducts.addEventListener('click', function (e) {
+    openMenu = (e) => {
         e.preventDefault();
-
-        const elements = document.querySelectorAll('[id^="menu-item-"]');
-
-        elements.forEach(element => {
-            if (element.id !== 'menu-item-' + productMenuId && element.classList.contains('current-menu-item')) {
-                element.classList.remove('current-menu-item');
-            }
-        });
-
-        menuItemProducts.classList.toggle('current-menu-item')
-
         document.getElementById('dropdown').classList.toggle('active-dropdown')
         document.getElementById('dropdown-menu').classList.toggle('active-dropdown-menu')
 
@@ -149,8 +135,17 @@
         }, 50);
 
         closeMobileMenuModal();
+    }
 
-    });
+    if (Array.isArray(productMenuIds)) {
+        productMenuIds.forEach((productMenuId) => {
+            const menuItemProducts = document.querySelectorAll('#menu-item-' + productMenuId);
+
+            menuItemProducts.forEach((menuItemProduct) => {
+                menuItemProduct.addEventListener('click', openMenu);
+            });
+        });
+    }
 
     const dropdown = document.getElementById('dropdown')
     const searchElement = document.getElementById('search-widget')

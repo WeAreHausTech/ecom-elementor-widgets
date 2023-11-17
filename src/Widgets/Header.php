@@ -3,6 +3,7 @@ namespace Haus\Widgets;
 
 use \Elementor\Widget_Base;
 use \Haus\Traits\ElementorTemplate;
+use Haus\SyncData\Helpers\WpmlHelper;
 
 class Header extends Widget_Base
 {
@@ -95,12 +96,24 @@ class Header extends Widget_Base
             ]
         );
 
+
         $this->add_control(
             'products_menu_id',
             [
                 'label' => __('Id på produkter:', 'webien'),
                 'type' => \Elementor\Controls_Manager::TEXT,
                 'label_block' => true,
+            ]
+        );
+
+        $this->add_control(
+            'products_menu_ids',
+            [
+                'label' => __('IDs på produkter:', 'webien'),
+                'type' => \Elementor\Controls_Manager::TEXTAREA,
+                'rows' => 4,
+                'label_block' => true,
+                'description' => __('Öppnar produktdropdownen. Kan ta emot flera idn, separera med kommatecken, tex 1, 2, 3', 'webien'),
             ]
         );
 
@@ -194,12 +207,40 @@ class Header extends Widget_Base
         $this->end_controls_section();
     }
 
+    public function createTranslatedButton()
+    {
+        $wpmlHelper = new WpmlHelper();
+        $currentLang = $wpmlHelper->getCurrentLang();
+    }
+
     public function getAllProductCategories()
     {
-        $term_args = array(
-            'taxonomy' => 'produkter-kategorier',
+        $wpmlHelper = new WpmlHelper();
+        $currentLang = $wpmlHelper->getCurrentLang();
+
+        global $wpdb;
+        $terms = $wpdb->prefix . 'terms';
+        $termmeta = $wpdb->prefix . 'termmeta';
+
+        $query = $wpdb->prepare(
+            "SELECT tt.term_id, tt.parent, t.name, t.slug, tr.language_code as lang
+             FROM wp_term_taxonomy tt 
+             LEFT JOIN $terms t ON tt.term_id = t.term_id 
+             LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
+             LEFT JOIN {$wpdb->prefix}icl_translations tr 
+             ON tt.term_taxonomy_id = tr.element_id
+             AND tr.element_type = 'tax_produkter-kategorier'
+            WHERE tr.language_code = '$currentLang' 
+             AND taxonomy = 'produkter-kategorier'"
         );
-        $termData = get_terms($term_args);
+
+        if ($currentLang === 'en') {
+            $page = '/en/products/categories/';
+        } else {
+            $page = '/produkter/kategorier/';
+        }
+
+        $termData = $wpdb->get_results($query, ARRAY_A);
 
         if (!is_array($termData) || empty($termData)) {
             return null;
@@ -208,31 +249,72 @@ class Header extends Widget_Base
         $terms = [];
 
         foreach ($termData as $key => $term) {
-            if ($term->parent == 0) {
-                $terms[$term->term_id]['data'] = $term;
+            $parent = $term['parent'];
+            $termId = $term['term_id'];
+
+            $term['slug'] = $page . $term['slug'];
+
+            if ($parent === '0') {
+                $terms[$termId]['data'] = $term;
             } else {
-                $terms[$term->parent]['children'][] = $term;
+                $terms[$parent]['children'][] = $term;
             }
         }
+
         return $terms;
     }
 
-    public function getTaxonomies($taxonomy)
+    public function getTaxonomies($taxonomy, $urlSv, $urlEn)
     {
-        $term_args = array(
-            'taxonomy' => $taxonomy,
+
+        $wpmlHelper = new WpmlHelper();
+        $currentLang = $wpmlHelper->getCurrentLang();
+        global $wpdb;
+        $terms = $wpdb->prefix . 'terms';
+        $termmeta = $wpdb->prefix . 'termmeta';
+
+
+
+        $query = $wpdb->prepare(
+            "SELECT tt.term_id, t.name, t.slug, tr.language_code as lang
+            FROM wp_term_taxonomy tt 
+            LEFT JOIN $terms t ON tt.term_id = t.term_id 
+            LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
+            LEFT JOIN {$wpdb->prefix}icl_translations tr 
+                ON tt.term_taxonomy_id = tr.element_id
+                AND tr.element_type = 'tax_{$taxonomy}'
+                WHERE tr.language_code =  '$currentLang' 
+            AND tm.meta_value IS NOT NULL
+            AND taxonomy= %s",
+            $taxonomy
         );
-        $termData = get_terms($term_args);
+
+        $termData = $wpdb->get_results($query, ARRAY_A);
 
         if (!is_array($termData) || empty($termData)) {
             return null;
         }
 
+        if ($currentLang === 'en') {
+            $page = $urlEn;
+        } else {
+            $page = $urlSv;
+        }
+
+        $terms = [];
+
+        foreach ($termData as $term) {
+            $term['slug'] = $page . $term['slug'];
+            $termId = $term['term_id'];
+            $terms[$termId] = $term;
+        }
+
         // Use array_values to reset the array keys
-        return array_values($termData);
+        return array_values($terms);
     }
 
-    protected function getFormatedMenuItems($menuId){
+    protected function getFormatedMenuItems($menuId)
+    {
         $loggedInMenu = wp_get_nav_menu_items($menuId);
         $formattedMenuItems = array();
 
@@ -246,14 +328,54 @@ class Header extends Widget_Base
         return $formattedMenuItems;
     }
 
+    protected function getHeadingBrands()
+    {
+        $wpmlHelper = new WpmlHelper();
+        $currentLang = $wpmlHelper->getCurrentLang();
+
+        if ($currentLang === 'en') {
+            return 'Brands';
+        } else {
+            return 'Varumärken';
+        }
+    }
+
+    protected function getHeadingDepartments()
+    {
+        $wpmlHelper = new WpmlHelper();
+        $currentLang = $wpmlHelper->getCurrentLang();
+
+        if ($currentLang === 'en') {
+            return 'Departments';
+        } else {
+            return 'Avdelningar';
+        }
+    }
+
     protected function render()
     {
+
+        $product_ids_string = $this->get_settings_for_display('products_menu_ids');
+
+        $product_ids = isset($product_ids_string) ? array_map('intval', explode(',', $product_ids_string)) : [];
+
+        $wpmlHelper = new WpmlHelper();
+        $currentLang = $wpmlHelper->getCurrentLang();
+
+        if ($currentLang === 'en') {
+            $buttonText = 'Contact us';
+            $buttonLink = '/en/contact-us/';
+        } else {
+            $buttonText = 'Kontakta oss';
+            $buttonLink = '/en/contact-us/';
+        }
+
         $data = [
             'logo' => $this->get_settings_for_display('logo'),
-            'contact_us_text' => $this->get_settings_for_display('contact_us_text'),
-            'contact_us_link' => $this->get_settings_for_display('contact_us_link'),
+            'contact_us_text' => $buttonText, 
+            'contact_us_link' => $buttonLink,
             'menu_id' => $this->get_settings_for_display('menu_id'),
-            'product_menu_id' => $this->get_settings_for_display('products_menu_id'),
+            'products_menu_ids' => $product_ids,
             'cart_redirect_to' => $this->get_settings_for_display('cart_redirect_to') ? $this->get_settings_for_display('cart_redirect_to') : '/varukorg',
             'search_placeholder' => $this->get_settings_for_display('search_placeholder'),
             'search_redirect' => $this->get_settings_for_display('search_redirect'),
@@ -268,15 +390,13 @@ class Header extends Widget_Base
 
         $taxonomies = [
             [
-                'heading' => 'Varumärken',
-                'link' => '/produkter/varumarken/',
-                'data' => $this->getTaxonomies('produkter-varumarken'),
+                'heading' => $this->getHeadingBrands(),
+                'data' => $this->getTaxonomies('produkter-varumarken', '/produkter/varumarken/', '/en/products/brands/'),
                 'class' => 'brand'
             ],
             [
-                'heading' => 'Avdelningar',
-                'link' => '/produkter/avdelningar/',
-                'data' => $this->getTaxonomies('produkter-avdelningar'),
+                'heading' => $this->getHeadingDepartments(),
+                'data' => $this->getTaxonomies('produkter-avdelningar', '/produkter/avdelningar/', '/en/products/departments/'),
                 'class' => 'department'
             ]
         ];
