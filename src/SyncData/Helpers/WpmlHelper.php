@@ -20,7 +20,7 @@ class WpmlHelper
         return $avalibleTranslations;
     }
 
-    public function getCurrentLang(){
+    public function getCurrentLang() {
         $currentLang = apply_filters( 'wpml_current_language', null );
 
         if (!isset($currentLang)) {
