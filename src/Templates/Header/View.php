@@ -139,10 +139,7 @@
 
     if (Array.isArray(productMenuIds)) {
         productMenuIds.forEach((productMenuId) => {
-            console.log('menu-item-' + productMenuId)
             const menuItemProducts = document.querySelectorAll('#menu-item-' + productMenuId);
-            console.log(menuItemProducts);
-
 
             menuItemProducts.forEach((menuItemProduct) => {
                 menuItemProduct.addEventListener('click', openMenu);
