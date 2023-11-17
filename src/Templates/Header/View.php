@@ -127,40 +127,60 @@
     }
     openMenu = (e) => {
         e.preventDefault();
-        document.getElementById('dropdown').classList.toggle('active-dropdown')
-        document.getElementById('dropdown-menu').classList.toggle('active-dropdown-menu')
+        document.getElementById('dropdown').classList.add('active-dropdown')
+        document.getElementById('dropdown-menu').classList.add('active-dropdown-menu')
 
         setTimeout(() => {
-            document.getElementById('dropdown-content').classList.toggle('active-dropdown-content')
+            document.getElementById('dropdown-content').classList.add('active-dropdown-content')
         }, 50);
 
         closeMobileMenuModal();
     }
-
-    if (Array.isArray(productMenuIds)) {
-        productMenuIds.forEach((productMenuId) => {
-            console.log('menu-item-' + productMenuId)
-            const menuItemProducts = document.querySelectorAll('#menu-item-' + productMenuId);
-            console.log(menuItemProducts);
-
-
-            menuItemProducts.forEach((menuItemProduct) => {
-                menuItemProduct.addEventListener('click', openMenu);
+    closeMenu = (e) => {
+        document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
+        setTimeout(() => {
+            document.getElementById('dropdown-menu').classList.remove('active-dropdown-menu');
+            document.getElementById('dropdown').classList.remove('active-dropdown');
+        }, 400);
+    }
+    updateDeviceType = () => {
+        if (Array.isArray(productMenuIds)) {
+            productMenuIds.forEach((productMenuId) => {
+                const menuItemProducts = document.querySelectorAll('#menu-item-' + productMenuId);
+                menuItemProducts.forEach((menuItemProduct) => {
+                    const isMobile = window.innerWidth <= 768;
+                    if (isMobile) {
+                        menuItemProduct.addEventListener('click', openMenu);
+                        menuItemProduct.removeEventListener('mouseover', openMenu);
+                    } else {
+                        menuItemProduct.addEventListener('mouseover', openMenu);
+                        menuItemProduct.removeEventListener('click', openMenu);
+                    }
+                });
             });
-        });
+        }
     }
 
-    const dropdown = document.getElementById('dropdown')
+    updateDeviceType();
+    window.addEventListener('resize', updateDeviceType);
+
+    const dropdown = document.getElementById('dropdown');
+
+    document.body.addEventListener('mouseover', (event) => {
+        const targetId = event.target.id;
+
+        if (dropdown.classList.contains('active-dropdown')) {
+            if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId.startsWith('menu-item-') || targetId.startsWith('see-more-')) {
+                return;
+            } else {
+                closeMenu();
+            }
+        }
+    })
+
     const searchElement = document.getElementById('search-widget')
 
-    dropdown.addEventListener('click', function (e) {
-        if (e.target.className === 'dropdown-menu active-dropdown-menu') {
-            menuItemProducts.classList.remove('current-menu-item')
-            closeProductModal();
-        }
-    });
-
-    searchElement.addEventListener('click', function (e) {
+     searchElement.addEventListener('click', function (e) {
         closeProductModal();
     });
 
@@ -175,12 +195,29 @@
         padding-top: var(--header-height);
     }
 
+    @media only screen and (min-width: 768px) {
+        #main-menu {
+            height: 84px;
+        }
+    }
+
     .icon-wrapper {
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
 
+    }
+
+
+    @media only screen and (min-width: 768px) {
+
+        .menu-header-main-container,
+        .menu,
+        .menu-header-main-engelska-container,
+        .menu-item {
+            height: 100%;
+        }
     }
 
     .dropdown {
@@ -221,10 +258,10 @@
         width: 100%;
         overflow-y: auto;
         max-height: 0;
-        height: 0;
+        height: auto;
         opacity: 0;
         transform: translateY(-30%);
-        transition: transform 0.4s ease, opacity 0.4s ease;
+        transition: 0.4s ease, transform 0.4s ease, z-index 0s ease 0.9s;
         padding: 46px 64px;
     }
 
@@ -365,6 +402,28 @@
         line-height: 150%;
     }
 
+    .dropdown-product-link {
+        display: none;
+    }
+
+    @media screen and (max-width: 768px) {
+        .dropdown-product-link {
+            display: block;
+            margin-top: 24px;
+            margin-left: 0px;
+
+        }
+
+        .dropdown-product-link a {
+            text-decoration: underline;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 150%;
+        }
+
+    }
+
     .dropdown-type {
         display: grid;
         grid-template-columns: 1fr;
@@ -373,6 +432,11 @@
         min-width: 200px;
     }
 
+    @media screen and (max-width: 768px) {
+        .dropdown-type {
+            grid-auto-rows: auto;
+        }
+    }
 
     .dropdown-menu .category,
     .dropdown-menu .brand ul,
@@ -415,10 +479,13 @@
     .logo,
     .mobile-logo {
         height: 76px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
     }
 
     .header a {
-        height: 100%;
         display: inline-block;
     }
 
@@ -474,22 +541,35 @@
     }
 
     .menu li {
-        padding: 5px 12px;
         color: var(--Almost-Black, #3E4849);
         font-size: 16px;
         font-style: normal;
         font-weight: 600;
         line-height: 160%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
     }
+
 
     .menu li:hover {
         border-radius: 20px;
-        background: var(--Gray-Light, #F2F2F2);
     }
+
+    .menu li a {
+        padding: 5px 12px;
+    }
+
+    .menu li a:hover {
+        border-radius: 20px;
+        background: var(--Gray-Light, #F2F2F2);
+
+    }
+
 
     .menu .current-menu-item {
         border-radius: 20px;
-        background: var(--Gray-Light, #F2F2F2);
     }
 
     .menu a:hover {
