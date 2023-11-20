@@ -4,7 +4,7 @@
   "version": "0.1.3",
   "type": "module",
   "scripts": {
-    "build-widgets": "rm -rf ./dist && rm -rf ./.parcel-cache && tsc && parcel build components/index.tsx --no-scope-hoist",
+    "build-widgets": "rm -rf ./dist && rm -rf ./.parcel-cache && tsc && parcel build --no-scope-hoist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -31,13 +31,22 @@
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "parcel-namer-rewrite": "^2.10.3-rc.1",
     "parcel-reporter-bundle-manifest": "^1.0.0",
     "path": "^0.12.7",
     "postcss": "^8.4.29",
     "sass": "^1.66.1",
     "typescript": "^5.0.2"
   },
+  "source": "components/index.tsx",
   "@parcel/resolver-default": {
     "packageExports": false
+  },
+  "parcel-namer-rewrite": {
+    "hashing": "always",
+    "rules": {
+      "(.*).css": "$1.{hash}.css",
+      "(.*).js": "$1.{hash}.js"
+    }
   }
 }

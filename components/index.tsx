@@ -52,169 +52,170 @@ const renderElement = async (element: Element, children: ReactNode) => {
   )
 }
 
-document.addEventListener(
-  'DOMContentLoaded',
-  async function () {
-    const elements: Element[] = Array.from(document.getElementsByClassName('ecom-components-root'))
-    elements.forEach((element: Element) => {
-      const dataAttributes = element.attributes
-      const widgetType = dataAttributes.getNamedItem('data-widget-type')?.value
+const init = async () => {
+  const elements: Element[] = Array.from(document.getElementsByClassName('ecom-components-root'))
+  elements.forEach((element: Element) => {
+    const dataAttributes = element.attributes
+    const widgetType = dataAttributes.getNamedItem('data-widget-type')?.value
 
-      switch (widgetType) {
-        case 'product-list':
-          const facetsAttributes = dataAttributes.getNamedItem('data-facet')?.value
-          let facetValues: FacetValueFilterInput[] = [{ or: [] }]
-          if (facetsAttributes) {
-            const facetArray = facetsAttributes.split(',').map(Number)
+    switch (widgetType) {
+      case 'product-list':
+        const facetsAttributes = dataAttributes.getNamedItem('data-facet')?.value
+        let facetValues: FacetValueFilterInput[] = [{ or: [] }]
+        if (facetsAttributes) {
+          const facetArray = facetsAttributes.split(',').map(Number)
 
-            if (facetArray?.length > 0) {
-              facetValues = facetArray.map((facet) => {
-                return { and: String(facet) } as FacetValueFilterInput
-              })
-            }
+          if (facetArray?.length > 0) {
+            facetValues = facetArray.map((facet) => {
+              return { and: String(facet) } as FacetValueFilterInput
+            })
           }
+        }
 
-          const collectionId = dataAttributes.getNamedItem('data-collection')?.value
+        const collectionId = dataAttributes.getNamedItem('data-collection')?.value
 
-          const enablePagination = +get(
-            dataAttributes.getNamedItem('data-pagination-enabled'),
-            'value',
-            0,
-          )
-          const enableSort = +get(dataAttributes.getNamedItem('data-sort-enabled'), 'value', 0)
+        const enablePagination = +get(
+          dataAttributes.getNamedItem('data-pagination-enabled'),
+          'value',
+          0,
+        )
+        const enableSort = +get(dataAttributes.getNamedItem('data-sort-enabled'), 'value', 0)
 
-          renderElement(
-            element,
-            <ProductList
-              searchInputProps={{
-                facetValueFilters: facetValues,
-                take: +get(dataAttributes.getNamedItem('data-take'), 'value', 12),
-                collectionId: collectionId,
-              }}
-              enablePagination={Boolean(enablePagination)}
-              enableSorting={Boolean(enableSort)}
-            />,
-          )
-          break
+        renderElement(
+          element,
+          <ProductList
+            searchInputProps={{
+              facetValueFilters: facetValues,
+              take: +get(dataAttributes.getNamedItem('data-take'), 'value', 12),
+              collectionId: collectionId,
+            }}
+            enablePagination={Boolean(enablePagination)}
+            enableSorting={Boolean(enableSort)}
+          />,
+        )
+        break
 
-        case 'checkout':
-          const checkoutMessage = dataAttributes.getNamedItem('data-custom-message')?.value
+      case 'checkout':
+        const checkoutMessage = dataAttributes.getNamedItem('data-custom-message')?.value
 
-          const cartPricePropsCheckout = {
-            subTotal:
-              dataAttributes.getNamedItem('data-show-subtotal')?.value === 'yes' ? true : false,
-            tax: dataAttributes.getNamedItem('data-show-tax')?.value === 'yes' ? true : false,
-            shipping:
-              dataAttributes.getNamedItem('data-show-shipping')?.value === 'yes' ? true : false,
-            total: dataAttributes.getNamedItem('data-show-total')?.value === 'yes' ? true : false,
-            customMessage: checkoutMessage ? checkoutMessage : '',
-          }
+        const cartPricePropsCheckout = {
+          subTotal:
+            dataAttributes.getNamedItem('data-show-subtotal')?.value === 'yes' ? true : false,
+          tax: dataAttributes.getNamedItem('data-show-tax')?.value === 'yes' ? true : false,
+          shipping:
+            dataAttributes.getNamedItem('data-show-shipping')?.value === 'yes' ? true : false,
+          total: dataAttributes.getNamedItem('data-show-total')?.value === 'yes' ? true : false,
+          customMessage: checkoutMessage ? checkoutMessage : '',
+        }
 
-          renderElement(
-            element,
-            <Checkout showLoginModal cartPriceProps={cartPricePropsCheckout} />,
-          )
-          break
+        renderElement(element, <Checkout showLoginModal cartPriceProps={cartPricePropsCheckout} />)
+        break
 
-        case 'product-detail':
-          const id = dataAttributes.getNamedItem('data-product')?.value
-          renderElement(element, id && <ProductDetail id={id} />)
-          break
+      case 'product-detail':
+        const id = dataAttributes.getNamedItem('data-product')?.value
+        renderElement(element, id && <ProductDetail id={id} />)
+        break
 
-        case 'cart':
-          const cartMessage = dataAttributes.getNamedItem('data-custom-message')?.value
-          const cartPricePropsCart = {
-            subTotal:
-              dataAttributes.getNamedItem('data-show-subtotal')?.value === 'yes' ? true : false,
-            tax: dataAttributes.getNamedItem('data-show-tax')?.value === 'yes' ? true : false,
-            shipping:
-              dataAttributes.getNamedItem('data-show-shipping')?.value === 'yes' ? true : false,
-            total: dataAttributes.getNamedItem('data-show-total')?.value === 'yes' ? true : false,
-            customMessage: cartMessage ? cartMessage : '',
-          }
+      case 'cart':
+        const cartMessage = dataAttributes.getNamedItem('data-custom-message')?.value
+        const cartPricePropsCart = {
+          subTotal:
+            dataAttributes.getNamedItem('data-show-subtotal')?.value === 'yes' ? true : false,
+          tax: dataAttributes.getNamedItem('data-show-tax')?.value === 'yes' ? true : false,
+          shipping:
+            dataAttributes.getNamedItem('data-show-shipping')?.value === 'yes' ? true : false,
+          total: dataAttributes.getNamedItem('data-show-total')?.value === 'yes' ? true : false,
+          customMessage: cartMessage ? cartMessage : '',
+        }
 
-          renderElement(element, <Cart cartPriceProps={cartPricePropsCart} />)
-          break
+        renderElement(element, <Cart cartPriceProps={cartPricePropsCart} />)
+        break
 
-        case 'search-field':
-          const redirect = dataAttributes.getNamedItem('data-redirect-to')?.value
-          const placeholder = dataAttributes.getNamedItem('data-placeholder')?.value
+      case 'search-field':
+        const redirect = dataAttributes.getNamedItem('data-redirect-to')?.value
+        const placeholder = dataAttributes.getNamedItem('data-placeholder')?.value
 
-          renderElement(
-            element,
-            <SearchField
-              openOnButton={true}
-              autofocus={true}
-              searchUrl={redirect}
-              placeholder={placeholder}
-            />,
-          )
-          break
+        renderElement(
+          element,
+          <SearchField
+            openOnButton={true}
+            autofocus={true}
+            searchUrl={redirect}
+            placeholder={placeholder}
+          />,
+        )
+        break
 
-        case 'currency-chooser':
-          renderElement(element, <CurrencyChooser />)
-          break
+      case 'currency-chooser':
+        renderElement(element, <CurrencyChooser />)
+        break
 
-        case 'order-confirmation':
-          renderElement(element, <OrderConfirmation />)
-          break
+      case 'order-confirmation':
+        renderElement(element, <OrderConfirmation />)
+        break
 
-        case 'dropdown-cart':
-          const cartUrl = dataAttributes.getNamedItem('data-redirect-to')?.value
+      case 'dropdown-cart':
+        const cartUrl = dataAttributes.getNamedItem('data-redirect-to')?.value
 
-          renderElement(element, <DropdownCart dropdownEnabled={false} cartUrl={cartUrl} />)
-          break
+        renderElement(element, <DropdownCart dropdownEnabled={false} cartUrl={cartUrl} />)
+        break
 
-        case 'login':
-          //TODO move url to translation file
-          const handleTriggerClick = () => {
-            window.location.href = '/'
-          }
-          renderElement(
-            element,
-            <Login onContinueAsGuest={handleTriggerClick} onLoggedIn={handleTriggerClick} />,
-          )
-          break
-        case 'account-dropdown':
-          const items = dataAttributes.getNamedItem('data-dropdown-items')?.value
-          let accountDropdownItems = []
+      case 'login':
+        //TODO move url to translation file
+        const handleTriggerClick = () => {
+          window.location.href = '/'
+        }
+        renderElement(
+          element,
+          <Login onContinueAsGuest={handleTriggerClick} onLoggedIn={handleTriggerClick} />,
+        )
+        break
+      case 'account-dropdown':
+        const items = dataAttributes.getNamedItem('data-dropdown-items')?.value
+        let accountDropdownItems = []
 
-          if (items) {
-            accountDropdownItems = JSON.parse(items)
-          }
+        if (items) {
+          accountDropdownItems = JSON.parse(items)
+        }
 
-          renderElement(
-            element,
-            <AccountDropdown useLoginModal={false} dropdownItems={accountDropdownItems} />,
-          )
-          break
+        renderElement(
+          element,
+          <AccountDropdown useLoginModal={false} dropdownItems={accountDropdownItems} />,
+        )
+        break
 
-        case 'account-details':
-          renderElement(element, <CustomerDetails />)
-          break
+      case 'account-details':
+        renderElement(element, <CustomerDetails />)
+        break
 
-        case 'orders':
-          const take = dataAttributes.getNamedItem('data-orders-take')?.value
-          const sort = dataAttributes.getNamedItem('data-orders-sort')?.value
-          const stateFilter = dataAttributes.getNamedItem('data-orders-state-filter')?.value
+      case 'orders':
+        const take = dataAttributes.getNamedItem('data-orders-take')?.value
+        const sort = dataAttributes.getNamedItem('data-orders-sort')?.value
+        const stateFilter = dataAttributes.getNamedItem('data-orders-state-filter')?.value
 
-          const orderListOptions: OrderListOptions = {
-            take: take ? +take : 10,
-            sort: { [sort ? sort : 'createdAt']: 'DESC' },
-            filter: {
-              state: {
-                eq: stateFilter ? stateFilter : undefined,
-              },
+        const orderListOptions: OrderListOptions = {
+          take: take ? +take : 10,
+          sort: { [sort ? sort : 'createdAt']: 'DESC' },
+          filter: {
+            state: {
+              eq: stateFilter ? stateFilter : undefined,
             },
-          }
+          },
+        }
 
-          renderElement(element, <Orders orderListOptions={orderListOptions} />)
-          break
-      }
-    })
-  },
-  false,
-)
+        renderElement(element, <Orders orderListOptions={orderListOptions} />)
+        break
+    }
+  })
+}
+
+if (document.readyState !== 'loading') {
+  init()
+} else {
+  document.addEventListener('DOMContentLoaded', function () {
+    init()
+  })
+}
 
 const resourceBundles = [
   {
