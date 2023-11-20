@@ -180,7 +180,7 @@
 
     const searchElement = document.getElementById('search-widget')
 
-     searchElement.addEventListener('click', function (e) {
+    searchElement.addEventListener('click', function (e) {
         closeProductModal();
     });
 
@@ -254,7 +254,7 @@
         justify-content: center;
         align-items: flex-start;
         border-radius: 0px 0px 20px 20px;
-        background: var(--White, #FFF);
+        background: var(--header-dropdown-background, #fff);
         width: 100%;
         overflow-y: auto;
         max-height: 0;
@@ -297,7 +297,7 @@
     }
 
     .see-more-button {
-        color: var(--Almost-Black, #3E4849) !important;
+        color: var(--header-see-more-button-color, #3E4849) !important;
         font-size: 14px !important;
         font-style: normal !important;
         font-weight: 400 !important;
@@ -315,7 +315,7 @@
         background-color: transparent !important;
         border: none !important;
         text-decoration: underline !important;
-        color: #000 !important;
+        color: var(--header-see-more-button-color-hover, #000) !important;
     }
 
     .dropdown-content .go-back-button {
@@ -326,7 +326,7 @@
         font-weight: 500;
         line-height: 140%;
         font-family: Inter;
-        color: var(--Almost-Black, #3E4849);
+        color: var(--header-go-back-button-color, #3E4849);
         padding: 8px 0;
         padding: 8px 0;
         display: flex;
@@ -340,13 +340,13 @@
         background: none;
         border: none;
         text-decoration: underline;
-        color: #000;
+        color: var(--header-go-back-button-color-hover, #000);
     }
 
     .child .see-more-button:hover {
         background: none;
         border: none;
-        color: #000;
+        color: var(--header-see-more-button-color-hover, #000);
     }
 
     .child .see-more-button:focus {
@@ -372,7 +372,7 @@
 
     .child-link {
         font-weight: 400;
-        color: var(--Almost-Black, #3E4849) !important;
+        color: var(--header-dropdown-child-color, #3E4849) !important;
         font-size: 14px;
         font-style: normal;
         font-weight: 400;
@@ -382,7 +382,7 @@
     .parent-link:hover,
     .child-link:hover a {
         text-decoration: underline;
-        color: #000 !important;
+        color: var(--header-dropdown-child-color-hover, #000) !important;
     }
 
 
@@ -472,7 +472,7 @@
         flex-wrap: wrap;
         position: fixed;
         top: 0;
-        background: white;
+        background: var(--header-background-color, #fff);
         z-index: 9999;
     }
 
@@ -508,8 +508,8 @@
         align-items: center;
         gap: 4px;
         border-radius: 8px;
-        border: 1px solid var(--Gray-Medium, #DEDEDE);
-        color: var(--Almost-Black, #3E4849);
+        border: 1px solid var(--header-contact-button-border-color, #DEDEDE);
+        color: var(--header-contact-button-color, #3E4849);
         font-family: Inter;
         font-size: 14px;
         font-style: normal;
@@ -522,7 +522,7 @@
     }
 
     .header .contact-button a:hover {
-        color: var(--Almost-Black, #3E4849);
+        color: var(--header-contact-button-color-hover, #3E4849);
         background: rgba(0, 0, 0, 0.05);
     }
 
@@ -541,7 +541,7 @@
     }
 
     .menu li {
-        color: var(--Almost-Black, #3E4849);
+        color: var(--header-menu-li-color, #3E4849);
         font-size: 16px;
         font-style: normal;
         font-weight: 600;
@@ -563,7 +563,7 @@
 
     .menu li a:hover {
         border-radius: 20px;
-        background: var(--Gray-Light, #F2F2F2);
+        background: var(--header-menu-li-color-hover, #F2F2F2);
 
     }
 
@@ -573,7 +573,7 @@
     }
 
     .menu a:hover {
-        color: var(--Almost-Black, #3E4849);
+        color: var(---header-menu-a-color, #3E4849);
     }
 
     .header-content {
@@ -619,7 +619,7 @@
     .mobile-icons .open-button button:hover,
     .close-button button:hover {
         border-radius: 20px;
-        background: var(--Gray-Light, #F2F2F2);
+        background: var(--header-icons-background-hover, #F2F2F2);
     }
 
     .mobile-icons {
@@ -684,7 +684,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            background-color: #fff;
+            background-color: var(--header-dropdown-background, #fff);
             overflow-y: hidden;
             padding: 20px 24px 24px 24px;
             z-index: 9999;
