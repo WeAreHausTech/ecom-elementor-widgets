@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-
 :root {
   /* Colors */
   --ec-primary-color-50: #f4f9f8;
@@ -115,6 +114,7 @@ body {
     --order-lines-remove-position: absolute;
     --order-lines-remove-top: 0;
     --order-lines-remove-right: 0;
+    --order-lines-item-content-text-wrapper-margin: 0 40px 0 0;
 
     --cart-price-flex: 0 0 30%;
     --cart-price-align-self: flex-start;
