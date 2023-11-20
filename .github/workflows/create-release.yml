@@ -29,7 +29,10 @@ jobs:
         run: cp .gitignore .gitignore.bak
 
       - name: Remove dist from gitignore
-        run: sed -i '/^dist$/d' .gitignore
+        run: |
+          sed -i '/^dist$/d' .gitignore
+          cat .gitignore
+          ls -la .
 
       - name: Create Release
         id: create_release
