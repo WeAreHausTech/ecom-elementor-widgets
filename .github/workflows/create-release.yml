@@ -24,6 +24,10 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
       - name: Build Widgets
         run: npm run build-widgets
+
+      - name: Remove dist from gitignore
+        run: sed -i '/dist/d' .gitignore
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -35,3 +39,6 @@ jobs:
           body: |
           draft: false
           prerelease: false
+
+      - name: Include dist in gitignore
+        run: sed -i -e 'dist' .gitignore
