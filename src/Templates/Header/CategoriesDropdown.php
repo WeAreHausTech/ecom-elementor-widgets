@@ -87,6 +87,9 @@
                     </div>
                 <?php } ?>
             </div>
+            <div class="dropdown-product-link">
+                <a href="<?= $data['product_page_url']?> "><?= $data['product_page']?></a>
+            </div>
         </div>
     </div>
 </div>

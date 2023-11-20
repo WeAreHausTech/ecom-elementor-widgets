@@ -56,28 +56,6 @@ class Header extends Widget_Base
             ]
         );
 
-        $this->add_control(
-            'contact_us_link',
-            [
-                'label' => __('Knapplänk', 'webien'),
-                'type' => \Elementor\Controls_Manager::URL,
-                'options' => ['url'],
-                'default' => [
-                    'url' => '',
-                ],
-                'label_block' => true,
-            ]
-        );
-
-        $this->add_control(
-            'contact_us_text',
-            [
-                'label' => __('Text i knapp:', 'webien'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'label_block' => true,
-            ]
-        );
-
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -91,16 +69,6 @@ class Header extends Widget_Base
             'menu_id',
             [
                 'label' => __('Id på meny:', 'webien'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'label_block' => true,
-            ]
-        );
-
-
-        $this->add_control(
-            'products_menu_id',
-            [
-                'label' => __('Id på produkter:', 'webien'),
                 'type' => \Elementor\Controls_Manager::TEXT,
                 'label_block' => true,
             ]
@@ -362,18 +330,11 @@ class Header extends Widget_Base
         $wpmlHelper = new WpmlHelper();
         $currentLang = $wpmlHelper->getCurrentLang();
 
-        if ($currentLang === 'en') {
-            $buttonText = 'Contact us';
-            $buttonLink = '/en/contact-us/';
-        } else {
-            $buttonText = 'Kontakta oss';
-            $buttonLink = '/en/contact-us/';
-        }
 
         $data = [
             'logo' => $this->get_settings_for_display('logo'),
-            'contact_us_text' => $buttonText, 
-            'contact_us_link' => $buttonLink,
+            'contact_us_text' => $currentLang === 'en' ? 'Contact us' : 'Kontakta oss',
+            'contact_us_link' => $currentLang === 'en' ? '/en/contact-us/' : 'kontakta-oss/',
             'menu_id' => $this->get_settings_for_display('menu_id'),
             'products_menu_ids' => $product_ids,
             'cart_redirect_to' => $this->get_settings_for_display('cart_redirect_to') ? $this->get_settings_for_display('cart_redirect_to') : '/varukorg',
@@ -381,6 +342,8 @@ class Header extends Widget_Base
             'search_redirect' => $this->get_settings_for_display('search_redirect'),
             'login_redirect' => $this->get_settings_for_display('login_redirect'),
             'login_show_as_modal' => $this->get_settings_for_display('login_show_as_modal'),
+            'product_page_url' => $currentLang === 'en' ? '/en/products/' : 'produkter/',
+            'product_page' => $currentLang === 'en' ? 'Show all products' : 'Visa alla produkter',
         ];
 
         $loggedInmenuId = $this->get_settings_for_display('login_in_menu_id');
