@@ -132,6 +132,13 @@ body {
     --product-list-item-padding: var(--ec-spacing-md, 24px);
 
     --search-field-background-color-overlay-background: rgba(0, 0, 0, 0.2);
+
+    --login-dialog-width: 630px;
+    --login-dialog-height: auto;
+    --login-dialog-max-height: 85vh;
+    --dialog-content-border-radius: var(--ec-border-radius-lg, 20px);
+    --close-button-top: 16px;
+    --close-button-right: 16px;
   }
 
   @media screen and (min-width: 1080px) {
