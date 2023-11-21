@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-refresh/only-export-components */
 /* eslint-disable no-case-declarations */
 import React, { ReactNode } from 'react'
 import ReactDOM from 'react-dom/client'
