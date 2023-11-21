@@ -1,4 +1,5 @@
 <?php
+
 namespace Haus\Widgets;
 
 use \Elementor\Widget_Base;
@@ -94,15 +95,6 @@ class Header extends Widget_Base
             ]
         );
 
-        $this->add_control(
-            'cart_redirect_to',
-            [
-                'label' => __('Varukorg länk:', 'webien'),
-                'description' => __('Länk till varukorgen, tex /varukorg', 'webien'),
-
-            ]
-        );
-
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -116,15 +108,6 @@ class Header extends Widget_Base
             'search_placeholder',
             [
                 'label' => __('Placeholder:', 'webien'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'label_block' => true,
-            ]
-        );
-
-        $this->add_control(
-            'search_redirect',
-            [
-                'label' => __('Söksidan:', 'webien'),
                 'type' => \Elementor\Controls_Manager::TEXT,
                 'label_block' => true,
             ]
@@ -148,18 +131,6 @@ class Header extends Widget_Base
                 'label_off' => esc_html__('Nej', 'webien'),
                 'return_value' => 'yes',
                 'default' => 'yes',
-            ]
-        );
-
-        $this->add_control(
-            'login_redirect',
-            [
-                'label' => __('Loginsidan:', 'webien'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'label_block' => true,
-                'condition' => [
-                    'login_show_as_modal!' => 'yes',
-                ],
             ]
         );
 

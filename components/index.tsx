@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-refresh/only-export-components */
 /* eslint-disable no-case-declarations */
 import React, { ReactNode } from 'react'
 import ReactDOM from 'react-dom/client'
@@ -104,8 +102,6 @@ const init = async () => {
         break
 
       case 'checkout':
-        const checkoutMessage = dataAttributes.getNamedItem('data-custom-message')?.value
-
         const cartPricePropsCheckout = {
           subTotal:
             dataAttributes.getNamedItem('data-show-subtotal')?.value === 'yes' ? true : false,
@@ -113,7 +109,7 @@ const init = async () => {
           shipping:
             dataAttributes.getNamedItem('data-show-shipping')?.value === 'yes' ? true : false,
           total: dataAttributes.getNamedItem('data-show-total')?.value === 'yes' ? true : false,
-          customMessage: checkoutMessage ? checkoutMessage : '',
+          customMessage: dataAttributes.getNamedItem('data-custom-message')?.value === 'yes' ? true : false,
         }
 
         renderElement(element, <Checkout showLoginModal cartPriceProps={cartPricePropsCheckout} />)
@@ -125,7 +121,6 @@ const init = async () => {
         break
 
       case 'cart':
-        const cartMessage = dataAttributes.getNamedItem('data-custom-message')?.value
         const cartPricePropsCart = {
           subTotal:
             dataAttributes.getNamedItem('data-show-subtotal')?.value === 'yes' ? true : false,
@@ -133,24 +128,18 @@ const init = async () => {
           shipping:
             dataAttributes.getNamedItem('data-show-shipping')?.value === 'yes' ? true : false,
           total: dataAttributes.getNamedItem('data-show-total')?.value === 'yes' ? true : false,
-          customMessage: cartMessage ? cartMessage : '',
+          customMessage: dataAttributes.getNamedItem('data-custom-message')?.value === 'yes' ? true : false,
         }
 
         renderElement(element, <Cart cartPriceProps={cartPricePropsCart} />)
         break
 
       case 'search-field':
-        const redirect = dataAttributes.getNamedItem('data-redirect-to')?.value
         const placeholder = dataAttributes.getNamedItem('data-placeholder')?.value
 
         renderElement(
           element,
-          <SearchField
-            openOnButton={true}
-            autofocus={true}
-            searchUrl={redirect}
-            placeholder={placeholder}
-          />,
+          <SearchField openOnButton={true} autofocus={true} placeholder={placeholder} />,
         )
         break
 
@@ -163,9 +152,7 @@ const init = async () => {
         break
 
       case 'dropdown-cart':
-        const cartUrl = dataAttributes.getNamedItem('data-redirect-to')?.value
-
-        renderElement(element, <DropdownCart dropdownEnabled={false} cartUrl={cartUrl} />)
+        renderElement(element, <DropdownCart dropdownEnabled={false} />)
         break
 
       case 'login':
