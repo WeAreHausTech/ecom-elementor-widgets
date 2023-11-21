@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: Livv Ecom Widgets Addon
  * Description: Livv ecom widgets for Elementor.
@@ -24,8 +25,14 @@ if (file_exists(HAUS_ECOM_PLUGIN_PATH . '/vendor/autoload.php')) {
 }
 
 add_action('wp_enqueue_scripts', function () {
-    wp_register_style('livv-ecom-addon', plugins_url('/dist/index.css', __FILE__));
-    wp_register_script('livv-ecom-addon', plugins_url('/dist/index.js', __FILE__));
+    $content = file_get_contents(plugins_url('/dist/parcel-manifest.json', __FILE__));
+    $content = json_decode($content, true);
+
+    $style = $content["index.scss"];
+    $script = $content["index.tsx"];
+
+    wp_register_style('livv-ecom-addon', plugins_url('/dist' . $style, __FILE__));
+    wp_register_script('livv-ecom-addon', plugins_url('/dist' . $script, __FILE__));
     wp_enqueue_style('livv-ecom-addon');
     wp_enqueue_script('livv-ecom-addon', '', [], false, ['strategy' => 'async']);
 });
@@ -57,7 +64,7 @@ add_action('init', function () {
     \Elementor\Plugin::instance()
         ->widgets_manager
         ->register(new \Haus\Widgets\Header());
-       \Elementor\Plugin::instance()
+    \Elementor\Plugin::instance()
         ->widgets_manager
         ->register(new \Haus\Widgets\Cart());
 
@@ -78,7 +85,6 @@ add_action('init', function () {
     \Elementor\Plugin::instance()
         ->widgets_manager
         ->register(new \Haus\Widgets\Orders());
-
 });
 
 
