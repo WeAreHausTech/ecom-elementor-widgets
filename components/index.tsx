@@ -94,8 +94,6 @@ const init = async () => {
         break
 
       case 'checkout':
-        const checkoutMessage = dataAttributes.getNamedItem('data-custom-message')?.value
-
         const cartPricePropsCheckout = {
           subTotal:
             dataAttributes.getNamedItem('data-show-subtotal')?.value === 'yes' ? true : false,
@@ -103,7 +101,7 @@ const init = async () => {
           shipping:
             dataAttributes.getNamedItem('data-show-shipping')?.value === 'yes' ? true : false,
           total: dataAttributes.getNamedItem('data-show-total')?.value === 'yes' ? true : false,
-          customMessage: !!checkoutMessage,
+          customMessage: dataAttributes.getNamedItem('data-custom-message')?.value === 'yes' ? true : false,
         }
 
         renderElement(element, <Checkout showLoginModal cartPriceProps={cartPricePropsCheckout} />)
@@ -115,7 +113,6 @@ const init = async () => {
         break
 
       case 'cart':
-        const cartMessage = dataAttributes.getNamedItem('data-custom-message')?.value
         const cartPricePropsCart = {
           subTotal:
             dataAttributes.getNamedItem('data-show-subtotal')?.value === 'yes' ? true : false,
@@ -123,7 +120,7 @@ const init = async () => {
           shipping:
             dataAttributes.getNamedItem('data-show-shipping')?.value === 'yes' ? true : false,
           total: dataAttributes.getNamedItem('data-show-total')?.value === 'yes' ? true : false,
-          customMessage: !!cartMessage,
+          customMessage: dataAttributes.getNamedItem('data-custom-message')?.value === 'yes' ? true : false,
         }
 
         renderElement(element, <Cart cartPriceProps={cartPricePropsCart} />)

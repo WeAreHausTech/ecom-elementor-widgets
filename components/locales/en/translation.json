@@ -24,10 +24,21 @@
   "account": {
     "accountDropdown": {
       "myOrders": "My orders",
-      "accountDetails": "Account details"
+      "accountDetails": "Account details",
+      "logout": "Logout"
     },
     "login": {
-      "dialogTitle": "Login for a better experience"
+      "dialogTitle": "Login for a better experience",
+      "validEmailErrorMessage": "Please enter a valid e-mail address",
+      "requiredEmailErrorMessage": "Please enter an e-mail address",
+      "shortPasswordErrorMessage": "Password must be at least 6 characters",
+      "longPasswordErrorMessage": "Password must be at most 50 characters",
+      "requiredPasswordErrorMessage": "Please enter a password",
+      "formTitle": "Login",
+      "email": "E-mail",
+      "password": "Password",
+      "submit": "Login",
+      "continueAsGuest": "Continue as guest"
     },
     "billingAddress": {
       "billingAddress": "Billing addresss",
@@ -50,10 +61,11 @@
     }
   },
   "order": {
-    "orderCode": "Order code",
-    "dueDate": "Due date",
-    "totalAmount": "Total amount",
-    "orderStatus": "Order status"
+    "code": "Order code",
+    "createdAt": "Created at",
+    "state": "State",
+    "subTotal": "Subtotal",
+    "subTotalWithTax": "Subtotal with tax"
   },
   "productDetail": {
     "addToCart": "Add to cart",
@@ -70,6 +82,16 @@
     "contactInfo": "Contact information",
     "cart": "Cart",
     "amountToPay": "Amount to pay"
+  },
+  "selectAddress": {
+    "company": "Företag",
+    "fullName": "Namn",
+    "streetLine1": "Adress",
+    "streetLine2": "Adress 2",
+    "postalCode": "Postnummer",
+    "province": "Län",
+    "city": "Ort",
+    "country": "Land"
   },
   "cartPrice": {
     "total": "Total amount",
@@ -127,6 +149,13 @@
   },
   "urls": {
     "login": "/en/log-in/",
-    "terms": "/en/terms-and-conditions//"
-}
+    "terms": "/en/terms/",
+    "orderConfirmation": "/en/order-confirmation/",
+    "checkout": "/en/checkout/",
+    "search": "/en/search/",
+    "account": "/en/my-pages/",
+    "products": "/en/products/",
+    "product": "$t(urls.products){{productsSlugOrId}}/", 
+    "cart": "/en/cart/"
+  }
 }
