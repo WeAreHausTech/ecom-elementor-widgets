@@ -93,3 +93,19 @@ if (defined('WP_CLI') && WP_CLI) {
         require_once HAUS_ECOM_PLUGIN_PATH . '/src/SyncData/Commands/SyncProductData.php';
     });
 }
+
+$json_file_path_en = $_SERVER['DOCUMENT_ROOT'] . '/locales/en/translation.json';
+$json_file_path_sv = $_SERVER['DOCUMENT_ROOT'] . '/locales/sv/translation.json';
+
+echo '<script>';
+if (file_exists($json_file_path_en)) {
+    $jsonDataEn = file_get_contents($json_file_path_en);
+    echo 'var jsonDataEn = ' . json_encode(json_decode($jsonDataEn)) . ';';
+}
+
+if (file_exists($json_file_path_sv)) {
+    $jsonDataSv = file_get_contents($json_file_path_sv);
+    echo 'var jsonDataSv = ' . json_encode(json_decode($jsonDataSv)) . ';';
+
+}
+echo '</script>';

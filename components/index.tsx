@@ -18,16 +18,24 @@ import {
   Orders,
 } from '@haus-tech/ecom-components'
 
-import './index.scss'
 import { get } from 'lodash'
 import styles from '@haus-tech/ecom-components/dist/ecom-style.css'
 import { FacetValueFilterInput, OrderListOptions } from '@haus-tech/ecom-components/vendure'
-import localeSv from './locales/sv/translation.json'
-import localeEn from './locales/en/translation.json'
 
 async function fetchCSSContent() {
   const response = await fetch(styles)
   return await response.text()
+}
+
+declare global {
+  interface Window {
+    jsonDataEn: {
+      [key: string]: string
+    }
+    jsonDataSv: {
+      [key: string]: string
+    }
+  }
 }
 
 const renderElement = async (element: Element, children: ReactNode) => {
@@ -209,14 +217,14 @@ const resourceBundles = [
     lng: 'sv',
     ns: 'translation',
     resources: {
-      ...localeSv,
+      ...window.jsonDataSv,
     },
   },
   {
     lng: 'en',
     ns: 'translation',
     resources: {
-      ...localeEn,
+      ...window.jsonDataEn,
     },
   },
 ]
