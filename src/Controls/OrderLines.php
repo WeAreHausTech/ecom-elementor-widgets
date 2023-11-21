@@ -3,7 +3,7 @@ namespace Haus\Controls;
 
 class OrderLines
 {
- public function getControlsForCartPrice($widget)
+	public function getControlsForCartPrice($widget)
 	{
 		$widget->start_controls_section(
 			'price_section',
@@ -65,8 +65,11 @@ class OrderLines
 			'custom-message',
 			[
 				'label' => __('Meddelande', 'webien'),
-				'type' => \Elementor\Controls_Manager::TEXT,
-				'label_block' => true,
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'label_on' => esc_html__('Visa', 'webien'),
+				'label_off' => esc_html__('Dölj', 'webien'),
+				'return_value' => 'yes',
+				'default' => 'yes',
 			]
 		);
 

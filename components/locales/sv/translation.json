@@ -24,10 +24,21 @@
   "account": {
     "accountDropdown": {
       "myOrders": "Mina ordrar",
-      "accountInfo": "Mina uppgifter"
+      "accountDetails": "Mina uppgifter",
+      "logout": "Logga ut"
     },
     "login": {
-      "dialogTitle": "Logga in för en bättre upplevelse"
+      "dialogTitle": "Logga in för en bättre upplevelse",
+      "validEmailErrorMessage": "Vänligen fyll i en giltig e-post",
+      "requiredEmailErrorMessage": "Vänligen fyll i e-post",
+      "shortPasswordErrorMessage": "Lösenordet måste vara minst 6 tecken",
+      "longPasswordErrorMessage": "Lösenordet får inte vara längre än 50 tecken",
+      "requiredPasswordErrorMessage": "Vänligen fyll i lösenord",
+      "formTitle": "Logga in på ditt Livv-konto",
+      "email": "E-post",
+      "password": "Lösenord",
+      "submit": "Logga in",
+      "continueAsGuest": "Fortsätt som gäst"
     },
     "billingAddress": {
       "billingAddress": "Faktureringsadress",
@@ -50,10 +61,11 @@
     }
   },
   "order": {
-    "orderCode": "Ordernummer",
-    "dueDate": "Förfallodatum",
-    "totalPrice": "Belopp",
-    "orderStatus": "Orderstatus"
+    "code": "Ordernummer",
+    "createdAt": "Orderdatum",
+    "state": "Status",
+    "subTotal": "Belopp",
+    "subTotalWithTax": "Belopp inkl. moms"
   },
   "productDetail": {
     "addToCart": "Lägg i varukorg",
@@ -70,6 +82,16 @@
     "contactInfo": "Kontaktuppgifter",
     "cart": "Varukorg",
     "amountToPay": "Att betala"
+  },
+  "selectAddress": {
+    "company": "Företag",
+    "fullName": "Namn",
+    "streetLine1": "Adress",
+    "streetLine2": "Adress 2",
+    "postalCode": "Postnummer",
+    "province": "Län",
+    "city": "Ort",
+    "country": "Land"
   },
   "cartPrice": {
     "total": "Betala",
@@ -127,6 +149,13 @@
   },
   "urls": {
     "login": "/logga-in/",
-    "terms": "/kopvillkor/"
+    "terms": "/kopvillkor/",
+    "orderConfirmation": "/order-confirmation/",
+    "checkout": "/kassa/",
+    "search": "/sok/",
+    "account": "/mina-sidor/",
+    "products": "/produkter/",
+    "product": "$t(urls.products){{productsSlugOrId}}/", 
+    "cart": "/varukorg/"
   }
 }
