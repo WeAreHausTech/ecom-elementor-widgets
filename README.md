@@ -8,7 +8,7 @@ Add NODE_AUTH_TOKEN to your .zshrc file to install @haus-tech/ecom-components
 
 ## Publish package
 
-`npm version <version number> && git psuh && git push --tags`
+`npm version <version number> && git push && git push --tags`
 
 # React + TypeScript + Vite
 
