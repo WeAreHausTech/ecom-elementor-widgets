@@ -94,18 +94,26 @@ if (defined('WP_CLI') && WP_CLI) {
     });
 }
 
-$json_file_path_en = $_SERVER['DOCUMENT_ROOT'] . '/locales/en/translation.json';
-$json_file_path_sv = $_SERVER['DOCUMENT_ROOT'] . '/locales/sv/translation.json';
+add_action('wp_head', function () {
+    $json_file_path_en = $_SERVER['DOCUMENT_ROOT'] . '/locales/en/translation.json';
+    $json_file_path_sv = $_SERVER['DOCUMENT_ROOT'] . '/locales/sv/translation.json';
+    $langData = [];
 
-echo '<script>';
-if (file_exists($json_file_path_en)) {
-    $jsonDataEn = file_get_contents($json_file_path_en);
-    echo 'var jsonDataEn = ' . json_encode(json_decode($jsonDataEn)) . ';';
-}
+    if (file_exists($json_file_path_en)) {
+        $langData[] = '"en":' . file_get_contents($json_file_path_en);
+    }
 
-if (file_exists($json_file_path_sv)) {
-    $jsonDataSv = file_get_contents($json_file_path_sv);
-    echo 'var jsonDataSv = ' . json_encode(json_decode($jsonDataSv)) . ';';
+    if (file_exists($json_file_path_sv)) {
+        $langData[] = '"sv":' . file_get_contents($json_file_path_sv);
+    }
 
-}
-echo '</script>';
+    if (empty($langData)) {
+        return;
+    }
+
+    ?>
+    <script>
+        var ecomLangData = {<?= implode(',',$langData) ?>};
+    </script>
+    <?php
+});

@@ -29,11 +29,10 @@ async function fetchCSSContent() {
 
 declare global {
   interface Window {
-    jsonDataEn: {
-      [key: string]: string
-    }
-    jsonDataSv: {
-      [key: string]: string
+    ecomLangData: {
+      [language: string]: {
+        [key: string]: string // or a more specific type
+      }
     }
   }
 }
@@ -52,7 +51,7 @@ const renderElement = async (element: Element, children: ReactNode) => {
   return ReactDOM.createRoot(shadowRoot).render(
     <React.StrictMode>
       <VendureApolloProvider apiUrl={vendureUrl ? vendureUrl : ''} vendureToken={vendureToken}>
-        <LocalizationProvider resourceBundles={resourceBundles}>{children}</LocalizationProvider>
+      <LocalizationProvider resourceBundles={resourceBundles}>{children}</LocalizationProvider>
       </VendureApolloProvider>
     </React.StrictMode>,
   )
@@ -109,7 +108,8 @@ const init = async () => {
           shipping:
             dataAttributes.getNamedItem('data-show-shipping')?.value === 'yes' ? true : false,
           total: dataAttributes.getNamedItem('data-show-total')?.value === 'yes' ? true : false,
-          customMessage: dataAttributes.getNamedItem('data-custom-message')?.value === 'yes' ? true : false,
+          customMessage:
+            dataAttributes.getNamedItem('data-custom-message')?.value === 'yes' ? true : false,
         }
 
         renderElement(element, <Checkout showLoginModal cartPriceProps={cartPricePropsCheckout} />)
@@ -128,7 +128,8 @@ const init = async () => {
           shipping:
             dataAttributes.getNamedItem('data-show-shipping')?.value === 'yes' ? true : false,
           total: dataAttributes.getNamedItem('data-show-total')?.value === 'yes' ? true : false,
-          customMessage: dataAttributes.getNamedItem('data-custom-message')?.value === 'yes' ? true : false,
+          customMessage:
+            dataAttributes.getNamedItem('data-custom-message')?.value === 'yes' ? true : false,
         }
 
         renderElement(element, <Cart cartPriceProps={cartPricePropsCart} />)
@@ -217,14 +218,14 @@ const resourceBundles = [
     lng: 'sv',
     ns: 'translation',
     resources: {
-      ...window.jsonDataSv,
+      ...window.ecomLangData.sv,
     },
   },
   {
     lng: 'en',
     ns: 'translation',
     resources: {
-      ...window.jsonDataEn,
+      ...window.ecomLangData.en,
     },
   },
 ]
