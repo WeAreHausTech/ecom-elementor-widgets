@@ -16,6 +16,11 @@ class WpHelper
         $this->defaultLang = $wpmlHelper->getDefaultLanguage();
     }
 
+    public static function log($out)
+    {
+        echo implode(', ', $out) . PHP_EOL;
+    }
+
     public function getAllProductsFromWp()
     {
         $products = $this->getProductsDefaultLang();

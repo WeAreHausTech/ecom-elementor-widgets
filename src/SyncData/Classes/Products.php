@@ -2,6 +2,7 @@
 namespace Haus\SyncData\Classes;
 
 use Haus\SyncData\Helpers\WpmlHelper;
+use Haus\SyncData\Helpers\WpHelper;
 
 class Products
 {
@@ -67,6 +68,8 @@ class Products
             ]
         ]);
 
+        WpHelper::log(['Creating product', $vendureId, $ProductName, $slug]);
+
         return $post;
 
     }
@@ -87,6 +90,8 @@ class Products
     public function deleteProduct($postId)
     {
         wp_delete_post($postId, true);
+
+        WpHelper::log(['Deleting product', $postId]);
         $this->deleted++;
     }
 
@@ -123,6 +128,8 @@ class Products
         $newPost[$lang] = $this->insertPost($vendureProduct['translations'][$lang]['productName'], $vendureProduct['translations'][$lang]['slug'], $vendureProduct['productId']);
         $wpmlHelper = new WpmlHelper();
         $wpmlHelper->setLanguageDetails($originalId['id'], $newPost, 'post_produkter');
+
+        WpHelper::log(['Create product translation', $vendureProduct['translations'][$lang]['productName'], $vendureProduct['translations'][$lang]['slug']]);
         $this->created++;
 
     }
@@ -134,6 +141,9 @@ class Products
             'post_title' => $postTitle,
             'post_name' => $postName
         ]);
+
+        WpHelper::log(['Updating product', $postTitle, $postName]);
+
         $this->updated++;
     }
 

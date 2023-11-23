@@ -151,9 +151,10 @@ class Taxonomies
 
         wp_update_term($termID, $taxonomy, $args);
 
+        WpHelper::log(['Updating taxonomy', $taxonomy, $name, $slug]);
+
         $this->updatedTaxonimies++;
     }
-
     public function createTranslatedTerm($vendureTerm, $taxonomy, $originalId, $lang, $vendureType)
     {
         $name = $vendureTerm['translations'][$lang]['name'];
@@ -168,6 +169,7 @@ class Taxonomies
         $wpmlHelper = new WpmlHelper();
 
         $wpmlHelper->setLanguageDetails($originalIdInt, $translations, $wmplType);
+
         $this->createdTaxonomies++;
     }
 
@@ -224,6 +226,8 @@ class Taxonomies
         delete_term_meta($id, 'vendure_term_id');
         wp_delete_term($id, $taxonomy);
 
+        WpHelper::log(['Deleting taxonomy', $taxonomy, $id]);
+
         $this->deletedTaxonomies++;
     }
 
@@ -248,6 +252,7 @@ class Taxonomies
     {
         $slug = isset($value['slug']) ? $value['slug'] : sanitize_title($value['name']);
         $term = $this->insertTerm($value['id'], $value['name'], $slug, $taxonomy, $vendureType);
+
         return $term;
     }
 
@@ -262,6 +267,8 @@ class Taxonomies
             $term = $this->insertTerm($value['id'], $translation['name'], $slug, $taxonomy, $vendureType);
             $translations[$lang] = $term;
         }
+
+        WpHelper::log(['Creating taxonomy', $lang, $taxonomy, $value['name'], $slug]);
         return $translations;
     }
 
@@ -290,6 +297,8 @@ class Taxonomies
         }
 
         add_term_meta($term['term_id'], $vendureType, $vendureId, true);
+
+        WpHelper::log(['Creating taxonomy', $taxonomy, $name, $slug]);
 
         return $term['term_id'];
     }
