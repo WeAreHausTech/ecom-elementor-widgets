@@ -22,8 +22,12 @@ jobs:
         run: npm install
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
       - name: Build Widgets
         run: npm run build-widgets
+      - name: Zip dist folder
+        run: zip -r dist.zip dist
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -36,12 +40,12 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload dist to Release
+      - name: Upload dist.zip to Release
         uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist
+          asset_path: ./dist.zip
           asset_name: dist.zip
           asset_content_type: application/zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
