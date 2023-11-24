@@ -27,7 +27,7 @@ jobs:
         run: npm run build-widgets
 
       - name: Create ZIP file
-        run: zip -r release.zip .
+        run: zip -r release.zip dist src package.json package-lock.json README.md composer.json composer.lock livv-ecom-addon.php
 
       - name: Create Release
         id: create_release
