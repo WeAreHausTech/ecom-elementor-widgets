@@ -105,7 +105,7 @@ class Products
 
         foreach ($update as $lang) {
             if ($lang === $this->defaultLang) {
-                $this->updatePost($wpProduct['id'], $vendureProduct['productName'], $vendureProduct['slug']);
+                $this->updatePost($wpProduct['id'], $vendureProduct['productName'], $vendureProduct['slug'],  $vendureProduct['productId']);
                 continue;
             }
 
@@ -116,7 +116,7 @@ class Products
                 $translatedSlug = $vendureProduct['translations'][$lang]['slug'];
                 $translatedName = $vendureProduct['translations'][$lang]['productName'];
 
-                $this->updatePost($translatedPostId, $translatedName, $translatedSlug);
+                $this->updatePost($translatedPostId, $translatedName, $translatedSlug, $vendureProduct['productId'] );
             } else {
                 $this->createTranslatedPost($vendureProduct, $wpProduct['id'], $lang);
             }
@@ -134,7 +134,7 @@ class Products
 
     }
 
-    public function updatePost($postId, $postTitle, $postName)
+    public function updatePost($postId, $postTitle, $postName, $vendureId)
     {
         wp_update_post([
             'ID' => $postId,
@@ -142,7 +142,7 @@ class Products
             'post_name' => $postName
         ]);
 
-        WpHelper::log(['Updating product', $postTitle, $postName]);
+        WpHelper::log(['Updating product', $postTitle, $postName, $vendureId]);
 
         $this->updated++;
     }
