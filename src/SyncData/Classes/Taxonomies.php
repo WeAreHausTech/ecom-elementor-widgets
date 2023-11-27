@@ -53,30 +53,42 @@ class Taxonomies
             if ($taxonomyType === 'collection') {
                 $vendureValues = $vendureHelper->getCollectionsFromVendure();
                 $wpTerms = $wpHelper->getAllCollectionsFromWp($taxonomyInfo['wp']);
+                $this->findMissMatchedTaxonomies($taxonomyInfo['wp'], $vendureValues, $wpTerms);
                 $this->syncAttributes($taxonomyInfo['wp'], $vendureValues, $wpTerms);
                 continue;
             } else {
                 $vendureValues = $facets[$taxonomyInfo['vendure']];
                 $wpTerms = $wpHelper->getAllTermsFromWp($taxonomyInfo['wp']);
+                $this->findMissMatchedTaxonomies($taxonomyInfo['wp'], $vendureValues, $wpTerms);
                 $this->syncAttributes($taxonomyInfo['wp'], $vendureValues, $wpTerms);
+            }
+        }
+    }
+
+    public function findMissMatchedTaxonomies($taxonomy, $vendureTerms, $wpTerms)
+    {
+        foreach ($vendureTerms as $vendureId => $vendureTerm) {
+            foreach ($wpTerms as $wpId => $wpTerm) {
+                $decodedWpName = html_entity_decode($wpTerm['name']);
+                if ($wpId === $vendureId && $decodedWpName !== $vendureTerm['name']) {
+                    $this->deleteTerm($wpTerm['term_id'], $taxonomy);
+                    $this->deleteTranslation($taxonomy, $wpTerm);
+                    WpHelper::log(['Deleted taxonomy missmatch', $taxonomy, $vendureTerm['name'], $decodedWpName]);
+                }
             }
         }
     }
 
     public function syncAttributes($taxonomy, $vendureTerms, $wpTerms)
     {
+
         //Exists in WP, not in Vendure
         $delete = array_diff_key($wpTerms, $vendureTerms);
 
         array_walk($delete, function ($term) use ($taxonomy) {
             $this->deleteTerm($term['term_id'], $taxonomy);
 
-            foreach ($term['translations'] as $lang => $translation) {
-
-                if ($translation && $translation['term_id']) {
-                    $this->deleteTerm($translation['term_id'], $taxonomy);
-                }
-            }
+            $this->deleteTranslation($taxonomy, $term);
         });
 
         //Exists in Vendure, not in WP
@@ -231,6 +243,15 @@ class Taxonomies
         $this->deletedTaxonomies++;
     }
 
+    public function deleteTranslation($taxonomy, $term)
+    {
+        foreach ($term['translations'] as $lang => $translation) {
+            if ($translation && $translation['term_id']) {
+                $this->deleteTerm($translation['term_id'], $taxonomy);
+            }
+        }
+    }
+
     public function addNewTerm($value, $taxonomy)
     {
         $vendureType = $taxonomy === 'produkter-kategorier' ? 'vendure_collection_id' : 'vendure_term_id';
@@ -301,7 +322,7 @@ class Taxonomies
         WpHelper::log(['Creating taxonomy', $taxonomy, $name, $slug]);
 
         return $term['term_id'];
-    }
+    } 
 
     public function getTermIdByVendureId($vendureId)
     {
