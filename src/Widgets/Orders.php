@@ -86,6 +86,11 @@ class Orders extends Widget_Base
       $this->getTemplate();
       return;
     }
+    
+     $filters = [];
+     forEach($settings['orders_state_filter'] as $filter) {
+       $filters[] = $filter;
+     }
 
     $widgetId = 'ecom_' . $this->get_id();?>
 
@@ -97,7 +102,7 @@ class Orders extends Widget_Base
       data-widget-type="orders"
       data-orders-sort="<?= $settings['orders_sort'] ?>"
       data-orders-take="<?= $settings['orders_take'] ?>"
-      data-orders-state-filter="<?= $settings['orders_state_filter'] ?>"
+      data-orders-state-filter="<?= implode(", ", $filters) ?>"
     >
     </div>
     <?php
