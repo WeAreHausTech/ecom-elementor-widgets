@@ -182,6 +182,8 @@ class Taxonomies
 
         $wpmlHelper->setLanguageDetails($originalIdInt, $translations, $wmplType);
 
+        WpHelper::log(['Creating translated term', $lang, $taxonomy, $name, $slug]);
+
         $this->createdTaxonomies++;
     }
 
@@ -274,10 +276,12 @@ class Taxonomies
         $slug = isset($value['slug']) ? $value['slug'] : sanitize_title($value['name']);
         $term = $this->insertTerm($value['id'], $value['name'], $slug, $taxonomy, $vendureType);
 
+        WpHelper::log(['Creating taxonomy', $taxonomy, $value['name'], $slug]);
+
         return $term;
     }
 
-    public function addNewTermTranslations($value, $taxonomy, $vendureType)
+    public function addNewTermTranslations($value, $taxonomy, $vendureType) 
     {
         $translations = [];
 
@@ -289,7 +293,7 @@ class Taxonomies
             $translations[$lang] = $term;
         }
 
-        WpHelper::log(['Creating taxonomy', $lang, $taxonomy, $value['name'], $slug]);
+        WpHelper::log(['Creating taxonomy translation', $lang, $taxonomy, $value['name'], $slug]);
         return $translations;
     }
 
@@ -318,8 +322,6 @@ class Taxonomies
         }
 
         add_term_meta($term['term_id'], $vendureType, $vendureId, true);
-
-        WpHelper::log(['Creating taxonomy', $taxonomy, $name, $slug]);
 
         return $term['term_id'];
     } 
