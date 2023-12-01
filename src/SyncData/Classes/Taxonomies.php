@@ -293,7 +293,7 @@ class Taxonomies
             $translations[$lang] = $term;
         }
 
-        WpHelper::log(['Creating taxonomy', $lang, $taxonomy, $value['name'], $slug]);
+        WpHelper::log(['Creating taxonomy translation', $lang, $taxonomy, $value['name'], $slug]);
         return $translations;
     }
 
@@ -322,8 +322,6 @@ class Taxonomies
         }
 
         add_term_meta($term['term_id'], $vendureType, $vendureId, true);
-
-        WpHelper::log(['Creating taxonomy', $taxonomy, $name, $slug]);
 
         return $term['term_id'];
     } 

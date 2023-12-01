@@ -4,6 +4,7 @@ namespace Haus\SyncData\Helpers;
 
 use Haus\SyncData\Helpers\WpmlHelper;
 use Haus\SyncData\Classes\Products;
+use Haus\SyncData\Classes\Taxonomies;
 
 class WpHelper
 {
@@ -257,7 +258,13 @@ class WpHelper
             $vendureFacetId = $term['vendure_term_id'];
             $lang = $term['lang'];
 
-            if (!isset($wpCollections[$vendureFacetId]) && $lang === $this->defaultLang) {
+            // If dobulettes exist, delete the one with default lang
+            if (isset($wpFacets[$vendureFacetId]) && $lang === $this->defaultLang) {
+                $taxonomiesInstance = new Taxonomies();
+                $taxonomiesInstance->deleteTerm($term["term_id"], $taxonomy);
+            }
+
+            if (!isset($wpFacets[$vendureFacetId]) && $lang === $this->defaultLang) {
                 $wpFacets[$vendureFacetId] = array(
                     "term_id" => $term["term_id"],
                     "name" => $term["name"],
@@ -266,7 +273,6 @@ class WpHelper
                     "translations" => [],
                 );
             }
-            ;
 
             if ($lang && $lang !== $this->defaultLang) {
                 $wpFacets[$vendureFacetId]['translations'][$lang] = array(
@@ -289,16 +295,18 @@ class WpHelper
         $query = $wpdb->prepare(
             "SELECT tt.term_id
             FROM wp_term_taxonomy tt
-                WHERE taxonomy = %s
-                AND (
-                    tt.term_id NOT IN (SELECT term_id FROM {$wpdb->prefix}termmeta WHERE meta_key = %s)
-                    OR tt.term_id IN (SELECT term_id FROM {$wpdb->prefix}termmeta WHERE meta_key = %s AND (meta_value IS NULL OR meta_value = ''))
-                    OR tt.term_id IN (SELECT element_id FROM {$wpdb->prefix}icl_translations WHERE element_type = %s AND language_code = '')
-                )",
-            $taxonomy,
+            LEFT JOIN {$wpdb->prefix}icl_translations icl ON tt.term_id = icl.element_id AND icl.element_type = %s
+            LEFT JOIN {$wpdb->prefix}termmeta tm ON tt.term_id = tm.term_id AND tm.meta_key = %s
+            WHERE tt.taxonomy = %s
+            AND (
+                tm.term_id IS NULL
+                OR tm.meta_value IS NULL
+                OR tm.meta_value = ''
+                OR icl.language_code IS NULL
+            )",
+            $wpmlType,
             $vendureType,
-            $vendureType,
-            $wpmlType
+            $taxonomy
         );
 
         return $wpdb->get_results($query, ARRAY_A);
