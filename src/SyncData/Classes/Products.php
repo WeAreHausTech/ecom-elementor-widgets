@@ -127,7 +127,7 @@ class Products
     {
         $newPost[$lang] = $this->insertPost($vendureProduct['translations'][$lang]['productName'], $vendureProduct['translations'][$lang]['slug'], $vendureProduct['productId']);
         $wpmlHelper = new WpmlHelper();
-        $wpmlHelper->setLanguageDetails($originalId['id'], $newPost, 'post_produkter');
+        $wpmlHelper->setLanguageDetails($originalId, $newPost, 'post_produkter');
 
         WpHelper::log(['Create product translation', $vendureProduct['translations'][$lang]['productName'], $vendureProduct['translations'][$lang]['slug']]);
         $this->created++;
@@ -158,7 +158,7 @@ class Products
         }
 
         foreach ($wpProduct['translations'] as $lang => $translation) {
-            if ($wpProduct['translations'] === []) {
+            if ($translation === []) {
                 $updateLang[] = $lang;
                 continue;
             }

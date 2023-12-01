@@ -3,6 +3,7 @@
 namespace Haus\SyncData\Helpers;
 
 use Haus\SyncData\Helpers\WpmlHelper;
+use Haus\SyncData\Classes\Products;
 
 class WpHelper
 {
@@ -42,8 +43,80 @@ class WpHelper
         return $products;
     }
 
+    public function getProductsToExclude()
+    {
+        global $wpdb;
+
+        $shouldBeExcluded = "1";
+        $queryExclude = $wpdb->prepare(
+            "SELECT p.ID as id
+             FROM {$wpdb->prefix}posts p
+             LEFT JOIN {$wpdb->prefix}postmeta pm2
+                 ON p.ID = pm2.post_id
+                AND pm2.meta_key = 'exclude_from_sync'
+             WHERE p.post_type = 'produkter'
+             AND pm2.meta_value = $shouldBeExcluded"
+        );
+
+        $exclude = $wpdb->get_results($queryExclude, ARRAY_A);
+
+        $wpmlHelper = new WpmlHelper();
+        $avalibleTranslations = $wpmlHelper->getAvalibleTranslations();
+
+        // get the translations after because exclude_from_sync does just exist in default lang
+        foreach ($exclude as $product) {
+            foreach ($avalibleTranslations as $lang) {
+                if ($lang === $this->defaultLang) {
+                    continue;
+                }
+                $exclude[] = $this->getProductTranslations($product['id'], $lang);
+            }
+        }
+
+        $excludedIds = [];
+        foreach ($exclude as $product) {
+            $excludedIds[] = intval($product['id']);
+        }
+
+        return $excludedIds;
+    }
+
+    public function deleteAllProductsWithoutVendureId()
+    {
+        global $wpdb;
+
+        $query = $wpdb->prepare(
+            "SELECT p.ID
+             FROM {$wpdb->prefix}posts p
+             LEFT JOIN {$wpdb->prefix}postmeta pm
+                ON p.ID = pm.post_id
+                AND pm.meta_key = 'vendure_id'
+             WHERE p.post_type = 'produkter'
+            AND (pm.meta_value IS NULL OR pm.meta_value = '')"
+        );
+
+        $productsToDelete = $wpdb->get_results($query, ARRAY_A);
+
+        if (empty($productsToDelete)) {
+            return;
+        }
+
+        $productsToExclude = $this->getProductsToExclude();
+        $filteredProductsToDelete = array_filter($productsToDelete, function ($product) use ($productsToExclude) {
+            return !in_array(intval($product['ID']), $productsToExclude);
+        });
+
+        foreach ($filteredProductsToDelete as $product) {
+            $productsInstance = new Products();
+            $productsInstance->deleteProduct($product['ID']);
+        }
+    }
+
+
     public function getProductsDefaultLang()
     {
+
+        $this->deleteAllProductsWithoutVendureId();
         global $wpdb;
 
         $query = $wpdb->prepare(
@@ -63,9 +136,7 @@ class WpHelper
                 AND post_type ='produkter'"
         );
 
-
         $products = $wpdb->get_results($query, ARRAY_A);
-
         return array_combine(array_column($products, 'vendure_id'), $products);
     }
 
