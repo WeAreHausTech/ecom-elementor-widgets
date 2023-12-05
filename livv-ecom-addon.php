@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Plugin Name: Livv Ecom Widgets Addon
- * Description: Livv ecom widgets for Elementor.
+ * Plugin Name: Ecom Widgets Addon
+ * Description: ecom widgets for Elementor.
  * Version:     0.0.1
  * Author:      Haus Tech
  * Author URI:  https://haus.se/
@@ -31,10 +31,10 @@ add_action('wp_enqueue_scripts', function () {
     $style = $content["index.scss"];
     $script = $content["index.tsx"];
 
-    wp_register_style('livv-ecom-addon', plugins_url('/dist' . $style, __FILE__));
-    wp_register_script('livv-ecom-addon', plugins_url('/dist' . $script, __FILE__));
-    wp_enqueue_style('livv-ecom-addon');
-    wp_enqueue_script('livv-ecom-addon', '', [], false, ['strategy' => 'async']);
+    wp_register_style('ecom-addon', plugins_url('/dist' . $style, __FILE__));
+    wp_register_script('ecom-addon', plugins_url('/dist' . $script, __FILE__));
+    wp_enqueue_style('ecom-addon');
+    wp_enqueue_script('ecom-addon', '', [], false, ['strategy' => 'async']);
 });
 
 add_action('init', function () {

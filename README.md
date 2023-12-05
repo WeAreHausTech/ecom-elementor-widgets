@@ -42,10 +42,10 @@ If you are developing a production application, we recommend updating the config
 Go to the wordpress root folder
 
 Remove the plugin folder
-`$ rm -rf web/app/plugins/livv-ecom-elementor-widgets/`
+`$ rm -rf web/app/plugins/ecom-elementor-widgets/`
 
 Symlink widgets repo
-`$ ln -s ~/<path-to-where-repo-exists>/livv-ecom-elementor-widgets web/app/plugins/livv-ecom-elementor-widgets`
+`$ ln -s ~/<path-to-where-repo-exists>/ecom-elementor-widgets web/app/plugins/ecom-elementor-widgets`
 
-Do your changes in livv-ecom-elementor-widgets and run this comand to see the changes
+Do your changes in ecom-elementor-widgets and run this comand to see the changes
 `$ npm run build-widgets`
