@@ -25,7 +25,7 @@ if (file_exists(HAUS_ECOM_PLUGIN_PATH . '/vendor/autoload.php')) {
 }
 
 add_action('wp_enqueue_scripts', function () {
-    $content = file_get_contents(plugins_url('/dist/parcel-manifest.json', __FILE__));
+    $content = file_get_contents(__DIR__ . '/dist/parcel-manifest.json');
     $content = json_decode($content, true);
 
     $style = $content["index.scss"];
