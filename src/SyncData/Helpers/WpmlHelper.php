@@ -4,9 +4,22 @@ namespace Haus\SyncData\Helpers;
 
 class WpmlHelper
 {
+    public function checkIfWpmlIsInstalled()
+    {
+        if (!defined('ICL_SITEPRESS_VERSION')) {
+            return false;
+        }
+
+        return true;
+    }
 
     public function getAvalibleTranslations()
     {
+
+        if (!$this->checkIfWpmlIsInstalled()) {
+            return ['sv'];
+        }
+
         $wpmlLanguages = apply_filters('wpml_active_languages', null, 'skip_missing=0');
 
         if (!isset($wpmlLanguages)) {
@@ -20,8 +33,9 @@ class WpmlHelper
         return $avalibleTranslations;
     }
 
-    public function getCurrentLang() {
-        $currentLang = apply_filters( 'wpml_current_language', null );
+    public function getCurrentLang()
+    {
+        $currentLang = apply_filters('wpml_current_language', null);
 
         if (!isset($currentLang)) {
             return 'sv';
@@ -32,6 +46,10 @@ class WpmlHelper
 
     public function getDefaultLanguage()
     {
+        if (!$this->checkIfWpmlIsInstalled()) {
+            return 'sv';
+        }
+
         return apply_filters('wpml_default_language', null);
     }
 

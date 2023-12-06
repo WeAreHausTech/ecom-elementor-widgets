@@ -11,10 +11,12 @@ class WpHelper
 
     public $defaultLang = '';
 
+    public $useWpml = false;
+
     public function __construct()
     {
         $wpmlHelper = new WpmlHelper();
-        $wpmlHelper->getDefaultLanguage();
+        $this->useWpml = $wpmlHelper->checkIfWpmlIsInstalled();
         $this->defaultLang = $wpmlHelper->getDefaultLanguage();
     }
 
@@ -113,29 +115,49 @@ class WpHelper
         }
     }
 
+    public function getProductsQuery(){
+
+        global $wpdb;
+
+        if ($this->useWpml) {
+            return  $wpdb->prepare(
+                "SELECT p.ID as id, p.post_title, p.post_name, pm.meta_value as vendure_id, pm2.meta_value as exclude_from_sync, t.language_code as lang
+                 FROM {$wpdb->prefix}posts p 
+                 LEFT JOIN  {$wpdb->prefix}postmeta pm
+                    ON p.ID = pm.post_id
+                    AND pm.meta_key = 'vendure_id'
+                LEFT JOIN {$wpdb->prefix}postmeta pm2
+                    ON p.ID = pm2.post_id
+                    AND pm2.meta_key = 'exclude_from_sync'
+                LEFT JOIN {$wpdb->prefix}icl_translations t
+                    ON p.ID = t.element_id
+                    AND t.element_type = 'post_produkter'
+                    AND t.language_code IS NOT NULL
+                    WHERE t.language_code = 'sv'
+                    AND post_type ='produkter'"
+            );
+        } else {
+            return  $wpdb->prepare(
+                "SELECT p.ID as id, p.post_title, p.post_name, pm.meta_value as vendure_id, pm2.meta_value as exclude_from_sync
+                 FROM {$wpdb->prefix}posts p 
+                 LEFT JOIN  {$wpdb->prefix}postmeta pm
+                    ON p.ID = pm.post_id
+                    AND pm.meta_key = 'vendure_id'
+                LEFT JOIN {$wpdb->prefix}postmeta pm2
+                    ON p.ID = pm2.post_id
+                    AND pm2.meta_key = 'exclude_from_sync'
+                    WHERE post_type ='produkter'"
+            );
+        }
+
+    }
 
     public function getProductsDefaultLang()
     {
-
         $this->deleteAllProductsWithoutVendureId();
         global $wpdb;
 
-        $query = $wpdb->prepare(
-            "SELECT p.ID as id, p.post_title, p.post_name, pm.meta_value as vendure_id, pm2.meta_value as exclude_from_sync, t.language_code as lang
-             FROM {$wpdb->prefix}posts p 
-             LEFT JOIN  {$wpdb->prefix}postmeta pm
-                ON p.ID = pm.post_id
-                AND pm.meta_key = 'vendure_id'
-            LEFT JOIN {$wpdb->prefix}postmeta pm2
-                ON p.ID = pm2.post_id
-                AND pm2.meta_key = 'exclude_from_sync'
-            LEFT JOIN {$wpdb->prefix}icl_translations t
-                ON p.ID = t.element_id
-                AND t.element_type = 'post_produkter'
-                AND t.language_code IS NOT NULL
-                WHERE t.language_code = 'sv'
-                AND post_type ='produkter'"
-        );
+        $query = $this->getProductsQuery();
 
         $products = $wpdb->get_results($query, ARRAY_A);
         return array_combine(array_column($products, 'vendure_id'), $products);

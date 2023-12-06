@@ -7,11 +7,12 @@ use Haus\SyncData\Helpers\WpmlHelper;
 class VendureHelper
 {
     public $defaultLang = '';
+    public $useWpml = false;
 
     public function __construct()
     {
         $wpmlHelper = new WpmlHelper();
-        $wpmlHelper->getDefaultLanguage();
+        $this->useWpml = $wpmlHelper->checkIfWpmlIsInstalled();
         $this->defaultLang = $wpmlHelper->getDefaultLanguage();
     }
 
