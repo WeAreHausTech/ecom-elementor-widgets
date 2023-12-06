@@ -102,6 +102,7 @@ class Products
 
     public function updateProduct($wpProduct, $vendureProduct)
     {
+
         $update = $this->isUpdatedInVendure($wpProduct, $vendureProduct);
 
         if ($update === []) {

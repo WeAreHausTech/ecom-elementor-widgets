@@ -55,6 +55,10 @@ class WpmlHelper
 
     public function getTermLanguage($termId, $taxonomy)
     {
+        if (!$this->checkIfWpmlIsInstalled()) {
+            return 'sv';
+        }
+
         $wpml_language_code = apply_filters(
             'wpml_element_language_code',
             null,
