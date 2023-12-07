@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Ecom Widgets Addon
  * Description: ecom widgets for Elementor.
- * Version:     0.0.1
+ * Version:     0.0.2
  * Author:      Haus Tech
  * Author URI:  https://haus.se/
  * GitHub Plugin URI: https://github.com/WeAreHausTech/ecom-elementor-widgets
