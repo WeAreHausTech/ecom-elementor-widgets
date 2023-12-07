@@ -7,6 +7,7 @@
  * Author:      Haus Tech
  * Author URI:  https://haus.se/
  * GitHub Plugin URI: https://github.com/WeAreHausTech/ecom-elementor-widgets
+ * Primary Branch: main
  * Text Domain: elementor-addon
  */
 
