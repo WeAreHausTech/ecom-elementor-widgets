@@ -12,6 +12,8 @@ class Taxonomies
     public $updatedTaxonimies = 0;
     public $deletedTaxonomies = 0;
     public $defaultLang = '';
+
+    public $useWpml = false;
     private $taxonomies = [
         'brand' => [
             'wp' => 'produkter-varumarken',
@@ -30,7 +32,7 @@ class Taxonomies
     public function __construct()
     {
         $wpmlHelper = new WpmlHelper();
-        $wpmlHelper->getDefaultLanguage();
+        $this->useWpml = $wpmlHelper->checkIfWpmlIsInstalled();
         $this->defaultLang = $wpmlHelper->getDefaultLanguage();
     }
 
@@ -203,6 +205,10 @@ class Taxonomies
             $updateLang[] = $this->defaultLang;
         }
 
+        if (!$this->useWpml) {
+            return $updateLang;
+        }
+
         if ($wpTerm['translations'] === []) {
             if ($vendureTerm['translations'] !== []) {
                 $updateLang[] = array_keys($vendureTerm['translations'])[0];
@@ -260,8 +266,13 @@ class Taxonomies
         $wmplType = 'tax_' . $taxonomy;
 
         $original = $this->addNewTermOriginal($value, $taxonomy, $vendureType);
-        $translations = $this->addNewTermTranslations($value, $taxonomy, $vendureType);
 
+        if (!$this->useWpml) {
+            $this->createdTaxonomies++;
+            return;
+        }
+
+        $translations = $this->addNewTermTranslations($value, $taxonomy, $vendureType);
 
         if ($original && $translations) {
             $wpmlHelper = new WpmlHelper();
@@ -281,7 +292,7 @@ class Taxonomies
         return $term;
     }
 
-    public function addNewTermTranslations($value, $taxonomy, $vendureType) 
+    public function addNewTermTranslations($value, $taxonomy, $vendureType)
     {
         $translations = [];
 
@@ -324,7 +335,7 @@ class Taxonomies
         add_term_meta($term['term_id'], $vendureType, $vendureId, true);
 
         return $term['term_id'];
-    } 
+    }
 
     public function getTermIdByVendureId($vendureId)
     {
