@@ -15,7 +15,7 @@ class WpHelper {
     public function __construct()
     {
         $wpmlHelper = new WpmlHelper();
-        $this->useWpml = $wpmlHelper->checkIfWpmlIsInstalled();
+        $this->useWpml = $wpmlHelper->hasWpml();
         $this->defaultLang = $wpmlHelper->getDefaultLanguage();
     }
 

@@ -64,6 +64,7 @@
                         </label>
                         <ul>
                             <?php foreach ($taxonomy['data'] as $index => $value) { ?>
+                                <?php $value = $value['data'] ?>
                                 <li class="child-link" data-parent="<?= $taxonomy['class'] ?>" class="child"
                                     style="display: <?= $index < 7 ? 'block' : 'none'; ?>">
                                     <a href="<?= $value['slug'] ?>/">

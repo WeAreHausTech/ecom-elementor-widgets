@@ -4,7 +4,7 @@ namespace Haus\SyncData\Helpers;
 
 class WpmlHelper
 {
-    public function checkIfWpmlIsInstalled()
+    public function hasWpml()
     {
         if (!defined('ICL_SITEPRESS_VERSION')) {
             return false;
@@ -16,7 +16,7 @@ class WpmlHelper
     public function getAvalibleTranslations()
     {
 
-        if (!$this->checkIfWpmlIsInstalled()) {
+        if (!$this->hasWpml()) {
             return ['sv'];
         }
 
@@ -46,7 +46,7 @@ class WpmlHelper
 
     public function getDefaultLanguage()
     {
-        if (!$this->checkIfWpmlIsInstalled()) {
+        if (!$this->hasWpml()) {
             return 'sv';
         }
 
@@ -55,7 +55,7 @@ class WpmlHelper
 
     public function getTermLanguage($termId, $taxonomy)
     {
-        if (!$this->checkIfWpmlIsInstalled()) {
+        if (!$this->hasWpml()) {
             return 'sv';
         }
 

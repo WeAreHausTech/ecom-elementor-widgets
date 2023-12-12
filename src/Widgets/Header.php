@@ -10,6 +10,16 @@ class Header extends Widget_Base
 {
     use ElementorTemplate;
 
+    private WpmlHelper $wpmlHelper;
+
+    public function __construct($data = [], $args = null)
+    {
+        parent::__construct($data, $args);
+
+        $this->wpmlHelper = new WpmlHelper();
+        $this->currentLang = $this->wpmlHelper->getCurrentLang();
+    }
+
     public function get_name()
     {
         return 'Header';
@@ -37,7 +47,6 @@ class Header extends Widget_Base
 
     protected function register_controls()
     {
-
         $this->start_controls_section(
             'header_section',
             [
@@ -146,99 +155,31 @@ class Header extends Widget_Base
         $this->end_controls_section();
     }
 
-    public function createTranslatedButton()
-    {
-        $wpmlHelper = new WpmlHelper();
-        $currentLang = $wpmlHelper->getCurrentLang();
-    }
-
-    public function getAllProductCategories()
-    {
-        $wpmlHelper = new WpmlHelper();
-        $currentLang = $wpmlHelper->getCurrentLang();
-
-        global $wpdb;
-        $terms = $wpdb->prefix . 'terms';
-        $termmeta = $wpdb->prefix . 'termmeta';
-
-        if ($wpmlHelper->checkIfWpmlIsInstalled()) {
-            $query = $wpdb->prepare(
-                "SELECT tt.term_id, tt.parent, t.name, t.slug, tr.language_code as lang
-                 FROM wp_term_taxonomy tt 
-                 LEFT JOIN $terms t ON tt.term_id = t.term_id 
-                 LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
-                 LEFT JOIN {$wpdb->prefix}icl_translations tr 
-                 ON tt.term_taxonomy_id = tr.element_id
-                 AND tr.element_type = 'tax_produkter-kategorier'
-                WHERE tr.language_code = '$currentLang' 
-                 AND taxonomy = 'produkter-kategorier'"
-            );
-        } else {
-            $query = $wpdb->prepare(
-            "SELECT tt.term_id, tt.parent, t.name, t.slug
-             FROM wp_term_taxonomy tt 
-             LEFT JOIN $terms t ON tt.term_id = t.term_id 
-             LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
-            WHERE taxonomy = 'produkter-kategorier'"
-            );
-        }
-
-        $termData = $wpdb->get_results($query, ARRAY_A);
-
-        if (!is_array($termData) || empty($termData)) {
-            return null;
-        }
-
-        if ($currentLang === 'en') {
-            $page = '/en/products/categories/';
-        } else {
-            $page = '/produkter/kategorier/';
-        }
-
-        $terms = [];
-        foreach ($termData as $key => $term) {
-            $parent = $term['parent'];
-            $termId = $term['term_id'];
-
-            $term['slug'] = $page . $term['slug'];
-
-            if ($parent === '0') {
-                $terms[$termId]['data'] = $term;
-            } else {
-                $terms[$parent]['children'][] = $term;
-            }
-        }
-
-        return $terms;
-    }
-
     public function getTaxonomies($taxonomy, $urlSv, $urlEn)
     {
-        $wpmlHelper = new WpmlHelper();
-        $currentLang = $wpmlHelper->getCurrentLang();
         global $wpdb;
         $terms = $wpdb->prefix . 'terms';
         $termmeta = $wpdb->prefix . 'termmeta';
 
-        if ($wpmlHelper->checkIfWpmlIsInstalled()) {
+        if ($this->wpmlHelper->hasWpml()) {
             $query = $wpdb->prepare(
-                "SELECT tt.term_id, t.name, t.slug, tr.language_code as lang
-                FROM wp_term_taxonomy tt 
-                LEFT JOIN $terms t ON tt.term_id = t.term_id 
+                "SELECT tt.term_id, tt.parent, t.name, t.slug, tr.language_code as lang
+                FROM wp_term_taxonomy tt
+                LEFT JOIN $terms t ON tt.term_id = t.term_id
                 LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
-                LEFT JOIN {$wpdb->prefix}icl_translations tr 
+                LEFT JOIN {$wpdb->prefix}icl_translations tr
                     ON tt.term_taxonomy_id = tr.element_id
                     AND tr.element_type = 'tax_{$taxonomy}'
-                    WHERE tr.language_code =  '$currentLang' 
+                    WHERE tr.language_code =  '$this->currentLang'
                 AND tm.meta_value IS NOT NULL
                 AND taxonomy= %s",
                 $taxonomy
             );
         } else {
             $query = $wpdb->prepare(
-                "SELECT tt.term_id, t.name, t.slug
-                FROM wp_term_taxonomy tt 
-                LEFT JOIN $terms t ON tt.term_id = t.term_id 
+                "SELECT tt.term_id, tt.parent, t.name, t.slug
+                FROM wp_term_taxonomy tt
+                LEFT JOIN $terms t ON tt.term_id = t.term_id
                 LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
                 WHERE tm.meta_value IS NOT NULL
                 AND taxonomy= %s",
@@ -252,18 +193,18 @@ class Header extends Widget_Base
             return null;
         }
 
-        if ($currentLang === 'en') {
-            $page = $urlEn;
-        } else {
-            $page = $urlSv;
-        }
-
+        $page = $this->lang($urlEn, $urlSv);
         $terms = [];
-
         foreach ($termData as $term) {
             $term['slug'] = $page . $term['slug'];
             $termId = $term['term_id'];
-            $terms[$termId] = $term;
+            $parent = $term['parent'];
+
+            if ($parent === '0') {
+                $terms[$termId]['data'] = $term;
+            } else {
+                $terms[$parent]['children'][] = $term;
+            }
         }
 
         // Use array_values to reset the array keys
@@ -285,45 +226,32 @@ class Header extends Widget_Base
         return $formattedMenuItems;
     }
 
-    protected function getHeadingBrands()
+    /**
+     * Returns a language-specific string based on the current language setting.
+     *
+     * @param string $en The string to return if the current language is English.
+     * @param string $default The string to return if the current language is not English.
+     *
+     * @return string The language-specific string.
+     */
+    protected function lang($en, $default)
     {
-        $wpmlHelper = new WpmlHelper();
-        $currentLang = $wpmlHelper->getCurrentLang();
-
-        if ($currentLang === 'en') {
-            return 'Brands';
+        if ($this->currentLang === 'en') {
+            return $en;
         } else {
-            return 'Varumärken';
-        }
-    }
-
-    protected function getHeadingDepartments()
-    {
-        $wpmlHelper = new WpmlHelper();
-        $currentLang = $wpmlHelper->getCurrentLang();
-
-        if ($currentLang === 'en') {
-            return 'Departments';
-        } else {
-            return 'Avdelningar';
+            return $default;
         }
     }
 
     protected function render()
     {
-
         $product_ids_string = $this->get_settings_for_display('products_menu_ids');
-
         $product_ids = isset($product_ids_string) ? array_map('intval', explode(',', $product_ids_string)) : [];
-
-        $wpmlHelper = new WpmlHelper();
-        $currentLang = $wpmlHelper->getCurrentLang();
-
 
         $data = [
             'logo' => $this->get_settings_for_display('logo'),
-            'contact_us_text' => $currentLang === 'en' ? 'Contact us' : 'Kontakta oss',
-            'contact_us_link' => $currentLang === 'en' ? '/en/contact-us/' : 'kontakta-oss/',
+            'contact_us_text' => $this->lang('Contact us', 'Kontakta oss'),
+            'contact_us_link' => $this->lang('/en/contact-us/', 'kontakta-oss/'),
             'menu_id' => $this->get_settings_for_display('menu_id'),
             'products_menu_ids' => $product_ids,
             'cart_redirect_to' => $this->get_settings_for_display('cart_redirect_to') ? $this->get_settings_for_display('cart_redirect_to') : '/varukorg',
@@ -331,23 +259,23 @@ class Header extends Widget_Base
             'search_redirect' => $this->get_settings_for_display('search_redirect'),
             'login_redirect' => $this->get_settings_for_display('login_redirect'),
             'login_show_as_modal' => $this->get_settings_for_display('login_show_as_modal'),
-            'product_page_url' => $currentLang === 'en' ? '/en/products/' : 'produkter/',
-            'product_page' => $currentLang === 'en' ? 'Show all products' : 'Visa alla produkter',
+            'product_page_url' => $this->lang('/en/products/', 'produkter/'),
+            'product_page' => $this->lang('Show all products', 'Visa alla produkter'),
         ];
 
         $loggedInmenuId = $this->get_settings_for_display('login_in_menu_id');
         $formattedMenuItems = $this->getFormatedMenuItems($loggedInmenuId);
 
-        $categories = $this->getAllProductCategories();
+        $categories = $this->getTaxonomies('produkter-kategorier', '/produkter/kategorier/', '/en/products/categories/');
 
         $taxonomies = [
             [
-                'heading' => $this->getHeadingBrands(),
+                'heading' => $this->lang('Brands', 'Varumärken'),
                 'data' => $this->getTaxonomies('produkter-varumarken', '/produkter/varumarken/', '/en/products/brands/'),
                 'class' => 'brand'
             ],
             [
-                'heading' => $this->getHeadingDepartments(),
+                'heading' => $this->lang('Departments', 'Avdelningar'),
                 'data' => $this->getTaxonomies('produkter-avdelningar', '/produkter/avdelningar/', '/en/products/departments/'),
                 'class' => 'department'
             ]
