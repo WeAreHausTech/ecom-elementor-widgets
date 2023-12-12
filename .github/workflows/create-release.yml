@@ -71,7 +71,7 @@ jobs:
           source: ./tmp
           target: /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.tmp
 
-      - name: multiple command
+      - name: Save old version and copy new version
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: hemglass.se.staging.haus.se
@@ -85,9 +85,6 @@ jobs:
             rm -rf /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.tmp
       
       # # Only create release if tag is pushed
-      # - name: Check if tag is pushed
-      #   id: check_tag
-      #   run: echo ::set-output name=tag::${GITHUB_REF##*/}
       # - name: Create Release
       #   id: create_release
       #   uses: actions/create-release@v1
