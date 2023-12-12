@@ -80,8 +80,9 @@ jobs:
           port: 22
           script: |
             rm -rf /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.old
-            mv -r /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets/ /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.old/
-            rsync --remove-source-files -r /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.tmp/ /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets/
+            mv /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets/ /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.old/
+            rsync -r /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.tmp/tmp/ /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets/
+            rm -rf /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.tmp
       
       # # Only create release if tag is pushed
       # - name: Check if tag is pushed
