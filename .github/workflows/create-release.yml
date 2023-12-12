@@ -52,8 +52,8 @@ jobs:
           host: hemglass.se.staging.haus.se
           username: 'deploy'
           key: ${{ secrets.SERVER_PRIVATE_KEY }}
-          source: ./tmp
-          target: /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.new
+          source: ./tmp/*
+          target: /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.new/
 
       - name: multiple command
         uses: appleboy/ssh-action@v1.0.0
