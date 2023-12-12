@@ -5,6 +5,7 @@ on:
     # Sequence of patterns matched against refs/tags
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+  workflow_dispatch:
 
 jobs:
   build:
@@ -27,7 +28,14 @@ jobs:
         run: npm run build-widgets
 
       - name: Create ZIP file
-        run: zip -r release.zip dist src package.json package-lock.json README.md composer.json composer.lock livv-ecom-addon.php
+        run: zip -r release.zip dist src package.json yarn.lock README.md composer.json composer.lock livv-ecom-addon.php
+
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SERVER_PRIVATE_KEY }}
+          name: id_rsa
+          known_hosts: ${{ secrets.SERVER_SSH_HOST }}
 
       - name: Create Release
         id: create_release
