@@ -52,8 +52,8 @@ jobs:
           host: hemglass.se.staging.haus.se
           username: 'deploy'
           key: ${{ secrets.SERVER_PRIVATE_KEY }}
-          source: ./tmp/*
-          target: /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.new/
+          source: ./tmp
+          target: /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/
 
       - name: multiple command
         uses: appleboy/ssh-action@v1.0.0
@@ -64,7 +64,8 @@ jobs:
           port: 22
           script: |
             mv /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.old
-            mv /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.new /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets
+            mv /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/tmp /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets
+            rm -rf /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/tmp
 
       # - name: Create Release
       #   id: create_release
