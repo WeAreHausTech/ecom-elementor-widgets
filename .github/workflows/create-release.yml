@@ -35,13 +35,13 @@ jobs:
         with:
           key: ${{ secrets.SERVER_PRIVATE_KEY_MATHIAS_TEST }}
           name: id_rsa
-          known_hosts: ${{ secrets.SERVER_SSH_HOST }}
+          known_hosts: ${{ secrets.SERVER_SSH_HOST_TEST }}
 
       - name: Publish
         uses: nogsantos/scp-deploy@master
         with:
           src: ./dist/*
-          host: ${{ secrets.SERVER_SSH_HOST }}
+          host: ${{ secrets.SERVER_SSH_HOST_TEST }}
           remote: /mnt/persist/www/hemglass.se.staging.haus.se/shared/
           port: 22
           user: deploy
@@ -50,7 +50,7 @@ jobs:
       - name: Upload ZIP file to server
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.SERVER_SSH_HOST }}
+          host: ${{ secrets.SERVER_SSH_HOST_TEST }}
           username: 'deploy'
           key: ${{ secrets.SERVER_PRIVATE_KEY_MATHIAS_TEST }}
           source: release.zip
