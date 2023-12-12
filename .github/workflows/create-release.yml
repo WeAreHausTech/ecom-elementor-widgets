@@ -30,11 +30,11 @@ jobs:
       - name: Copy files to tmp folder
         run: mkdir -p ./tmp && cp -r ./dist ./src ./package.json ./yarn.lock ./README.md ./composer.json ./composer.lock ./livv-ecom-addon.php ./tmp
 
-      # - name: Set version in addon.php if github.ref is a tag else set it to dev
-      #   if: startsWith(github.ref, 'refs/tags/v')
+      - name: Set version in addon.php if github.ref is a tag else set it to dev
+        # if: startsWith(github.ref, 'refs/tags/v')
 
-      #   # Replace VERSION with the tag name in addon.php
-      #   run: sed -i "s/VERSION/${{ github.ref }}/g" ./tmp/livv-ecom-addon.php
+        # Replace VERSION with the tag name in addon.php
+        run: sed -i "s/VERSION/${{ github.ref }}/g" ./tmp/livv-ecom-addon.php
         
       # - name: Create ZIP file
       #   run: zip -r ./tmp/release.zip dist src package.json yarn.lock README.md composer.json composer.lock livv-ecom-addon.php
@@ -65,7 +65,7 @@ jobs:
           script: |
             mv /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.old
             mv /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.tmp/tmp /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets
-            rm -rf /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/tmp
+            rm -rf /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.tmp
 
       # - name: Create Release
       #   id: create_release
