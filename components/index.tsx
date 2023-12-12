@@ -136,11 +136,9 @@ const init = async () => {
         break
 
       case 'search-field':
-        const placeholder = dataAttributes.getNamedItem('data-placeholder')?.value
-
         renderElement(
           element,
-          <SearchField openOnButton={true} autofocus={true} placeholder={placeholder} />,
+          <SearchField openOnButton={true} autofocus={true} />,
         )
         break
 
