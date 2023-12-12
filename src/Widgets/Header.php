@@ -161,22 +161,26 @@ class Header extends Widget_Base
         $terms = $wpdb->prefix . 'terms';
         $termmeta = $wpdb->prefix . 'termmeta';
 
-        $query = $wpdb->prepare(
-            "SELECT tt.term_id, tt.parent, t.name, t.slug, tr.language_code as lang
+        if ($wpmlHelper->checkIfWpmlIsInstalled()) {
+            $query = $wpdb->prepare(
+                "SELECT tt.term_id, tt.parent, t.name, t.slug, tr.language_code as lang
+                 FROM wp_term_taxonomy tt 
+                 LEFT JOIN $terms t ON tt.term_id = t.term_id 
+                 LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
+                 LEFT JOIN {$wpdb->prefix}icl_translations tr 
+                 ON tt.term_taxonomy_id = tr.element_id
+                 AND tr.element_type = 'tax_produkter-kategorier'
+                WHERE tr.language_code = '$currentLang' 
+                 AND taxonomy = 'produkter-kategorier'"
+            );
+        } else {
+            $query = $wpdb->prepare(
+            "SELECT tt.term_id, tt.parent, t.name, t.slug
              FROM wp_term_taxonomy tt 
              LEFT JOIN $terms t ON tt.term_id = t.term_id 
              LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
-             LEFT JOIN {$wpdb->prefix}icl_translations tr 
-             ON tt.term_taxonomy_id = tr.element_id
-             AND tr.element_type = 'tax_produkter-kategorier'
-            WHERE tr.language_code = '$currentLang' 
-             AND taxonomy = 'produkter-kategorier'"
-        );
-
-        if ($currentLang === 'en') {
-            $page = '/en/products/categories/';
-        } else {
-            $page = '/produkter/kategorier/';
+            WHERE taxonomy = 'produkter-kategorier'"
+            );
         }
 
         $termData = $wpdb->get_results($query, ARRAY_A);
@@ -185,8 +189,13 @@ class Header extends Widget_Base
             return null;
         }
 
-        $terms = [];
+        if ($currentLang === 'en') {
+            $page = '/en/products/categories/';
+        } else {
+            $page = '/produkter/kategorier/';
+        }
 
+        $terms = [];
         foreach ($termData as $key => $term) {
             $parent = $term['parent'];
             $termId = $term['term_id'];
@@ -205,28 +214,37 @@ class Header extends Widget_Base
 
     public function getTaxonomies($taxonomy, $urlSv, $urlEn)
     {
-
         $wpmlHelper = new WpmlHelper();
         $currentLang = $wpmlHelper->getCurrentLang();
         global $wpdb;
         $terms = $wpdb->prefix . 'terms';
         $termmeta = $wpdb->prefix . 'termmeta';
 
-
-
-        $query = $wpdb->prepare(
-            "SELECT tt.term_id, t.name, t.slug, tr.language_code as lang
-            FROM wp_term_taxonomy tt 
-            LEFT JOIN $terms t ON tt.term_id = t.term_id 
-            LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
-            LEFT JOIN {$wpdb->prefix}icl_translations tr 
-                ON tt.term_taxonomy_id = tr.element_id
-                AND tr.element_type = 'tax_{$taxonomy}'
-                WHERE tr.language_code =  '$currentLang' 
-            AND tm.meta_value IS NOT NULL
-            AND taxonomy= %s",
-            $taxonomy
-        );
+        if ($wpmlHelper->checkIfWpmlIsInstalled()) {
+            $query = $wpdb->prepare(
+                "SELECT tt.term_id, t.name, t.slug, tr.language_code as lang
+                FROM wp_term_taxonomy tt 
+                LEFT JOIN $terms t ON tt.term_id = t.term_id 
+                LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
+                LEFT JOIN {$wpdb->prefix}icl_translations tr 
+                    ON tt.term_taxonomy_id = tr.element_id
+                    AND tr.element_type = 'tax_{$taxonomy}'
+                    WHERE tr.language_code =  '$currentLang' 
+                AND tm.meta_value IS NOT NULL
+                AND taxonomy= %s",
+                $taxonomy
+            );
+        } else {
+            $query = $wpdb->prepare(
+                "SELECT tt.term_id, t.name, t.slug
+                FROM wp_term_taxonomy tt 
+                LEFT JOIN $terms t ON tt.term_id = t.term_id 
+                LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
+                WHERE tm.meta_value IS NOT NULL
+                AND taxonomy= %s",
+                $taxonomy
+            );
+        }
 
         $termData = $wpdb->get_results($query, ARRAY_A);
 
