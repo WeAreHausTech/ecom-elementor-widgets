@@ -6,6 +6,11 @@ on:
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number'
+        required: true
+        default: 'dev'
 
 jobs:
   build:
@@ -30,11 +35,15 @@ jobs:
       - name: Copy files to tmp folder
         run: mkdir -p ./tmp && cp -r ./dist ./src ./package.json ./yarn.lock ./README.md ./composer.json ./composer.lock ./livv-ecom-addon.php ./tmp
 
-      - name: Set version in addon.php if github.ref is a tag else set it to dev
-        # if: startsWith(github.ref, 'refs/tags/v')
-
-        # Replace VERSION with the tag name in addon.php
-        run: sed -i "s/VERSION/${{ github.ref }}/g" ./tmp/livv-ecom-addon.php
+      - name: Set version in addon.php
+        run: |
+          VERSION=${{ github.ref }}
+          if [[ $VERSION =~ refs/tags/* ]]; then
+            VERSION=${VERSION#refs/tags/}
+          else
+            VERSION=${{ github.event.inputs.version }} # Or a hardcoded default like 'dev'
+          fi
+          sed -i "s|{{VERSION}}|${VERSION}|g" ./tmp/livv-ecom-addon.php
         
       # - name: Create ZIP file
       #   run: zip -r ./tmp/release.zip dist src package.json yarn.lock README.md composer.json composer.lock livv-ecom-addon.php
