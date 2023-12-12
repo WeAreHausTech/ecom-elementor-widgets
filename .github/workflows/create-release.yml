@@ -37,24 +37,33 @@ jobs:
           name: id_rsa
           known_hosts: ${{ secrets.SERVER_SSH_HOST }}
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      - name: Upload ZIP file to server
+        uses: appleboy/scp-action@master
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          body: |
-          draft: false
-          prerelease: false
+          host: ${{ secrets.SERVER_SSH_HOST }}
+          username: 'deploy'
+          key: ${{ secrets.SERVER_PRIVATE_KEY }}
+          source: release.zip
+          target: /mnt/persist/www/hemglass.se.staging.haus.se/shared/relese.zip
 
-      - name: Upload dist.zip to Release
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release.zip
-          asset_name: release.zip
-          asset_content_type: application/zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Create Release
+      #   id: create_release
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      #   with:
+      #     tag_name: ${{ github.ref }}
+      #     release_name: ${{ github.ref }}
+      #     body: |
+      #     draft: false
+      #     prerelease: false
+
+      # - name: Upload dist.zip to Release
+      #   uses: actions/upload-release-asset@v1
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: ./release.zip
+      #     asset_name: release.zip
+      #     asset_content_type: application/zip
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
