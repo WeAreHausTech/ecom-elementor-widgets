@@ -4,7 +4,7 @@ Add NODE_AUTH_TOKEN to your .zshrc file to install @haus-tech/ecom-components
 
 ## build widgets
 
-`npm run build-widgets`
+`yarn build-widgets`
 
 ## Publish package
 
@@ -48,4 +48,4 @@ Symlink widgets repo
 `$ ln -s ~/<path-to-where-repo-exists>/ecom-elementor-widgets web/app/plugins/ecom-elementor-widgets`
 
 Do your changes in ecom-elementor-widgets and run this comand to see the changes
-`$ npm run build-widgets`
+`$ yarn build-widgets`
