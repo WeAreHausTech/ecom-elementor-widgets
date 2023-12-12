@@ -27,8 +27,11 @@ jobs:
       - name: Build Widgets
         run: npm run build-widgets
 
-      - name: Create ZIP file
-        run: zip -r release.zip dist src package.json yarn.lock README.md composer.json composer.lock livv-ecom-addon.php
+      - name: Copy files to tmp folder
+        run: mkdir -p ./tmp && cp -r ./dist ./src ./package.json ./yarn.lock ./README.md ./composer.json ./composer.lock ./livv-ecom-addon.php ./tmp
+
+      # - name: Create ZIP file
+      #   run: zip -r ./tmp/release.zip dist src package.json yarn.lock README.md composer.json composer.lock livv-ecom-addon.php
 
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
@@ -54,8 +57,8 @@ jobs:
           host: hemglass.se.staging.haus.se
           username: 'deploy'
           key: ${{ secrets.SERVER_PRIVATE_KEY }}
-          source: release.zip
-          target: /mnt/persist/www/hemglass.se.staging.haus.se/shared/relese.zip
+          source: ./tmp/*
+          target: /mnt/persist/www/hemglass.se.staging.haus.se/shared/tmp/
 
       # - name: Create Release
       #   id: create_release
