@@ -33,7 +33,7 @@ jobs:
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.SERVER_PRIVATE_KEY }}
+          key: ${{ secrets.SERVER_PRIVATE_KEY_MATHIAS_TEST }}
           name: id_rsa
           known_hosts: ${{ secrets.SERVER_SSH_HOST }}
 
@@ -42,7 +42,7 @@ jobs:
         with:
           host: ${{ secrets.SERVER_SSH_HOST }}
           username: 'deploy'
-          key: ${{ secrets.SERVER_PRIVATE_KEY }}
+          key: ${{ secrets.SERVER_PRIVATE_KEY_MATHIAS_TEST }}
           source: release.zip
           target: /mnt/persist/www/hemglass.se.staging.haus.se/shared/relese.zip
 
