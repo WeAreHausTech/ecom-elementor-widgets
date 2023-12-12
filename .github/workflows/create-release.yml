@@ -25,12 +25,12 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org/
       - name: Install Dependencies
-        run: npm install
+        run: yarn install
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
       - name: Build Widgets
-        run: npm run build-widgets
+        run: yarn build-widgets
 
       - name: Copy files to tmp folder
         run: mkdir -p ./tmp && cp -r ./dist ./src ./package.json ./yarn.lock ./README.md ./composer.json ./composer.lock ./livv-ecom-addon.php ./tmp
