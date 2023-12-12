@@ -12,6 +12,8 @@ class Taxonomies
     public $updatedTaxonimies = 0;
     public $deletedTaxonomies = 0;
     public $defaultLang = '';
+
+    public $useWpml = false;
     private $taxonomies = [
         'brand' => [
             'wp' => 'produkter-varumarken',
@@ -30,7 +32,7 @@ class Taxonomies
     public function __construct()
     {
         $wpmlHelper = new WpmlHelper();
-        $wpmlHelper->getDefaultLanguage();
+        $this->useWpml = $wpmlHelper->checkIfWpmlIsInstalled();
         $this->defaultLang = $wpmlHelper->getDefaultLanguage();
     }
 
@@ -53,30 +55,42 @@ class Taxonomies
             if ($taxonomyType === 'collection') {
                 $vendureValues = $vendureHelper->getCollectionsFromVendure();
                 $wpTerms = $wpHelper->getAllCollectionsFromWp($taxonomyInfo['wp']);
+                $this->findMissMatchedTaxonomies($taxonomyInfo['wp'], $vendureValues, $wpTerms);
                 $this->syncAttributes($taxonomyInfo['wp'], $vendureValues, $wpTerms);
                 continue;
             } else {
                 $vendureValues = $facets[$taxonomyInfo['vendure']];
                 $wpTerms = $wpHelper->getAllTermsFromWp($taxonomyInfo['wp']);
+                $this->findMissMatchedTaxonomies($taxonomyInfo['wp'], $vendureValues, $wpTerms);
                 $this->syncAttributes($taxonomyInfo['wp'], $vendureValues, $wpTerms);
+            }
+        }
+    }
+
+    public function findMissMatchedTaxonomies($taxonomy, $vendureTerms, $wpTerms)
+    {
+        foreach ($vendureTerms as $vendureId => $vendureTerm) {
+            foreach ($wpTerms as $wpId => $wpTerm) {
+                $decodedWpName = html_entity_decode($wpTerm['name']);
+                if ($wpId === $vendureId && $decodedWpName !== $vendureTerm['name']) {
+                    $this->deleteTerm($wpTerm['term_id'], $taxonomy);
+                    $this->deleteTranslation($taxonomy, $wpTerm);
+                    WpHelper::log(['Deleted taxonomy missmatch', $taxonomy, $vendureTerm['name'], $decodedWpName]);
+                }
             }
         }
     }
 
     public function syncAttributes($taxonomy, $vendureTerms, $wpTerms)
     {
+
         //Exists in WP, not in Vendure
         $delete = array_diff_key($wpTerms, $vendureTerms);
 
         array_walk($delete, function ($term) use ($taxonomy) {
             $this->deleteTerm($term['term_id'], $taxonomy);
 
-            foreach ($term['translations'] as $lang => $translation) {
-
-                if ($translation && $translation['term_id']) {
-                    $this->deleteTerm($translation['term_id'], $taxonomy);
-                }
-            }
+            $this->deleteTranslation($taxonomy, $term);
         });
 
         //Exists in Vendure, not in WP
@@ -170,6 +184,8 @@ class Taxonomies
 
         $wpmlHelper->setLanguageDetails($originalIdInt, $translations, $wmplType);
 
+        WpHelper::log(['Creating translated term', $lang, $taxonomy, $name, $slug]);
+
         $this->createdTaxonomies++;
     }
 
@@ -187,6 +203,10 @@ class Taxonomies
 
         if ($updateName || $updateSlug) {
             $updateLang[] = $this->defaultLang;
+        }
+
+        if (!$this->useWpml) {
+            return $updateLang;
         }
 
         if ($wpTerm['translations'] === []) {
@@ -231,14 +251,28 @@ class Taxonomies
         $this->deletedTaxonomies++;
     }
 
+    public function deleteTranslation($taxonomy, $term)
+    {
+        foreach ($term['translations'] as $lang => $translation) {
+            if ($translation && $translation['term_id']) {
+                $this->deleteTerm($translation['term_id'], $taxonomy);
+            }
+        }
+    }
+
     public function addNewTerm($value, $taxonomy)
     {
         $vendureType = $taxonomy === 'produkter-kategorier' ? 'vendure_collection_id' : 'vendure_term_id';
         $wmplType = 'tax_' . $taxonomy;
 
         $original = $this->addNewTermOriginal($value, $taxonomy, $vendureType);
-        $translations = $this->addNewTermTranslations($value, $taxonomy, $vendureType);
 
+        if (!$this->useWpml) {
+            $this->createdTaxonomies++;
+            return;
+        }
+
+        $translations = $this->addNewTermTranslations($value, $taxonomy, $vendureType);
 
         if ($original && $translations) {
             $wpmlHelper = new WpmlHelper();
@@ -252,6 +286,8 @@ class Taxonomies
     {
         $slug = isset($value['slug']) ? $value['slug'] : sanitize_title($value['name']);
         $term = $this->insertTerm($value['id'], $value['name'], $slug, $taxonomy, $vendureType);
+
+        WpHelper::log(['Creating taxonomy', $taxonomy, $value['name'], $slug]);
 
         return $term;
     }
@@ -268,7 +304,7 @@ class Taxonomies
             $translations[$lang] = $term;
         }
 
-        WpHelper::log(['Creating taxonomy', $lang, $taxonomy, $value['name'], $slug]);
+        WpHelper::log(['Creating taxonomy translation', $lang, $taxonomy, $value['name'], $slug]);
         return $translations;
     }
 
@@ -297,8 +333,6 @@ class Taxonomies
         }
 
         add_term_meta($term['term_id'], $vendureType, $vendureId, true);
-
-        WpHelper::log(['Creating taxonomy', $taxonomy, $name, $slug]);
 
         return $term['term_id'];
     }

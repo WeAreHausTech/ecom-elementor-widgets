@@ -1,11 +1,13 @@
 <?php
 
 /**
- * Plugin Name: Livv Ecom Widgets Addon
- * Description: Livv ecom widgets for Elementor.
- * Version:     0.0.1
+ * Plugin Name: Ecom Widgets Addon
+ * Description: ecom widgets for Elementor.
+ * Version:     0.0.2
  * Author:      Haus Tech
  * Author URI:  https://haus.se/
+ * GitHub Plugin URI: https://github.com/WeAreHausTech/ecom-elementor-widgets
+ * Primary Branch: main
  * Text Domain: elementor-addon
  */
 
@@ -25,16 +27,16 @@ if (file_exists(HAUS_ECOM_PLUGIN_PATH . '/vendor/autoload.php')) {
 }
 
 add_action('wp_enqueue_scripts', function () {
-    $content = file_get_contents(plugins_url('/dist/parcel-manifest.json', __FILE__));
+    $content = file_get_contents(__DIR__ . '/dist/parcel-manifest.json');
     $content = json_decode($content, true);
 
     $style = $content["index.scss"];
     $script = $content["index.tsx"];
 
-    wp_register_style('livv-ecom-addon', plugins_url('/dist' . $style, __FILE__));
-    wp_register_script('livv-ecom-addon', plugins_url('/dist' . $script, __FILE__));
-    wp_enqueue_style('livv-ecom-addon');
-    wp_enqueue_script('livv-ecom-addon', '', [], false, ['strategy' => 'async']);
+    wp_register_style('ecom-addon', plugins_url('/dist' . $style, __FILE__));
+    wp_register_script('ecom-addon', plugins_url('/dist' . $script, __FILE__));
+    wp_enqueue_style('ecom-addon');
+    wp_enqueue_script('ecom-addon', '', [], false, ['strategy' => 'async']);
 });
 
 add_action('init', function () {

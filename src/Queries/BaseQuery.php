@@ -17,7 +17,7 @@ class BaseQuery
             'base_uri' => VENDURE_API_URL .'?languageCode=' . $languageCode,
             'headers' => [
                 'Content-Type' => 'application/json',
-                'vendure-token'=> 'livv-3at76503kq',
+                'vendure-token'=> VENDURE_TOKEN,
                 ],
                 'body' => json_encode([
                     'query' => $this->query,

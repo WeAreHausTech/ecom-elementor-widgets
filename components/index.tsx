@@ -51,7 +51,7 @@ const renderElement = async (element: Element, children: ReactNode) => {
   return ReactDOM.createRoot(shadowRoot).render(
     <React.StrictMode>
       <VendureApolloProvider apiUrl={vendureUrl ? vendureUrl : ''} vendureToken={vendureToken}>
-      <LocalizationProvider resourceBundles={resourceBundles}>{children}</LocalizationProvider>
+        <LocalizationProvider resourceBundles={resourceBundles}>{children}</LocalizationProvider>
       </VendureApolloProvider>
     </React.StrictMode>,
   )
@@ -189,14 +189,23 @@ const init = async () => {
         const sort = dataAttributes.getNamedItem('data-orders-sort')?.value
         const stateFilter = dataAttributes.getNamedItem('data-orders-state-filter')?.value
 
+        let filters: string[] = []
+
+        if (stateFilter) {
+          filters = stateFilter.split(', ')
+        }
+
         const orderListOptions: OrderListOptions = {
           take: take ? +take : 10,
           sort: { [sort ? sort : 'createdAt']: 'DESC' },
-          filter: {
+        }
+
+        if (filters.length > 0) {
+          orderListOptions.filter = {
             state: {
-              eq: stateFilter ? stateFilter : undefined,
+              in: filters,
             },
-          },
+          }
         }
 
         renderElement(element, <Orders orderListOptions={orderListOptions} />)

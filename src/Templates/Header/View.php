@@ -50,6 +50,7 @@
         </div>
         <div class="mobile-icons">
             <?php include('Search.php') ?>
+            <?php include('Login.php') ?>
             <?php include('Cart.php') ?>
 
             <div class="open-button">
