@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Plugin Name: Ecom Widgets Addon
- * Description: ecom widgets for Elementor. Lastest commit: {{COMMIT_DATE}}. Build date: {{BUILD_DATE}}
+ * Plugin Name: Haus Ecom Elementor Widgets
+ * Description: Lastest commit: {{COMMIT_DATE}}. Build date: {{BUILD_DATE}}
  * Version:     {{VERSION}}
  * Author:      Haus Tech
  * Author URI:  https://haus.se/
