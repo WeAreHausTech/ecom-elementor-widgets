@@ -57,7 +57,12 @@ class ProductList extends Widget_Base
 
     public function add_facet_controls()
     {
-        $facets = (new \Haus\Queries\Facet)->get('sv');
+        $facets = get_transient('ecom-haus-queries-facet');
+
+        if (!$facets) {
+            $facets = (new \Haus\Queries\Facet)->get('sv');
+            set_transient('ecom-haus-queries-facet', $facets, 60 * 5);
+        }
 
         if (!isset($facets['data']['facets']['items'])) {
             return;
