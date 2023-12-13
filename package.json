@@ -23,6 +23,7 @@
     "@parcel/transformer-raw": "^2.10.0",
     "@parcel/transformer-sass": "^2.10.0",
     "@parcel/transformer-typescript-types": "^2.10.0",
+    "@rollup/plugin-terser": "^0.4.4",
     "@types/lodash": "^4.14.198",
     "@types/node": "^20.8.6",
     "@types/react": "^18.2.15",
@@ -38,6 +39,7 @@
     "path": "^0.12.7",
     "postcss": "^8.4.29",
     "sass": "^1.66.1",
+    "terser": "^5.26.0",
     "typescript": "^5.0.2"
   },
   "source": "components/index.tsx",
