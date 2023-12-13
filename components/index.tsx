@@ -113,8 +113,10 @@ const init = async () => {
 
       case 'product-detail':
         const ProductDetail = React.lazy(() => import('./widgets/ProductDetail'))
-        const id = dataAttributes.getNamedItem('data-product')?.value
-        renderElement(element, id && <ProductDetail id={id} />)
+        // const id = dataAttributes.getNamedItem('data-product')?.value
+        const slug = dataAttributes.getNamedItem('data-product-slug')?.value
+
+        renderElement(element, slug && <ProductDetail slug={slug} />)
         break
 
       case 'cart':
