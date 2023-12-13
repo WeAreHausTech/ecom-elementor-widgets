@@ -26,17 +26,13 @@ if (file_exists(HAUS_ECOM_PLUGIN_PATH . '/vendor/autoload.php')) {
     require HAUS_ECOM_PLUGIN_PATH . '/vendor/autoload.php';
 }
 
-add_action('wp_enqueue_scripts', function () {
-    $content = file_get_contents(__DIR__ . '/dist/parcel-manifest.json');
+add_action('wp_head', function() {
+    $content = file_get_contents(__DIR__ . '/dist/.vite/manifest.json');
     $content = json_decode($content, true);
-
-    $style = $content["index.scss"];
-    $script = $content["index.tsx"];
-
-    wp_register_style('ecom-addon', plugins_url('/dist' . $style, __FILE__));
-    wp_register_script('ecom-addon', plugins_url('/dist' . $script, __FILE__));
-    wp_enqueue_style('ecom-addon');
-    wp_enqueue_script('ecom-addon', '', [], false, ['strategy' => 'async']);
+    $script = $content["components/index.tsx"]["file"];
+    ?>
+    <script src="<?= plugins_url('/dist/' . $script, __FILE__) ?>" id="ecom-addon-js" async="" data-wp-strategy="async" type="module"></script>
+    <?php
 });
 
 add_action('init', function () {

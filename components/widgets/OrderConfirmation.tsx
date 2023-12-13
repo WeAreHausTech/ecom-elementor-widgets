@@ -1,0 +1,1 @@
+export { OrderConfirmation as default } from '@haus-tech/ecom-components'
