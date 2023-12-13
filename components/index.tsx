@@ -1,26 +1,15 @@
 /* eslint-disable no-case-declarations */
-import React, { ReactNode } from 'react'
+import React, { ReactNode, Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
 import {
-  Cart,
-  Checkout,
-  CurrencyChooser,
-  OrderConfirmation,
-  ProductDetail,
-  ProductList,
-  DropdownCart,
   VendureApolloProvider,
-  SearchField,
   LocalizationProvider,
-  AccountDropdown,
-  Login,
-  CustomerDetails,
-  Orders,
+  FacetValueFilterInput,
+  OrderListOptions,
 } from '@haus-tech/ecom-components'
 
 import { get } from 'lodash'
-import styles from '@haus-tech/ecom-components/dist/ecom-style.css'
-import { FacetValueFilterInput, OrderListOptions } from '@haus-tech/ecom-components/vendure'
+import styles from '@haus-tech/ecom-components/dist/ecom-style.css?url'
 
 async function fetchCSSContent() {
   const response = await fetch(styles)
@@ -86,21 +75,25 @@ const init = async () => {
         )
         const enableSort = +get(dataAttributes.getNamedItem('data-sort-enabled'), 'value', 0)
 
+        const ProductList = React.lazy(() => import('./widgets/ProductList'))
         renderElement(
           element,
-          <ProductList
-            searchInputProps={{
-              facetValueFilters: facetValues,
-              take: +get(dataAttributes.getNamedItem('data-take'), 'value', 12),
-              collectionId: collectionId,
-            }}
-            enablePagination={Boolean(enablePagination)}
-            enableSorting={Boolean(enableSort)}
-          />,
+          <Suspense fallback={<div>Loading...</div>}>
+            <ProductList
+              searchInputProps={{
+                facetValueFilters: facetValues,
+                take: +get(dataAttributes.getNamedItem('data-take'), 'value', 12),
+                collectionId: collectionId,
+              }}
+              enablePagination={Boolean(enablePagination)}
+              enableSorting={Boolean(enableSort)}
+            />
+            </Suspense>,
         )
         break
 
       case 'checkout':
+        const Checkout = React.lazy(() => import('./widgets/Checkout'))
         const cartPricePropsCheckout = {
           subTotal:
             dataAttributes.getNamedItem('data-show-subtotal')?.value === 'yes' ? true : false,
@@ -112,10 +105,14 @@ const init = async () => {
             dataAttributes.getNamedItem('data-custom-message')?.value === 'yes' ? true : false,
         }
 
-        renderElement(element, <Checkout showLoginModal cartPriceProps={cartPricePropsCheckout} />)
+        renderElement(element, 
+          <Suspense fallback={<div>Loading...</div>}>
+            <Checkout cartPriceProps={cartPricePropsCheckout} />
+          </Suspense>)
         break
 
       case 'product-detail':
+        const ProductDetail = React.lazy(() => import('./widgets/ProductDetail'))
         const id = dataAttributes.getNamedItem('data-product')?.value
         renderElement(element, id && <ProductDetail id={id} />)
         break
@@ -131,11 +128,12 @@ const init = async () => {
           customMessage:
             dataAttributes.getNamedItem('data-custom-message')?.value === 'yes' ? true : false,
         }
-
+        const Cart = React.lazy(() => import('./widgets/Cart'))
         renderElement(element, <Cart cartPriceProps={cartPricePropsCart} />)
         break
 
       case 'search-field':
+        const SearchField = React.lazy(() => import('./widgets/SearchField'))
         renderElement(
           element,
           <SearchField openOnButton={true} autofocus={true} />,
@@ -143,14 +141,17 @@ const init = async () => {
         break
 
       case 'currency-chooser':
+        const CurrencyChooser = React.lazy(() => import('./widgets/CurrencyChooser'))
         renderElement(element, <CurrencyChooser />)
         break
 
       case 'order-confirmation':
+        const OrderConfirmation = React.lazy(() => import('./widgets/OrderConfirmation'))
         renderElement(element, <OrderConfirmation />)
         break
 
       case 'dropdown-cart':
+        const DropdownCart = React.lazy(() => import('./widgets/DropdownCart'))
         renderElement(element, <DropdownCart dropdownEnabled={false} />)
         break
 
@@ -159,6 +160,7 @@ const init = async () => {
         const handleTriggerClick = () => {
           window.location.href = '/'
         }
+        const Login = React.lazy(() => import('./widgets/Login'))
         renderElement(
           element,
           <Login onContinueAsGuest={handleTriggerClick} onLoggedIn={handleTriggerClick} />,
@@ -172,13 +174,16 @@ const init = async () => {
           accountDropdownItems = JSON.parse(items)
         }
 
+        const AccountDropdown = React.lazy(() => import('./widgets/AccountDropdown'))
+
         renderElement(
           element,
-          <AccountDropdown useLoginModal={false} dropdownItems={accountDropdownItems} />,
+          <Suspense fallback={<div>Loading...</div>}><AccountDropdown useLoginModal={false} dropdownItems={accountDropdownItems} /></Suspense>,
         )
         break
 
       case 'account-details':
+        const CustomerDetails = React.lazy(() => import('./widgets/CustomerDetails'))
         renderElement(element, <CustomerDetails />)
         break
 
@@ -205,6 +210,8 @@ const init = async () => {
             },
           }
         }
+
+        const Orders = React.lazy(() => import('./widgets/Orders'))
 
         renderElement(element, <Orders orderListOptions={orderListOptions} />)
         break
