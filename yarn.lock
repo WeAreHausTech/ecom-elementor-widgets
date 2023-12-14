@@ -355,10 +355,10 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.55.0.tgz#b721d52060f369aa259cf97392403cb9ce892ec6"
   integrity sha512-qQfo2mxH5yVom1kacMtZZJFVdW+E70mqHMJvVg6WTLo+VBuQJ4TojZlfWBjK0ve5BdEeNAVxOsl/nvNMpJOaJA==
 
-"@haus-tech/ecom-components@^0.1.15":
-  version "0.1.15"
-  resolved "https://registry.yarnpkg.com/@haus-tech/ecom-components/-/ecom-components-0.1.15.tgz#3e10b336b0160f2ebebfd2129dc7cacb24e17683"
-  integrity sha512-8UcAx0pMilENlkABV3iCApqyIU4Qr1oeJaWwzsWYGNQECv4GOZw+ZJbbX7UAFjWc5VAilLfa8V5xC+8YacGI0A==
+"@haus-tech/ecom-components@^0.1.16":
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/@haus-tech/ecom-components/-/ecom-components-0.1.16.tgz#205eb1944f32907005c7c0c57f6560b3d2bb0c5c"
+  integrity sha512-FA/t0H0PczMNqV/EbthaHriKeIdceYC/tmrXMKI3+Jxk5ausxI69bqaLtnz+ik177UiPq0Br2wMNBd7tS9frEg==
 
 "@haus-tech/prettier-config@^1.0.3":
   version "1.0.3"
