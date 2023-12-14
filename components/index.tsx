@@ -78,7 +78,7 @@ const init = async () => {
         const ProductList = React.lazy(() => import('./widgets/ProductList'))
         renderElement(
           element,
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense>
             <ProductList
               searchInputProps={{
                 facetValueFilters: facetValues,
@@ -106,17 +106,16 @@ const init = async () => {
         }
 
         renderElement(element, 
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense>
             <Checkout cartPriceProps={cartPricePropsCheckout} />
           </Suspense>)
         break
 
-      case 'product-detail':
-        const ProductDetail = React.lazy(() => import('./widgets/ProductDetail'))
-        // const id = dataAttributes.getNamedItem('data-product')?.value
-        const slug = dataAttributes.getNamedItem('data-product-slug')?.value
+      case 'product-detail': 
+        const id = dataAttributes.getNamedItem('data-product')?.value
 
-        renderElement(element, slug && <ProductDetail slug={slug} />)
+        const ProductDetail = React.lazy(() => import('./widgets/ProductDetail'))
+        renderElement(element, <ProductDetail id={id!} />)
         break
 
       case 'cart':
@@ -131,30 +130,30 @@ const init = async () => {
             dataAttributes.getNamedItem('data-custom-message')?.value === 'yes' ? true : false,
         }
         const Cart = React.lazy(() => import('./widgets/Cart'))
-        renderElement(element, <Cart cartPriceProps={cartPricePropsCart} />)
+        renderElement(element, <Suspense><Cart cartPriceProps={cartPricePropsCart} /></Suspense>)
         break
 
       case 'search-field':
         const SearchField = React.lazy(() => import('./widgets/SearchField'))
         renderElement(
           element,
-          <SearchField openOnButton={true} autofocus={true} />,
+          <Suspense><SearchField openOnButton={true} autofocus={true} /></Suspense>,
         )
         break
 
       case 'currency-chooser':
         const CurrencyChooser = React.lazy(() => import('./widgets/CurrencyChooser'))
-        renderElement(element, <CurrencyChooser />)
+        renderElement(element, <Suspense><CurrencyChooser /></Suspense>)
         break
 
       case 'order-confirmation':
         const OrderConfirmation = React.lazy(() => import('./widgets/OrderConfirmation'))
-        renderElement(element, <OrderConfirmation />)
+        renderElement(element, <Suspense><OrderConfirmation /></Suspense>)
         break
 
       case 'dropdown-cart':
         const DropdownCart = React.lazy(() => import('./widgets/DropdownCart'))
-        renderElement(element, <DropdownCart dropdownEnabled={false} />)
+        renderElement(element, <Suspense><DropdownCart dropdownEnabled={false} /></Suspense>)
         break
 
       case 'login':
@@ -165,7 +164,7 @@ const init = async () => {
         const Login = React.lazy(() => import('./widgets/Login'))
         renderElement(
           element,
-          <Login onContinueAsGuest={handleTriggerClick} onLoggedIn={handleTriggerClick} />,
+          <Suspense><Login onContinueAsGuest={handleTriggerClick} onLoggedIn={handleTriggerClick} /></Suspense>
         )
         break
       case 'account-dropdown':
@@ -180,13 +179,13 @@ const init = async () => {
 
         renderElement(
           element,
-          <Suspense fallback={<div>Loading...</div>}><AccountDropdown useLoginModal={false} dropdownItems={accountDropdownItems} /></Suspense>,
+          <Suspense><AccountDropdown useLoginModal={false} dropdownItems={accountDropdownItems} /></Suspense>,
         )
         break
 
       case 'account-details':
         const CustomerDetails = React.lazy(() => import('./widgets/CustomerDetails'))
-        renderElement(element, <CustomerDetails />)
+        renderElement(element, <Suspense><CustomerDetails /></Suspense>)
         break
 
       case 'orders':
@@ -215,7 +214,7 @@ const init = async () => {
 
         const Orders = React.lazy(() => import('./widgets/Orders'))
 
-        renderElement(element, <Orders orderListOptions={orderListOptions} />)
+        renderElement(element, <Suspense><Orders orderListOptions={orderListOptions} /></Suspense>)
         break
     }
   })
