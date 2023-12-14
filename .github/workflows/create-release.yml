@@ -6,6 +6,11 @@ on:
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number'
+        required: true
+        default: 'dev'
 
 jobs:
   build:
@@ -20,15 +25,35 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org/
       - name: Install Dependencies
-        run: npm install
+        run: yarn install
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
       - name: Build Widgets
-        run: npm run build-widgets
+        run: yarn build-widgets
 
+      - name: Copy files to tmp folder
+        run: mkdir -p ./tmp && cp -r ./dist ./src ./package.json ./yarn.lock ./README.md ./composer.json ./composer.lock ./livv-ecom-addon.php ./tmp
+
+      - name: Set version in addon.php
+        run: |
+          VERSION=${{ github.ref }}
+          if [[ $VERSION =~ refs/tags/* ]]; then
+            VERSION=${VERSION#refs/tags/}
+          else
+            VERSION=${{ github.event.inputs.version }} # Or a hardcoded default like 'dev'
+          fi
+          sed -i "s|{{VERSION}}|${VERSION}|g" ./tmp/livv-ecom-addon.php
+      
+      - name: Set commit date and build date in addon.php
+        run: |
+          COMMIT_DATE=$(git log -1 --format=%cd --date=format:'%Y-%m-%d %H:%M:%S')
+          BUILD_DATE=$(date +"%Y-%m-%d %H:%M:%S")
+          sed -i "s|{{COMMIT_DATE}}|${COMMIT_DATE}|g" ./tmp/livv-ecom-addon.php
+          sed -i "s|{{BUILD_DATE}}|${BUILD_DATE}|g" ./tmp/livv-ecom-addon.php
+        
       - name: Create ZIP file
-        run: zip -r release.zip dist src package.json yarn.lock README.md composer.json composer.lock livv-ecom-addon.php
+        run: zip -r ./release.zip ./tmp/*
 
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
@@ -37,24 +62,58 @@ jobs:
           name: id_rsa
           known_hosts: ${{ secrets.SERVER_SSH_HOST }}
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      - name: Upload files to server
+        uses: appleboy/scp-action@master
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          body: |
-          draft: false
-          prerelease: false
+          host: hemglass.se.staging.haus.se
+          username: 'deploy'
+          key: ${{ secrets.SERVER_PRIVATE_KEY }}
+          source: ./tmp
+          target: /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.tmp
 
-      - name: Upload dist.zip to Release
-        uses: actions/upload-release-asset@v1
+      - name: Save old version and copy new version
+        uses: appleboy/ssh-action@v1.0.0
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release.zip
-          asset_name: release.zip
-          asset_content_type: application/zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          host: hemglass.se.staging.haus.se
+          username: deploy
+          key: ${{ secrets.SERVER_PRIVATE_KEY }}
+          port: 22
+          script: |
+            rm -rf /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.old
+            mv /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets/ /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.old/
+            rsync -r /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.tmp/tmp/ /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets/
+            rm -rf /mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets.tmp
+      
+      # # Only create release if tag is pushed
+      # - name: Create Release
+      #   id: create_release
+      #   uses: actions/create-release@v1
+      #   if: steps.check_tag.outputs.tag
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ steps.check_tag.outputs.tag }}
+      #     release_name: Release ${{ steps.check_tag.outputs.tag }}
+      #     body: |
+      #       Release ${{ steps.check_tag.outputs.tag }}
+      #     draft: false
+      #     prerelease: false
+
+      # # Only create release if tag is pushed
+      # - name: Upload Release Asset
+      #   id: upload-release-asset
+      #   uses: actions/upload-release-asset@v1
+      #   if: steps.check_tag.outputs.tag
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: ./release.zip
+      #     asset_name: release.zip
+      #     asset_content_type: application/zip
+
+      - name: Remove release.zip
+        run: rm ./release.zip
+
+      - name: Remove tmp folder
+        run: rm -rf ./tmp
