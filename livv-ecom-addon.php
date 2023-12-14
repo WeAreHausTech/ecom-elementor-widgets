@@ -90,6 +90,10 @@ if (defined('WP_CLI') && WP_CLI) {
     add_action('init', function () {
         require_once HAUS_ECOM_PLUGIN_PATH . '/src/SyncData/Commands/SyncProductData.php';
     });
+
+    add_action('init', function () {
+        require_once HAUS_ECOM_PLUGIN_PATH . '/src/SyncData/Commands/DeleteAllPosts.php';
+    });
 }
 
 add_action('wp_head', function () {
