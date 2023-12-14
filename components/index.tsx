@@ -150,6 +150,11 @@ const init = async () => {
         const OrderConfirmation = React.lazy(() => import('./widgets/OrderConfirmation'))
         renderElement(element, <Suspense><OrderConfirmation /></Suspense>)
         break
+      
+      case 'order-view':
+        const OrderView = React.lazy(() => import('./widgets/OrderView'))
+        renderElement(element, <Suspense><OrderView /></Suspense>)
+        break
 
       case 'dropdown-cart':
         const DropdownCart = React.lazy(() => import('./widgets/DropdownCart'))
