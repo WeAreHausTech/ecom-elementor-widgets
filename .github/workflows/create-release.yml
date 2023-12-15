@@ -94,7 +94,7 @@ jobs:
       matrix:
         server: 
           - { name: "Hemglass Staging", host: "hemglass.se.staging.haus.se", username: "deploy", private_key: "SERVER_PRIVATE_KEY", target: "/mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets" }
-          - { name: "Livv Staging", host: "livv.se.haus.se", username: "deploy", private_key: "SERVER_PRIVATE_KEY", target: "/mnt/persist/www/livv_test/ecom-elementor-widgets" }
+          - { name: "Livv Staging", host: "livv.se.haus.se", username: "deploy", private_key: "SERVER_PRIVATE_KEY", target: "/mnt/persist/www/livv.se/shared/web/app/plugins/ecom-elementor-widgets" }
     steps:
       - name: Download tmp folder
         uses: actions/download-artifact@v3
