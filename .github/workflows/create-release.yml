@@ -33,7 +33,7 @@ jobs:
         run: yarn build-widgets
 
       - name: Copy files to tmp folder
-        run: mkdir -p ./tmp && cp -r ./dist ./src ./package.json ./yarn.lock ./README.md ./composer.json ./composer.lock ./livv-ecom-addon.php
+        run: mkdir -p ./tmp && cp -r ./dist ./src ./package.json ./yarn.lock ./README.md ./composer.json ./composer.lock ./livv-ecom-addon.php ./tmp/
 
       - name: Set version in addon.php
         run: |
