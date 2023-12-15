@@ -33,7 +33,7 @@ jobs:
         run: yarn build-widgets
 
       - name: Copy files to tmp folder
-        run: mkdir -p ./tmp && cp -r ./dist ./src ./package.json ./yarn.lock ./README.md ./composer.json ./composer.lock ./livv-ecom-addon.php ./tmp/
+        run: mkdir -p ./tmp && cp -r ./dist ./src ./package.json ./yarn.lock ./README.md ./composer.json ./composer.lock ./livv-ecom-addon.php ./tmp
 
       - name: Set version in addon.php
         run: |
@@ -79,6 +79,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Upload tmp folder as an artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: tmp-folder
+          path: ./tmp
+
   upload:
     name: Upload to staging servers
     needs: build
@@ -89,6 +95,12 @@ jobs:
           - { name: "Hemglass Staging", host: "hemglass.se.staging.haus.se", username: "deploy", private_key: "SERVER_PRIVATE_KEY", target: "/mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets" }
           # - { name: "Server2", host: "server2.example.com", username: "user2", private_key: "SERVER_PRIVATE_KEY", target: "/mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets" }
     steps:
+      - name: Download tmp folder
+        uses: actions/download-artifact@v3
+        with:
+          name: tmp-folder
+          path: ./tmp
+
       - name: Install SSH Key on ${{ matrix.server.name }}
         uses: shimataro/ssh-key-action@v2
         with:
@@ -117,14 +129,3 @@ jobs:
             mv ${{ matrix.server.target }}/ ${{ matrix.server.target }}.old/
             rsync -r ${{ matrix.server.target }}.tmp/tmp/ ${{ matrix.server.target }}/
             rm -rf ${{ matrix.server.target }}.tmp
-
-  cleanup:
-    name: Cleanup
-    needs: upload
-    runs-on: ubuntu-latest
-    steps:
-      - name: Remove release.zip
-        run: rm ./release.zip
-
-      - name: Remove tmp folder
-        run: rm -rf ./tmp
