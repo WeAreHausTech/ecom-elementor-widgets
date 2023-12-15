@@ -93,7 +93,7 @@ jobs:
       matrix:
         server: 
           - { name: "Hemglass Staging", host: "hemglass.se.staging.haus.se", username: "deploy", private_key: "SERVER_PRIVATE_KEY", target: "/mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets" }
-          # - { name: "Server2", host: "server2.example.com", username: "user2", private_key: "SERVER_PRIVATE_KEY", target: "/mnt/persist/www/hemglass.se.staging.haus.se/shared/web/app/plugins/ecom-elementor-widgets" }
+          - { name: "Livv Staging", host: "livv.se.haus.se", username: "deploy", private_key: "SERVER_PRIVATE_KEY", target: "/mnt/persist/www/livv_test/ecom-elementor-widgets" }
     steps:
       - name: Download tmp folder
         uses: actions/download-artifact@v3
@@ -101,12 +101,17 @@ jobs:
           name: tmp-folder
           path: ./tmp
 
+      - name: Get SSH Key for server
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ matrix.server.host }} >> ~/.ssh/known_hosts
+
       - name: Install SSH Key on ${{ matrix.server.name }}
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets[matrix.server.private_key] }}
           name: id_rsa
-          known_hosts: ${{ secrets.SERVER_SSH_HOST }}
+          #known_hosts: ${{ secrets.SERVER_SSH_HOST }}
 
       - name: Upload files to server
         uses: appleboy/scp-action@master
