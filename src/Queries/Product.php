@@ -7,10 +7,9 @@ class Product extends BaseQuery
 {
     public function get($lang)
     {
-
         $this->query = <<<GRAPHQL
         query  {
-            search (input: {take: 9999}) {
+            search (input: {take: 9999, groupByProduct: true}) {
                 items {
                     productId
                     productName
