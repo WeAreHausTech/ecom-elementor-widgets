@@ -80,6 +80,11 @@ const init = async () => {
           0,
         )
         const enableSort = +get(dataAttributes.getNamedItem('data-sort-enabled'), 'value', 0)
+        const enableAddToCart = +get(
+          dataAttributes.getNamedItem('data-add-to-cart-enabled'),
+          'value',
+          0,
+        )
 
         const ProductList = React.lazy(() => import('./widgets/ProductList'))
         renderElement(
@@ -93,6 +98,7 @@ const init = async () => {
               }}
               enablePagination={Boolean(enablePagination)}
               enableSorting={Boolean(enableSort)}
+              enableAddToCartBtn={Boolean(enableAddToCart)}
             />
             </Suspense>,
         )

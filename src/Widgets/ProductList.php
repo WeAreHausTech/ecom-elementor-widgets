@@ -36,6 +36,28 @@ class ProductList extends Widget_Base
     protected function _register_controls()
     {
         $this->start_controls_section(
+            'section_general',
+            [
+                'label' => __('General settings', 'webien'),
+            ]
+        );
+
+        $this->add_control(
+            'show_add_to_cart',
+            [
+                'label' => __('Show Add to cart', 'webien'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => '0',
+                'options' => [
+                    '0' => __('No', 'webien'),
+                    '1' => __('Yes', 'webien'),
+                ],
+            ]
+        );
+
+        $this->end_controls_section();
+
+        $this->start_controls_section(
             'section_content',
             [
                 'label' => __('Filter settings', 'webien'),
@@ -199,7 +221,9 @@ class ProductList extends Widget_Base
             data-collection="<?= $taxonomy ?>"
             data-take="<?= $settings['products_per_page'] ?>"
             data-sort-enabled="<?= $settings['sort_enabled'] ?>"
-            data-pagination-enabled="<?= $settings['pagination_enabled'] ?>">
+            data-pagination-enabled="<?= $settings['pagination_enabled'] ?>"
+            data-add-to-cart-enabled="<?= $settings['show_add_to_cart'] ?>"
+        >
         </div>
         <?php
     }
