@@ -32,8 +32,11 @@ jobs:
       - name: Build Widgets
         run: yarn build-widgets
 
+      - name: Run composer install
+        run: composer install --no-dev --no-interaction --no-progress --optimize-autoloader
+
       - name: Copy files to tmp folder
-        run: mkdir -p ./tmp && cp -r ./dist ./src ./package.json ./yarn.lock ./README.md ./composer.json ./composer.lock ./livv-ecom-addon.php ./tmp
+        run: mkdir -p ./tmp && cp -r ./dist ./src ./vendor ./package.json ./yarn.lock ./README.md ./composer.json ./composer.lock ./livv-ecom-addon.php ./tmp
 
       - name: Set version in addon.php
         run: |
