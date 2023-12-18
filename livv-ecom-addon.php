@@ -97,25 +97,49 @@ if (defined('WP_CLI') && WP_CLI) {
 }
 
 add_action('wp_head', function () {
-    $json_file_path_en = $_SERVER['DOCUMENT_ROOT'] . '/locales/en/translation.json';
-    $json_file_path_sv = $_SERVER['DOCUMENT_ROOT'] . '/locales/sv/translation.json';
-    $langData = [];
 
-    if (file_exists($json_file_path_en)) {
-        $langData[] = '"en":' . file_get_contents($json_file_path_en);
+    if (!defined('ECOM_TRANSLATIONS_PATH')) {
+        die("ECOM_TRANSLATIONS_PATH is not set.");
     }
 
-    if (file_exists($json_file_path_sv)) {
-        $langData[] = '"sv":' . file_get_contents($json_file_path_sv);
+    if (!defined('ECOM_QUERY_UPDATES_PATH')) {
+        die("ECOM_QUERY_UPDATES_PATH is not set.");
     }
 
-    if (empty($langData)) {
-        return;
+    // Translations
+    // Loop through uploads/ecom_lang/locales and add all json files to the page
+    $directoryPath = $_SERVER['DOCUMENT_ROOT'] . ECOM_TRANSLATIONS_PATH; // Path to your directory
+    $translations = [];
+
+    // Loop through all JSON files in the directory
+    foreach (glob($directoryPath . '/*.json') as $filename) {
+        // Extract the locale code from the filename
+        $locale = basename($filename, '.json');
+
+        // Read the contents of the file
+        $content = file_get_contents($filename);
+        if ($content === false) {
+            // Handle the error, e.g., file not readable
+            continue;
+        }
+
+        // Add the content to the translations array
+        $translations[$locale] = json_decode($content, true);
     }
 
+    // Convert the translations array to a JSON string
+    $jsonTranslationsString = json_encode($translations, JSON_PRETTY_PRINT);
+
+
+    // Query updates
+    $directoryPath = $_SERVER['DOCUMENT_ROOT'] . ECOM_QUERY_UPDATES_PATH; // Path to your directory
+    $content = file_get_contents($directoryPath);
+
+    $jsonUpdatesString = json_encode($content, JSON_PRETTY_PRINT);
     ?>
     <script>
-        var ecomLangData = {<?= implode(',',$langData) ?>};
+        localStorage.setItem('ecomLangData', JSON.stringify(<?= $jsonTranslationsString ?>));
+        localStorage.setItem('ecomQueryUpdates', JSON.stringify(<?= $jsonUpdatesString ?>));
     </script>
     <?php
 });

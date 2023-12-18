@@ -2,7 +2,7 @@
 import React, { ReactNode, Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
 import {
-  VendureApolloProvider,
+  DataProvider,
   LocalizationProvider,
   FacetValueFilterInput,
   OrderListOptions,
@@ -34,14 +34,20 @@ const renderElement = async (element: Element, children: ReactNode) => {
   styleEl.textContent = css
   shadowRoot.appendChild(styleEl)
 
-  const vendureToken = element.attributes.getNamedItem('data-vendure-token')?.value
-  const vendureUrl = element.attributes.getNamedItem('data-vendure-api-url')?.value
+  const vendureToken = element.attributes.getNamedItem('data-vendure-token')?.value || ''
+  const vendureUrl = element.attributes.getNamedItem('data-vendure-api-url')?.value || ''
+
+  const resourceBundles = getLangData()
 
   return ReactDOM.createRoot(shadowRoot).render(
     <React.StrictMode>
-      <VendureApolloProvider apiUrl={vendureUrl ? vendureUrl : ''} vendureToken={vendureToken}>
+      <DataProvider provider='vendure' options={{
+        apiUrl: vendureUrl,
+        vendureToken,
+      }}
+     >
         <LocalizationProvider resourceBundles={resourceBundles}>{children}</LocalizationProvider>
-      </VendureApolloProvider>
+      </DataProvider>
     </React.StrictMode>,
   )
 }
@@ -228,19 +234,43 @@ if (document.readyState !== 'loading') {
   })
 }
 
-const resourceBundles = [
-  {
-    lng: 'sv',
-    ns: 'translation',
-    resources: {
-      ...window.ecomLangData.sv,
-    },
-  },
-  {
-    lng: 'en',
-    ns: 'translation',
-    resources: {
-      ...window.ecomLangData.en,
-    },
-  },
-]
+const getLangData = () => {
+  const langData = localStorage.getItem('ecomLangData')
+  
+  if (langData) {
+    const jsonLangData = JSON.parse(langData)
+
+    const resourceBundles = [];
+
+    for (const lang in jsonLangData) {
+      // eslint-disable-next-line no-prototype-builtins
+      if (jsonLangData.hasOwnProperty(lang)) {
+        const bundle = {
+          lng: lang,
+          ns: 'translation',
+          resources: jsonLangData[lang]
+        };
+        resourceBundles.push(bundle);
+      }
+    }
+    return resourceBundles
+  }
+  return undefined
+}
+
+// const resourceBundles = [
+//   {
+//     lng: 'sv',
+//     ns: 'translation',
+//     resources: {
+//       ...localStorage.ecomLangData?.sv,
+//     },
+//   },
+//   {
+//     lng: 'en',
+//     ns: 'translation',
+//     resources: {
+//       ...JSON.parse(localStorage.getItem('ecomLangData')),
+//     },
+//   },
+// ]
