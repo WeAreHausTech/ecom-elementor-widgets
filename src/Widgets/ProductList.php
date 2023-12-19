@@ -75,6 +75,16 @@ class ProductList extends Widget_Base
         );
         $this->add_pagination_controls();
         $this->end_controls_section();
+
+        $this->start_controls_section(
+            'section_card',
+            [
+                'label' => __('Card', 'webien'),
+            ]
+        );
+        $this->add_card_controls();
+
+        $this->end_controls_section();
     }
 
     public function add_facet_controls()
@@ -134,6 +144,22 @@ class ProductList extends Widget_Base
         }
 
         return $options;
+    }
+
+    public function add_card_controls()
+    {
+        $this->add_control(
+            'addToCart_enabled',
+            [
+                'label' => esc_html__('Add to cart button', 'webien'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => '0',
+                'options' => [
+                    '0' => __('No', 'webien'),
+                    '1' => __('Yes', 'webien'),
+                ],
+            ]
+        );
     }
 
     public function add_pagination_controls()

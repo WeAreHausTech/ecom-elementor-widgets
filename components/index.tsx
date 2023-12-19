@@ -73,7 +73,6 @@ const init = async () => {
         }
 
         const collectionId = dataAttributes.getNamedItem('data-collection')?.value
-
         const enablePagination = +get(
           dataAttributes.getNamedItem('data-pagination-enabled'),
           'value',
