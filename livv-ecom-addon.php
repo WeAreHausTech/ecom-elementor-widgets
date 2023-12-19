@@ -146,4 +146,12 @@ add_action('wp_head', function () {
         localStorage.setItem('ecomQueryUpdates', JSON.stringify(<?= $jsonUpdatesString ?>));
     </script>
     <?php
+
+    // Styles
+    $stylePath = $_SERVER['DOCUMENT_ROOT'] . ECOM_STYLES_PATH;
+    ?>
+    <style>
+        <?= file_get_contents($stylePath) ?>
+    </style>
+    <?php
 });
