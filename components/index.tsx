@@ -38,10 +38,11 @@ const renderElement = async (element: Element, children: ReactNode) => {
   const vendureUrl = element.attributes.getNamedItem('data-vendure-api-url')?.value || ''
 
   const resourceBundles = getLangData()
+  const queryUpdates = getQueryUpdates()
 
   return ReactDOM.createRoot(shadowRoot).render(
     <React.StrictMode>
-      <DataProvider provider='vendure' options={{
+      <DataProvider provider='vendure' updates={queryUpdates} options={{
         apiUrl: vendureUrl,
         vendureToken,
       }}
@@ -268,19 +269,10 @@ const getLangData = () => {
   return undefined
 }
 
-// const resourceBundles = [
-//   {
-//     lng: 'sv',
-//     ns: 'translation',
-//     resources: {
-//       ...localStorage.ecomLangData?.sv,
-//     },
-//   },
-//   {
-//     lng: 'en',
-//     ns: 'translation',
-//     resources: {
-//       ...JSON.parse(localStorage.getItem('ecomLangData')),
-//     },
-//   },
-// ]
+const getQueryUpdates = () => {
+  const queryUpdates = localStorage.getItem('ecomQueryUpdates')
+  if (queryUpdates) {
+    return JSON.parse(queryUpdates)
+  }
+  return undefined
+}

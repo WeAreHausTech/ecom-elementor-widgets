@@ -141,9 +141,8 @@ add_action('wp_head', function () {
 
     // Query updates
     $directoryPath = $_SERVER['DOCUMENT_ROOT'] . ECOM_QUERY_UPDATES_PATH; // Path to your directory
-    $content = file_get_contents($directoryPath);
+    $jsonUpdatesString = file_get_contents($directoryPath);
 
-    $jsonUpdatesString = json_encode($content, JSON_PRETTY_PRINT);
     ?>
     <script>
         localStorage.setItem('ecomLangData', JSON.stringify(<?= $jsonTranslationsString ?>));
