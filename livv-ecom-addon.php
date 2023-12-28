@@ -14,10 +14,6 @@
 define('HAUS_ECOM_PLUGIN_PATH', __DIR__);
 define('HAUS_ECOM_PLUGIN_URI', plugin_dir_url(__FILE__));
 
-if (!defined('VENDURE_API_URL')) {
-    die("VENDURE_API_URL is not set.");
-}
-
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
@@ -106,17 +102,13 @@ if (defined('WP_CLI') && WP_CLI) {
 
 add_action('wp_head', function () {
 
-    if (!defined('ECOM_TRANSLATIONS_PATH')) {
-        die("ECOM_TRANSLATIONS_PATH is not set.");
-    }
-
-    if (!defined('ECOM_QUERY_UPDATES_PATH')) {
-        die("ECOM_QUERY_UPDATES_PATH is not set.");
+    if (!defined('ECOM_DATA_PATH')) {
+        die("ECOM_DATA_PATH is not set.");
     }
 
     // Translations
     // Loop through uploads/ecom_lang/locales and add all json files to the page
-    $directoryPath = $_SERVER['DOCUMENT_ROOT'] . ECOM_TRANSLATIONS_PATH; // Path to your directory
+    $directoryPath = $_SERVER['DOCUMENT_ROOT'] . ECOM_DATA_PATH . '/locales'; // Path to your directory
     $translations = [];
 
     // Loop through all JSON files in the directory
@@ -140,21 +132,27 @@ add_action('wp_head', function () {
 
 
     // Query updates
-    $directoryPath = $_SERVER['DOCUMENT_ROOT'] . ECOM_QUERY_UPDATES_PATH; // Path to your directory
+    $directoryPath = $_SERVER['DOCUMENT_ROOT'] . ECOM_DATA_PATH . '/queries/updates.json'; // Path to your directory
     $jsonUpdatesString = file_get_contents($directoryPath);
+
+    // Config
+    $configPath = $_SERVER['DOCUMENT_ROOT'] . ECOM_DATA_PATH . '/config.json';
 
     ?>
     <script>
         localStorage.setItem('ecomLangData', JSON.stringify(<?= $jsonTranslationsString ?>));
         localStorage.setItem('ecomQueryUpdates', JSON.stringify(<?= $jsonUpdatesString ?>));
+        localStorage.setItem('ecomConfig', JSON.stringify(<?= file_get_contents($configPath) ?>));
     </script>
     <?php
 
     // Styles
-    $stylePath = $_SERVER['DOCUMENT_ROOT'] . ECOM_STYLES_PATH;
+    $stylePath = $_SERVER['DOCUMENT_ROOT'] . ECOM_DATA_PATH . '/styles/ecom-styles.css';
     ?>
     <style>
         <?= file_get_contents($stylePath) ?>
     </style>
+
+
     <?php
 });

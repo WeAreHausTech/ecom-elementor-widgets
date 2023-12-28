@@ -34,17 +34,14 @@ const renderElement = async (element: Element, children: ReactNode) => {
   styleEl.textContent = css
   shadowRoot.appendChild(styleEl)
 
-  const vendureToken = element.attributes.getNamedItem('data-vendure-token')?.value || ''
-  const vendureUrl = element.attributes.getNamedItem('data-vendure-api-url')?.value || ''
-
   const resourceBundles = getLangData()
   const queryUpdates = getQueryUpdates()
+  const config = getConfig()
 
   return ReactDOM.createRoot(shadowRoot).render(
     <React.StrictMode>
       <DataProvider provider='vendure' updates={queryUpdates} options={{
-        apiUrl: vendureUrl,
-        vendureToken,
+        ...config.options
       }}
      >
         <LocalizationProvider resourceBundles={resourceBundles}>{children}</LocalizationProvider>
@@ -273,6 +270,14 @@ const getQueryUpdates = () => {
   const queryUpdates = localStorage.getItem('ecomQueryUpdates')
   if (queryUpdates) {
     return JSON.parse(queryUpdates)
+  }
+  return undefined
+}
+
+const getConfig = () => {
+  const config = localStorage.getItem('ecomConfig')
+  if (config) {
+    return JSON.parse(config)
   }
   return undefined
 }

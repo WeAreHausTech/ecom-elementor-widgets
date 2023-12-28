@@ -365,10 +365,10 @@
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.2.0.tgz#5f3d96ec6b2354ad6d8a28bf216a1d97b5426861"
   integrity sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==
 
-"@haus-tech/ecom-components@^0.2.6":
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/@haus-tech/ecom-components/-/ecom-components-0.2.6.tgz#7421a6ec44f1ffc59be1d2fce9a6da01ef38a661"
-  integrity sha512-zjEp7E8XRRizNPvL/dthtaxcgWRYKQ9YKAW02wioiEadB5HowgubcuhbbKTldXVe77UidRxUTvR2UTsQ+dggHg==
+"@haus-tech/ecom-components@^0.2.7":
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/@haus-tech/ecom-components/-/ecom-components-0.2.7.tgz#da867fd44ab7720fa7ea6aea36574f7f5f991be1"
+  integrity sha512-rk/c1OzGbPF/uHhbnVzWXXAzxSsyyEJYdgl+NUh4vCk5w++I/5+JFEgHqm9WGtDnXaSkTkByb+Q33SvuHU9VAg==
   dependencies:
     "@graphql-typed-document-node/core" "^3.2.0"
     "@tanstack/react-query" "^5.12.2"
