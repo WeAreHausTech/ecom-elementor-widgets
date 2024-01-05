@@ -82,6 +82,13 @@ const init = async () => {
           'value',
           0,
         )
+        
+        const enabledFilters = dataAttributes.getNamedItem('data-filter-values')?.value
+        let filtersArray = null;
+
+        if (enabledFilters) {
+           filtersArray = enabledFilters.split(',').map(Number)
+        }
 
         const ProductList = React.lazy(() => import('./widgets/ProductList'))
         renderElement(
@@ -96,6 +103,7 @@ const init = async () => {
               enablePagination={Boolean(enablePagination)}
               enableSorting={Boolean(enableSort)}
               enableAddToCartBtn={Boolean(enableAddToCart)}
+              enabledFilters={filtersArray}
             />
             </Suspense>,
         )
