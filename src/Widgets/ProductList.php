@@ -251,6 +251,8 @@ class ProductList extends Widget_Base
             }
         }
 
+        $dataFilterValues = is_array($settings['filter_values']) ? implode(", ", $settings['filter_values']) : '';
+
         $widgetId = 'ecom_' . $this->get_id();
         ?>
         <div
@@ -265,7 +267,7 @@ class ProductList extends Widget_Base
             data-sort-enabled="<?= $settings['sort_enabled'] ?>"
             data-pagination-enabled="<?= $settings['pagination_enabled'] ?>"
             data-add-to-cart-enabled="<?= $settings['show_add_to_cart'] ?>"
-            data-filter-values="<?= implode(", ", $settings['filter_values'])?>"
+            data-filter-values="<?= $dataFilterValues ?>"
         >
         </div>
         <?php
