@@ -77,24 +77,57 @@ class ProductList extends Widget_Base
         $this->end_controls_section();
 
         $this->start_controls_section(
-            'section_card',
+            'section-filter',
             [
-                'label' => __('Card', 'webien'),
+                'label' => __('Filter', 'webien'),
             ]
         );
-        $this->add_card_controls();
+
+        $this->getAvailableFacets();
 
         $this->end_controls_section();
     }
 
-    public function add_facet_controls()
-    {
+    public function getAvailableFacets(){
+        $facets = $this->get_facets();
+
+        if (!isset($facets['data']['facets']['items'])) {
+            return;
+        }
+
+        $options = [];
+
+        forEach($facets['data']['facets']['items'] as $facet){
+            $options[$facet['id']] = $facet['name'];
+        }
+
+        $this->add_control(
+            'filter_values',
+            [
+                'label' => __('Filters:', 'webien'),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'label_block' => true,
+                'options' => $options,
+                'default' => '0',
+                'multiple' => true,
+            ]
+        );
+    }
+
+    public function get_facets(){
         $facets = get_transient('ecom-haus-queries-facet');
 
         if (!$facets) {
             $facets = (new \Haus\Queries\Facet)->get('sv');
             set_transient('ecom-haus-queries-facet', $facets, 60 * 5);
         }
+
+        return $facets;
+    }
+
+    public function add_facet_controls()
+    {
+        $facets = $this->get_facets();
 
         if (!isset($facets['data']['facets']['items'])) {
             return;
@@ -144,22 +177,6 @@ class ProductList extends Widget_Base
         }
 
         return $options;
-    }
-
-    public function add_card_controls()
-    {
-        $this->add_control(
-            'addToCart_enabled',
-            [
-                'label' => esc_html__('Add to cart button', 'webien'),
-                'type' => \Elementor\Controls_Manager::SELECT,
-                'default' => '0',
-                'options' => [
-                    '0' => __('No', 'webien'),
-                    '1' => __('Yes', 'webien'),
-                ],
-            ]
-        );
     }
 
     public function add_pagination_controls()
@@ -234,8 +251,9 @@ class ProductList extends Widget_Base
             }
         }
 
+        $dataFilterValues = is_array($settings['filter_values']) ? implode(", ", $settings['filter_values']) : '';
+
         $widgetId = 'ecom_' . $this->get_id();
-        
         ?>
         <div
             id="<?= $widgetId ?>"
@@ -249,6 +267,7 @@ class ProductList extends Widget_Base
             data-sort-enabled="<?= $settings['sort_enabled'] ?>"
             data-pagination-enabled="<?= $settings['pagination_enabled'] ?>"
             data-add-to-cart-enabled="<?= $settings['show_add_to_cart'] ?>"
+            data-filter-values="<?= $dataFilterValues ?>"
         >
         </div>
         <?php
