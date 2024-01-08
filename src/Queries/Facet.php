@@ -11,6 +11,7 @@ class Facet extends BaseQuery
                     items {
                         id
                         name
+                        code
                         values{
                             id
                             name

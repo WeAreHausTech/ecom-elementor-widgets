@@ -168,7 +168,7 @@ class VendureHelper
         $sorted = [];
 
         foreach ($items as $facetType) {
-            $sorted[$facetType['name']] = array_combine(array_column($facetType['values'], 'id'), $facetType['values']);
+            $sorted[$facetType['code']] = array_combine(array_column($facetType['values'], 'id'), $facetType['values']);
         }
 
         return $sorted;
