@@ -98,20 +98,57 @@ class ProductList extends Widget_Base
         $options = [];
 
         forEach($facets['data']['facets']['items'] as $facet){
-            $options[$facet['id']] = $facet['name'];
+            $options[$facet['id']] = $facet['name'] . ' (id: ' . $facet['id'] . ')';
         }
 
-        $this->add_control(
-            'filter_values',
+        $repeater = new \Elementor\Repeater();
+
+        $repeater->add_control(
+            'filter_value',
             [
-                'label' => __('Filters:', 'webien'),
-                'type' => \Elementor\Controls_Manager::SELECT2,
+                'label' => __('Filter Value:', 'haus-ecom-widgets'),
+                'type' => \Elementor\Controls_Manager::SELECT,
                 'label_block' => true,
                 'options' => $options,
                 'default' => '0',
-                'multiple' => true,
             ]
         );
+
+        $repeater->add_control(
+            'filter_condition',
+            [
+                'label' => __('Filter Condition:', 'haus-ecom-widgets'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'label_block' => true,
+                'options' => [
+                    'OR' => __('OR', 'haus-ecom-widgets'),
+                    'AND' => __('AND', 'haus-ecom-widgets'),
+                ],
+                'default' => 'OR',
+            ]
+        );
+
+        $repeater->add_control(
+            'filter_label',
+            [
+                'label' => __('Filter Label:', 'haus-ecom-widgets'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'label_block' => true,
+                'default' => '',
+            ]
+        );
+
+        $this->add_control(
+			'enabled_filters',
+			[
+				'label' => __( 'Enabled filters:', 'haus-ecom-widgets' ),
+				'type' => \Elementor\Controls_Manager::REPEATER,
+				'fields' => $repeater->get_controls(),
+				'default' => [],
+				'title_field' => '{{{ filter_value }}} {{{ filter_condition }}}',
+                'prevent_empty' => false,
+			]
+		);
     }
 
     public function get_facets(){
@@ -251,8 +288,6 @@ class ProductList extends Widget_Base
             }
         }
 
-        $dataFilterValues = is_array($settings['filter_values']) ? implode(", ", $settings['filter_values']) : '';
-
         $widgetId = 'ecom_' . $this->get_id();
         ?>
         <div
@@ -267,7 +302,7 @@ class ProductList extends Widget_Base
             data-sort-enabled="<?= $settings['sort_enabled'] ?>"
             data-pagination-enabled="<?= $settings['pagination_enabled'] ?>"
             data-add-to-cart-enabled="<?= $settings['show_add_to_cart'] ?>"
-            data-filter-values="<?= $dataFilterValues ?>"
+            data-filter-values="<?= htmlspecialchars(json_encode($settings['enabled_filters']), ENT_QUOTES, 'UTF-8'); ?>"
         >
         </div>
         <?php

@@ -6,6 +6,7 @@ import {
   LocalizationProvider,
   FacetValueFilterInput,
   OrderListOptions,
+  EnabledFilter,
 } from '@haus-tech/ecom-components'
 
 import { get } from 'lodash'
@@ -83,12 +84,14 @@ const init = async () => {
           0,
         )
         
-        const enabledFilters = dataAttributes.getNamedItem('data-filter-values')?.value
-        let filtersArray = null;
-
-        if (enabledFilters) {
-           filtersArray = enabledFilters.split(',').map(Number)
-        }
+        const enabledFilters = dataAttributes.getNamedItem('data-filter-values')?.value ? JSON.parse(dataAttributes.getNamedItem('data-filter-values')!.value) : null
+        const filtersArray: EnabledFilter[] = enabledFilters?.map((filter: { filter_value: string, filter_condition: 'AND' | 'OR', filter_label?: string }) => {
+          return {
+            facetId: filter.filter_value,
+            logicalOperator: filter.filter_condition,
+            label: filter.filter_label,
+          }
+        })
 
         const ProductList = React.lazy(() => import('./widgets/ProductList'))
         renderElement(
