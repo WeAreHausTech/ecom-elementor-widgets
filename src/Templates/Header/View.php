@@ -196,7 +196,7 @@
         padding-top: var(--header-height);
     }
 
-    @media only screen and (min-width: 768px) {
+    @media only screen and (min-width: 983px) {
         #main-menu {
             height: 84px;
         }
@@ -211,7 +211,7 @@
     }
 
 
-    @media only screen and (min-width: 768px) {
+    @media only screen and (min-width: 983px) {
 
         .menu-header-main-container,
         .menu,
@@ -279,6 +279,7 @@
         margin-right: 64px;
         margin-left: 64px;
         width: 100%;
+        max-width: 960px;
     }
 
     .child .see-more-button {
@@ -286,7 +287,7 @@
         margin: 0;
         font-weight: 400;
         font-size: 14px;
-        font-style: normal;
+        font-style: italic;
         font-weight: 400;
         line-height: 150%;
         border: none;
@@ -300,7 +301,7 @@
     .see-more-button {
         color: var(--header-see-more-button-color, #3E4849) !important;
         font-size: 14px !important;
-        font-style: normal !important;
+        font-style: italic !important;
         font-weight: 400 !important;
         line-height: 150% !important;
         padding: 0 !important;
@@ -358,8 +359,9 @@
 
     .dropdown-menu .categories {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 24px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        row-gap: 64px;
+        column-gap: 24px;
         justify-items: start;
         padding-left: 0;
         list-style: none;
@@ -407,7 +409,7 @@
         display: none;
     }
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 983px) {
         .dropdown-product-link {
             display: block;
             margin-top: 24px;
@@ -433,7 +435,7 @@
         min-width: 200px;
     }
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 983px) {
         .dropdown-type {
             grid-auto-rows: auto;
         }
@@ -450,7 +452,7 @@
         list-style: none;
     }
 
-    @media only screen and (max-width: 768px) {
+    @media only screen and (max-width: 983px) {
         .dropdown-menu .parent {
             flex: 0 0 100%;
         }
@@ -482,8 +484,12 @@
         height: 76px;
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
+    }
+
+    .logo{
+        min-width: 250px;
     }
 
     .header a {
@@ -500,6 +506,8 @@
         gap: 16px;
         padding: 24px 0;
         align-items: center;
+        min-width: 250px;
+        justify-content: flex-end;
     }
 
     .header .contact-button a {
@@ -656,13 +664,13 @@
         display: none;
     }
 
-    @media only screen and (min-width: 768px) {
+    @media only screen and (min-width: 983px) {
         .mobile-heaader {
             display: none;
         }
     }
 
-    @media only screen and (max-width: 768px) {
+    @media only screen and (max-width: 983px) {
         .header-content {
             display: none;
         }
@@ -765,6 +773,7 @@
 
         .dropdown-categories {
             margin: 0;
+
         }
 
         .menu .current-menu-item {
