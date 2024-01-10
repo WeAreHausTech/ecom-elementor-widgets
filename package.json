@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build-widgets": "tsc && vite build",
+    "build-widgets:watch": "tsc && vite build --watch --config vite.config-watch.ts",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
