@@ -50,7 +50,7 @@ class Header extends Widget_Base
         $this->start_controls_section(
             'header_section',
             [
-                'label' => __('Header', 'webien'),
+                'label' => __('Header', 'haus-ecom-widgets'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
@@ -58,7 +58,7 @@ class Header extends Widget_Base
         $this->add_control(
             'logo',
             [
-                'label' => __('Välj logga', 'webien'),
+                'label' => __('Välj logga', 'haus-ecom-widgets'),
                 'type' => \Elementor\Controls_Manager::MEDIA,
                 'default' => [
                     'url' => \Elementor\Utils::get_placeholder_image_src(),
@@ -71,14 +71,14 @@ class Header extends Widget_Base
         $this->start_controls_section(
             'menu-section',
             [
-                'label' => __('Meny', 'webien'),
+                'label' => __('Meny', 'haus-ecom-widgets'),
             ]
         );
 
         $this->add_control(
             'menu_id',
             [
-                'label' => __('Id på meny:', 'webien'),
+                'label' => __('Id på meny:', 'haus-ecom-widgets'),
                 'type' => \Elementor\Controls_Manager::TEXT,
                 'label_block' => true,
             ]
@@ -87,11 +87,11 @@ class Header extends Widget_Base
         $this->add_control(
             'products_menu_ids',
             [
-                'label' => __('IDs på produkter:', 'webien'),
+                'label' => __('IDs på produkter:', 'haus-ecom-widgets'),
                 'type' => \Elementor\Controls_Manager::TEXTAREA,
                 'rows' => 4,
                 'label_block' => true,
-                'description' => __('Öppnar produktdropdownen. Kan ta emot flera idn, separera med kommatecken, tex 1, 2, 3', 'webien'),
+                'description' => __('Öppnar produktdropdownen. Kan ta emot flera idn, separera med kommatecken, tex 1, 2, 3', 'haus-ecom-widgets'),
             ]
         );
 
@@ -100,7 +100,7 @@ class Header extends Widget_Base
         $this->start_controls_section(
             'cart-section',
             [
-                'label' => __('Varukorg', 'webien'),
+                'label' => __('Varukorg', 'haus-ecom-widgets'),
             ]
         );
 
@@ -109,14 +109,14 @@ class Header extends Widget_Base
         $this->start_controls_section(
             'search-section',
             [
-                'label' => __('Sök', 'webien'),
+                'label' => __('Sök', 'haus-ecom-widgets'),
             ]
         );
 
         $this->add_control(
             'search_placeholder',
             [
-                'label' => __('Placeholder:', 'webien'),
+                'label' => __('Placeholder:', 'haus-ecom-widgets'),
                 'type' => \Elementor\Controls_Manager::TEXT,
                 'label_block' => true,
             ]
@@ -127,17 +127,17 @@ class Header extends Widget_Base
         $this->start_controls_section(
             'login-section',
             [
-                'label' => __('Login', 'webien'),
+                'label' => __('Login', 'haus-ecom-widgets'),
             ]
         );
 
         $this->add_control(
             'login_show_as_modal',
             [
-                'label' => esc_html__('Visa som modal', 'webien'),
+                'label' => esc_html__('Visa som modal', 'haus-ecom-widgets'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => esc_html__('Ja', 'webien'),
-                'label_off' => esc_html__('Nej', 'webien'),
+                'label_on' => esc_html__('Ja', 'haus-ecom-widgets'),
+                'label_off' => esc_html__('Nej', 'haus-ecom-widgets'),
                 'return_value' => 'yes',
                 'default' => 'yes',
             ]
@@ -146,7 +146,7 @@ class Header extends Widget_Base
         $this->add_control(
             'login_in_menu_id',
             [
-                'label' => __('Id på meny för inloggade:', 'webien'),
+                'label' => __('Id på meny för inloggade:', 'haus-ecom-widgets'),
                 'type' => \Elementor\Controls_Manager::TEXT,
                 'label_block' => true,
             ]
