@@ -5,6 +5,7 @@ namespace Haus\SyncData\Classes;
 use Haus\SyncData\Helpers\WpmlHelper;
 use Haus\SyncData\Helpers\WpHelper;
 use Haus\SyncData\Helpers\VendureHelper;
+use Haus\SyncData\Helpers\ConfigHelper;
 
 class Taxonomies
 {
@@ -14,20 +15,6 @@ class Taxonomies
     public $defaultLang = '';
 
     public $useWpml = false;
-    private $taxonomies = [
-        'brand' => [
-            'wp' => 'produkter-varumarken',
-            'vendure' => 'brand',
-        ],
-        'department' => [
-            'wp' => 'produkter-avdelningar',
-            'vendure' => 'department',
-        ],
-        'collection' => [
-            'wp' => 'produkter-kategorier',
-            'vendure' => 'category',
-        ],
-    ];
 
     public function __construct()
     {
@@ -39,30 +26,38 @@ class Taxonomies
     public function syncTaxonomies()
     {
         $wpHelper = new WpHelper();
+        $configHelper = new ConfigHelper();
+        $taxonomies = $configHelper->getTaxonomiesFromConfig();
+
+        if (!isset($taxonomies) || empty( (array) $taxonomies)) {
+            WpHelper::log(['No taxonomies found in config.json']);
+           return;
+        }
+
         $vendureHelper = new VendureHelper();
         $facets = $vendureHelper->getfacets();
-        foreach ($this->taxonomies as $taxonomyType => $taxonomyInfo) {
+        foreach ($taxonomies as $taxonomyType => $taxonomyInfo) {
 
             // Delete taxonomies with no vendure id and taxonomies with no translation language
-            $termsToDelete = $wpHelper->deleteTermsWithMissingValues($taxonomyInfo['wp']);
+            $termsToDelete = $wpHelper->deleteTermsWithMissingValues($taxonomyInfo->wp);
 
             if (isset($termsToDelete) && count($termsToDelete) > 0) {
                 foreach ($termsToDelete as $term) {
-                    $this->deleteTerm($term['term_id'], $taxonomyInfo['wp']);
+                    $this->deleteTerm($term['term_id'], $taxonomyInfo->wp);
                 }
             }
 
             if ($taxonomyType === 'collection') {
                 $vendureValues = $vendureHelper->getCollectionsFromVendure();
-                $wpTerms = $wpHelper->getAllCollectionsFromWp($taxonomyInfo['wp']);
-                $this->findMissMatchedTaxonomies($taxonomyInfo['wp'], $vendureValues, $wpTerms);
-                $this->syncAttributes($taxonomyInfo['wp'], $vendureValues, $wpTerms);
+                $wpTerms = $wpHelper->getAllCollectionsFromWp($taxonomyInfo->wp);
+                $this->findMissMatchedTaxonomies($taxonomyInfo->wp, $vendureValues, $wpTerms);
+                $this->syncAttributes($taxonomyInfo->wp, $vendureValues, $wpTerms);
                 continue;
             } else {
-                $vendureValues = $facets[$taxonomyInfo['vendure']];
-                $wpTerms = $wpHelper->getAllTermsFromWp($taxonomyInfo['wp']);
-                $this->findMissMatchedTaxonomies($taxonomyInfo['wp'], $vendureValues, $wpTerms);
-                $this->syncAttributes($taxonomyInfo['wp'], $vendureValues, $wpTerms);
+                $vendureValues = $facets[$taxonomyInfo->vendure];
+                $wpTerms = $wpHelper->getAllTermsFromWp($taxonomyInfo->wp);
+                $this->findMissMatchedTaxonomies($taxonomyInfo->wp, $vendureValues, $wpTerms);
+                $this->syncAttributes($taxonomyInfo->wp, $vendureValues, $wpTerms);
             }
         }
     }
@@ -108,7 +103,10 @@ class Taxonomies
         }
 
         // Add parents for collections, needs to be done after all terms are created
-        if ($taxonomy === 'produkter-kategorier') {
+        $configHelper = new ConfigHelper();
+        $isCollection = $configHelper->isCollection($taxonomy);
+
+        if ($isCollection) {
             foreach ($vendureTerms as $vendureId => $vendureTerm) {
                 $this->syncCollectionParents($vendureId, $vendureTerm['parentId'], $taxonomy);
             }
@@ -150,7 +148,9 @@ class Taxonomies
                 $translatedSlug = $this->getSlugForTranslations($name, $data, $lang);
                 $this->updateTaxonomy($translatedTermId, $taxonomy, $translatedName, $translatedSlug);
             } else {
-                $vendureType = $taxonomy === 'produkter-kategorier' ? 'vendure_collection_id' : 'vendure_term_id';
+                $configHelper = new ConfigHelper();
+                $isCollection = $configHelper->isCollection($taxonomy);
+                $vendureType = $isCollection ? 'vendure_collection_id' : 'vendure_term_id';
                 $this->createTranslatedTerm($vendureTerm, $taxonomy, $wpTerm['term_id'], $lang, $vendureType);
             }
         }
@@ -262,7 +262,9 @@ class Taxonomies
 
     public function addNewTerm($value, $taxonomy)
     {
-        $vendureType = $taxonomy === 'produkter-kategorier' ? 'vendure_collection_id' : 'vendure_term_id';
+        $configHelper = new ConfigHelper();
+        $isCollection = $configHelper->isCollection($taxonomy);
+        $vendureType = $isCollection ? 'vendure_collection_id' : 'vendure_term_id';
         $wmplType = 'tax_' . $taxonomy;
 
         $original = $this->addNewTermOriginal($value, $taxonomy, $vendureType);

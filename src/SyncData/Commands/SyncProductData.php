@@ -39,7 +39,7 @@ class SyncProductData extends WP_CLI_Command
             // sync products
             $productsInstance->syncProductsData($vendureProducts, $wpProducts);
 
-            // // add taxonomies to products
+            // add taxonomies to products
             (new Relations)->syncRelationships($vendureProducts);
 
             $productsSummary = sprintf(
