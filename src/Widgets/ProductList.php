@@ -38,19 +38,19 @@ class ProductList extends Widget_Base
         $this->start_controls_section(
             'section_general',
             [
-                'label' => __('General settings', 'webien'),
+                'label' => __('General settings', 'haus-ecom-widgets'),
             ]
         );
 
         $this->add_control(
             'show_add_to_cart',
             [
-                'label' => __('Show Add to cart', 'webien'),
+                'label' => __('Show Add to cart', 'haus-ecom-widgets'),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'default' => '0',
                 'options' => [
-                    '0' => __('No', 'webien'),
-                    '1' => __('Yes', 'webien'),
+                    '0' => __('No', 'haus-ecom-widgets'),
+                    '1' => __('Yes', 'haus-ecom-widgets'),
                 ],
             ]
         );
@@ -60,7 +60,7 @@ class ProductList extends Widget_Base
         $this->start_controls_section(
             'section_content',
             [
-                'label' => __('Filter settings', 'webien'),
+                'label' => __('Filter settings', 'haus-ecom-widgets'),
             ]
         );
 
@@ -70,7 +70,7 @@ class ProductList extends Widget_Base
         $this->start_controls_section(
             'section_pagination',
             [
-                'label' => __('Pagination', 'webien'),
+                'label' => __('Pagination', 'haus-ecom-widgets'),
             ]
         );
         $this->add_pagination_controls();
@@ -79,7 +79,7 @@ class ProductList extends Widget_Base
         $this->start_controls_section(
             'section-filter',
             [
-                'label' => __('Filter', 'webien'),
+                'label' => __('Filter', 'haus-ecom-widgets'),
             ]
         );
 
@@ -104,7 +104,7 @@ class ProductList extends Widget_Base
         $this->add_control(
             'filter_values',
             [
-                'label' => __('Filters:', 'webien'),
+                'label' => __('Filters:', 'haus-ecom-widgets'),
                 'type' => \Elementor\Controls_Manager::SELECT2,
                 'label_block' => true,
                 'options' => $options,
@@ -136,7 +136,7 @@ class ProductList extends Widget_Base
         $this->add_control(
             'autoFacet',
             [
-                'label' => __('Autoset taxonomy:', 'webien'),
+                'label' => __('Autoset taxonomy:', 'haus-ecom-widgets'),
                 'type' => \Elementor\Controls_Manager::SELECT2,
                 'label_block' => true,
                 'options' => [
@@ -153,7 +153,7 @@ class ProductList extends Widget_Base
             $this->add_control(
                 'facetType-' . $facet['name'],
                 [
-                    'label' => __(ucfirst($facet['name']) . ':', 'webien'),
+                    'label' => __(ucfirst($facet['name']) . ':', 'haus-ecom-widgets'),
                     'type' => \Elementor\Controls_Manager::SELECT2,
                     'label_block' => true,
                     'options' => $this->get_facet_options($facet),
@@ -184,12 +184,12 @@ class ProductList extends Widget_Base
         $this->add_control(
             'sort_enabled',
             [
-                'label' => __('Enable Sort', 'webien'),
+                'label' => __('Enable Sort', 'haus-ecom-widgets'),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'default' => '0',
                 'options' => [
-                    '0' => __('No', 'webien'),
-                    '1' => __('Yes', 'webien'),
+                    '0' => __('No', 'haus-ecom-widgets'),
+                    '1' => __('Yes', 'haus-ecom-widgets'),
                 ],
             ]
         );
@@ -197,12 +197,12 @@ class ProductList extends Widget_Base
         $this->add_control(
             'pagination_enabled',
             [
-                'label' => __('Enable Pagination', 'webien'),
+                'label' => __('Enable Pagination', 'haus-ecom-widgets'),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'default' => '0',
                 'options' => [
-                    '0' => __('No', 'webien'),
-                    '1' => __('Yes', 'webien'),
+                    '0' => __('No', 'haus-ecom-widgets'),
+                    '1' => __('Yes', 'haus-ecom-widgets'),
                 ],
             ]
         );
@@ -210,7 +210,7 @@ class ProductList extends Widget_Base
         $this->add_control(
             'products_per_page',
             [
-                'label' => __('Products per page', 'webien'),
+                'label' => __('Products per page', 'haus-ecom-widgets'),
                 'type' => \Elementor\Controls_Manager::NUMBER,
                 'default' => '12',
             ]

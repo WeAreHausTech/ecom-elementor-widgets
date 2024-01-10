@@ -38,14 +38,14 @@ class Orders extends Widget_Base
     $this->start_controls_section(
       'section_content',
       [
-        'label' => __('Filter settings', 'webien'),
+        'label' => __('Filter settings', 'haus-ecom-widgets'),
       ]
     );
 
     $this->add_control(
       'orders_take',
       [
-        'label' => esc_html__('Antal', 'webien'),
+        'label' => esc_html__('Antal', 'haus-ecom-widgets'),
         'type' => \Elementor\Controls_Manager::NUMBER,
         'default' => 10,
       ]
@@ -54,22 +54,22 @@ class Orders extends Widget_Base
     $this->add_control(
       'orders_state_filter',
       [
-        'label' => esc_html__('Status', 'webien'),
+        'label' => esc_html__('Status', 'haus-ecom-widgets'),
         'type' => \Elementor\Controls_Manager::SELECT2,
         'multiple' => true,
         'options' => [
-          'AddingItems' => esc_html__('AddingItems', 'webien'),
-          'ArrangingPayment' => esc_html__('ArrangingPayment', 'webien'),
-          'Cancelled' => esc_html__('Cancelled', 'webien'),
-          'CancelledAfterApproval' => esc_html__('CancelledAfterApproval', 'webien'),
-          'Delivered' => esc_html__('Delivered', 'webien'),
-          'PaymentAuthorized' => esc_html__('PaymentAuthorized', 'webien'),
-          'PaymentSettled' => esc_html__('PaymentSettled', 'webien'),
-          'PaymentDeclined' => esc_html__('PaymentDeclined', 'webien'),
-          'PaymentFailed' => esc_html__('PaymentFailed', 'webien'),
-          'Pending' => esc_html__('Pending', 'webien'),
-          'Refunded' => esc_html__('Refunded', 'webien'),
-          'Shipped' => esc_html__('Shipped', 'webien'),
+          'AddingItems' => esc_html__('AddingItems', 'haus-ecom-widgets'),
+          'ArrangingPayment' => esc_html__('ArrangingPayment', 'haus-ecom-widgets'),
+          'Cancelled' => esc_html__('Cancelled', 'haus-ecom-widgets'),
+          'CancelledAfterApproval' => esc_html__('CancelledAfterApproval', 'haus-ecom-widgets'),
+          'Delivered' => esc_html__('Delivered', 'haus-ecom-widgets'),
+          'PaymentAuthorized' => esc_html__('PaymentAuthorized', 'haus-ecom-widgets'),
+          'PaymentSettled' => esc_html__('PaymentSettled', 'haus-ecom-widgets'),
+          'PaymentDeclined' => esc_html__('PaymentDeclined', 'haus-ecom-widgets'),
+          'PaymentFailed' => esc_html__('PaymentFailed', 'haus-ecom-widgets'),
+          'Pending' => esc_html__('Pending', 'haus-ecom-widgets'),
+          'Refunded' => esc_html__('Refunded', 'haus-ecom-widgets'),
+          'Shipped' => esc_html__('Shipped', 'haus-ecom-widgets'),
         ],
       ]
     );
