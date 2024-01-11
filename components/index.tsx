@@ -4,11 +4,11 @@ import ReactDOM from 'react-dom/client'
 import {
   DataProvider,
   LocalizationProvider,
-  FacetValueFilterInput,
   OrderListOptions,
+  EnabledFilter,
 } from '@haus-tech/ecom-components'
 
-import { get } from 'lodash'
+import { get, lowerCase, size } from 'lodash'
 import styles from '@haus-tech/ecom-components/dist/ecom-style.css?url'
 
 async function fetchCSSContent() {
@@ -59,17 +59,7 @@ const init = async () => {
     switch (widgetType) {
       case 'product-list':
         const facetsAttributes = dataAttributes.getNamedItem('data-facet')?.value
-        let facetValues: FacetValueFilterInput[] = [{ or: [] }]
-        if (facetsAttributes) {
-          const facetArray = facetsAttributes.split(',').map(Number)
-
-          if (facetArray?.length > 0) {
-            facetValues = facetArray.map((facet) => {
-              return { and: String(facet) } as FacetValueFilterInput
-            })
-          }
-        }
-
+        const facetArray = facetsAttributes?.split(',').filter(Number).map(String)
         const collectionId = dataAttributes.getNamedItem('data-collection')?.value
         const enablePagination = +get(
           dataAttributes.getNamedItem('data-pagination-enabled'),
@@ -83,12 +73,14 @@ const init = async () => {
           0,
         )
         
-        const enabledFilters = dataAttributes.getNamedItem('data-filter-values')?.value
-        let filtersArray = null;
-
-        if (enabledFilters) {
-           filtersArray = enabledFilters.split(',').map(Number)
-        }
+        const enabledFilters = dataAttributes.getNamedItem('data-filter-values')?.value ? JSON.parse(dataAttributes.getNamedItem('data-filter-values')!.value) : null
+        const filtersArray: EnabledFilter[] = enabledFilters?.map((filter: { filter_value: string, filter_condition: 'AND' | 'OR', filter_label?: string }) => {
+          return {
+            facetId: filter.filter_value,
+            logicalOperator: lowerCase(filter.filter_condition),
+            label: filter.filter_label,
+          } as EnabledFilter
+        })
 
         const ProductList = React.lazy(() => import('./widgets/ProductList'))
         renderElement(
@@ -96,14 +88,14 @@ const init = async () => {
           <Suspense>
             <ProductList
               searchInputProps={{
-                facetValueFilters: facetValues,
+                facetValueIds: size(facetArray) > 0 ? facetArray : [],
                 take: +get(dataAttributes.getNamedItem('data-take'), 'value', 12),
                 collectionId: collectionId,
               }}
               enablePagination={Boolean(enablePagination)}
               enableSorting={Boolean(enableSort)}
               enableAddToCartBtn={Boolean(enableAddToCart)}
-              enabledFilters={filtersArray}
+              enabledFilters={size(filtersArray) > 0 ? filtersArray : undefined}
             />
             </Suspense>,
         )
