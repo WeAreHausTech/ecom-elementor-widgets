@@ -412,6 +412,11 @@
     axios "^1.6.2"
     gql-query-builder "^3.8.0"
 
+"@haus-tech/eslint-config@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@haus-tech/eslint-config/-/eslint-config-1.0.9.tgz#6685e3638a61dcbbc8373a8d1aaab72e0bf9e0ce"
+  integrity sha512-nlnEU9axhs/mk9ZSjK4jUrjTgJajPFrQ7xlBQNZCnw7ahgR09zl5xgazEgAoJARNn3LZC5SA/uVtGsO6bGRXDw==
+
 "@haus-tech/prettier-config@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@haus-tech/prettier-config/-/prettier-config-1.0.3.tgz#9796759b497113e7a6483707215c030f7b3b2c25"
