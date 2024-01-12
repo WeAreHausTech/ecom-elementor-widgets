@@ -9,6 +9,7 @@ import ReactDOM from 'react-dom/client'
 import ecomWidgets from './widgets'
 import { camelCase } from 'lodash'
 import styles from '@haus-tech/ecom-components/dist/ecom-style.css?url'
+import { ResourceBundle } from '../../ecom-components/dist/localization/LocalizationProvider'
 
 export interface IWidgetsRendererOptions {
   provider: 'vendure'
@@ -21,15 +22,18 @@ export class WidgetsRenderer {
   updates: BuilderQueryUpdates
   options: VendureOptions
   widgets: Record<string, () => JSX.Element> = {}
+  translations: ResourceBundle[] = []
 
   constructor(
     { provider, updates, options }: IWidgetsRendererOptions,
     widgets?: Record<string, () => JSX.Element>,
+    translations?: ResourceBundle[],
   ) {
     this.provider = provider
     this.updates = updates
     this.options = options
     this.widgets = widgets || {}
+    this.translations = translations || []
   }
 
   async fetchCSSContent() {
@@ -45,14 +49,12 @@ export class WidgetsRenderer {
     styleEl.textContent = css
     shadowRoot.appendChild(styleEl)
 
-    // const resourceBundles = getLangData()
-    // const queryUpdates = getQueryUpdates()
-    // const config = getConfig()
-
     return ReactDOM.createRoot(shadowRoot).render(
       <React.StrictMode>
         <DataProvider provider={this.provider} updates={this.updates} options={this.options}>
-          <LocalizationProvider resourceBundles={[]}>{children}</LocalizationProvider>
+          <LocalizationProvider resourceBundles={this.translations}>
+            {children}
+          </LocalizationProvider>
         </DataProvider>
       </React.StrictMode>,
     )
