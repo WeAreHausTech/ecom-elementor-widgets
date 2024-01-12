@@ -93,10 +93,8 @@ add_action('init', function () {
 if (defined('WP_CLI') && WP_CLI) {
     add_action('init', function () {
         require_once HAUS_ECOM_PLUGIN_PATH . '/src/SyncData/Commands/SyncProductData.php';
-    });
-
-    add_action('init', function () {
         require_once HAUS_ECOM_PLUGIN_PATH . '/src/SyncData/Commands/DeleteAllPosts.php';
+        require_once HAUS_ECOM_PLUGIN_PATH . '/src/SyncData/Commands/RemoveLock.php';
     });
 }
 
