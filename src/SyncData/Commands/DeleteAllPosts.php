@@ -5,11 +5,11 @@
  * $ wp sync-products sync
  */
 
-use Haus\SyncData\Classes\Products;
-use Haus\SyncData\Classes\Taxonomies;
-use Haus\SyncData\Classes\Relations;
-use Haus\SyncData\Helpers\WpHelper;
-use Haus\SyncData\Helpers\VendureHelper;
+use WeAreHausTech\SyncData\Classes\Products;
+use WeAreHausTech\SyncData\Classes\Taxonomies;
+use WeAreHausTech\SyncData\Classes\Relations;
+use WeAreHausTech\SyncData\Helpers\WpHelper;
+use WeAreHausTech\SyncData\Helpers\VendureHelper;
 
 class DeleteAllPosts extends WP_CLI_Command
 {

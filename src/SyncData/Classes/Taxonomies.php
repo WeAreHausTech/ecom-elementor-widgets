@@ -1,10 +1,10 @@
 <?php
 
-namespace Haus\SyncData\Classes;
+namespace WeAreHausTech\SyncData\Classes;
 
-use Haus\SyncData\Helpers\WpmlHelper;
-use Haus\SyncData\Helpers\WpHelper;
-use Haus\SyncData\Helpers\VendureHelper;
+use WeAreHausTech\SyncData\Helpers\WpmlHelper;
+use WeAreHausTech\SyncData\Helpers\WpHelper;
+use WeAreHausTech\SyncData\Helpers\VendureHelper;
 
 class Taxonomies
 {

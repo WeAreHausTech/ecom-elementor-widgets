@@ -1,8 +1,8 @@
 <?php
-namespace Haus\Widgets;
+namespace WeAreHausTech\Widgets;
 
 use \Elementor\Widget_Base;
-use \Haus\Traits\ElementorTemplate;
+use \WeAreHausTech\Traits\ElementorTemplate;
 
 class AccountDropdown extends Widget_Base
 {

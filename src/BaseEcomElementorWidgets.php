@@ -1,6 +1,6 @@
 <?php
 
-namespace Haus;
+namespace WeAreHausTech;
 
 class BaseEcomElementorWidgets
 {
@@ -19,48 +19,48 @@ class BaseEcomElementorWidgets
             // Register widgets
             \Elementor\Plugin::instance()
                 ->widgets_manager
-                ->register(new \Haus\Widgets\ProductList());
+                ->register(new \WeAreHausTech\Widgets\ProductList());
 
             \Elementor\Plugin::instance()
                 ->widgets_manager
-                ->register(new \Haus\Widgets\Checkout());
+                ->register(new \WeAreHausTech\Widgets\Checkout());
 
             \Elementor\Plugin::instance()
                 ->widgets_manager
-                ->register(new \Haus\Widgets\ProductSingle());
+                ->register(new \WeAreHausTech\Widgets\ProductSingle());
 
             \Elementor\Plugin::instance()
                 ->widgets_manager
-                ->register(new \Haus\Widgets\Header());
+                ->register(new \WeAreHausTech\Widgets\Header());
             \Elementor\Plugin::instance()
                 ->widgets_manager
-                ->register(new \Haus\Widgets\Cart());
+                ->register(new \WeAreHausTech\Widgets\Cart());
 
             \Elementor\Plugin::instance()
                 ->widgets_manager
-                ->register(new \Haus\Widgets\CurrencyChooser());
+                ->register(new \WeAreHausTech\Widgets\CurrencyChooser());
             \Elementor\Plugin::instance()
                 ->widgets_manager
-                ->register(new \Haus\Widgets\OrderConfirmation());
+                ->register(new \WeAreHausTech\Widgets\OrderConfirmation());
             \Elementor\Plugin::instance()
                 ->widgets_manager
-                ->register(new \Haus\Widgets\Login());
+                ->register(new \WeAreHausTech\Widgets\Login());
 
             \Elementor\Plugin::instance()
                 ->widgets_manager
-                ->register(new \Haus\Widgets\AccountDetails());
+                ->register(new \WeAreHausTech\Widgets\AccountDetails());
 
             \Elementor\Plugin::instance()
                 ->widgets_manager
-                ->register(new \Haus\Widgets\Orders());
+                ->register(new \WeAreHausTech\Widgets\Orders());
 
             \Elementor\Plugin::instance()
                 ->widgets_manager
-                ->register(new \Haus\Widgets\OrderView());
+                ->register(new \WeAreHausTech\Widgets\OrderView());
 
             \Elementor\Plugin::instance()
                 ->widgets_manager
-                ->register(new \Haus\Widgets\CartIcon());
+                ->register(new \WeAreHausTech\Widgets\CartIcon());
 
             if (defined('WP_CLI') && WP_CLI) {
                 require_once 'SyncData/Commands/SyncProductData.php';

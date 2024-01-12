@@ -1,5 +1,5 @@
 <?php
-namespace Haus\Queries;
+namespace WeAreHausTech\Queries;
 
 // For productsSync only
 

@@ -1,5 +1,5 @@
 <?php
-namespace Haus\Traits;
+namespace WeAreHausTech\Traits;
 
 trait ElementorTemplate
 {

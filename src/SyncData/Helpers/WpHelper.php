@@ -1,10 +1,10 @@
 <?php
 
-namespace Haus\SyncData\Helpers;
+namespace WeAreHausTech\SyncData\Helpers;
 
-use Haus\SyncData\Helpers\WpmlHelper;
-use Haus\SyncData\Classes\Products;
-use Haus\SyncData\Classes\Taxonomies;
+use WeAreHausTech\SyncData\Helpers\WpmlHelper;
+use WeAreHausTech\SyncData\Classes\Products;
+use WeAreHausTech\SyncData\Classes\Taxonomies;
 
 class WpHelper {
 

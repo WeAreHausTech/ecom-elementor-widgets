@@ -1,10 +1,10 @@
 <?php
 
-namespace Haus\Widgets;
+namespace WeAreHausTech\Widgets;
 
 use \Elementor\Widget_Base;
-use \Haus\Traits\ElementorTemplate;
-use Haus\SyncData\Helpers\WpmlHelper;
+use \WeAreHausTech\Traits\ElementorTemplate;
+use WeAreHausTech\SyncData\Helpers\WpmlHelper;
 
 class Header extends Widget_Base
 {

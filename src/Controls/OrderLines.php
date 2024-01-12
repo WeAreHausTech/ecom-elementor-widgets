@@ -1,5 +1,5 @@
 <?php
-namespace Haus\Controls;
+namespace WeAreHausTech\Controls;
 
 class OrderLines
 {

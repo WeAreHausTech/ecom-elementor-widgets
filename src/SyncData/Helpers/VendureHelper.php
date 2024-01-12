@@ -1,8 +1,8 @@
 <?php
 
-namespace Haus\SyncData\Helpers;
+namespace WeAreHausTech\SyncData\Helpers;
 
-use Haus\SyncData\Helpers\WpmlHelper;
+use WeAreHausTech\SyncData\Helpers\WpmlHelper;
 
 class VendureHelper
 {
@@ -45,7 +45,7 @@ class VendureHelper
 
     public function getProductsByLang($lang)
     {
-        $products = (new \Haus\Queries\Product)->get($lang);
+        $products = (new \WeAreHausTech\Queries\Product)->get($lang);
 
         if (!isset($products['data']['search']['items'])) {
             return [];
@@ -111,7 +111,7 @@ class VendureHelper
 
     public function getVendureCollectionData($lang, $data = [], $skip = 0, $take = 100)
     {
-        $collections = (new \Haus\Queries\Collection)->get($lang, $skip, $take);
+        $collections = (new \WeAreHausTech\Queries\Collection)->get($lang, $skip, $take);
 
         if (!isset($collections['data']['collections']['items'])) {
             return [];
@@ -158,7 +158,7 @@ class VendureHelper
 
     public function getFacetsFromVendure($lang)
     {
-        $facets = (new \Haus\Queries\Facet)->get($lang);
+        $facets = (new \WeAreHausTech\Queries\Facet)->get($lang);
 
         if (!isset($facets['data']['facets']['items'])) {
             return [];

@@ -1,8 +1,8 @@
 <?php
-namespace Haus\Widgets;
+namespace WeAreHausTech\Widgets;
 
 use \Elementor\Widget_Base;
-use \Haus\Traits\ElementorTemplate;
+use \WeAreHausTech\Traits\ElementorTemplate;
 
 class Checkout extends Widget_Base
 {
@@ -35,7 +35,7 @@ class Checkout extends Widget_Base
 
     protected function register_controls()
     {
-        (new \Haus\Controls\OrderLines)->getControlsForCartPrice($this);
+        (new \WeAreHausTech\Controls\OrderLines)->getControlsForCartPrice($this);
     }
 
     protected function render()
