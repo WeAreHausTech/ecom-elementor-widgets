@@ -9,12 +9,17 @@ import ReactDOM from 'react-dom/client'
 import ecomWidgets from './widgets'
 import { camelCase } from 'lodash'
 import styles from '@haus-tech/ecom-components/dist/ecom-style.css?url'
-import { ResourceBundle } from '../../ecom-components/dist/localization/LocalizationProvider'
 
 export interface IWidgetsRendererOptions {
   provider: 'vendure'
   updates: BuilderQueryUpdates
   options: VendureOptions
+}
+
+export interface ResourceBundle {
+  lng: string
+  ns: string
+  resources: Record<string, unknown>
 }
 
 export class WidgetsRenderer {
