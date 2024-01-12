@@ -10,7 +10,7 @@ class LockHelper
     public static function abortIfAlreadyRunning()
     {
         if (get_transient(self::$key)) {
-            \WP_CLI::error("The command is already running.");
+            \WP_CLI::error("The command is already running. If you're sure it's not, run 'wp sync-products removeLock' to remove the lock.");
         }
     }
 
