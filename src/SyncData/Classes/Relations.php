@@ -9,15 +9,10 @@ use Haus\SyncData\Helpers\ConfigHelper;
 
 class Relations
 {
-
     public $defaultLang = '';
-
     public $useWpml = false;
-
     public $collectionTaxonomy = '';
-
     public $syncCollections = false;
-
     public $syncFacets = false;
 
     public function __construct()
@@ -30,6 +25,7 @@ class Relations
         $this->syncFacets = $configHelper->hasFacets();
         $this->syncCollections = $configHelper->hasCollection();
     }
+    
     public function syncRelationships($vendureProducts)
     {
         $products = $this->getProductIds();
@@ -79,8 +75,6 @@ class Relations
         $seen = [];
         $returnData = [];
 
-      
-
         foreach ($incomingData as $data) {
             $id = $data['vendure_id'];
 
@@ -102,7 +96,6 @@ class Relations
 
         return $returnData;
     }
-
 
     public function assignCollectionValues($wpProduct, $collectionIds, $collections)
     {
@@ -148,5 +141,4 @@ class Relations
             }
         }
     }
-
 }
