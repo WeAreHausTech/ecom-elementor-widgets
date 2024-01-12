@@ -1,7 +1,7 @@
 {
   "name": "livv-ecom-elementor-widgets",
   "private": true,
-  "version": "0.2.12",
+  "version": "0.3.1",
   "type": "module",
   "scripts": {
     "build-widgets": "tsc && vite build",
