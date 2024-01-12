@@ -1,83 +1,72 @@
 <?php
 
 namespace Haus\SyncData\Classes;
+use Haus\SyncData\Helpers\WpHelper;
+use Haus\SyncData\Helpers\WpmlHelper;
+use Haus\SyncData\Helpers\ConfigHelper;
+
+
 
 class Relations
 {
+    public $defaultLang = '';
+    public $useWpml = false;
+    public $collectionTaxonomy = '';
+    public $syncCollections = false;
+    public $syncFacets = false;
+
+    public function __construct()
+    {
+        $wpmlHelper = new WpmlHelper();
+        $configHelper = new ConfigHelper();
+        $this->useWpml = $wpmlHelper->hasWpml();
+        $this->defaultLang = $wpmlHelper->getDefaultLanguage();
+        $this->collectionTaxonomy = $configHelper->getCollectionTaxonomyType();
+        $this->syncFacets = $configHelper->hasFacets();
+        $this->syncCollections = $configHelper->hasCollection();
+    }
+    
     public function syncRelationships($vendureProducts)
     {
         $products = $this->getProductIds();
-        $facets = $this->getFacetids();
-        $collections = $this->getCollectionids();
+        $this->syncFacets && $facets = $this->getFacetids();
+        $this->syncCollections && $collections = $this->getCollectionids();
+
+        if ( !$this->syncFacets && !$this->syncCollections) {
+            return;
+        }
 
         foreach ($vendureProducts as $vendureId => $vendureProduct) {
             $wpProduct = $products[$vendureId];
-            $this->assignFacetValues($wpProduct, $vendureProduct['facetValueIds'], $facets);
-            $this->assignCollectionValues($wpProduct, $vendureProduct['collectionIds'], $collections);
+            $this->syncFacets && $this->assignFacetValues($wpProduct, $vendureProduct['facetValueIds'], $facets);
+            $this->syncCollections && $this->assignCollectionValues($wpProduct, $vendureProduct['collectionIds'], $collections);
         }
     }
 
     public function getProductIds()
     {
-        global $wpdb;
+        $wpHelper = new WpHelper();
 
-        $query = $wpdb->prepare(
-            "SELECT p.ID, pm.meta_value as vendure_id, t.language_code as lang
-            FROM {$wpdb->prefix}posts p 
-            LEFT JOIN {$wpdb->prefix}postmeta pm
-                ON p.ID = pm.post_id
-                AND pm.meta_key = 'vendure_id'
-            LEFT JOIN {$wpdb->prefix}icl_translations t
-            ON p.ID = t.element_id
-            AND t.element_type = 'post_produkter'
-            WHERE post_type ='produkter'"
-        );
-
-
-        $productData = $wpdb->get_results($query, ARRAY_A);
+        $productData = $wpHelper->getProductIds();
 
         return $this->combineVendureIds($productData);
     }
 
     public function getFacetids()
     {
-        global $wpdb;
+        $wpHelper = new WpHelper();
 
-        $termmeta = $wpdb->prefix . 'termmeta';
-
-        $query = $wpdb->prepare(
-            "SELECT tt.term_id as ID, tt.taxonomy as taxonomy, tm.meta_value as vendure_id, tr.language_code as lang
-             FROM {$wpdb->prefix}term_taxonomy tt 
-             LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
-             AND tm.meta_key = 'vendure_term_id'
-             LEFT JOIN {$wpdb->prefix}icl_translations tr 
-             ON tt.term_taxonomy_id = tr.element_id
-             WHERE taxonomy IN ('produkter-varumarken', 'produkter-avdelningar')",
-
-        );
-
-        $termsData = $wpdb->get_results($query, ARRAY_A);
+        $termsData = $wpHelper->getFacetids();
 
         return $this->combineVendureIds($termsData);
     }
 
     public function getCollectionids()
     {
-        global $wpdb;
+        $wpHelper = new WpHelper();
 
-        $termmeta = $wpdb->prefix . 'termmeta';
+        $termsData = $wpHelper->getCollectionids();
 
-        $query = $wpdb->prepare(
-            "SELECT tt.term_id as ID, tt.taxonomy, tm.meta_value as vendure_id, tr.language_code as lang
-             FROM {$wpdb->prefix}term_taxonomy tt 
-             LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
-             AND tm.meta_key = 'vendure_collection_id'
-             LEFT JOIN {$wpdb->prefix}icl_translations tr 
-             ON tt.term_taxonomy_id = tr.element_id
-             WHERE taxonomy IN ('produkter-kategorier')",
-        );
-
-        $termsData = $wpdb->get_results($query, ARRAY_A);
         return $this->combineVendureIds($termsData);
     }
 
@@ -94,17 +83,19 @@ class Relations
                 $returnData[$id] = [
                     'vendure_id' => $id,
                     'taxonomy' => isset($data['taxonomy']) ? $data['taxonomy'] : null,
-                    'ids' => [
-                        $data['lang'] => $data['ID']
-                    ]
+                    'ids' => []
                 ];
-            } else {
+            } 
+
+            if ($this->useWpml) {
                 $returnData[$id]['ids'][$data['lang']] = $data['ID'];
+            } else {
+                $returnData[$id]['ids']['sv'] = $data['ID'];
             }
         }
+
         return $returnData;
     }
-
 
     public function assignCollectionValues($wpProduct, $collectionIds, $collections)
     {
@@ -123,8 +114,12 @@ class Relations
             }
         }
 
+        if (!isset($this->collectionTaxonomy)){
+            return;
+        }
+
         foreach ($collectionsData as $wpProductId => $collectionData) {
-            wp_set_object_terms($wpProductId, $collectionData, 'produkter-kategorier');
+            wp_set_object_terms($wpProductId, $collectionData, $this->collectionTaxonomy);
         }
     }
 
@@ -146,5 +141,4 @@ class Relations
             }
         }
     }
-
 }
