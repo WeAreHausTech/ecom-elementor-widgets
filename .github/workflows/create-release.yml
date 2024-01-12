@@ -30,7 +30,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
       - name: Build Widgets
-        run: yarn build-widgets
+        run: yarn build
 
       - name: Run composer install
         run: composer install --no-dev --no-interaction --no-progress --optimize-autoloader
