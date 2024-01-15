@@ -394,13 +394,110 @@ class WpHelper {
 
     public function deleteTermsWithMissingValues($taxonomy) {
         global $wpdb;
-
-        $vendureType = $taxonomy === 'produkter-kategorier' ? 'vendure_collection_id' : 'vendure_term_id';
+        $configHelper = new ConfigHelper();
+        $isCollection = $configHelper->isCollection($taxonomy);
+        $vendureType = $isCollection ? 'vendure_collection_id' : 'vendure_term_id';
         $wpmlType = 'tax_'.$taxonomy;
 
         $query = $this->termsToDeleteQuery($taxonomy, $vendureType, $wpmlType);
 
         return $wpdb->get_results($query, ARRAY_A);
+    }
+
+    public function getProductIds(){
+
+        global $wpdb;
+
+        if($this->useWpml) {
+        $query = $wpdb->prepare(
+            "SELECT p.ID, pm.meta_value as vendure_id, t.language_code as lang
+            FROM {$wpdb->prefix}posts p 
+            LEFT JOIN {$wpdb->prefix}postmeta pm
+                ON p.ID = pm.post_id
+                AND pm.meta_key = 'vendure_id'
+            LEFT JOIN {$wpdb->prefix}icl_translations t
+            ON p.ID = t.element_id
+            AND t.element_type = 'post_produkter'
+            WHERE post_type ='produkter'"
+        );
+        } else {
+            $query = $wpdb->prepare(
+                "SELECT p.ID, pm.meta_value as vendure_id
+                FROM {$wpdb->prefix}posts p 
+                LEFT JOIN {$wpdb->prefix}postmeta pm
+                    ON p.ID = pm.post_id
+                    AND pm.meta_key = 'vendure_id'
+                WHERE post_type ='produkter'"
+            );
+        }
+
+       return $wpdb->get_results($query, ARRAY_A);
+    }
+
+    public function getFacetids(){
+        global $wpdb;
+        $termmeta = $wpdb->prefix . 'termmeta';
+
+        $configHelper = new ConfigHelper();
+        $facetTaxonomies = $configHelper->getFacetTaxonomyPostTypes();
+        $taxonomyPlaceholders = implode(', ', array_fill(0, count($facetTaxonomies), '%s'));
+
+        if($this->useWpml) {
+            $query = $wpdb->prepare(
+                "SELECT tt.term_id as ID, tt.taxonomy as taxonomy, tm.meta_value as vendure_id, tr.language_code as lang
+                 FROM {$wpdb->prefix}term_taxonomy tt 
+                 LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
+                 AND tm.meta_key = 'vendure_term_id'
+                 LEFT JOIN {$wpdb->prefix}icl_translations tr 
+                 ON tt.term_taxonomy_id = tr.element_id
+                 WHERE taxonomy IN ($taxonomyPlaceholders)",
+                $facetTaxonomies 
+            );
+        } else {
+            $query = $wpdb->prepare(
+                "SELECT tt.term_id as ID, tt.taxonomy as taxonomy, tm.meta_value as vendure_id
+                 FROM {$wpdb->prefix}term_taxonomy tt 
+                 LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
+                 AND tm.meta_key = 'vendure_term_id'
+                 WHERE taxonomy IN ($taxonomyPlaceholders)",
+                $facetTaxonomies
+            );
+        }
+
+        return $wpdb->get_results($query, ARRAY_A);
+    }
+
+    public function getCollectionids(){
+        global $wpdb;
+
+        $termmeta = $wpdb->prefix . 'termmeta';
+        $configHelper = new ConfigHelper();
+        $collectionTaxonomy = $configHelper->getCollectionTaxonomyPostTypes();
+        $taxonomyPlaceholders = implode(', ', array_fill(0, count($collectionTaxonomy), '%s'));
+
+        if($this->useWpml) {
+            $query = $wpdb->prepare(
+                "SELECT tt.term_id as ID, tt.taxonomy, tm.meta_value as vendure_id, tr.language_code as lang
+                 FROM {$wpdb->prefix}term_taxonomy tt 
+                 LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
+                 AND tm.meta_key = 'vendure_collection_id'
+                 LEFT JOIN {$wpdb->prefix}icl_translations tr 
+                 ON tt.term_taxonomy_id = tr.element_id
+                 WHERE taxonomy IN ($taxonomyPlaceholders)",
+                 $collectionTaxonomy
+            );
+        } else {
+            $query = $wpdb->prepare(
+                "SELECT tt.term_id as ID, tt.taxonomy, tm.meta_value as vendure_id
+                 FROM {$wpdb->prefix}term_taxonomy tt 
+                 LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
+                 AND tm.meta_key = 'vendure_collection_id'
+                 WHERE taxonomy IN ($taxonomyPlaceholders)",
+                 $collectionTaxonomy
+            );
+        }  
+
+        return $wpdb->get_results($query, ARRAY_A);      
     }
 }
 
