@@ -4,7 +4,7 @@ import {
   LocalizationProvider,
   VendureOptions,
 } from '@haus-tech/ecom-components'
-import React, { ReactNode, Suspense } from 'react'
+import React, { ReactNode } from 'react'
 import ReactDOM from 'react-dom/client'
 import ecomWidgets from './widgets'
 import { camelCase } from 'lodash'
@@ -41,12 +41,12 @@ export class WidgetsRenderer {
     this.translations = translations || []
   }
 
-  async fetchCSSContent() {
+  private async fetchCSSContent() {
     const response = await fetch(styles)
     return await response.text()
   }
 
-  async renderElement(element: Element, children: ReactNode) {
+  private async renderElement(element: Element, children: ReactNode, isCustomerWidget?: boolean) {
     const css = await this.fetchCSSContent()
     const shadowRoot = element.attachShadow({ mode: 'open' })
 
@@ -56,44 +56,54 @@ export class WidgetsRenderer {
 
     return ReactDOM.createRoot(shadowRoot).render(
       <React.StrictMode>
-        <DataProvider provider={this.provider} updates={this.updates} options={this.options}>
-          <LocalizationProvider resourceBundles={this.translations}>
-            {children}
-          </LocalizationProvider>
-        </DataProvider>
+        {isCustomerWidget ? (
+          children
+        ) : (
+          <DataProvider provider={this.provider} updates={this.updates} options={this.options}>
+            <LocalizationProvider resourceBundles={this.translations}>
+              {children}
+            </LocalizationProvider>
+          </DataProvider>
+        )}
       </React.StrictMode>,
     )
   }
 
-  renderElements() {
-    const allWidgets = {
-      ...ecomWidgets,
-      ...this.widgets,
-    }
+  private renderElements() {
     const elements: Element[] = Array.from(document.getElementsByClassName('ecom-components-root'))
     elements.forEach((element: Element) => {
       const dataAttributes = element.attributes
       const widgetType = dataAttributes.getNamedItem('data-widget-type')?.value
 
       if (widgetType) {
-        const widget = allWidgets[camelCase(widgetType) as keyof typeof ecomWidgets]
-        if (widget) {
-          const widgetElement = widget(dataAttributes)
-          this.renderElement(element, <Suspense>{widgetElement}</Suspense>)
+        const ecomWidget = ecomWidgets[camelCase(widgetType) as keyof typeof ecomWidgets]
+        const customerWidget = this.widgets[camelCase(widgetType) as keyof typeof this.widgets]
+        if (customerWidget) {
+          console.log('customer widget', widgetType)
+          const widgetElement = customerWidget()
+          this.renderElement(element, widgetElement, true)
+        } else {
+          console.log('ecom widget', widgetType)
+          const widgetElement = ecomWidget(dataAttributes)
+          this.renderElement(element, widgetElement)
         }
       }
     })
   }
 
-  init() {
+  init(callback?: () => void) {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const _this = this
     if (document.readyState !== 'loading') {
       this.renderElements()
+      callback?.()
     } else {
       document.addEventListener('DOMContentLoaded', function () {
         _this.renderElements()
+        callback?.()
       })
     }
   }
+
+  renderCustomerWidgets() {}
 }
