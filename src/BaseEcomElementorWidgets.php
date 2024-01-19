@@ -62,6 +62,10 @@ class BaseEcomElementorWidgets
                 ->widgets_manager
                 ->register(new \WeAreHausTech\Widgets\CartIcon());
 
+            \Elementor\Plugin::instance()
+                ->widgets_manager
+                ->register(new \WeAreHausTech\Widgets\AccountDropdown());
+
             if (defined('WP_CLI') && WP_CLI) {
                 require_once 'SyncData/Commands/SyncProductData.php';
                 require_once 'SyncData/Commands/DeleteAllPosts.php';

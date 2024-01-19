@@ -172,11 +172,16 @@ export default {
       accountDropdownItems = JSON.parse(items)
     }
 
+    const useLoginModal = +get(dataAttributes.getNamedItem('data-use-login-modal'), 'value', 0)
+
     const AccountDropdown = React.lazy(() => import('./AccountDropdown'))
 
     return (
       <Suspense>
-        <AccountDropdown useLoginModal={false} dropdownItems={accountDropdownItems} />
+        <AccountDropdown
+          useLoginModal={Boolean(useLoginModal)}
+          dropdownItems={accountDropdownItems}
+        />
       </Suspense>
     )
   },
