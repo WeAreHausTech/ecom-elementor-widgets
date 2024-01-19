@@ -243,6 +243,17 @@ class Header extends Widget_Base
         }
     }
 
+
+    protected function getbaseUrl(){
+
+        $isHttps = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on';
+        $domain = $_SERVER['HTTP_HOST'];
+        
+        $protocol = $isHttps ? 'https://' : 'http://';
+
+        return $protocol . $domain;
+    }
+
     protected function render()
     {
         $product_ids_string = $this->get_settings_for_display('products_menu_ids');
@@ -266,16 +277,20 @@ class Header extends Widget_Base
         $loggedInmenuId = $this->get_settings_for_display('login_in_menu_id');
         $formattedMenuItems = $this->getFormatedMenuItems($loggedInmenuId);
 
-        $categories = $this->getTaxonomies('produkter-kategorier', '/produkter/kategorier/', '/en/products/categories/');
 
+        $baseUrl = $this->getbaseUrl();
+
+        $categories = $this->getTaxonomies('produkter-kategorier', '/produkter/kategorier/', '/en/products/categories/');
         $taxonomies = [
             [
                 'heading' => $this->lang('Brands', 'Varumärken'),
+                'heading-link' => $baseUrl . $this->lang('/en/products/brands/', '/produkter/varumarken/'),
                 'data' => $this->getTaxonomies('produkter-varumarken', '/produkter/varumarken/', '/en/products/brands/'),
                 'class' => 'brand'
             ],
             [
                 'heading' => $this->lang('Departments', 'Avdelningar'),
+                'heading-link' => $baseUrl . $this->lang('/en/products/departments/', '/produkter/avdelningar/'),
                 'data' => $this->getTaxonomies('produkter-avdelningar', '/produkter/avdelningar/', '/en/products/departments/'),
                 'class' => 'department'
             ]
