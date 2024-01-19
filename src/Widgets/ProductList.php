@@ -98,7 +98,7 @@ class ProductList extends Widget_Base
         $options = [];
 
         forEach($facets['data']['facets']['items'] as $facet){
-            $options[$facet['id']] = $facet['name'] . ' (id: ' . $facet['id'] . ')';
+            $options[$facet['id']] = $facet['code'] . ' (id: ' . $facet['id'] . ')';
         }
 
         $repeater = new \Elementor\Repeater();
@@ -188,15 +188,15 @@ class ProductList extends Widget_Base
 
         foreach ($facets['data']['facets']['items'] as $facet) {
             $this->add_control(
-                'facetType-' . $facet['name'],
+                'facetType-' . $facet['code'],
                 [
-                    'label' => __(ucfirst($facet['name']) . ':', 'haus-ecom-widgets'),
+                    'label' => __(ucfirst($facet['code']) . ':', 'haus-ecom-widgets'),
                     'type' => \Elementor\Controls_Manager::SELECT2,
                     'label_block' => true,
                     'options' => $this->get_facet_options($facet),
                     'default' => '0',
                     'condition' => [
-                        'autoFacet!' =>  $facet['name'],
+                        'autoFacet!' =>  $facet['code'],
                     ],
                 ]
             );
@@ -284,7 +284,7 @@ class ProductList extends Widget_Base
 
         foreach ($settings as $key => $value) {
             if (strpos($key, 'facetType-') !== false && $value !== '0' && ($autoSetTaxonomy && $key !== 'facetType-' . $settings['autoFacet'])) {
-                    $facets[] = $value;
+                $facets[] = $value;
             }
         }
 

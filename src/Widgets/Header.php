@@ -266,16 +266,18 @@ class Header extends Widget_Base
         $loggedInmenuId = $this->get_settings_for_display('login_in_menu_id');
         $formattedMenuItems = $this->getFormatedMenuItems($loggedInmenuId);
 
-        $categories = $this->getTaxonomies('produkter-kategorier', '/produkter/kategorier/', '/en/products/categories/');
 
+        $categories = $this->getTaxonomies('produkter-kategorier', '/produkter/kategorier/', '/en/products/categories/');
         $taxonomies = [
             [
                 'heading' => $this->lang('Brands', 'Varumärken'),
+                'heading-link' => get_home_url() . $this->lang('/products/brands/', '/produkter/varumarken/'),
                 'data' => $this->getTaxonomies('produkter-varumarken', '/produkter/varumarken/', '/en/products/brands/'),
                 'class' => 'brand'
             ],
             [
                 'heading' => $this->lang('Departments', 'Avdelningar'),
+                'heading-link' => get_home_url() . $this->lang('/products/departments/', '/produkter/avdelningar/'),
                 'data' => $this->getTaxonomies('produkter-avdelningar', '/produkter/avdelningar/', '/en/products/departments/'),
                 'class' => 'department'
             ]
