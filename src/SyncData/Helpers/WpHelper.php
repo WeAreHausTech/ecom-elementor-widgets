@@ -6,7 +6,8 @@ use WeAreHausTech\SyncData\Helpers\WpmlHelper;
 use WeAreHausTech\SyncData\Classes\Products;
 use WeAreHausTech\SyncData\Classes\Taxonomies;
 
-class WpHelper {
+class WpHelper
+{
 
     public $defaultLang = '';
 
@@ -112,13 +113,14 @@ class WpHelper {
         }
     }
 
-    public function getProductsQuery(){
+    public function getProductsQuery()
+    {
 
         global $wpdb;
 
         if ($this->useWpml) {
-            return  $wpdb->prepare(
-                "SELECT p.ID as id, p.post_title, p.post_name, pm.meta_value as vendure_id, pm2.meta_value as exclude_from_sync, t.language_code as lang
+            return $wpdb->prepare(
+                "SELECT p.ID as id, p.post_title, p.post_name, pm.meta_value as vendure_id, pm3.meta_value as vendure_updated_at, pm2.meta_value as exclude_from_sync, t.language_code as lang
                  FROM {$wpdb->prefix}posts p 
                  LEFT JOIN  {$wpdb->prefix}postmeta pm
                     ON p.ID = pm.post_id
@@ -126,6 +128,9 @@ class WpHelper {
                 LEFT JOIN {$wpdb->prefix}postmeta pm2
                     ON p.ID = pm2.post_id
                     AND pm2.meta_key = 'exclude_from_sync'
+                LEFT JOIN {$wpdb->prefix}postmeta pm3
+                    ON p.ID = pm3.post_id
+                    AND pm3.meta_key = 'vendure_updated_at'
                 LEFT JOIN {$wpdb->prefix}icl_translations t
                     ON p.ID = t.element_id
                     AND t.element_type = 'post_produkter'
@@ -134,15 +139,18 @@ class WpHelper {
                     AND post_type ='produkter'"
             );
         } else {
-            return  $wpdb->prepare(
-                "SELECT p.ID as id, p.post_title, p.post_name, pm.meta_value as vendure_id, pm2.meta_value as exclude_from_sync
+            return $wpdb->prepare(
+                "SELECT p.ID as id, p.post_title, p.post_name, pm.meta_value as vendure_id, pm3.meta_value as vendure_updated_at, pm2.meta_value as exclude_from_sync
                  FROM {$wpdb->prefix}posts p 
                  LEFT JOIN  {$wpdb->prefix}postmeta pm
                     ON p.ID = pm.post_id
                     AND pm.meta_key = 'vendure_id'
+                LEFT JOIN {$wpdb->prefix}postmeta pm3
+                    ON p.ID = pm3.post_id
+                    AND pm3.meta_key = 'vendure_updated_at'
                 LEFT JOIN {$wpdb->prefix}postmeta pm2
                     ON p.ID = pm2.post_id
-                    AND pm2.meta_key = 'exclude_from_sync'
+                    AND pm.meta_key = 'exclude_from_sync'
                     WHERE post_type ='produkter'"
             );
         }
@@ -181,12 +189,12 @@ class WpHelper {
         return $data;
     }
 
-    public function collectionsQuery($taxonomy) 
+    public function collectionsQuery($taxonomy)
     {
         global $wpdb;
-        $terms = $wpdb->prefix.'terms';
-        $termmeta = $wpdb->prefix.'termmeta';
-        if($this->useWpml) {
+        $terms = $wpdb->prefix . 'terms';
+        $termmeta = $wpdb->prefix . 'termmeta';
+        if ($this->useWpml) {
             return $wpdb->prepare(
                 "SELECT tt.term_id, tt.parent, t.name, t.slug, tm.meta_value as vendure_collection_id, tr.language_code as lang
              FROM wp_term_taxonomy tt 
@@ -213,11 +221,12 @@ class WpHelper {
             );
         }
     }
-    public function getAllCollectionsFromWp($taxonomy) {
+    public function getAllCollectionsFromWp($taxonomy)
+    {
         global $wpdb;
 
-        $terms = $wpdb->prefix.'terms';
-        $termmeta = $wpdb->prefix.'termmeta';
+        $terms = $wpdb->prefix . 'terms';
+        $termmeta = $wpdb->prefix . 'termmeta';
         $wpCollections = [];
 
         $query = $this->collectionsQuery($taxonomy);
@@ -225,20 +234,20 @@ class WpHelper {
         $terms = $wpdb->get_results($query, ARRAY_A);
 
         // Add all translations into default lang object
-        foreach($terms as $term) {
+        foreach ($terms as $term) {
             $vendureCollectionId = $term['vendure_collection_id'];
 
-            if(!$this->useWpml) {
+            if (!$this->useWpml) {
                 $lang = $this->defaultLang;
             } else {
                 $lang = $term['lang'];
             }
 
-            if($vendureCollectionId === '0' || $lang !== $this->defaultLang) {
+            if ($vendureCollectionId === '0' || $lang !== $this->defaultLang) {
                 continue;
             }
 
-            if(!isset($wpCollections[$vendureCollectionId])) {
+            if (!isset($wpCollections[$vendureCollectionId])) {
                 $wpCollections[$vendureCollectionId] = [
                     "term_id" => $term["term_id"],
                     "parent" => $term["parent"],
@@ -251,20 +260,20 @@ class WpHelper {
             }
         }
 
-        foreach($terms as $term) {
+        foreach ($terms as $term) {
             $vendureCollectionId = $term['vendure_collection_id'];
 
-            if($vendureCollectionId === '0') {
+            if ($vendureCollectionId === '0') {
                 continue;
             }
 
-            if(!$this->useWpml) {
+            if (!$this->useWpml) {
                 $lang = $this->defaultLang;
             } else {
                 $lang = $term['lang'];
             }
 
-            if($lang && $lang !== $this->defaultLang) {
+            if ($lang && $lang !== $this->defaultLang) {
                 $wpCollections[$vendureCollectionId]['translations'][$lang] = [
                     "name" => $term["name"],
                     "slug" => $term["slug"],
@@ -276,13 +285,14 @@ class WpHelper {
         return $wpCollections;
     }
 
-    public function geTermsQuery($taxonomy) {
+    public function geTermsQuery($taxonomy)
+    {
 
         global $wpdb;
-        $terms = $wpdb->prefix.'terms';
-        $termmeta = $wpdb->prefix.'termmeta';
+        $terms = $wpdb->prefix . 'terms';
+        $termmeta = $wpdb->prefix . 'termmeta';
 
-        if($this->useWpml) {
+        if ($this->useWpml) {
             return $wpdb->prepare(
                 "SELECT tt.term_id, t.name, tm.meta_value as vendure_term_id, tr.language_code as lang
                 FROM wp_term_taxonomy tt 
@@ -312,7 +322,8 @@ class WpHelper {
 
     }
 
-    public function getAllTermsFromWp($taxonomy) {
+    public function getAllTermsFromWp($taxonomy)
+    {
         global $wpdb;
 
         $wpFacets = [];
@@ -321,22 +332,22 @@ class WpHelper {
 
         $terms = $wpdb->get_results($query, ARRAY_A);
 
-        foreach($terms as $term) {
+        foreach ($terms as $term) {
             $vendureFacetId = $term['vendure_term_id'];
 
-            if(!$this->useWpml) {
+            if (!$this->useWpml) {
                 $lang = $this->defaultLang;
             } else {
                 $lang = $term['lang'];
             }
 
             // If dobulettes exist, delete the one with default lang
-            if(isset($wpFacets[$vendureFacetId]) && $lang === $this->defaultLang) {
+            if (isset($wpFacets[$vendureFacetId]) && $lang === $this->defaultLang) {
                 $taxonomiesInstance = new Taxonomies();
                 $taxonomiesInstance->deleteTerm($term["term_id"], $taxonomy);
             }
 
-            if(!isset($wpFacets[$vendureFacetId]) && $lang === $this->defaultLang) {
+            if (!isset($wpFacets[$vendureFacetId]) && $lang === $this->defaultLang) {
                 $wpFacets[$vendureFacetId] = array(
                     "term_id" => $term["term_id"],
                     "name" => $term["name"],
@@ -346,7 +357,7 @@ class WpHelper {
                 );
             }
 
-            if($lang && $lang !== $this->defaultLang) {
+            if ($lang && $lang !== $this->defaultLang) {
                 $wpFacets[$vendureFacetId]['translations'][$lang] = array(
                     "name" => $term["name"],
                     "term_id" => $term["term_id"],
@@ -356,9 +367,10 @@ class WpHelper {
         return $wpFacets;
     }
 
-    public function termsToDeleteQuery($taxonomy, $vendureType, $wpmlType) {
+    public function termsToDeleteQuery($taxonomy, $vendureType, $wpmlType)
+    {
         global $wpdb;
-        if($this->useWpml) {
+        if ($this->useWpml) {
             return $wpdb->prepare(
                 "SELECT tt.term_id
                 FROM wp_term_taxonomy tt
@@ -392,25 +404,27 @@ class WpHelper {
         }
     }
 
-    public function deleteTermsWithMissingValues($taxonomy) {
+    public function deleteTermsWithMissingValues($taxonomy)
+    {
         global $wpdb;
         $configHelper = new ConfigHelper();
         $isCollection = $configHelper->isCollection($taxonomy);
         $vendureType = $isCollection ? 'vendure_collection_id' : 'vendure_term_id';
-        $wpmlType = 'tax_'.$taxonomy;
+        $wpmlType = 'tax_' . $taxonomy;
 
         $query = $this->termsToDeleteQuery($taxonomy, $vendureType, $wpmlType);
 
         return $wpdb->get_results($query, ARRAY_A);
     }
 
-    public function getProductIds(){
+    public function getProductIds()
+    {
 
         global $wpdb;
 
-        if($this->useWpml) {
-        $query = $wpdb->prepare(
-            "SELECT p.ID, pm.meta_value as vendure_id, t.language_code as lang
+        if ($this->useWpml) {
+            $query = $wpdb->prepare(
+                "SELECT p.ID, pm.meta_value as vendure_id, t.language_code as lang
             FROM {$wpdb->prefix}posts p 
             LEFT JOIN {$wpdb->prefix}postmeta pm
                 ON p.ID = pm.post_id
@@ -419,7 +433,7 @@ class WpHelper {
             ON p.ID = t.element_id
             AND t.element_type = 'post_produkter'
             WHERE post_type ='produkter'"
-        );
+            );
         } else {
             $query = $wpdb->prepare(
                 "SELECT p.ID, pm.meta_value as vendure_id
@@ -431,10 +445,11 @@ class WpHelper {
             );
         }
 
-       return $wpdb->get_results($query, ARRAY_A);
+        return $wpdb->get_results($query, ARRAY_A);
     }
 
-    public function getFacetids(){
+    public function getFacetids()
+    {
         global $wpdb;
         $termmeta = $wpdb->prefix . 'termmeta';
 
@@ -442,7 +457,7 @@ class WpHelper {
         $facetTaxonomies = $configHelper->getFacetTaxonomyPostTypes();
         $taxonomyPlaceholders = implode(', ', array_fill(0, count($facetTaxonomies), '%s'));
 
-        if($this->useWpml) {
+        if ($this->useWpml) {
             $query = $wpdb->prepare(
                 "SELECT tt.term_id as ID, tt.taxonomy as taxonomy, tm.meta_value as vendure_id, tr.language_code as lang
                  FROM {$wpdb->prefix}term_taxonomy tt 
@@ -451,7 +466,7 @@ class WpHelper {
                  LEFT JOIN {$wpdb->prefix}icl_translations tr 
                  ON tt.term_taxonomy_id = tr.element_id
                  WHERE taxonomy IN ($taxonomyPlaceholders)",
-                $facetTaxonomies 
+                $facetTaxonomies
             );
         } else {
             $query = $wpdb->prepare(
@@ -467,7 +482,8 @@ class WpHelper {
         return $wpdb->get_results($query, ARRAY_A);
     }
 
-    public function getCollectionids(){
+    public function getCollectionids()
+    {
         global $wpdb;
 
         $termmeta = $wpdb->prefix . 'termmeta';
@@ -475,7 +491,7 @@ class WpHelper {
         $collectionTaxonomy = $configHelper->getCollectionTaxonomyPostTypes();
         $taxonomyPlaceholders = implode(', ', array_fill(0, count($collectionTaxonomy), '%s'));
 
-        if($this->useWpml) {
+        if ($this->useWpml) {
             $query = $wpdb->prepare(
                 "SELECT tt.term_id as ID, tt.taxonomy, tm.meta_value as vendure_id, tr.language_code as lang
                  FROM {$wpdb->prefix}term_taxonomy tt 
@@ -484,7 +500,7 @@ class WpHelper {
                  LEFT JOIN {$wpdb->prefix}icl_translations tr 
                  ON tt.term_taxonomy_id = tr.element_id
                  WHERE taxonomy IN ($taxonomyPlaceholders)",
-                 $collectionTaxonomy
+                $collectionTaxonomy
             );
         } else {
             $query = $wpdb->prepare(
@@ -493,11 +509,11 @@ class WpHelper {
                  LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
                  AND tm.meta_key = 'vendure_collection_id'
                  WHERE taxonomy IN ($taxonomyPlaceholders)",
-                 $collectionTaxonomy
+                $collectionTaxonomy
             );
-        }  
+        }
 
-        return $wpdb->get_results($query, ARRAY_A);      
+        return $wpdb->get_results($query, ARRAY_A);
     }
 }
 

@@ -13,6 +13,19 @@ class Product extends BaseQuery
             skip: $skip
         })";
 
+    $customFields = "
+      customFields {
+        productImg{
+          source
+        }
+        backgroundImgPage{
+          source
+        }
+        backgroundAnimationPage
+        backgroundColor
+      }
+        ";
+
     $this->query =
       "query {
             products $options {
@@ -28,6 +41,7 @@ class Product extends BaseQuery
                 collections{
                   id
                 }
+                $customFields
               }
               totalItems
             }
