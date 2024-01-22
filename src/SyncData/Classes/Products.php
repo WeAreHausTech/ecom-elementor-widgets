@@ -76,7 +76,7 @@ class Products
 
     public function createProduct($product)
     {
-        $orignal = $this->insertPost($product['productName'], $product['slug'], $product['productId']);
+        $orignal = $this->insertPost($product['name'], $product['slug'], $product['id']);
 
         if (!$this->useWpml) {
             $this->created++;
@@ -84,7 +84,7 @@ class Products
         }
 
         foreach ($product['translations'] as $lang => $translation) {
-            $translations[$lang] = $this->insertPost($translation['productName'], $translation['slug'], $product['productId']);
+            $translations[$lang] = $this->insertPost($translation['name'], $translation['slug'], $product['id']);
         }
 
         $wpmlHelper = new WpmlHelper();
@@ -111,7 +111,7 @@ class Products
 
         foreach ($update as $lang) {
             if ($lang === $this->defaultLang) {
-                $this->updatePost($wpProduct['id'], $vendureProduct['productName'], $vendureProduct['slug'], $vendureProduct['productId']);
+                $this->updatePost($wpProduct['id'], $vendureProduct['name'], $vendureProduct['slug'], $vendureProduct['id']);
                 continue;
             }
 
@@ -120,9 +120,9 @@ class Products
             if ($langExistsInWp && $langExistsInWp['id']) {
                 $translatedPostId = $wpProduct['translations'][$lang]['id'];
                 $translatedSlug = $vendureProduct['translations'][$lang]['slug'];
-                $translatedName = $vendureProduct['translations'][$lang]['productName'];
+                $translatedName = $vendureProduct['translations'][$lang]['name'];
 
-                $this->updatePost($translatedPostId, $translatedName, $translatedSlug, $vendureProduct['productId']);
+                $this->updatePost($translatedPostId, $translatedName, $translatedSlug, $vendureProduct['id']);
             } else {
                 $this->createTranslatedPost($vendureProduct, $wpProduct['id'], $lang);
             }
@@ -131,11 +131,11 @@ class Products
 
     public function createTranslatedPost($vendureProduct, $originalId, $lang)
     {
-        $newPost[$lang] = $this->insertPost($vendureProduct['translations'][$lang]['productName'], $vendureProduct['translations'][$lang]['slug'], $vendureProduct['productId']);
+        $newPost[$lang] = $this->insertPost($vendureProduct['translations'][$lang]['name'], $vendureProduct['translations'][$lang]['slug'], $vendureProduct['id']);
         $wpmlHelper = new WpmlHelper();
         $wpmlHelper->setLanguageDetails($originalId, $newPost, 'post_produkter');
 
-        WpHelper::log(['Create product translation', $vendureProduct['translations'][$lang]['productName'], $vendureProduct['translations'][$lang]['slug']]);
+        WpHelper::log(['Create product translation', $vendureProduct['translations'][$lang]['name'], $vendureProduct['translations'][$lang]['slug']]);
         $this->created++;
 
     }
@@ -156,7 +156,7 @@ class Products
     public function isUpdatedInVendure($wpProduct, $vendureProduct)
     {
         $updateLang = [];
-        $updateName = wp_specialchars_decode($wpProduct['post_title']) !== $vendureProduct['productName'];
+        $updateName = wp_specialchars_decode($wpProduct['post_title']) !== $vendureProduct['name'];
         $updateSlug = $wpProduct['post_name'] !== $vendureProduct['slug'];
 
         if ($updateName || $updateSlug) {
@@ -173,7 +173,7 @@ class Products
                 continue;
             }
 
-            $updateTranslationName = wp_specialchars_decode($translation['post_title']) !== $vendureProduct['translations'][$lang]['productName'];
+            $updateTranslationName = wp_specialchars_decode($translation['post_title']) !== $vendureProduct['translations'][$lang]['name'];
             $updateTranslationSlug = $translation['post_name'] !== $vendureProduct['translations'][$lang]['slug'];
 
             if ($updateTranslationName || $updateTranslationSlug) {

@@ -34,7 +34,7 @@ class VendureHelper
         foreach ($translations as $lang => $translation) {
             foreach ($translation as $key => $value) {
                 $products[$key]['translations'][$lang] = [
-                    'productName' => $value['productName'],
+                    'name' => $value['name'],
                     'slug' => $value['slug'],
                 ];
             }
@@ -45,17 +45,32 @@ class VendureHelper
 
     public function getProductsByLang($lang)
     {
-        $products = (new \WeAreHausTech\Queries\Product)->get($lang);
+        $batchSize = 100; 
+        $skip = 0;
 
-        if (!isset($products['data']['search']['items'])) {
-            return [];
+        $allProducts = [];
+
+        do {
+            $products = (new \WeAreHausTech\Queries\Product)->get($lang, $skip, $batchSize);
+    
+            $totalItems = $products['data']['products']['totalItems'];
+    
+            if (!empty($products['data']['products']['items'])) {
+                $allProducts = array_merge($allProducts, $products['data']['products']['items']);
+            }
+
+            $skip + $batchSize;
+    
+        } while (count($allProducts) < $totalItems);
+
+        foreach ($allProducts as $key => $item) {
+            $allProducts[$key]['facetValueIds'] = array_column($item['facetValues'], 'id');
+            $allProducts[$key]['collectionIds'] = array_column($item['collections'], 'id');
         }
 
-        $items = $products['data']['search']['items'];
+        $unique = $this->getFirstUniqueTranslation($allProducts);
 
-        $unique = $this->getFirstUniqueTranslation($items);
-
-        return array_combine(array_column($unique, 'productId'), $unique);
+        return array_combine(array_column($unique, 'id'), $unique);
     }
 
     public function getFirstUniqueTranslation($translations)
@@ -64,7 +79,7 @@ class VendureHelper
         $products = [];
 
         foreach ($translations as $translation) {
-            $productId = $translation['productId'];
+            $productId = $translation['id'];
 
             if (!in_array($productId, $seenProductIds)) {
                 $seenProductIds[] = $productId;
