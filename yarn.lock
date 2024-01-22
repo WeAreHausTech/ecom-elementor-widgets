@@ -399,7 +399,7 @@
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.2.0.tgz#5f3d96ec6b2354ad6d8a28bf216a1d97b5426861"
   integrity sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==
 
-"@haus-tech/ecom-components@^0.3.3":
+"@haus-tech/ecom-components@^0.3.5":
   version "0.3.5"
   resolved "https://registry.yarnpkg.com/@haus-tech/ecom-components/-/ecom-components-0.3.5.tgz#1863ad80ac2840810c65a13b806247763f8ee549"
   integrity sha512-w+4+itb0YRSfWNJ6PCygMdmoi3jUPjI7mJJnsOaUEF3ivcmoNJ9O3LJbe4Ux63q+5r55584qMVyD/qRSSmKDBw==
