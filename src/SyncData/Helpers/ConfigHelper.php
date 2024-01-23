@@ -18,19 +18,15 @@ class ConfigHelper
 
     public function getTaxonomiesFromConfig()
     {
-        $confiPath = WP_CONTENT_DIR . '/uploads/ecom-data/config.json';
+        $config = require(HAUS_ECOM_PLUGIN_PATH . '/config.php');
 
-        $file = file_get_contents($confiPath);
-        if (!isset($file)) {
+        if (!isset($config)) {
             WP_CLI::error('No config file found');
         }
 
-        $data = json_decode($file);
-
-        if (isset($data->productSync) && isset($data->productSync->taxonomies)) {
-            return $data->productSync->taxonomies;
+        if (isset($config['productSync']) && isset($config['productSync']['taxonomies'])) {
+            return $config['productSync']['taxonomies'];
         }
-
         
         return [];
     }
