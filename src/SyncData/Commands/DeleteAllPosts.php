@@ -2,7 +2,7 @@
 
 /*
  * WP-CLI Command
- * $ wp sync-products sync
+ * $ wp sync-products delete
  */
 
 use WeAreHausTech\SyncData\Classes\Products;
