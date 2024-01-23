@@ -8,23 +8,15 @@ class Product extends BaseQuery
   public function get($lang, $skip = 0, $take = 100)
   {
 
+    $config = require(HAUS_ECOM_PLUGIN_PATH . '/config.php');
+
+    $customFields = $config['productSync']['products']['customFieldsQuery'] ?? '';
+
     $options = "(options: {
             take: $take,
             skip: $skip
-        })";
+      })";
 
-    $customFields = "
-      customFields {
-        productImg{
-          source
-        }
-        backgroundImgPage{
-          source
-        }
-        backgroundAnimationPage
-        backgroundColor
-      }
-        ";
 
     $this->query =
       "query {
@@ -41,7 +33,7 @@ class Product extends BaseQuery
                 collections{
                   id
                 }
-                $customFields
+                  $customFields
               }
               totalItems
             }
