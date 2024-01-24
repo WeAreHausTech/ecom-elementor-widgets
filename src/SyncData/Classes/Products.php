@@ -55,28 +55,54 @@ class Products
 
     }
 
-    public function insertPost($ProductName, $slug, $vendureId)
+    public function insertPost($ProductName, $slug, $vendureId, $updatedAt, $customFields = null)
     {
+        $metaInput = [
+            'vendure_id' => $vendureId,
+            'vendure_updated_at' => $updatedAt,
+        ];
+
+        $customFields =  $this->getCustomFields($customFields);
+        $metaInput = array_merge($metaInput, $customFields);
 
         $post = wp_insert_post([
             'post_title' => $ProductName,
             'post_status' => 'publish',
             'post_type' => 'produkter',
             'post_name' => $slug,
-            'meta_input' => [
-                'vendure_id' => $vendureId,
-            ]
+            'meta_input' => $metaInput
+
         ]);
 
         WpHelper::log(['Creating product', $vendureId, $ProductName, $slug]);
 
         return $post;
+    }
 
+    public function getCustomFields($customFields){
+
+        $data = [];
+
+        if(!$customFields){
+            return $data;
+        }
+
+        forEach($customFields as $key => $value){
+            if (is_array($value)) {
+                $data[$key] = $value['source'];
+            } else {
+                $data[$key] = $value;
+            }
+        }
+
+        return $data;
     }
 
     public function createProduct($product)
     {
-        $orignal = $this->insertPost($product['productName'], $product['slug'], $product['productId']);
+        $customFields = isset($product['customFields']) ? $product['customFields'] : null;
+
+        $orignal = $this->insertPost($product['name'], $product['slug'], $product['id'], $product['updatedAt'], $customFields);
 
         if (!$this->useWpml) {
             $this->created++;
@@ -84,7 +110,8 @@ class Products
         }
 
         foreach ($product['translations'] as $lang => $translation) {
-            $translations[$lang] = $this->insertPost($translation['productName'], $translation['slug'], $product['productId']);
+            $customFieldsTranslation = isset($translation['customFields']) ? $translation['customFields'] : null;
+            $translations[$lang] = $this->insertPost($translation['name'], $translation['slug'], $product['id'], $product['updatedAt'], $customFieldsTranslation);
         }
 
         $wpmlHelper = new WpmlHelper();
@@ -111,7 +138,8 @@ class Products
 
         foreach ($update as $lang) {
             if ($lang === $this->defaultLang) {
-                $this->updatePost($wpProduct['id'], $vendureProduct['productName'], $vendureProduct['slug'], $vendureProduct['productId']);
+                $customFields = isset($vendureProduct['customFields']) ? $vendureProduct['customFields'] : null;
+                $this->updatePost($wpProduct['id'], $vendureProduct['name'], $vendureProduct['slug'], $vendureProduct['id'], $vendureProduct['updatedAt'], $customFields);
                 continue;
             }
 
@@ -120,9 +148,10 @@ class Products
             if ($langExistsInWp && $langExistsInWp['id']) {
                 $translatedPostId = $wpProduct['translations'][$lang]['id'];
                 $translatedSlug = $vendureProduct['translations'][$lang]['slug'];
-                $translatedName = $vendureProduct['translations'][$lang]['productName'];
+                $translatedName = $vendureProduct['translations'][$lang]['name'];
+                $customFields = isset($vendureProduct['translations'][$lang]['customFields']) ? $vendureProduct['translations'][$lang]['customFields'] : null;
 
-                $this->updatePost($translatedPostId, $translatedName, $translatedSlug, $vendureProduct['productId']);
+                $this->updatePost($translatedPostId, $translatedName, $translatedSlug, $vendureProduct['id'], $vendureProduct['updatedAt'], $customFields);
             } else {
                 $this->createTranslatedPost($vendureProduct, $wpProduct['id'], $lang);
             }
@@ -131,21 +160,31 @@ class Products
 
     public function createTranslatedPost($vendureProduct, $originalId, $lang)
     {
-        $newPost[$lang] = $this->insertPost($vendureProduct['translations'][$lang]['productName'], $vendureProduct['translations'][$lang]['slug'], $vendureProduct['productId']);
+        $customFields = isset($vendureProduct['translations'][$lang]['customFields']) ? $vendureProduct['translations'][$lang]['customFields'] : null;
+        $newPost[$lang] = $this->insertPost($vendureProduct['translations'][$lang]['name'], $vendureProduct['translations'][$lang]['slug'], $vendureProduct['id'], $vendureProduct['updatedAt'], $customFields);
         $wpmlHelper = new WpmlHelper();
         $wpmlHelper->setLanguageDetails($originalId, $newPost, 'post_produkter');
 
-        WpHelper::log(['Create product translation', $vendureProduct['translations'][$lang]['productName'], $vendureProduct['translations'][$lang]['slug']]);
+        WpHelper::log(['Create product translation', $vendureProduct['translations'][$lang]['name'], $vendureProduct['translations'][$lang]['slug']]);
         $this->created++;
 
     }
 
-    public function updatePost($postId, $postTitle, $postName, $vendureId)
+    public function updatePost($postId, $postTitle, $postName, $vendureId, $updatedAt, $customFields = null)
     {
+
+        $metaInput = [
+            'vendure_updated_at' => $updatedAt,
+        ];
+
+        $customFields =  $this->getCustomFields($customFields);
+        $metaInput = array_merge($metaInput, $customFields);
+
         wp_update_post([
             'ID' => $postId,
             'post_title' => $postTitle,
-            'post_name' => $postName
+            'post_name' => $postName, 
+            'meta_input' => $metaInput
         ]);
 
         WpHelper::log(['Updating product', $postTitle, $postName, $vendureId]);
@@ -156,29 +195,19 @@ class Products
     public function isUpdatedInVendure($wpProduct, $vendureProduct)
     {
         $updateLang = [];
-        $updateName = wp_specialchars_decode($wpProduct['post_title']) !== $vendureProduct['productName'];
-        $updateSlug = $wpProduct['post_name'] !== $vendureProduct['slug'];
 
-        if ($updateName || $updateSlug) {
-            $updateLang[] = $this->defaultLang;
+        if ($vendureProduct['updatedAt'] === $wpProduct['vendure_updated_at']) {
+            return $updateLang;
         }
+
+        $updateLang[] = $this->defaultLang;
 
         if (!$this->useWpml) {
             return $updateLang;
         }
 
         foreach ($wpProduct['translations'] as $lang => $translation) {
-            if ($translation === []) {
-                $updateLang[] = $lang;
-                continue;
-            }
-
-            $updateTranslationName = wp_specialchars_decode($translation['post_title']) !== $vendureProduct['translations'][$lang]['productName'];
-            $updateTranslationSlug = $translation['post_name'] !== $vendureProduct['translations'][$lang]['slug'];
-
-            if ($updateTranslationName || $updateTranslationSlug) {
-                $updateLang[] = $lang;
-            }
+            $updateLang[] = $lang;
         }
 
         return $updateLang;
