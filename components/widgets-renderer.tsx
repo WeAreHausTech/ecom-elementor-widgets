@@ -1,14 +1,10 @@
-import {
-  BuilderQueryUpdates,
-  DataProvider,
-  LocalizationProvider,
-  VendureOptions,
-} from '@haus-tech/ecom-components'
+import { BuilderQueryUpdates, VendureOptions } from '@haus-tech/ecom-components'
 import React, { ReactNode } from 'react'
 import ReactDOM from 'react-dom/client'
 import ecomWidgets from './widgets'
 import { camelCase } from 'lodash'
 import styles from '@haus-tech/ecom-components/dist/ecom-style.css?url'
+import { DataProvider, LocalizationProvider } from '@haus-tech/ecom-components/providers'
 
 export interface IWidgetsRendererOptions {
   provider: 'vendure'
