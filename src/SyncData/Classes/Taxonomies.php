@@ -65,9 +65,9 @@ class Taxonomies
     {
         foreach ($vendureTerms as $vendureId => $vendureTerm) {
             foreach ($wpTerms as $wpId => $wpTerm) {
-                $decodedWpName = html_entity_decode($wpTerm['name']);
+                $decodedWpName = html_entity_decode($wpTerm['name'] ?? null);
                 if ($wpId === $vendureId && $decodedWpName !== $vendureTerm['name']) {
-                    $this->deleteTerm($wpTerm['term_id'], $taxonomy);
+                    $this->deleteTerm($wpTerm['term_id'] ?? null, $taxonomy);
                     $this->deleteTranslation($taxonomy, $wpTerm);
                     WpHelper::log(['Deleted taxonomy missmatch', $taxonomy, $vendureTerm['name'], $decodedWpName]);
                 }
@@ -134,7 +134,7 @@ class Taxonomies
             $vendureSlug = $this->getVendureTermSlug($vendureTerm);
 
             if ($lang === $this->defaultLang) {
-                $this->updateTaxonomy($wpTerm['term_id'], $taxonomy, $vendureTerm['name'], $vendureSlug);
+                $this->updateTaxonomy($wpTerm['term_id'] ?? null, $taxonomy, $vendureTerm['name'], $vendureSlug);
                 continue;
             }
 
@@ -194,7 +194,7 @@ class Taxonomies
         $updateLang = [];
         $vendureSlug = $this->getVendureTermSlug($vendureTerm);
         $updateSlug = false;
-        $updateName = wp_specialchars_decode($wpTerm['name']) !== $vendureTerm['name'];
+        $updateName = wp_specialchars_decode($wpTerm['name'] ?? null) !== $vendureTerm['name'];
 
         if (isset($wpTerm['slug'])) {
             $updateSlug = $wpTerm['slug'] !== $vendureSlug;
