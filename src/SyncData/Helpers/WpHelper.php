@@ -120,7 +120,7 @@ class WpHelper
 
         if ($this->useWpml) {
             return $wpdb->prepare(
-                "SELECT p.ID as id, p.post_title, p.post_name, pm.meta_value as vendure_id, pm3.meta_value as vendure_updated_at, pm2.meta_value as exclude_from_sync, t.language_code as lang
+                "SELECT p.ID as id, p.post_title, p.post_content, p.post_name, pm.meta_value as vendure_id, pm3.meta_value as vendure_updated_at, pm2.meta_value as exclude_from_sync, t.language_code as lang
                  FROM {$wpdb->prefix}posts p 
                  LEFT JOIN  {$wpdb->prefix}postmeta pm
                     ON p.ID = pm.post_id
@@ -140,7 +140,7 @@ class WpHelper
             );
         } else {
             return $wpdb->prepare(
-                "SELECT p.ID as id, p.post_title, p.post_name, pm.meta_value as vendure_id, pm3.meta_value as vendure_updated_at, pm2.meta_value as exclude_from_sync
+                "SELECT p.ID as id, p.post_title, p.post_name, p.post_content,pm.meta_value as vendure_id, pm3.meta_value as vendure_updated_at, pm2.meta_value as exclude_from_sync
                  FROM {$wpdb->prefix}posts p 
                  LEFT JOIN  {$wpdb->prefix}postmeta pm
                     ON p.ID = pm.post_id
