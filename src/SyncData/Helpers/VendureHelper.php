@@ -36,6 +36,7 @@ class VendureHelper
                 $products[$key]['translations'][$lang] = [
                     'name' => $value['name'],
                     'slug' => $value['slug'],
+                    'description' => $value['description'],
                 ];
             }
         }
@@ -59,8 +60,7 @@ class VendureHelper
                 $allProducts = array_merge($allProducts, $products['data']['products']['items']);
             }
 
-            $skip + $batchSize;
-    
+            $skip = $skip + $batchSize;
         } while (count($allProducts) < $totalItems);
 
         foreach ($allProducts as $key => $item) {
