@@ -37,27 +37,26 @@ class Taxonomies
         $vendureHelper = new VendureHelper();
         $facets = $vendureHelper->getfacets();
         foreach ($taxonomies as $taxonomyType => $taxonomyInfo) {
-
             // Delete taxonomies with no vendure id and taxonomies with no translation language
-            $termsToDelete = $wpHelper->deleteTermsWithMissingValues($taxonomyInfo->wp);
+            $termsToDelete = $wpHelper->deleteTermsWithMissingValues($taxonomyInfo['wp']);
 
             if (isset($termsToDelete) && count($termsToDelete) > 0) {
                 foreach ($termsToDelete as $term) {
-                    $this->deleteTerm($term['term_id'], $taxonomyInfo->wp);
+                    $this->deleteTerm($term['term_id'], $taxonomyInfo['wp']);
                 }
             }
 
             if ($taxonomyType === 'collection') {
                 $vendureValues = $vendureHelper->getCollectionsFromVendure();
-                $wpTerms = $wpHelper->getAllCollectionsFromWp($taxonomyInfo->wp);
-                $this->findMissMatchedTaxonomies($taxonomyInfo->wp, $vendureValues, $wpTerms);
-                $this->syncAttributes($taxonomyInfo->wp, $vendureValues, $wpTerms);
+                $wpTerms = $wpHelper->getAllCollectionsFromWp($taxonomyInfo['wp']);
+                $this->findMissMatchedTaxonomies($taxonomyInfo['wp'], $vendureValues, $wpTerms);
+                $this->syncAttributes($taxonomyInfo['wp'], $vendureValues, $wpTerms);
                 continue;
             } else {
-                $vendureValues = $facets[$taxonomyInfo->vendure];
-                $wpTerms = $wpHelper->getAllTermsFromWp($taxonomyInfo->wp);
-                $this->findMissMatchedTaxonomies($taxonomyInfo->wp, $vendureValues, $wpTerms);
-                $this->syncAttributes($taxonomyInfo->wp, $vendureValues, $wpTerms);
+                $vendureValues = $facets[$taxonomyInfo['vendure']];
+                $wpTerms = $wpHelper->getAllTermsFromWp($taxonomyInfo['wp']);
+                $this->findMissMatchedTaxonomies($taxonomyInfo['wp'], $vendureValues, $wpTerms);
+                $this->syncAttributes($taxonomyInfo['wp'], $vendureValues, $wpTerms);
             }
         }
     }

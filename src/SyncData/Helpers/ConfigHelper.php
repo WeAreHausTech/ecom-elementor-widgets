@@ -39,7 +39,7 @@ class ConfigHelper
         }
 
         foreach ($taxonomies as $taxonomy) {
-            if ($taxonomy->type === 'collection') {
+            if ($taxonomy['type'] === 'collection') {
                 return true;
             }
         }
@@ -54,7 +54,7 @@ class ConfigHelper
         }
 
         foreach ($taxonomies as $taxonomy) {
-            if ($taxonomy->type === 'facet') {
+            if ($taxonomy['type'] === 'facet') {
                 return true;
             }
         }
@@ -70,7 +70,7 @@ class ConfigHelper
         }
 
         foreach ($taxonomies as $taxonomy) {
-            if ($taxonomy->wp === $postType && $taxonomy->type === 'collection') {
+            if ($taxonomy['wp'] === $postType && $taxonomy['type'] === 'collection') {
                 return true;
             }
         }
@@ -85,8 +85,8 @@ class ConfigHelper
         }
 
         foreach ($taxonomies as $taxonomy) {
-            if ($taxonomy->type === 'collection') {
-                return $taxonomy->wp;
+            if ($taxonomy['type'] === 'collection') {
+                return $taxonomy['wp'];
             }
         }
         return '';
@@ -103,8 +103,8 @@ class ConfigHelper
         $collections = [];
 
         foreach ($taxonomies as $taxonomy) {
-            if ($taxonomy->type === 'collection') {
-                $collections[] = $taxonomy->wp;
+            if ($taxonomy['type'] === 'collection') {
+                $collections[] = $taxonomy['wp'];
             }
         }
 
@@ -120,8 +120,8 @@ class ConfigHelper
         $facets = [];
     
         foreach ($taxonomies as $taxonomy) {
-            if ($taxonomy->type === 'facet') {
-                $facets[] = $taxonomy->wp;
+            if ($taxonomy['type'] === 'facet') {
+                $facets[] = $taxonomy['wp'];
             }
         }
         
