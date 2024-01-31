@@ -128,6 +128,21 @@ class ProductList extends Widget_Base
             ]
         );
 
+
+        $repeater->add_control(
+            'filter_reverse',
+            [
+                'label' => __('Reverse filtering:', 'haus-ecom-widgets'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'label_block' => true,
+                'options' => [
+                    '0' => __('No', 'haus-ecom-widgets'),
+                    '1' => __('Yes', 'haus-ecom-widgets'),
+                ],
+                'default' => '0',
+            ]
+        );
+
         $repeater->add_control(
             'filter_label',
             [

@@ -24,11 +24,12 @@ export default {
       ? JSON.parse(dataAttributes.getNamedItem('data-filter-values')!.value)
       : null
     const filtersArray: EnabledFilter[] = enabledFilters?.map(
-      (filter: { filter_value: string; filter_condition: 'AND' | 'OR'; filter_label?: string }) => {
+      (filter: { filter_value: string; filter_condition: 'AND' | 'OR'; filter_label?: string; filter_reverse?: string, }) => {
         return {
           facetId: filter.filter_value,
           logicalOperator: lowerCase(filter.filter_condition),
           label: filter.filter_label,
+          reversed: filter.filter_reverse === "1" ? true : false,
         } as EnabledFilter
       },
     )
