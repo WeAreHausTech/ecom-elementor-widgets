@@ -228,4 +228,16 @@ export default {
       </Suspense>
     )
   },
+  relatedProducts: () => {
+    // const id = dataAttributes.getNamedItem('data-product')?.value
+    // const RelatedProducts = React.lazy(() => import('./RelatedProducts'))
+
+    const ProductList = React.lazy(() => import('./ProductList'))
+
+    return (
+      <Suspense>
+        <ProductList/>
+      </Suspense>
+    )
+  },
 }
