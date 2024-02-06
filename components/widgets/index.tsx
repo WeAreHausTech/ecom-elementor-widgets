@@ -228,15 +228,29 @@ export default {
       </Suspense>
     )
   },
-  relatedProducts: () => {
-    // const id = dataAttributes.getNamedItem('data-product')?.value
-    // const RelatedProducts = React.lazy(() => import('./RelatedProducts'))
+  relatedProducts: (dataAttributes: NamedNodeMap) => {
+    const id = dataAttributes.getNamedItem('data-product')?.value
+    const facet = dataAttributes.getNamedItem('data-facet')?.value
+    const enableAddToCart = +get(
+      dataAttributes.getNamedItem('data-add-to-cart-enabled'),
+      'value',
+      0,
+    )
 
-    const ProductList = React.lazy(() => import('./ProductList'))
+    if (!id || !facet) {
+      return
+    }
+
+    const RelatedProducts = React.lazy(() => import('./RelatedProducts'))
 
     return (
       <Suspense>
-        <ProductList/>
+        <RelatedProducts
+          productId={id}
+          facetId={facet}
+          maxTake={+get(dataAttributes.getNamedItem('data-take'), 'value', 12)}
+          enableAddToCartBtn={Boolean(enableAddToCart)}
+        />
       </Suspense>
     )
   },
