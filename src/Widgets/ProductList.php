@@ -284,7 +284,7 @@ class ProductList extends Widget_Base
 
         foreach ($settings as $key => $value) {
             if (strpos($key, 'facetType-') !== false && $value !== '0' && ($autoSetTaxonomy && $key !== 'facetType-' . $settings['autoFacet'])) {
-                    $facets[] = $value;
+                $facets[] = $value;
             }
         }
 

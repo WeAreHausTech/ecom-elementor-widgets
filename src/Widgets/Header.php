@@ -266,8 +266,8 @@ class Header extends Widget_Base
         $loggedInmenuId = $this->get_settings_for_display('login_in_menu_id');
         $formattedMenuItems = $this->getFormatedMenuItems($loggedInmenuId);
 
-        $categories = $this->getTaxonomies('produkter-kategorier', '/produkter/kategorier/', '/en/products/categories/');
 
+        $categories = $this->getTaxonomies('produkter-kategorier', '/produkter/kategorier/', '/en/products/categories/');
         $taxonomies = [
             [
                 'heading' => $this->lang('Brands', 'Varumärken'),

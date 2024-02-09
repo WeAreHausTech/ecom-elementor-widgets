@@ -29,11 +29,12 @@
                                 </a>
                                 <?php if (!empty($mainCategory['children'])) { ?>
                                     <ul class="category">
-                                        <?php foreach ($mainCategory['children'] as $index => $child) { ?>
+                                        <?php foreach ($mainCategory['children'] as $index => $child) {
+                                             ?>
                                             <li class="child-link" data-parent="<?= $mainCategory['data']['term_id'] ?>" class="child"
                                                 style="display: <?= $index < 5 || count($mainCategory['children']) === 6 ?'block' : 'none'; ?>">
                                                 <a href="<?= $child['slug'] ?>/">
-                                                    <?= $child['name'] ?>
+                                                    <?= $child['name']?>
                                                 </a>
                                             </li>
                                             <?php if ($index === 5 && count($mainCategory['children']) > 6) { ?>

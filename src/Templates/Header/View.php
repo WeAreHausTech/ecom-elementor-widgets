@@ -117,9 +117,6 @@
     }
     onCloseModal = () => {
         document.getElementById('header-content').classList.toggle('active')
-
-        closeMobileMenuModal();
-        closeProductModal();
     }
     onGoBackButton = () => {
         document.getElementById('dropdown-menu').classList.toggle('active-dropdown')
@@ -405,6 +402,7 @@
         line-height: 150%;
     }
 
+
     .dropdown-product-link {
         display: none;
     }
@@ -434,6 +432,19 @@
         gap: 24px;
         min-width: 200px;
     }
+    
+    .dropdown-a {
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 150%;
+    }
+    
+    .dropdown-a:hover{
+        cursor: pointer;
+        text-decoration: underline;
+        color: var(--header-dropdown-child-color-hover, #000) !important;
+     }
 
     .dropdown-a {
         font-size: 16px;

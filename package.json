@@ -1,7 +1,7 @@
 {
   "name": "ecom-elementor-widgets",
   "private": true,
-  "version": "0.3.2",
+  "version": "0.3.4",
   "type": "module",
   "scripts": {
     "build": "tsc && vite build --config vite.config-build.ts",
@@ -9,10 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@haus-tech/ecom-components": "0.3.20",
+    "@haus-tech/ecom-components": "^0.3.22",
     "classnames": "^2.3.2",
     "lodash": "^4.17.21",
-    "parcel": "^2.10.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "vite": "^5.0.8"
