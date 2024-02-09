@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react'
 import ReactDOM from 'react-dom/client'
 import ecomWidgets from './widgets'
 import { camelCase } from 'lodash'
-import styles from '@haus-tech/ecom-components/dist/ecom-style.css?url'
+import css from '@haus-tech/ecom-components/dist/ecom-style.css?raw'
 import { DataProvider, LocalizationProvider } from '@haus-tech/ecom-components/providers'
 
 export interface IWidgetsRendererOptions {
@@ -37,13 +37,13 @@ export class WidgetsRenderer {
     this.translations = translations || []
   }
 
-  private async fetchCSSContent() {
-    const response = await fetch(styles)
-    return await response.text()
-  }
+  // private async fetchCSSContent() {
+  //   const response = await fetch(styles)
+  //   return await response.text()
+  // }
 
   private async renderElement(element: Element, children: ReactNode, isCustomerWidget?: boolean) {
-    const css = await this.fetchCSSContent()
+    // const css = await this.fetchCSSContent()
     const shadowRoot = element.attachShadow({ mode: 'open' })
 
     const styleEl = document.createElement('style')
