@@ -1,6 +1,6 @@
 <?php
 
-namespace Haus\SyncData\Helpers;
+namespace WeAreHausTech\SyncData\Helpers;
 
 class WpmlHelper
 {

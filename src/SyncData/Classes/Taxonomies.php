@@ -1,11 +1,11 @@
 <?php
 
-namespace Haus\SyncData\Classes;
+namespace WeAreHausTech\SyncData\Classes;
 
-use Haus\SyncData\Helpers\WpmlHelper;
-use Haus\SyncData\Helpers\WpHelper;
-use Haus\SyncData\Helpers\VendureHelper;
-use Haus\SyncData\Helpers\ConfigHelper;
+use WeAreHausTech\SyncData\Helpers\WpmlHelper;
+use WeAreHausTech\SyncData\Helpers\WpHelper;
+use WeAreHausTech\SyncData\Helpers\VendureHelper;
+use WeAreHausTech\SyncData\Helpers\ConfigHelper;
 
 class Taxonomies
 {
@@ -37,27 +37,26 @@ class Taxonomies
         $vendureHelper = new VendureHelper();
         $facets = $vendureHelper->getfacets();
         foreach ($taxonomies as $taxonomyType => $taxonomyInfo) {
-
             // Delete taxonomies with no vendure id and taxonomies with no translation language
-            $termsToDelete = $wpHelper->deleteTermsWithMissingValues($taxonomyInfo->wp);
+            $termsToDelete = $wpHelper->deleteTermsWithMissingValues($taxonomyInfo['wp']);
 
             if (isset($termsToDelete) && count($termsToDelete) > 0) {
                 foreach ($termsToDelete as $term) {
-                    $this->deleteTerm($term['term_id'], $taxonomyInfo->wp);
+                    $this->deleteTerm($term['term_id'], $taxonomyInfo['wp']);
                 }
             }
 
             if ($taxonomyType === 'collection') {
                 $vendureValues = $vendureHelper->getCollectionsFromVendure();
-                $wpTerms = $wpHelper->getAllCollectionsFromWp($taxonomyInfo->wp);
-                $this->findMissMatchedTaxonomies($taxonomyInfo->wp, $vendureValues, $wpTerms);
-                $this->syncAttributes($taxonomyInfo->wp, $vendureValues, $wpTerms);
+                $wpTerms = $wpHelper->getAllCollectionsFromWp($taxonomyInfo['wp']);
+                $this->findMissMatchedTaxonomies($taxonomyInfo['wp'], $vendureValues, $wpTerms);
+                $this->syncAttributes($taxonomyInfo['wp'], $vendureValues, $wpTerms);
                 continue;
             } else {
-                $vendureValues = $facets[$taxonomyInfo->vendure];
-                $wpTerms = $wpHelper->getAllTermsFromWp($taxonomyInfo->wp);
-                $this->findMissMatchedTaxonomies($taxonomyInfo->wp, $vendureValues, $wpTerms);
-                $this->syncAttributes($taxonomyInfo->wp, $vendureValues, $wpTerms);
+                $vendureValues = $facets[$taxonomyInfo['vendure']];
+                $wpTerms = $wpHelper->getAllTermsFromWp($taxonomyInfo['wp']);
+                $this->findMissMatchedTaxonomies($taxonomyInfo['wp'], $vendureValues, $wpTerms);
+                $this->syncAttributes($taxonomyInfo['wp'], $vendureValues, $wpTerms);
             }
         }
     }
@@ -66,9 +65,9 @@ class Taxonomies
     {
         foreach ($vendureTerms as $vendureId => $vendureTerm) {
             foreach ($wpTerms as $wpId => $wpTerm) {
-                $decodedWpName = html_entity_decode($wpTerm['name']);
+                $decodedWpName = html_entity_decode($wpTerm['name'] ?? null);
                 if ($wpId === $vendureId && $decodedWpName !== $vendureTerm['name']) {
-                    $this->deleteTerm($wpTerm['term_id'], $taxonomy);
+                    $this->deleteTerm($wpTerm['term_id'] ?? null, $taxonomy);
                     $this->deleteTranslation($taxonomy, $wpTerm);
                     WpHelper::log(['Deleted taxonomy missmatch', $taxonomy, $vendureTerm['name'], $decodedWpName]);
                 }
@@ -135,7 +134,7 @@ class Taxonomies
             $vendureSlug = $this->getVendureTermSlug($vendureTerm);
 
             if ($lang === $this->defaultLang) {
-                $this->updateTaxonomy($wpTerm['term_id'], $taxonomy, $vendureTerm['name'], $vendureSlug);
+                $this->updateTaxonomy($wpTerm['term_id'] ?? null, $taxonomy, $vendureTerm['name'], $vendureSlug);
                 continue;
             }
 
@@ -195,7 +194,7 @@ class Taxonomies
         $updateLang = [];
         $vendureSlug = $this->getVendureTermSlug($vendureTerm);
         $updateSlug = false;
-        $updateName = wp_specialchars_decode($wpTerm['name']) !== $vendureTerm['name'];
+        $updateName = wp_specialchars_decode($wpTerm['name'] ?? null) !== $vendureTerm['name'];
 
         if (isset($wpTerm['slug'])) {
             $updateSlug = $wpTerm['slug'] !== $vendureSlug;

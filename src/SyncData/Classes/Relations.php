@@ -1,11 +1,10 @@
 <?php
 
-namespace Haus\SyncData\Classes;
-use Haus\SyncData\Helpers\WpHelper;
-use Haus\SyncData\Helpers\WpmlHelper;
-use Haus\SyncData\Helpers\ConfigHelper;
+namespace WeAreHausTech\SyncData\Classes;
 
-
+use WeAreHausTech\SyncData\Helpers\WpHelper;
+use WeAreHausTech\SyncData\Helpers\WpmlHelper;
+use WeAreHausTech\SyncData\Helpers\ConfigHelper;
 
 class Relations
 {

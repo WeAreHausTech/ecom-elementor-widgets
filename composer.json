@@ -1,9 +1,15 @@
 {
   "name": "wearehaustech/ecom-elementor-widgets",
-  "description": "Component manager",
-  "keywords": ["wordpress", "plugin"],
-  "homepage": "https://haus.se",
-  "license": "MIT",
+  "description": "Ecom Elementor Widgets",
+  "require": {
+    "php": "^8.1",
+    "guzzlehttp/guzzle": "^7.8"
+  },
+  "autoload": {
+    "psr-4": {
+      "WeAreHausTech\\": "src/"
+    }
+  },
   "authors": [
     {
       "name": "Haus Tech",
@@ -11,17 +17,6 @@
       "homepage": "https://haus.se"
     }
   ],
-  "type": "wordpress-plugin",
-  "autoload"   : {
-    "psr-4": {
-      "Haus\\": "src"
-    }
-  },
-  "require"    : {
-    "php": "^8.1",
-    "composer/installers": "~1.0",
-    "guzzlehttp/guzzle": "^7.0"
-  },
   "config": {
     "allow-plugins": {
       "composer/installers": true

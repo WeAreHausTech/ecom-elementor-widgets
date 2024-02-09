@@ -446,6 +446,19 @@
         color: var(--header-dropdown-child-color-hover, #000) !important;
      }
 
+    .dropdown-a {
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 150%;
+    }
+
+    .dropdown-a:hover{
+        cursor: pointer;
+        text-decoration: underline;
+        color: var(--header-dropdown-child-color-hover, #000) !important;
+    }
+
     @media screen and (max-width: 983px) {
         .dropdown-type {
             grid-auto-rows: auto;

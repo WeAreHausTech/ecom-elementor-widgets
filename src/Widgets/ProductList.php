@@ -1,8 +1,8 @@
 <?php
-namespace Haus\Widgets;
+namespace WeAreHausTech\Widgets;
 
 use \Elementor\Widget_Base;
-use \Haus\Traits\ElementorTemplate;
+use \WeAreHausTech\Traits\ElementorTemplate;
 
 class ProductList extends Widget_Base
 {
@@ -155,7 +155,7 @@ class ProductList extends Widget_Base
         $facets = get_transient('ecom-haus-queries-facet');
 
         if (!$facets) {
-            $facets = (new \Haus\Queries\Facet)->get('sv');
+            $facets = (new \WeAreHausTech\Queries\Facet)->get('sv');
             set_transient('ecom-haus-queries-facet', $facets, 60 * 5);
         }
 

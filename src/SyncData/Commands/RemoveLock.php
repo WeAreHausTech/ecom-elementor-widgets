@@ -5,7 +5,7 @@
  * $ wp sync-products removeLock
  */
 
- use Haus\SyncData\Helpers\LockHelper;
+ use WeAreHausTech\SyncData\Helpers\LockHelper;
 
 class RemoveLock extends WP_CLI_Command
 {
