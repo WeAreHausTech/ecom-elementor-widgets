@@ -170,11 +170,13 @@ class Header extends Widget_Base
                 LEFT JOIN {$wpdb->prefix}icl_translations tr
                     ON tt.term_taxonomy_id = tr.element_id
                     AND tr.element_type = 'tax_{$taxonomy}'
-                    WHERE tr.language_code =  '$this->currentLang'
+                WHERE tr.language_code =  '$this->currentLang'
                 AND tm.meta_value IS NOT NULL
-                AND taxonomy= %s",
+                AND taxonomy = %s
+                AND (tt.parent = 0 OR tt.parent IN (SELECT term_id FROM wp_term_taxonomy WHERE parent = 0))",
                 $taxonomy
             );
+            
         } else {
             $query = $wpdb->prepare(
                 "SELECT tt.term_id, tt.parent, t.name, t.slug
@@ -182,7 +184,8 @@ class Header extends Widget_Base
                 LEFT JOIN $terms t ON tt.term_id = t.term_id
                 LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
                 WHERE tm.meta_value IS NOT NULL
-                AND taxonomy= %s",
+                AND taxonomy= %s
+                (tt.parent = 0 OR tt.parent IN (SELECT term_id FROM wp_term_taxonomy WHERE parent = 0))",
                 $taxonomy
             );
         }
