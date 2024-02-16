@@ -163,6 +163,7 @@ class VendureHelper
                 foreach ($facet as $facetValues) {
                     $facets[$key][$facetValues['id']]['translations'][$lang] = [
                         "name" => $facetValues['name'],
+                        "customFields" => $facetValues['customFields'] ?? "",
                     ];
                 }
             }

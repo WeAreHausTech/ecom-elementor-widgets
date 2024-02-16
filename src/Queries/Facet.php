@@ -5,8 +5,13 @@ class Facet extends BaseQuery
 {
     public function get($lang)
     {
-        $this->query = <<<'GRAPHQL'
-            query {
+
+        $config = require(HAUS_ECOM_PLUGIN_PATH . '/config.php');
+
+        $customFields = $config['productSync']['facets']['customFieldsQuery'] ?? '';
+          
+        $this->query =
+         "query {
                 facets {
                     items {
                         id
@@ -16,11 +21,13 @@ class Facet extends BaseQuery
                             id
                             name
                             code
+                            updatedAt
+                            $customFields
                         }
                     }
                 }
             }
-        GRAPHQL;
+        ";
 
         return $this->fetch($lang);
     }
