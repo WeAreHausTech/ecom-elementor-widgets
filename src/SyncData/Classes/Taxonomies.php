@@ -29,9 +29,9 @@ class Taxonomies
         $configHelper = new ConfigHelper();
         $taxonomies = $configHelper->getTaxonomiesFromConfig();
 
-        if (!isset($taxonomies) || empty( (array) $taxonomies)) {
+        if (!isset($taxonomies) || empty((array) $taxonomies)) {
             WpHelper::log(['No taxonomies found in config.json']);
-           return;
+            return;
         }
 
         $vendureHelper = new VendureHelper();
@@ -155,18 +155,21 @@ class Taxonomies
         }
     }
 
-    public function getCustomFields($customFields){
+    public function getCustomFields($customFields)
+    {
 
         $data = [];
 
-        if(!$customFields){
+        if (!$customFields) {
             return $data;
         }
 
-        forEach($customFields as $key => $value){
-            //TODO handle booleans === null
+        foreach ($customFields as $key => $value) {
             if (is_array($value)) {
                 $data[$key] = $value['source'];
+            } else if ($value === false) {
+                // set to 0 if false to avoid empty string
+                $data[$key] = 0;
             } else {
                 $data[$key] = $value;
             }
@@ -177,21 +180,20 @@ class Taxonomies
 
     public function updateTaxonomy($termID, $taxonomy, $name, $slug, $updatedAt, $customFields = null)
     {
-
         $args = array(
             'name' => $name,
             'slug' => $slug,
         );
 
-         wp_update_term($termID, $taxonomy, $args);
+        wp_update_term($termID, $taxonomy, $args);
 
-         $meta = array(
+        $meta = array(
             'vendure_updated_at' => $updatedAt,
         );
         $customFields = $this->getCustomFields($customFields);
         $termMeta = array_merge($meta, $customFields);
 
-        forEach($termMeta as $key => $value){
+        foreach ($termMeta as $key => $value) {
             update_term_meta($termID, $key, $value);
         }
 
@@ -204,7 +206,9 @@ class Taxonomies
         $name = $vendureTerm['translations'][$lang]['name'];
         $slug = $this->getSlugForTranslations($vendureTerm['name'], $vendureTerm['translations'][$lang], $lang);
 
-        $term = $this->insertTerm($vendureTerm['id'], $name, $slug, $taxonomy, $vendureType, $vendureTerm['updatedAt'], $vendureTerm['translations'][$lang]['customFields'] ?? null);
+        $customFields = $vendureTerm['translations'][$lang]['customFields']  ? $this->getCustomFields($vendureTerm['translations'][$lang]['customFields'] ) : null; 
+
+        $term = $this->insertTerm($vendureTerm['id'], $name, $slug, $taxonomy, $vendureType, $vendureTerm['updatedAt'], $customFields);
 
         $translations[$lang] = $term;
         $wmplType = 'tax_' . $taxonomy;
@@ -290,7 +294,10 @@ class Taxonomies
     public function addNewTermOriginal($value, $taxonomy, $vendureType)
     {
         $slug = isset($value['slug']) ? $value['slug'] : sanitize_title($value['name']);
-        $term = $this->insertTerm($value['id'], $value['name'], $slug, $taxonomy, $vendureType, $value['updatedAt'], $value['customFields'] ?? null);
+
+        $customFields = $value['customFields'] ? $this->getCustomFields($value['customFields']) : null;
+
+        $term = $this->insertTerm($value['id'], $value['name'], $slug, $taxonomy, $vendureType, $value['updatedAt'], $customFields);
 
         WpHelper::log(['Creating taxonomy', $taxonomy, $value['name'], $slug]);
 
@@ -305,7 +312,9 @@ class Taxonomies
 
             $slug = $this->getSlugForTranslations($value['name'], $translation, $lang);
 
-            $term = $this->insertTerm($value['id'], $translation['name'], $slug, $taxonomy, $vendureType, $value['updatedAt'], $translation['customFields'] ?? null);
+            $customFields = $translation['customFields'] ? $this->getCustomFields($translation['customFields']) : null;
+
+            $term = $this->insertTerm($value['id'], $translation['name'], $slug, $taxonomy, $vendureType, $value['updatedAt'], $customFields);
             $translations[$lang] = $term;
         }
 
@@ -339,18 +348,10 @@ class Taxonomies
 
         add_term_meta($term['term_id'], $vendureType, $vendureId, true);
         add_term_meta($term['term_id'], 'vendure_updated_at', $updatedAt, true);
-        
-        if($customFields){
-            forEach($customFields as $key => $value){
-                if ($value === null) {
-                    continue;
-                }
 
-                if (is_array($value)) {
-                    add_term_meta($term['term_id'], $key, $value['source'], true);
-                } else {
-                    add_term_meta($term['term_id'], $key, $value, true);
-                }
+        if ($customFields) {
+            foreach ($customFields as $key => $value) {
+                add_term_meta($term['term_id'], $key, $value, true);
             }
         }
 
