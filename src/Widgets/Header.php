@@ -254,7 +254,7 @@ class Header extends Widget_Base
         $data = [
             'logo' => $this->get_settings_for_display('logo'),
             'contact_us_text' => $this->lang('Contact us', 'Kontakta oss'),
-            'contact_us_link' => $this->lang('/en/contact-us/', 'kontakta-oss/'),
+            'contact_us_link' => $this->lang('/en/contact-us/', '/kontakta-oss/'),
             'menu_id' => $this->get_settings_for_display('menu_id'),
             'products_menu_ids' => $product_ids,
             'cart_redirect_to' => $this->get_settings_for_display('cart_redirect_to') ? $this->get_settings_for_display('cart_redirect_to') : '/varukorg',
@@ -262,7 +262,7 @@ class Header extends Widget_Base
             'search_redirect' => $this->get_settings_for_display('search_redirect'),
             'login_redirect' => $this->get_settings_for_display('login_redirect'),
             'login_show_as_modal' => $this->get_settings_for_display('login_show_as_modal'),
-            'product_page_url' => $this->lang('/en/products/', 'produkter/'),
+            'product_page_url' => $this->lang('/en/products/', '/produkter/'),
             'product_page' => $this->lang('Show all products', 'Visa alla produkter'),
         ];
 
