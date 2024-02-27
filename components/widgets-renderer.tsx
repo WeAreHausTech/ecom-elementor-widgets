@@ -1,4 +1,4 @@
-import { BuilderQueryUpdates, VendureOptions } from '@haus-tech/ecom-components'
+import { BuilderQueryUpdates, VendureDataProviderProps } from '@haus-tech/ecom-components'
 import React, { ReactNode } from 'react'
 import ReactDOM from 'react-dom/client'
 import ecomWidgets from './widgets'
@@ -9,7 +9,7 @@ import { DataProvider, LocalizationProvider } from '@haus-tech/ecom-components/p
 export interface IWidgetsRendererOptions {
   provider: 'vendure'
   updates: BuilderQueryUpdates
-  options: VendureOptions
+  options: VendureDataProviderProps['options']
 }
 
 export interface ResourceBundle {
@@ -21,7 +21,7 @@ export interface ResourceBundle {
 export class WidgetsRenderer {
   provider: 'vendure'
   updates: BuilderQueryUpdates
-  options: VendureOptions
+  options: VendureDataProviderProps['options']
   widgets: Record<string, () => JSX.Element> = {}
   translations: ResourceBundle[] = []
 
