@@ -26,7 +26,7 @@ export default {
     const filtersArray: EnabledFilter[] = enabledFilters?.map(
       (filter: { filter_value: string; filter_condition: 'AND' | 'OR'; filter_label?: string }) => {
         return {
-          facetId: filter.filter_value,
+          facetCode: filter.filter_value,
           logicalOperator: lowerCase(filter.filter_condition),
           label: filter.filter_label,
         } as EnabledFilter

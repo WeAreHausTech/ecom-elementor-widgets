@@ -98,7 +98,7 @@ class ProductList extends Widget_Base
         $options = [];
 
         forEach($facets['data']['facets']['items'] as $facet){
-            $options[$facet['id']] = $facet['code'] . ' (id: ' . $facet['id'] . ')';
+            $options[$facet['code']] = $facet['code'] . ' (id: ' . $facet['id'] . ')';
         }
 
         $repeater = new \Elementor\Repeater();
