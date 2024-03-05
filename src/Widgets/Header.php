@@ -11,6 +11,7 @@ class Header extends Widget_Base
     use ElementorTemplate;
 
     private WpmlHelper $wpmlHelper;
+    private $currentLang = 'sv';
 
     public function __construct($data = [], $args = null)
     {
@@ -163,7 +164,7 @@ class Header extends Widget_Base
 
         if ($this->wpmlHelper->hasWpml()) {
             $query = $wpdb->prepare(
-                "SELECT tt.term_id, tt.parent, t.name, t.slug, tr.language_code as lang
+                "SELECT DISTINCT tt.term_id, tt.parent, t.name, t.slug, tr.language_code as lang
                 FROM wp_term_taxonomy tt
                 LEFT JOIN $terms t ON tt.term_id = t.term_id
                 LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
@@ -179,7 +180,7 @@ class Header extends Widget_Base
             
         } else {
             $query = $wpdb->prepare(
-                "SELECT tt.term_id, tt.parent, t.name, t.slug
+                "SELECT DISTINCT tt.term_id, tt.parent, t.name, t.slug
                 FROM wp_term_taxonomy tt
                 LEFT JOIN $terms t ON tt.term_id = t.term_id
                 LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
@@ -271,6 +272,7 @@ class Header extends Widget_Base
 
 
         $categories = $this->getTaxonomies('produkter-kategorier', '/produkter/kategorier/', '/en/products/categories/');
+
         $taxonomies = [
             [
                 'heading' => $this->lang('Brands', 'Varumärken'),
