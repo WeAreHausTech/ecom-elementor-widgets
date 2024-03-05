@@ -5,6 +5,12 @@ class Collection extends BaseQuery
 {
     public function get($lang, $skip, $take)
     {
+
+        $config = require(HAUS_ECOM_PLUGIN_PATH . '/config.php');
+
+        $customFields = $config['productSync']['collections']['customFieldsQuery'] ?? '';
+
+
         $options = "(options: {
             take: $take,
             skip: $skip
@@ -19,6 +25,8 @@ class Collection extends BaseQuery
                     name
                     slug
                     parentId
+                    updatedAt
+                    $customFields
                     }
                 }
             }";

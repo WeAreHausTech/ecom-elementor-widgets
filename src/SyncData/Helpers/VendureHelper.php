@@ -118,6 +118,7 @@ class VendureHelper
                     //TO remove custom name when vendure bug is fixed
                     "name" => $value['name'] ? $value['name'] : 'Missing name ' . rand(),
                     "slug" => $value['slug'] ? $value['slug'] . '-' . $lang : 'missing-name-' . rand() . '-' . $lang,
+                    "customFields" => $value['customFields'] ?? null,
                 ];
             }
         }
@@ -163,6 +164,7 @@ class VendureHelper
                 foreach ($facet as $facetValues) {
                     $facets[$key][$facetValues['id']]['translations'][$lang] = [
                         "name" => $facetValues['name'],
+                        "customFields" => $facetValues['customFields'] ?? "",
                     ];
                 }
             }
