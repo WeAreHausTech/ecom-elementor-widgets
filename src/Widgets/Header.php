@@ -273,7 +273,6 @@ class Header extends Widget_Base
 
         $categories = $this->getTaxonomies('produkter-kategorier', '/produkter/kategorier/', '/en/products/categories/');
 
-        // var_dump($categories);
         $taxonomies = [
             [
                 'heading' => $this->lang('Brands', 'Varumärken'),
