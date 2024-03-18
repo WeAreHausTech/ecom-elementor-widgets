@@ -123,6 +123,7 @@ class ProductList extends Widget_Base
                 'options' => [
                     'OR' => __('OR', 'haus-ecom-widgets'),
                     'AND' => __('AND', 'haus-ecom-widgets'),
+                    'NOT' => __('NOT', 'haus-ecom-widgets'),
                 ],
                 'default' => 'OR',
             ]
