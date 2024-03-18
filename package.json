@@ -19,6 +19,7 @@
   "devDependencies": {
     "@haus-tech/eslint-config": "^1.0.9",
     "@haus-tech/prettier-config": "^1.0.3",
+    "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@types/lodash": "^4.14.198",
     "@types/node": "^20.8.6",

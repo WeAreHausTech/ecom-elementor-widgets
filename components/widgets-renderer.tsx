@@ -4,7 +4,12 @@ import ReactDOM from 'react-dom/client'
 import ecomWidgets from './widgets'
 import { camelCase } from 'lodash'
 import css from '@haus-tech/ecom-components/dist/ecom-style.css?raw'
-import { DataProvider, LocalizationProvider } from '@haus-tech/ecom-components/providers'
+import {
+  ComponentProvider,
+  ComponentProviderContextType,
+  DataProvider,
+  LocalizationProvider,
+} from '@haus-tech/ecom-components/providers'
 
 export interface IWidgetsRendererOptions {
   provider: 'vendure'
@@ -24,17 +29,20 @@ export class WidgetsRenderer {
   options: VendureDataProviderProps['options']
   widgets: Record<string, () => JSX.Element> = {}
   translations: ResourceBundle[] = []
+  customComponents: Partial<ComponentProviderContextType>
 
   constructor(
     { provider, updates, options }: IWidgetsRendererOptions,
     widgets?: Record<string, () => JSX.Element>,
     translations?: ResourceBundle[],
+    customComponents?: Partial<ComponentProviderContextType>,
   ) {
     this.provider = provider
     this.updates = updates
     this.options = options
     this.widgets = widgets || {}
     this.translations = translations || []
+    this.customComponents = customComponents || {}
   }
 
   // private async fetchCSSContent() {
@@ -42,7 +50,7 @@ export class WidgetsRenderer {
   //   return await response.text()
   // }
 
-  private async renderElement(element: Element, children: ReactNode, isCustomerWidget?: boolean) {
+  private async renderElement(element: Element, children: ReactNode) {
     // const css = await this.fetchCSSContent()
     const shadowRoot = element.attachShadow({ mode: 'open' })
 
@@ -52,15 +60,13 @@ export class WidgetsRenderer {
 
     return ReactDOM.createRoot(shadowRoot).render(
       <React.StrictMode>
-        {isCustomerWidget ? (
-          children
-        ) : (
-          <DataProvider provider={this.provider} updates={this.updates} options={this.options}>
+        <DataProvider provider={this.provider} updates={this.updates} options={this.options}>
+          <ComponentProvider components={this.customComponents}>
             <LocalizationProvider resourceBundles={this.translations}>
               {children}
             </LocalizationProvider>
-          </DataProvider>
-        )}
+          </ComponentProvider>
+        </DataProvider>
       </React.StrictMode>,
     )
   }
@@ -77,7 +83,7 @@ export class WidgetsRenderer {
         if (customerWidget) {
           console.log('customer widget', widgetType)
           const widgetElement = customerWidget()
-          this.renderElement(element, widgetElement, true)
+          this.renderElement(element, widgetElement)
         } else {
           console.log('ecom widget', widgetType)
           const widgetElement = ecomWidget(dataAttributes)
