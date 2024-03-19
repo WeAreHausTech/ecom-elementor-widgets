@@ -2,14 +2,9 @@ import { BuilderQueryUpdates, VendureDataProviderProps } from '@haus-tech/ecom-c
 import React, { ReactNode } from 'react'
 import ReactDOM from 'react-dom/client'
 import ecomWidgets from './widgets'
-import { camelCase } from 'lodash'
+import { camelCase, set } from 'lodash'
 import css from '@haus-tech/ecom-components/dist/ecom-style.css?raw'
-import {
-  ComponentProvider,
-  ComponentProviderContextType,
-  DataProvider,
-  LocalizationProvider,
-} from '@haus-tech/ecom-components/providers'
+import { ComponentProviderContextType, DataProvider } from '@haus-tech/ecom-components/providers'
 
 export interface IWidgetsRendererOptions {
   provider: 'vendure'
@@ -37,6 +32,9 @@ export class WidgetsRenderer {
     translations?: ResourceBundle[],
     customComponents?: Partial<ComponentProviderContextType>,
   ) {
+    set(options, 'localizationProviderProps.resourceBundles', translations)
+    set(options, 'customComponents', customComponents)
+
     this.provider = provider
     this.updates = updates
     this.options = options
@@ -61,11 +59,7 @@ export class WidgetsRenderer {
     return ReactDOM.createRoot(shadowRoot).render(
       <React.StrictMode>
         <DataProvider provider={this.provider} updates={this.updates} options={this.options}>
-          <ComponentProvider components={this.customComponents}>
-            <LocalizationProvider resourceBundles={this.translations}>
-              {children}
-            </LocalizationProvider>
-          </ComponentProvider>
+          {children}
         </DataProvider>
       </React.StrictMode>,
     )
