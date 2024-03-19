@@ -64,6 +64,8 @@ class ProductList extends Widget_Base
             ]
         );
 
+        
+        $this->getAvalibleCollections();
         $this->add_facet_controls();
         $this->end_controls_section();
 
@@ -88,16 +90,47 @@ class ProductList extends Widget_Base
         $this->end_controls_section();
     }
 
-    public function getAvailableFacets(){
+    public function getAvalibleCollections()
+    {
+        $collections = $this->get_collections();
+
+        if (!isset ($collections['data']['collections']['items'])) {
+            return;
+        }
+
+        $options = [
+            '0' => '-',
+        ];
+
+        foreach ($collections['data']['collections']['items'] as $value) {
+            $options[$value['id']] = $value['name'];
+        }
+
+
+        $this->add_control(
+            'collectionId',
+            [
+                'label' => __('Collection ', 'haus-ecom-widgets'),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'label_block' => true,
+                'options' => $options,
+                'default' => '0',
+            ]
+        );
+
+    }
+
+    public function getAvailableFacets()
+    {
         $facets = $this->get_facets();
 
-        if (!isset($facets['data']['facets']['items'])) {
+        if (!isset ($facets['data']['facets']['items'])) {
             return;
         }
 
         $options = [];
 
-        forEach($facets['data']['facets']['items'] as $facet){
+        foreach ($facets['data']['facets']['items'] as $facet) {
             $options[$facet['code']] = $facet['code'] . ' (id: ' . $facet['id'] . ')';
         }
 
@@ -123,6 +156,7 @@ class ProductList extends Widget_Base
                 'options' => [
                     'OR' => __('OR', 'haus-ecom-widgets'),
                     'AND' => __('AND', 'haus-ecom-widgets'),
+                    'NOT' => __('NOT', 'haus-ecom-widgets'),
                 ],
                 'default' => 'OR',
             ]
@@ -139,19 +173,32 @@ class ProductList extends Widget_Base
         );
 
         $this->add_control(
-			'enabled_filters',
-			[
-				'label' => __( 'Enabled filters:', 'haus-ecom-widgets' ),
-				'type' => \Elementor\Controls_Manager::REPEATER,
-				'fields' => $repeater->get_controls(),
-				'default' => [],
-				'title_field' => '{{{ filter_value }}} {{{ filter_condition }}}',
+            'enabled_filters',
+            [
+                'label' => __('Enabled filters:', 'haus-ecom-widgets'),
+                'type' => \Elementor\Controls_Manager::REPEATER,
+                'fields' => $repeater->get_controls(),
+                'default' => [],
+                'title_field' => '{{{ filter_value }}} {{{ filter_condition }}}',
                 'prevent_empty' => false,
-			]
-		);
+            ]
+        );
     }
 
-    public function get_facets(){
+    public function get_collections()
+    {
+        $collections = get_transient('ecom-haus-queries-collection');
+
+        if (!$collections) {
+            $collections = (new \WeAreHausTech\Queries\Collection)->get('sv', 0, 100);
+            set_transient('ecom-haus-queries-collection', $collections, 60 * 5);
+        }
+
+        return $collections;
+    }
+
+    public function get_facets()
+    {
         $facets = get_transient('ecom-haus-queries-facet');
 
         if (!$facets) {
@@ -166,7 +213,7 @@ class ProductList extends Widget_Base
     {
         $facets = $this->get_facets();
 
-        if (!isset($facets['data']['facets']['items'])) {
+        if (!isset ($facets['data']['facets']['items'])) {
             return;
         }
 
@@ -183,6 +230,9 @@ class ProductList extends Widget_Base
                     'category' => 'Category',
                 ],
                 'default' => '0',
+                'condition' => [
+                    'collectionId' => '0',
+                ],
             ]
         );
 
@@ -196,7 +246,7 @@ class ProductList extends Widget_Base
                     'options' => $this->get_facet_options($facet),
                     'default' => '0',
                     'condition' => [
-                        'autoFacet!' =>  $facet['code'],
+                        'autoFacet!' => $facet['code'],
                     ],
                 ]
             );
@@ -268,8 +318,11 @@ class ProductList extends Widget_Base
         $facets = [];
 
         $autoSetTaxonomy = $settings['autoFacet'] !== '0';
+        $collectionId = $settings['collectionId'] !== '0';
 
-        if ($autoSetTaxonomy) {
+        if ($collectionId){
+            $taxonomy = $settings['collectionId'];
+        } else if ($autoSetTaxonomy) {
             $currentTerm = get_queried_object();
             $termId = $currentTerm->term_id;
             $termTaxonomy = $currentTerm->taxonomy;
@@ -290,20 +343,13 @@ class ProductList extends Widget_Base
 
         $widgetId = 'ecom_' . $this->get_id();
         ?>
-        <div
-            id="<?= $widgetId ?>"
-            class="ecom-components-root"
-            data-vendure-api-url="<?= VENDURE_API_URL ?>" 
-            data-vendure-token="<?= VENDURE_TOKEN ?>"
-            data-widget-type="product-list"
-            data-facet="<?= implode(", ", $facets) ?>"
-            data-collection="<?= $taxonomy ?>"
-            data-take="<?= $settings['products_per_page'] ?>"
+        <div id="<?= $widgetId ?>" class="ecom-components-root" data-vendure-api-url="<?= VENDURE_API_URL ?>"
+            data-vendure-token="<?= VENDURE_TOKEN ?>" data-widget-type="product-list" data-facet="<?= implode(", ", $facets) ?>"
+            data-collection="<?= $taxonomy ?>" data-take="<?= $settings['products_per_page'] ?>"
             data-sort-enabled="<?= $settings['sort_enabled'] ?>"
             data-pagination-enabled="<?= $settings['pagination_enabled'] ?>"
             data-add-to-cart-enabled="<?= $settings['show_add_to_cart'] ?>"
-            data-filter-values="<?= htmlspecialchars(json_encode($settings['enabled_filters']), ENT_QUOTES, 'UTF-8'); ?>"
-        >
+            data-filter-values="<?= htmlspecialchars(json_encode($settings['enabled_filters']), ENT_QUOTES, 'UTF-8'); ?>">
         </div>
         <?php
     }
