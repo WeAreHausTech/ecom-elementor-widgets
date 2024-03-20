@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client'
 import ecomWidgets from './widgets'
 import { camelCase, set } from 'lodash'
 import css from '@haus-tech/ecom-components/dist/ecom-style.css?raw'
-import { ComponentProviderContextType, DataProvider } from '@haus-tech/ecom-components/providers'
+import { ComponentProviderProps, DataProvider } from '@haus-tech/ecom-components/providers'
 
 export interface IWidgetsRendererOptions {
   provider: 'vendure'
@@ -26,13 +26,13 @@ export class WidgetsRenderer {
   sdkInstance: VendureDataProviderProps['sdkInstance']
   widgets: Record<string, () => JSX.Element> = {}
   translations: ResourceBundle[] = []
-  customComponents: Partial<ComponentProviderContextType>
+  customComponents: ComponentProviderProps['components']
 
   constructor(
     { provider, updates, options, sdkInstance }: IWidgetsRendererOptions,
     widgets?: Record<string, () => JSX.Element>,
     translations?: ResourceBundle[],
-    customComponents?: Partial<ComponentProviderContextType>,
+    customComponents?: ComponentProviderProps['components'],
   ) {
     set(options, 'localizationProviderProps.resourceBundles', translations)
     set(options, 'customComponents', customComponents)
@@ -43,7 +43,7 @@ export class WidgetsRenderer {
     this.sdkInstance = sdkInstance
     this.widgets = widgets || {}
     this.translations = translations || []
-    this.customComponents = customComponents || {}
+    this.customComponents = customComponents || []
   }
 
   // private async fetchCSSContent() {
