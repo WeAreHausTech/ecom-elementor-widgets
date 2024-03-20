@@ -10,6 +10,7 @@ export interface IWidgetsRendererOptions {
   provider: 'vendure'
   updates: BuilderQueryUpdates
   options: VendureDataProviderProps['options']
+  sdkInstance: VendureDataProviderProps['sdkInstance']
 }
 
 export interface ResourceBundle {
@@ -22,12 +23,13 @@ export class WidgetsRenderer {
   provider: 'vendure'
   updates: BuilderQueryUpdates
   options: VendureDataProviderProps['options']
+  sdkInstance: VendureDataProviderProps['sdkInstance']
   widgets: Record<string, () => JSX.Element> = {}
   translations: ResourceBundle[] = []
   customComponents: Partial<ComponentProviderContextType>
 
   constructor(
-    { provider, updates, options }: IWidgetsRendererOptions,
+    { provider, updates, options, sdkInstance }: IWidgetsRendererOptions,
     widgets?: Record<string, () => JSX.Element>,
     translations?: ResourceBundle[],
     customComponents?: Partial<ComponentProviderContextType>,
@@ -38,6 +40,7 @@ export class WidgetsRenderer {
     this.provider = provider
     this.updates = updates
     this.options = options
+    this.sdkInstance = sdkInstance
     this.widgets = widgets || {}
     this.translations = translations || []
     this.customComponents = customComponents || {}
@@ -58,7 +61,12 @@ export class WidgetsRenderer {
 
     return ReactDOM.createRoot(shadowRoot).render(
       <React.StrictMode>
-        <DataProvider provider={this.provider} updates={this.updates} options={this.options}>
+        <DataProvider
+          provider={this.provider}
+          updates={this.updates}
+          options={this.options}
+          sdkInstance={this.sdkInstance}
+        >
           {children}
         </DataProvider>
       </React.StrictMode>,
