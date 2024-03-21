@@ -188,9 +188,8 @@
     :root {
         --header-height: 84px;
     }
-
-    body {
-        padding-top: var(--header-height);
+    div[data-elementor-type="header"] {
+        height: var(--header-height);
     }
 
     @media only screen and (min-width: 983px) {
