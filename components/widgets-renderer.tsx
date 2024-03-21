@@ -10,7 +10,7 @@ export interface IWidgetsRendererOptions {
   provider: 'vendure'
   updates: BuilderQueryUpdates
   options: VendureDataProviderProps['options']
-  sdkInstance: VendureDataProviderProps['sdkInstance']
+  sdkInstance?: VendureDataProviderProps['sdkInstance']
 }
 
 export interface ResourceBundle {
