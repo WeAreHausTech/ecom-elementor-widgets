@@ -254,4 +254,13 @@ export default {
       </Suspense>
     )
   },
+  resetPassword: () => {
+    const ResetPassword = React.lazy(() => import('./ResetPassword'))
+
+    return (
+      <Suspense>
+        <ResetPassword />
+      </Suspense>
+    )
+  },
 }
