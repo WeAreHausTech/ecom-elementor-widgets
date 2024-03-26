@@ -140,12 +140,13 @@ export default {
     )
   },
 
-  dropdownCart: () => {
-    const DropdownCart = React.lazy(() => import('./DropdownCart'))
+  dropdownCart: (dataAttributes: NamedNodeMap) => {
+    const DropdownCart = React.lazy(() => import('./DropdownCart'));
+    const dropdownEnabled =  +get(dataAttributes.getNamedItem('data-dropdown-enabled'), 'value', 0)
 
     return (
       <Suspense>
-        <DropdownCart />
+        <DropdownCart dropdownEnabled={Boolean(dropdownEnabled)}/> 
       </Suspense>
     )
   },
