@@ -73,6 +73,10 @@ class BaseEcomElementorWidgets
             \Elementor\Plugin::instance()
                 ->widgets_manager
                 ->register(new \WeAreHausTech\Widgets\ResetPassword());
+            
+            \Elementor\Plugin::instance()
+                ->widgets_manager
+                ->register(new \WeAreHausTech\Widgets\AuthChecker());
 
             if (defined('WP_CLI') && WP_CLI) {
                 require_once 'SyncData/Commands/SyncProductData.php';
