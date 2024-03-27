@@ -263,4 +263,13 @@ export default {
       </Suspense>
     )
   },
+  authChecker: () => {
+    const AuthChecker = React.lazy(() => import('./AuthChecker'))
+
+    return (
+      <Suspense>
+        <AuthChecker />
+      </Suspense>
+    )
+  },
 }
