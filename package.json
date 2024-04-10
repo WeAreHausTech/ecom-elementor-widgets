@@ -1,7 +1,7 @@
 {
   "name": "ecom-elementor-widgets",
   "private": true,
-  "version": "1.0.8",
+  "version": "1.0.9",
   "type": "module",
   "scripts": {
     "build": "tsc && vite build --config vite.config-build.ts",
