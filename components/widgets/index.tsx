@@ -273,4 +273,13 @@ export default {
       </Suspense>
     )
   },
+  productBadges: () => {
+    const element = document.getElementById('badges')
+    const productId = element?.getAttribute('data-product') ?? ''
+    return (
+      <Suspense>
+        <ProductBadges productId={productId}/>
+      </Suspense>
+    )
+  },
 }

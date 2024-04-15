@@ -1,0 +1,1 @@
+export { ProductBadges as default } from '@haus-tech/ecom-components'
