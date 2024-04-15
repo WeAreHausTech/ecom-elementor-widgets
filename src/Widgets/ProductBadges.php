@@ -4,7 +4,7 @@ namespace WeAreHausTech\Widgets;
 use \Elementor\Widget_Base;
 use \WeAreHausTech\Traits\ElementorTemplate;
 
-class Badges extends Widget_Base
+class Productbadges extends Widget_Base
 {
     use ElementorTemplate;
 
@@ -49,7 +49,7 @@ class Badges extends Widget_Base
             return;
         }
         ?>
-        <div id="badges" class="ecom-components-root" data-widget-type="product-badges" data-product=<?= $vendureId ?>>
+        <div id="product-badges" class="ecom-components-root" data-widget-type="product-badges" data-product=<?= $vendureId ?>>
         </div>
         <?php
     }
