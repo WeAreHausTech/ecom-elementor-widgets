@@ -335,21 +335,24 @@ class ProductList extends Widget_Base
             }
         }
 
-        foreach ($settings as $key => $value) {
-            if (strpos($key, 'facetType-') !== false && $value !== '0' && ($autoSetTaxonomy && $key !== 'facetType-' . $settings['autoFacet'])) {
+        foreach ($settings as $key => $value) {  
+            if (strpos($key, 'facetType-') !== false && $value !== '0' && ($autoSetTaxonomy && $key !== 'facetType-' . $settings['autoFacet'] || !$autoSetTaxonomy) ) {
                 $facets[] = $value;
             }
         }
 
         $widgetId = 'ecom_' . $this->get_id();
         ?>
-        <div id="<?= $widgetId ?>" class="ecom-components-root" data-vendure-api-url="<?= VENDURE_API_URL ?>"
-            data-vendure-token="<?= VENDURE_TOKEN ?>" data-widget-type="product-list" data-facet="<?= implode(", ", $facets) ?>"
+        <div id="<?= $widgetId ?>" 
+            class="ecom-components-root" 
+            data-widget-type="product-list" 
+            data-facet="<?= implode(", ", $facets) ?>"
             data-collection="<?= $taxonomy ?>" data-take="<?= $settings['products_per_page'] ?>"
             data-sort-enabled="<?= $settings['sort_enabled'] ?>"
             data-pagination-enabled="<?= $settings['pagination_enabled'] ?>"
             data-add-to-cart-enabled="<?= $settings['show_add_to_cart'] ?>"
-            data-filter-values="<?= htmlspecialchars(json_encode($settings['enabled_filters']), ENT_QUOTES, 'UTF-8'); ?>">
+            data-filter-values="<?= htmlspecialchars(json_encode($settings['enabled_filters']), ENT_QUOTES, 'UTF-8'); ?>"
+        >
         </div>
         <?php
     }
