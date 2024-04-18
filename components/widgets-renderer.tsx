@@ -24,7 +24,7 @@ export class WidgetsRenderer {
   updates: BuilderQueryUpdates
   options: VendureDataProviderProps['options']
   sdkInstance: VendureDataProviderProps['sdkInstance']
-  widgets: Record<string, () => JSX.Element> = {}
+  widgets: Record<string, () => JSX.Element> = {} // TODO: Make widgets accept dataAttributes
   translations: ResourceBundle[] = []
   customComponents: ComponentProviderProps['components']
 
