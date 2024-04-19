@@ -406,10 +406,10 @@
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.2.0.tgz#5f3d96ec6b2354ad6d8a28bf216a1d97b5426861"
   integrity sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==
 
-"@haus-tech/ecom-components@^1.0.14":
-  version "1.0.14"
-  resolved "https://registry.yarnpkg.com/@haus-tech/ecom-components/-/ecom-components-1.0.14.tgz#cd21e61c8b8975c3be87127d68cca6db0397d256"
-  integrity sha512-dHgXtTkV7bWSJOgsdV09YGZNtVfC0tzDmXKopscTtxrbjJgZNXZ5UgW80qtJ/wl2jl/d5KW2wFyFUN9kkJJYYw==
+"@haus-tech/ecom-components@^1.0.15":
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/@haus-tech/ecom-components/-/ecom-components-1.0.15.tgz#c6b99d8fbe1f209e011a46dae18ed62a61c0e6c4"
+  integrity sha512-bKPYrL5+ss31KfFvvTf+p/Krh3V71elbJcl6fTCzctTLRsMzE7sJeEexomb+wYn4Q8KFqtftj75S26yxM0zH2Q==
   dependencies:
     "@graphql-typed-document-node/core" "^3.2.0"
     "@radix-ui/react-popover" "^1.0.7"
