@@ -156,7 +156,6 @@
     updateDeviceType = () => {
         if (Array.isArray(productMenuIds)) {
             productMenuIds.forEach((productMenuId) => {
-                console.log(productMenuId)
                 const menuItemProducts = document.querySelectorAll('#menu-item-' + productMenuId);
                 menuItemProducts.forEach((menuItemProduct) => {
                     const isMobile = window.innerWidth <= 768;
