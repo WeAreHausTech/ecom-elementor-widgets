@@ -164,8 +164,7 @@
                         menuItemProduct.addEventListener('click', openOrCloseMenu);
                         menuItemProduct.removeEventListener('mouseover', openOrCloseMenu);
                     } else {
-                        menuItemProduct.addEventListener('click', openOrCloseMenu);
-                        // menuItemProduct.removeEventListener('click', openMenu);
+                        menuItemProduct.addEventListener('click', openOrCloseMenu); 
                     }
                 });
             });
@@ -176,37 +175,6 @@
     window.addEventListener('resize', updateDeviceType);
 
     const dropdown = document.getElementById('dropdown');
-
-    //   //Funktion för att stänga dropdown
-    //   document.body.addEventListener('click', (event) => {
-    //     const targetId = event.target.id;
-    //     console.log(targetId)
-
-    //     if (dropdown.classList.contains('active-dropdown')) {
-    //         if (targetId.startsWith('menu-item-3552')) {
-              
-        
-            
-    //                 closeMenu()
-                
-               
-    //         } 
-            
-    //     }
-    // })
-
-    // //Originalfunktion för att stänga dropdown
-    // document.body.addEventListener('mouseover', (event) => {
-    //     const targetId = event.target.id;
-
-    //     if (dropdown.classList.contains('active-dropdown')) {
-    //         if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId.startsWith('menu-item-') || targetId.startsWith('see-more-')) {
-    //             return;
-    //         } else {
-    //             closeMenu();
-    //         }
-    //     }
-    // })
 
     const searchElement = document.getElementById('search-widget')
 
