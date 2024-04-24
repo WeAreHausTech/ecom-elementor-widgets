@@ -734,12 +734,6 @@
     }
     }
 
-    /* @media only screen and (max-width: 983px) {
-        .dropdown-categories-header .close-button {
-        position: static; 
-    }
-    } */
-
 
     @media only screen and (min-width: 983px) {
         .mobile-heaader {
