@@ -113,18 +113,36 @@
         }
     }
     onOpenModal = () => {
-        document.getElementById('header-content').classList.toggle('active')
+        document.getElementById('header-content').classList.toggle('active') 
+      
     }
     onCloseModal = () => {
         document.getElementById('header-content').classList.toggle('active')
     }
+
     onGoBackButton = () => {
-        document.getElementById('dropdown-menu').classList.toggle('active-dropdown')
-        onCloseModal();
-        onOpenModal();
+        document.getElementById('dropdown-menu').classList.remove('active-dropdown');
+        document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
+        document.getElementById('dropdown').classList.remove('active-dropdown');
+        document.getElementById('header-content').classList.add('active')
     }
-    openMenu = (e) => {
+
+    closeMenu = (e) => {
+        document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
+        setTimeout(() => {
+            document.getElementById('dropdown-menu').classList.remove('active-dropdown-menu');
+            document.getElementById('dropdown').classList.remove('active-dropdown');
+        }, 0);
+    }
+    
+    openOrCloseMenu = (e) => {
         e.preventDefault();
+        const isOpen = document.getElementById('dropdown').classList.contains('active-dropdown')
+        console.log('isOpen', isOpen)
+
+        if(isOpen) {
+            closeMenu()
+        }
         document.getElementById('dropdown').classList.add('active-dropdown')
         document.getElementById('dropdown-menu').classList.add('active-dropdown-menu')
 
@@ -134,25 +152,20 @@
 
         closeMobileMenuModal();
     }
-    closeMenu = (e) => {
-        document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
-        setTimeout(() => {
-            document.getElementById('dropdown-menu').classList.remove('active-dropdown-menu');
-            document.getElementById('dropdown').classList.remove('active-dropdown');
-        }, 400);
-    }
+   
     updateDeviceType = () => {
         if (Array.isArray(productMenuIds)) {
             productMenuIds.forEach((productMenuId) => {
+                console.log(productMenuId)
                 const menuItemProducts = document.querySelectorAll('#menu-item-' + productMenuId);
                 menuItemProducts.forEach((menuItemProduct) => {
                     const isMobile = window.innerWidth <= 768;
                     if (isMobile) {
-                        menuItemProduct.addEventListener('click', openMenu);
-                        menuItemProduct.removeEventListener('mouseover', openMenu);
+                        menuItemProduct.addEventListener('click', openOrCloseMenu);
+                        menuItemProduct.removeEventListener('mouseover', openOrCloseMenu);
                     } else {
-                        menuItemProduct.addEventListener('mouseover', openMenu);
-                        menuItemProduct.removeEventListener('click', openMenu);
+                        menuItemProduct.addEventListener('click', openOrCloseMenu);
+                        // menuItemProduct.removeEventListener('click', openMenu);
                     }
                 });
             });
@@ -164,17 +177,36 @@
 
     const dropdown = document.getElementById('dropdown');
 
-    document.body.addEventListener('mouseover', (event) => {
-        const targetId = event.target.id;
+    //   //Funktion för att stänga dropdown
+    //   document.body.addEventListener('click', (event) => {
+    //     const targetId = event.target.id;
+    //     console.log(targetId)
 
-        if (dropdown.classList.contains('active-dropdown')) {
-            if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId.startsWith('menu-item-') || targetId.startsWith('see-more-')) {
-                return;
-            } else {
-                closeMenu();
-            }
-        }
-    })
+    //     if (dropdown.classList.contains('active-dropdown')) {
+    //         if (targetId.startsWith('menu-item-3552')) {
+              
+        
+            
+    //                 closeMenu()
+                
+               
+    //         } 
+            
+    //     }
+    // })
+
+    // //Originalfunktion för att stänga dropdown
+    // document.body.addEventListener('mouseover', (event) => {
+    //     const targetId = event.target.id;
+
+    //     if (dropdown.classList.contains('active-dropdown')) {
+    //         if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId.startsWith('menu-item-') || targetId.startsWith('see-more-')) {
+    //             return;
+    //         } else {
+    //             closeMenu();
+    //         }
+    //     }
+    // })
 
     const searchElement = document.getElementById('search-widget')
 
@@ -567,13 +599,15 @@
         flex-wrap: wrap;
     }
 
+    
+
     .menu ul {
         padding-left: 0;
         list-style: none;
     }
 
     .menu li {
-        color: var(--header-menu-li-color, #3E4849);
+        color: var(--header-menu-li-color, #3E4849); 
         font-size: 16px;
         font-style: normal;
         font-weight: 600;
@@ -582,8 +616,8 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
+        padding: 0 4px; 
     }
-
 
     .menu li:hover {
         border-radius: 20px;
@@ -683,9 +717,29 @@
 
     }
 
-    .dropdown-categories-header {
-        display: none;
+    .dropdown-categories-header .close-button{
+        display: block;
+        position: absolute;
+            top: 20px;
+            right: 24px;
     }
+
+    .dropdown-categories-header .go-back-button{
+        display: none; 
+    }
+
+    @media only screen and (max-width: 983px) {
+        .dropdown-categories-header .go-back-button {
+        display: block; 
+    }
+    }
+
+    /* @media only screen and (max-width: 983px) {
+        .dropdown-categories-header .close-button {
+        position: static; 
+    }
+    } */
+
 
     @media only screen and (min-width: 983px) {
         .mobile-heaader {
