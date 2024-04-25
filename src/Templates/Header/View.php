@@ -43,7 +43,7 @@
     <div class="mobile-heaader">
         <div class="mobile-logo">
             <a href="<?= get_home_url() ?>">
-                <img style="height:100%; width:100%" src="<?= $data['logo']['url'] ?>"
+                <img style="height:100%;" src="<?= $data['logo']['url'] ?>"
                     alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
                 </img>
             </a>
@@ -138,8 +138,7 @@
     openOrCloseMenu = (e) => {
         e.preventDefault();
         const isOpen = document.getElementById('dropdown').classList.contains('active-dropdown')
-        console.log('isOpen', isOpen)
-
+        
         if(isOpen) {
             closeMenu()
         }
