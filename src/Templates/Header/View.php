@@ -79,7 +79,7 @@
 </script>
 
 <script>
-    //TODO move to separate external file
+    //TODO move to separate external file!
     showMore = (buttonElement) => {
         const buttonId = buttonElement.id;
         const id = buttonId.split('-')[2];
