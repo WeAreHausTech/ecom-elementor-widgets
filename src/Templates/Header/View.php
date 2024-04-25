@@ -132,7 +132,7 @@
         setTimeout(() => {
             document.getElementById('dropdown-menu').classList.remove('active-dropdown-menu');
             document.getElementById('dropdown').classList.remove('active-dropdown');
-        }, 0);
+        }, 400);
     }
     
     openOrCloseMenu = (e) => {
@@ -173,6 +173,18 @@
     window.addEventListener('resize', updateDeviceType);
 
     const dropdown = document.getElementById('dropdown');
+
+    document.body.addEventListener('click', (event) => {
+        const targetId = event.target.id;
+
+        if (dropdown.classList.contains('active-dropdown')) {
+            if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId.startsWith('menu-item-') || targetId.startsWith('see-more-')) {
+                return;
+            } else {
+                closeMenu();
+            }
+        }
+    })
 
     const searchElement = document.getElementById('search-widget')
 
