@@ -65,11 +65,10 @@ class Taxonomies
     {
         foreach ($vendureTerms as $vendureId => $vendureTerm) {
             foreach ($wpTerms as $wpId => $wpTerm) {
-                $decodedWpName = html_entity_decode($wpTerm['name'] ?? null);
-                if ($wpId === $vendureId && $decodedWpName !== $vendureTerm['name']) {
-                    $this->deleteTerm($wpTerm['term_id'] ?? null, $taxonomy);
+                if ($wpTerm['name'] === null || ($wpId === $vendureId &&  html_entity_decode($wpTerm['name']) !== $vendureTerm['name'])) {
                     $this->deleteTranslation($taxonomy, $wpTerm);
-                    WpHelper::log(['Deleted taxonomy missmatch', $taxonomy, $vendureTerm['name'], $decodedWpName]);
+                    $this->deleteTerm($wpTerm['term_id'] ?? null, $taxonomy);
+                    WpHelper::log(['Deleted taxonomy missmatch', $taxonomy, $vendureTerm['name']]);
                 }
             }
         }
@@ -82,9 +81,8 @@ class Taxonomies
         $delete = array_diff_key($wpTerms, $vendureTerms);
 
         array_walk($delete, function ($term) use ($taxonomy) {
-            $this->deleteTerm($term['term_id'], $taxonomy);
-
             $this->deleteTranslation($taxonomy, $term);
+            $this->deleteTerm($term['term_id'], $taxonomy);
         });
 
         //Exists in Vendure, not in WP
@@ -206,7 +204,7 @@ class Taxonomies
         $name = $vendureTerm['translations'][$lang]['name'];
         $slug = $this->getSlugForTranslations($vendureTerm['name'], $vendureTerm['translations'][$lang], $lang);
 
-        $customFields = $vendureTerm['translations'][$lang]['customFields']  ? $this->getCustomFields($vendureTerm['translations'][$lang]['customFields'] ) : null; 
+        $customFields = $vendureTerm['translations'][$lang]['customFields'] ? $this->getCustomFields($vendureTerm['translations'][$lang]['customFields']) : null;
 
         $term = $this->insertTerm($vendureTerm['id'], $name, $slug, $taxonomy, $vendureType, $vendureTerm['updatedAt'], $customFields);
 
@@ -247,11 +245,26 @@ class Taxonomies
 
     public function deleteTerm($id, $taxonomy)
     {
-        //TODO use this SQL to make it safer:
-        //TODO 'DELETE FROM termmeta WHERE term_id NOT IN (SELECT term_id FROM terms)'
-        delete_term_meta($id, 'vendure_collection_id');
-        delete_term_meta($id, 'vendure_term_id');
-        wp_delete_term($id, $taxonomy);
+        global $wpdb;
+
+        $wpdb->query(
+            $wpdb->prepare(
+                "DELETE FROM $wpdb->termmeta WHERE term_id = %d",
+                $id
+            )
+        );
+        
+        $wpdb->delete(
+            $wpdb->term_taxonomy,
+            array('term_id' => $id),
+            array('%d')
+        );
+
+        $wpdb->delete(
+            $wpdb->terms,
+            array('term_id' => $id),
+            array('%d')
+        );
 
         WpHelper::log(['Deleting taxonomy', $taxonomy, $id]);
 
@@ -362,12 +375,11 @@ class Taxonomies
     {
         global $wpdb;
 
-        $query = $wpdb->prepare(
+        $query =
             "SELECT term_id 
             FROM {$wpdb->prefix}termmeta
             WHERE meta_key = 'vendure_collection_id' 
-            AND meta_value = $vendureId"
-        );
+            AND meta_value = $vendureId";
 
         return $wpdb->get_col($query);
     }
@@ -380,12 +392,11 @@ class Taxonomies
             return 0;
         } else {
             global $wpdb;
-            $query = $wpdb->prepare(
+            $query =
                 "SELECT term_id 
                 FROM {$wpdb->prefix}termmeta
                 WHERE meta_key = 'vendure_collection_id' 
-                AND meta_value = $vendureParentId"
-            );
+                AND meta_value = $vendureParentId";
 
             $ids = $wpdb->get_col($query);
             $terms = [];

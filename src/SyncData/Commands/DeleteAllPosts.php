@@ -20,11 +20,10 @@ class DeleteAllPosts extends WP_CLI_Command
         $wpHelper = new WpHelper();
 
         global $wpdb;
-        $query = $wpdb->prepare(
+        $query = 
             "SELECT p.ID
              FROM {$wpdb->prefix}posts p
-             WHERE p.post_type = 'produkter'"
-        );
+             WHERE p.post_type = 'produkter'";
 
         $productsToDelete = $wpdb->get_results($query, ARRAY_A);
 
