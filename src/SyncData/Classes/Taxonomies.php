@@ -206,7 +206,7 @@ class Taxonomies
         $name = $vendureTerm['translations'][$lang]['name'];
         $slug = $this->getSlugForTranslations($vendureTerm['name'], $vendureTerm['translations'][$lang], $lang);
 
-        $customFields = $vendureTerm['translations'][$lang]['customFields']  ? $this->getCustomFields($vendureTerm['translations'][$lang]['customFields'] ) : null; 
+        $customFields = $vendureTerm['translations'][$lang]['customFields'] ? $this->getCustomFields($vendureTerm['translations'][$lang]['customFields']) : null;
 
         $term = $this->insertTerm($vendureTerm['id'], $name, $slug, $taxonomy, $vendureType, $vendureTerm['updatedAt'], $customFields);
 
@@ -362,12 +362,11 @@ class Taxonomies
     {
         global $wpdb;
 
-        $query = $wpdb->prepare(
+        $query =
             "SELECT term_id 
             FROM {$wpdb->prefix}termmeta
             WHERE meta_key = 'vendure_collection_id' 
-            AND meta_value = $vendureId"
-        );
+            AND meta_value = $vendureId";
 
         return $wpdb->get_col($query);
     }
@@ -380,12 +379,11 @@ class Taxonomies
             return 0;
         } else {
             global $wpdb;
-            $query = $wpdb->prepare(
+            $query =
                 "SELECT term_id 
                 FROM {$wpdb->prefix}termmeta
                 WHERE meta_key = 'vendure_collection_id' 
-                AND meta_value = $vendureParentId"
-            );
+                AND meta_value = $vendureParentId";
 
             $ids = $wpdb->get_col($query);
             $terms = [];
