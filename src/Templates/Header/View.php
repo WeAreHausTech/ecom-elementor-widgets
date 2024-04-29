@@ -2,7 +2,7 @@
     <div class="header-content" id="header-content">
         <div class="logo">
             <a href="<?= get_home_url() ?>">
-                <img style="height: 100%;" src="<?= $data['logo']['url'] ?>"
+                <img style="height: 100%; width: auto;" src="<?= $data['logo']['url'] ?>"
                     alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
                 </img>
             </a>
@@ -43,7 +43,7 @@
     <div class="mobile-heaader">
         <div class="mobile-logo">
             <a href="<?= get_home_url() ?>">
-                <img style="height:100%;" src="<?= $data['logo']['url'] ?>"
+                <img style="height:100%; width: auto;" src="<?= $data['logo']['url'] ?>"
                     alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
                 </img>
             </a>
