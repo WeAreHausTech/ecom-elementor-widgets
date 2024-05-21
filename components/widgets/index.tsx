@@ -160,7 +160,7 @@ export default {
 
     return (
       <Suspense>
-        <Login onContinueAsGuest={handleTriggerClick} onLoggedIn={handleTriggerClick} />
+        <Login onContinueAsGuest={handleTriggerClick} onLoggedIn={handleTriggerClick} showContinueAsGuest={false} />
       </Suspense>
     )
   },

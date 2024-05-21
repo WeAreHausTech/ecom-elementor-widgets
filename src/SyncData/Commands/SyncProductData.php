@@ -63,6 +63,8 @@ class SyncProductData extends WP_CLI_Command
             // Ensure the lock is cleared
             LockHelper::removeLock();
         }
+
+        update_option('haus-vendure-last-sync', date('Y-m-d H:i:s'));
     }
 }
 
