@@ -141,12 +141,12 @@ export default {
   },
 
   dropdownCart: (dataAttributes: NamedNodeMap) => {
-    const DropdownCart = React.lazy(() => import('./DropdownCart'));
-    const dropdownEnabled =  +get(dataAttributes.getNamedItem('data-dropdown-enabled'), 'value', 0)
+    const DropdownCart = React.lazy(() => import('./DropdownCart'))
+    const dropdownEnabled = +get(dataAttributes.getNamedItem('data-dropdown-enabled'), 'value', 0)
 
     return (
       <Suspense>
-        <DropdownCart dropdownEnabled={Boolean(dropdownEnabled)}/> 
+        <DropdownCart dropdownEnabled={Boolean(dropdownEnabled)} />
       </Suspense>
     )
   },
@@ -272,5 +272,20 @@ export default {
         <AuthChecker />
       </Suspense>
     )
+  },
+  googleAnalytics: (dataAttributes: NamedNodeMap) => {
+    const PurchaseEvent = React.lazy(() => import('./PurchaseEvent'))
+    const event = dataAttributes.getNamedItem('data-analytics-event')?.value
+
+    switch (event) {
+      case 'purchase':
+        return (
+          <Suspense>
+            <PurchaseEvent />
+          </Suspense>
+        )
+      default:
+        return
+    }
   },
 }
