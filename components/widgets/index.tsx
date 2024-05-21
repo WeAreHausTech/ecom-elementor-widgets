@@ -273,4 +273,19 @@ export default {
       </Suspense>
     )
   },
+  googleAnalytics: (dataAttributes: NamedNodeMap) => {
+    const PurchaseEvent = React.lazy(() => import('./PurchaseEvent'))
+    const event = dataAttributes.getNamedItem('data-analytics-event')?.value
+
+    switch (event) {
+      case 'purchase':
+        return (
+          <Suspense>
+            <PurchaseEvent />
+          </Suspense>
+        )
+      default:
+        return
+    }
+  },
 }
