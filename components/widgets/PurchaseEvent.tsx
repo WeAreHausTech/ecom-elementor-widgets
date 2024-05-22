@@ -1,1 +1,1 @@
-export { PurchaseEvent as default } from '@haus-tech/ecom-components/_gtm-components'
+export { PurchaseEvent as default } from '@haus-tech/ecom-components/gtm-components'
