@@ -90,18 +90,18 @@ class VendureHelper
         return $products;
     }
 
-    public function getCollectionsFromVendure()
+    public function getCollectionsFromVendure($rootCollection)
     {
         $wpmlHelper = new WpmlHelper();
         $avalibleTranslations = $wpmlHelper->getAvalibleTranslations();
         $translations = [];
-        $collections = $this->getVendureCollectionData($this->defaultLang);
+        $collections = $this->getVendureCollectionData($rootCollection, $this->defaultLang);
 
         foreach ($avalibleTranslations as $lang) {
             if ($lang === $this->defaultLang) {
                 continue;
             }
-            $translations[$lang] = $this->getVendureCollectionData($lang);
+            $translations[$lang] = $this->getVendureCollectionData($rootCollection, $lang);
         }
         //TO remove when vendure bug is fixed
         foreach ($collections as $coll) {
@@ -125,24 +125,11 @@ class VendureHelper
         return $collections;
     }
 
-    public function getVendureCollectionData($lang, $data = [], $skip = 0, $take = 100)
+    public function getVendureCollectionData($rootCollection, $lang)
     {
-        $collections = (new \WeAreHausTech\Queries\Collection)->get($lang, $skip, $take);
-
-        if (!isset($collections['data']['collections']['items'])) {
-            return [];
-        }
-
-        $items = $collections['data']['collections']['items'];
-        $totalItems = $collections['data']['collections']['totalItems'];
-
-        $data = array_merge($data, $items);
-
-        if (count($data) === $totalItems) {
-            return array_combine(array_column($data, 'id'), $data);
-        } else {
-            return $this->getVendureCollectionData($lang, $data, $skip + 100, $take);
-        }
+        $collections = (new \WeAreHausTech\Queries\Collection)->get($rootCollection,$lang);
+        $collectionArrays = array_column($collections, 'collection');
+        return array_combine(array_column($collectionArrays, 'id'), $collectionArrays);
     }
 
     public function getfacets()
