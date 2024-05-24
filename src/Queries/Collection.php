@@ -11,11 +11,6 @@ class Collection extends BaseQuery
         $customFields = $config['productSync']['collections']['customFieldsQuery'] ?? '';
 
         $options = "(input: {
-            take: 9999,
-            collectionId: $rootCollection
-        })";
-
-        $options = "(input: {
             take: 9999" . (!empty($rootCollection) ? ",
             collectionId: $rootCollection" : '') . "
         })";
