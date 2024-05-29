@@ -190,7 +190,7 @@ class ProductList extends Widget_Base
         $collections = get_transient('ecom-haus-queries-collection');
 
         if (!$collections) {
-            $collections = (new \WeAreHausTech\Queries\CollectionQuery)->get('sv', 0, 100);
+            $collections = (new \WeAreHausTech\Queries\Collection)->get('sv', 0, 100);
             set_transient('ecom-haus-queries-collection', $collections, 60 * 5);
         }
 

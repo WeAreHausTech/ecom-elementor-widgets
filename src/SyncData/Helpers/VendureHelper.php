@@ -90,18 +90,18 @@ class VendureHelper
         return $products;
     }
 
-    public function getCollectionsFromVendure($rootCollection)
+    public function getCollectionsFromVendure()
     {
         $wpmlHelper = new WpmlHelper();
         $avalibleTranslations = $wpmlHelper->getAvalibleTranslations();
         $translations = [];
-        $collections = $this->getVendureCollectionData($rootCollection, $this->defaultLang);
+        $collections = $this->getVendureCollectionData($this->defaultLang);
 
         foreach ($avalibleTranslations as $lang) {
             if ($lang === $this->defaultLang) {
                 continue;
             }
-            $translations[$lang] = $this->getVendureCollectionData($rootCollection, $lang);
+            $translations[$lang] = $this->getVendureCollectionData($lang);
         }
         //TO remove when vendure bug is fixed
         foreach ($collections as $coll) {
@@ -125,13 +125,25 @@ class VendureHelper
         return $collections;
     }
 
-    public function getVendureCollectionData($rootCollection, $lang)
+    public function getVendureCollectionData($lang, $data = [], $skip = 0, $take = 100)
     {
-        $collections = (new \WeAreHausTech\Queries\Collection)->get($rootCollection,$lang);
-        $collectionArrays = array_column($collections, 'collection');
-        return array_combine(array_column($collectionArrays, 'id'), $collectionArrays);
-    }
+        $collections = (new \WeAreHausTech\Queries\Collection)->get($lang, $skip, $take);
 
+        if (!isset($collections['data']['collections']['items'])) {
+            return [];
+        }
+
+        $items = $collections['data']['collections']['items'];
+        $totalItems = $collections['data']['collections']['totalItems'];
+
+        $data = array_merge($data, $items);
+
+        if (count($data) === $totalItems) {
+            return array_combine(array_column($data, 'id'), $data);
+        } else {
+            return $this->getVendureCollectionData($lang, $data, $skip + 100, $take);
+        }
+    }
     public function getfacets()
     {
         $wpmlHelper = new WpmlHelper();

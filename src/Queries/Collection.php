@@ -1,46 +1,35 @@
 <?php
 namespace WeAreHausTech\Queries;
-
 class Collection extends BaseQuery
 {
-    public function get($rootCollection, $lang)
+    public function get($lang, $skip, $take)
     {
 
-        $config = require (HAUS_ECOM_PLUGIN_PATH . '/config.php');
+        $config = require(HAUS_ECOM_PLUGIN_PATH . '/config.php');
 
         $customFields = $config['productSync']['collections']['customFieldsQuery'] ?? '';
 
-        $options = "(input: {
-            take: 9999" . (!empty($rootCollection) ? ",
-            collectionId: $rootCollection" : '') . "
+
+        $options = "(options: {
+            take: $take,
+            skip: $skip
         })";
 
-
-        $this->query =
-            "query{
-                search $options{
-                    collections {
-                        collection {
-                          id
-                        name
-                        slug
-                        parentId
-                        updatedAt
+        $this->query = 
+           "query{
+                collections $options{
+                    totalItems
+                    items {
+                    id
+                    name
+                    slug
+                    parentId
+                    updatedAt
                     $customFields
-                        }
                     }
                 }
             }";
 
-        $collections = $this->fetch($lang);
-
-        $filteredCollections = array_filter($collections['data']['search']['collections'], function ($collectionWrapper) use ($rootCollection) {
-            if (empty ($rootCollection)) {
-                return true;
-            }
-
-            return $collectionWrapper['collection']['id'] !== $rootCollection;
-        });
-        return $filteredCollections;
+        return $this->fetch($lang);
     }
 }
