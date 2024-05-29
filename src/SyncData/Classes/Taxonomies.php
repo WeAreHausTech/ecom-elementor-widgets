@@ -47,10 +47,11 @@ class Taxonomies
             }
 
             if ($taxonomyType === 'collection') {
-                $vendureValues = $vendureHelper->getCollectionsFromVendure();
+                $rootCollection = $taxonomyInfo['rootCollectionId'] ?? "1";
+                $vendureValues = $vendureHelper->getCollectionsFromVendure($rootCollection);
                 $wpTerms = $wpHelper->getAllCollectionsFromWp($taxonomyInfo['wp']);
                 $this->findMissMatchedTaxonomies($taxonomyInfo['wp'], $vendureValues, $wpTerms);
-                $this->syncAttributes($taxonomyInfo['wp'], $vendureValues, $wpTerms);
+                $this->syncAttributes($taxonomyInfo['wp'], $vendureValues, $wpTerms, $rootCollection);
                 continue;
             } else {
                 $vendureValues = $facets[$taxonomyInfo['vendure']];
@@ -74,7 +75,7 @@ class Taxonomies
         }
     }
 
-    public function syncAttributes($taxonomy, $vendureTerms, $wpTerms)
+    public function syncAttributes($taxonomy, $vendureTerms, $wpTerms, $rootCollection = null)
     {
 
         //Exists in WP, not in Vendure
@@ -105,7 +106,7 @@ class Taxonomies
 
         if ($isCollection) {
             foreach ($vendureTerms as $vendureId => $vendureTerm) {
-                $this->syncCollectionParents($vendureId, $vendureTerm['parentId'], $taxonomy);
+                $this->syncCollectionParents($vendureId, $vendureTerm['parentId'], $taxonomy, $rootCollection);
             }
         }
     }
@@ -384,13 +385,13 @@ class Taxonomies
         return $wpdb->get_col($query);
     }
 
-    public function getParentTermId($vendureParentId, $taxonomy)
+    public function getParentTermId($vendureParentId, $taxonomy, $rootCollection)
     {
         global $wpdb;
 
         // Vendures default parentId is 1 if root collection
 
-        if ($vendureParentId === "1") {
+        if ($vendureParentId === $rootCollection) {
             return 0;
         } else {
             global $wpdb;
@@ -413,10 +414,10 @@ class Taxonomies
         }
     }
 
-    public function syncCollectionParents($vendureId, $vendureParentId, $taxonomy)
+    public function syncCollectionParents($vendureId, $vendureParentId, $taxonomy, $rootCollection)
     {
         $collectionTermIds = $this->getTermIdByVendureId($vendureId);
-        $collectionParentIds = $this->getParentTermId($vendureParentId, $taxonomy);
+        $collectionParentIds = $this->getParentTermId($vendureParentId, $taxonomy, $rootCollection);
         $parentData = [];
 
         foreach ($collectionTermIds as $id) {
