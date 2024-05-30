@@ -1,6 +1,7 @@
 <?php
 namespace WeAreHausTech\SyncData\Classes;
 
+use WeAreHausTech\SyncData\Helpers\CacheHelper;
 use WeAreHausTech\SyncData\Helpers\WpmlHelper;
 use WeAreHausTech\SyncData\Helpers\WpHelper;
 
@@ -76,6 +77,7 @@ class Products
         ]);
 
         WpHelper::log(['Creating product', $vendureId, $ProductName, $slug]);
+        CacheHelper::clear($post->ID);
 
         return $post;
     }
@@ -191,6 +193,7 @@ class Products
         ]);
 
         WpHelper::log(['Updating product', $postTitle, $postName, $vendureId]);
+        CacheHelper::clear($postId);
 
         $this->updated++;
     }
