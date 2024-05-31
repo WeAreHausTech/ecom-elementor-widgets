@@ -47,7 +47,8 @@ class Taxonomies
             }
 
             if ($taxonomyType === 'collection') {
-                $rootCollection = $taxonomyInfo['rootCollectionId'] ?? "1";
+                $venudreDefaultRootCollection =  "1";
+                $rootCollection = $taxonomyInfo['rootCollectionId'] ?? $venudreDefaultRootCollection;
                 $vendureValues = $vendureHelper->getCollectionsFromVendure($rootCollection);
                 $wpTerms = $wpHelper->getAllCollectionsFromWp($taxonomyInfo['wp']);
                 $this->findMissMatchedTaxonomies($taxonomyInfo['wp'], $vendureValues, $wpTerms);
