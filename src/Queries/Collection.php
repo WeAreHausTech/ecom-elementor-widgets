@@ -2,17 +2,21 @@
 namespace WeAreHausTech\Queries;
 class Collection extends BaseQuery
 {
-    public function get($lang, $skip, $take)
+    public function get($lang, $skip, $take, $parentIds = [])
     {
 
         $config = require(HAUS_ECOM_PLUGIN_PATH . '/config.php');
-
         $customFields = $config['productSync']['collections']['customFieldsQuery'] ?? '';
 
+        $encodedParentIds = json_encode($parentIds);
 
         $options = "(options: {
             take: $take,
-            skip: $skip
+            skip: $skip, 
+            filter: { 
+                parentId: 
+                {in: $encodedParentIds} 
+            }
         })";
 
         $this->query = 
