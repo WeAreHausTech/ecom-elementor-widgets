@@ -160,7 +160,7 @@ export default {
 
     return (
       <Suspense>
-        <Login onContinueAsGuest={handleTriggerClick} onLoggedIn={handleTriggerClick} />
+        <Login onContinueAsGuest={handleTriggerClick} onLoggedIn={handleTriggerClick} showContinueAsGuest={false} />
       </Suspense>
     )
   },
@@ -272,5 +272,20 @@ export default {
         <AuthChecker />
       </Suspense>
     )
+  },
+  googleAnalytics: (dataAttributes: NamedNodeMap) => {
+    const PurchaseEvent = React.lazy(() => import('./PurchaseEvent'))
+    const event = dataAttributes.getNamedItem('data-analytics-event')?.value
+
+    switch (event) {
+      case 'purchase':
+        return (
+          <Suspense>
+            <PurchaseEvent />
+          </Suspense>
+        )
+      default:
+        return
+    }
   },
 }

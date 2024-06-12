@@ -1,0 +1,1 @@
+export { PurchaseEvent as default } from '@haus-tech/ecom-components/gtm-components'

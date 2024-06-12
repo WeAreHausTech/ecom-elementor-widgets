@@ -46,7 +46,7 @@ class VendureHelper
 
     public function getProductsByLang($lang)
     {
-        $batchSize = 100; 
+        $batchSize = 100;
         $skip = 0;
 
         $allProducts = [];
@@ -90,18 +90,18 @@ class VendureHelper
         return $products;
     }
 
-    public function getCollectionsFromVendure()
+    public function getCollectionsFromVendure($rootCollection)
     {
         $wpmlHelper = new WpmlHelper();
         $avalibleTranslations = $wpmlHelper->getAvalibleTranslations();
         $translations = [];
-        $collections = $this->getVendureCollectionData($this->defaultLang);
+        $collections = $this->getAllCollectionsByParentIds($this->defaultLang, [$rootCollection]);
 
         foreach ($avalibleTranslations as $lang) {
             if ($lang === $this->defaultLang) {
                 continue;
             }
-            $translations[$lang] = $this->getVendureCollectionData($lang);
+            $translations[$lang] = $this->getAllCollectionsByParentIds($lang, [$rootCollection]);
         }
         //TO remove when vendure bug is fixed
         foreach ($collections as $coll) {
@@ -125,6 +125,52 @@ class VendureHelper
         return $collections;
     }
 
+    public function getAllCollectionsByParentIds(string $lang, array $ids = []): array
+    {
+        $collections = [];
+        $parentIds = $ids;
+        $take = 100;
+
+        while (!empty($parentIds)) {
+            $skip = 0;
+            $result = [];
+
+            do {
+                $queryResult = (new \WeAreHausTech\Queries\Collection)->get($lang, $skip, $take, $parentIds);
+                $items = $queryResult['data']['collections']['items'];
+
+                if (!empty($items)) {
+                    $result = array_merge($result, $items);
+                    $skip += $take;
+                }
+
+            } while (!empty($items) && count($items) === $take);
+
+            if (!empty($result)) {
+                $collections = array_merge($collections, $result);
+                $parentIds = $this->extractParentIds($result);
+            } else {
+                $parentIds = [];
+            }
+        }
+
+        return array_combine(array_column($collections, 'id'), $collections);
+    }
+
+
+    public function extractParentIds(array $collections): array
+    {
+        $ids = [];
+
+        foreach ($collections as $collection) {
+            if (isset($collection['id'])) {
+                $ids[] = $collection['id'];
+            }
+        }
+
+        return array_unique($ids);
+    }
+
     public function getVendureCollectionData($lang, $data = [], $skip = 0, $take = 100)
     {
         $collections = (new \WeAreHausTech\Queries\Collection)->get($lang, $skip, $take);
@@ -144,7 +190,6 @@ class VendureHelper
             return $this->getVendureCollectionData($lang, $data, $skip + 100, $take);
         }
     }
-
     public function getfacets()
     {
         $wpmlHelper = new WpmlHelper();

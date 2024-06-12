@@ -2,7 +2,7 @@
     <div class="header-content" id="header-content">
         <div class="logo">
             <a href="<?= get_home_url() ?>">
-                <img style="height: 100%;" src="<?= $data['logo']['url'] ?>"
+                <img style="height: 100%; width: auto;" src="<?= $data['logo']['url'] ?>"
                     alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
                 </img>
             </a>
@@ -17,9 +17,9 @@
         </div>
         <div class="menu-links">
             <div class="icons">
-                <?php include('Search.php') ?>
-                <?php include('Login.php') ?>
-                <?php include('Cart.php') ?>
+                <?php include ('Search.php') ?>
+                <?php include ('Login.php') ?>
+                <?php include ('Cart.php') ?>
             </div>
             <div class="close-button">
                 <button onClick="onCloseModal()">
@@ -43,15 +43,15 @@
     <div class="mobile-heaader">
         <div class="mobile-logo">
             <a href="<?= get_home_url() ?>">
-                <img style="height:100%; width:100%" src="<?= $data['logo']['url'] ?>"
+                <img style="height:100%; width: auto;" src="<?= $data['logo']['url'] ?>"
                     alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
                 </img>
             </a>
         </div>
         <div class="mobile-icons">
-            <?php include('Search.php') ?>
-            <?php include('Login.php') ?>
-            <?php include('Cart.php') ?>
+            <?php include ('Search.php') ?>
+            <?php include ('Login.php') ?>
+            <?php include ('Cart.php') ?>
 
             <div class="open-button">
                 <button onClick="onOpenModal()">
@@ -72,7 +72,7 @@
     </div>
 </div>
 
-<?php include('CategoriesDropdown.php') ?>
+<?php include ('CategoriesDropdown.php') ?>
 
 <script>
     const productMenuIds = <?= json_encode($data['products_menu_ids']) ?>;
@@ -114,26 +114,19 @@
     }
     onOpenModal = () => {
         document.getElementById('header-content').classList.toggle('active')
+
     }
     onCloseModal = () => {
         document.getElementById('header-content').classList.toggle('active')
     }
+
     onGoBackButton = () => {
-        document.getElementById('dropdown-menu').classList.toggle('active-dropdown')
-        onCloseModal();
-        onOpenModal();
+        document.getElementById('dropdown-menu').classList.remove('active-dropdown');
+        document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
+        document.getElementById('dropdown').classList.remove('active-dropdown');
+        document.getElementById('header-content').classList.add('active')
     }
-    openMenu = (e) => {
-        e.preventDefault();
-        document.getElementById('dropdown').classList.add('active-dropdown')
-        document.getElementById('dropdown-menu').classList.add('active-dropdown-menu')
 
-        setTimeout(() => {
-            document.getElementById('dropdown-content').classList.add('active-dropdown-content')
-        }, 50);
-
-        closeMobileMenuModal();
-    }
     closeMenu = (e) => {
         document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
         setTimeout(() => {
@@ -141,6 +134,24 @@
             document.getElementById('dropdown').classList.remove('active-dropdown');
         }, 400);
     }
+
+    openOrCloseMenu = (e) => {
+        e.preventDefault();
+        const isOpen = document.getElementById('dropdown').classList.contains('active-dropdown')
+
+        if (isOpen) {
+            closeMenu()
+            closeMobileMenuModal();
+        } else {
+            document.getElementById('dropdown').classList.add('active-dropdown')
+            document.getElementById('dropdown-menu').classList.add('active-dropdown-menu')
+
+            setTimeout(() => {
+                document.getElementById('dropdown-content').classList.add('active-dropdown-content')
+            }, 50);
+        }
+    }
+
     updateDeviceType = () => {
         if (Array.isArray(productMenuIds)) {
             productMenuIds.forEach((productMenuId) => {
@@ -148,11 +159,10 @@
                 menuItemProducts.forEach((menuItemProduct) => {
                     const isMobile = window.innerWidth <= 768;
                     if (isMobile) {
-                        menuItemProduct.addEventListener('click', openMenu);
-                        menuItemProduct.removeEventListener('mouseover', openMenu);
+                        menuItemProduct.addEventListener('click', openOrCloseMenu);
+                        menuItemProduct.removeEventListener('mouseover', openOrCloseMenu);
                     } else {
-                        menuItemProduct.addEventListener('mouseover', openMenu);
-                        menuItemProduct.removeEventListener('click', openMenu);
+                        menuItemProduct.addEventListener('click', openOrCloseMenu);
                     }
                 });
             });
@@ -164,7 +174,7 @@
 
     const dropdown = document.getElementById('dropdown');
 
-    document.body.addEventListener('mouseover', (event) => {
+    document.body.addEventListener('click', (event) => {
         const targetId = event.target.id;
 
         if (dropdown.classList.contains('active-dropdown')) {
@@ -188,6 +198,7 @@
     :root {
         --header-height: 84px;
     }
+
     div[data-elementor-type="header"] {
         height: var(--header-height);
     }
@@ -431,19 +442,19 @@
         gap: 24px;
         min-width: 200px;
     }
-    
+
     .dropdown-a {
         font-size: 16px;
         font-style: normal;
         font-weight: 600;
         line-height: 150%;
     }
-    
-    .dropdown-a:hover{
+
+    .dropdown-a:hover {
         cursor: pointer;
         text-decoration: underline;
         color: var(--header-dropdown-child-color-hover, #000) !important;
-     }
+    }
 
     .dropdown-a {
         font-size: 16px;
@@ -452,7 +463,7 @@
         line-height: 150%;
     }
 
-    .dropdown-a:hover{
+    .dropdown-a:hover {
         cursor: pointer;
         text-decoration: underline;
         color: var(--header-dropdown-child-color-hover, #000) !important;
@@ -511,7 +522,7 @@
         align-items: center;
     }
 
-    .logo{
+    .logo {
         min-width: 250px;
     }
 
@@ -567,6 +578,8 @@
         flex-wrap: wrap;
     }
 
+
+
     .menu ul {
         padding-left: 0;
         list-style: none;
@@ -582,8 +595,8 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
+        padding: 0 4px;
     }
-
 
     .menu li:hover {
         border-radius: 20px;
@@ -683,9 +696,23 @@
 
     }
 
-    .dropdown-categories-header {
+    .dropdown-categories-header .close-button {
+        display: block;
+        position: absolute;
+        top: 20px;
+        right: 24px;
+    }
+
+    .dropdown-categories-header .go-back-button {
         display: none;
     }
+
+    @media only screen and (max-width: 983px) {
+        .dropdown-categories-header .go-back-button {
+            display: block;
+        }
+    }
+
 
     @media only screen and (min-width: 983px) {
         .mobile-heaader {

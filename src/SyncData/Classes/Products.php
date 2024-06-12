@@ -66,7 +66,7 @@ class Products
         $customFields =  $this->getCustomFields($customFields);
         $metaInput = array_merge($metaInput, $customFields);
 
-        $post = wp_insert_post([
+        $postId = wp_insert_post([
             'post_title' => $ProductName,
             'post_status' => 'publish',
             'post_type' => 'produkter',
@@ -77,9 +77,9 @@ class Products
         ]);
 
         WpHelper::log(['Creating product', $vendureId, $ProductName, $slug]);
-        CacheHelper::clear($post->ID);
+        CacheHelper::clear($postId);
 
-        return $post;
+        return $postId;
     }
 
     public function getCustomFields($customFields){
