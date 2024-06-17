@@ -275,13 +275,28 @@ export default {
   },
   googleAnalytics: (dataAttributes: NamedNodeMap) => {
     const PurchaseEvent = React.lazy(() => import('./PurchaseEvent'))
+    const BeginCheckoutEvent = React.lazy(() => import('./BeginCheckoutEvent'))
+    const ViewItemEvent = React.lazy(() => import('./ViewItemEvent'))
     const event = dataAttributes.getNamedItem('data-analytics-event')?.value
+    const productId = dataAttributes.getNamedItem('data-product')?.value
 
     switch (event) {
       case 'purchase':
         return (
           <Suspense>
             <PurchaseEvent />
+          </Suspense>
+        )
+      case 'begin-checkout':
+        return (
+          <Suspense >
+            <BeginCheckoutEvent />
+          </Suspense>
+        )
+      case 'view-item' && productId && productId !== undefined:
+        return (
+          <Suspense>
+            <ViewItemEvent productId={productId ?? ''}/>
           </Suspense>
         )
       default:
