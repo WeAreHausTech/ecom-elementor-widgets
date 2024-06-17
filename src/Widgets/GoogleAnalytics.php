@@ -52,6 +52,8 @@ class GoogleAnalytics extends Widget_Base
                 'required' => true,
                 'options' => [
                     'purchase' => __('purchase', 'haus-ecom-widgets'),
+                    'begin-checkout' => __('begin-checkout', 'haus-ecom-widgets'),
+                    'view-item' => __('view-item', 'haus-ecom-widgets'),
                 ],
             ]
         );
