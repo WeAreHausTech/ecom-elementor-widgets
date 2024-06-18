@@ -81,6 +81,19 @@ export default {
     )
   },
 
+  productImageCarousel: (dataAttributes: NamedNodeMap) => {
+    const slug = dataAttributes.getNamedItem('data-product-slug')?.value
+    const ProductImageCarousel = React.lazy(() => import('./ProductImageCarousel'))
+
+    return (
+      slug && (
+        <Suspense>
+          <ProductImageCarousel slug={slug} />
+        </Suspense>
+      )
+    )
+  },
+
   cart: (dataAttributes: NamedNodeMap) => {
     const cartPricePropsCart = {
       subTotal: dataAttributes.getNamedItem('data-show-subtotal')?.value === 'yes' ? true : false,
@@ -141,12 +154,12 @@ export default {
   },
 
   dropdownCart: (dataAttributes: NamedNodeMap) => {
-    const DropdownCart = React.lazy(() => import('./DropdownCart'));
-    const dropdownEnabled =  +get(dataAttributes.getNamedItem('data-dropdown-enabled'), 'value', 0)
+    const DropdownCart = React.lazy(() => import('./DropdownCart'))
+    const dropdownEnabled = +get(dataAttributes.getNamedItem('data-dropdown-enabled'), 'value', 0)
 
     return (
       <Suspense>
-        <DropdownCart dropdownEnabled={Boolean(dropdownEnabled)}/> 
+        <DropdownCart dropdownEnabled={Boolean(dropdownEnabled)} />
       </Suspense>
     )
   },
@@ -160,7 +173,11 @@ export default {
 
     return (
       <Suspense>
-        <Login onContinueAsGuest={handleTriggerClick} onLoggedIn={handleTriggerClick} showContinueAsGuest={false} />
+        <Login
+          onContinueAsGuest={handleTriggerClick}
+          onLoggedIn={handleTriggerClick}
+          showContinueAsGuest={false}
+        />
       </Suspense>
     )
   },
@@ -289,14 +306,14 @@ export default {
         )
       case 'begin-checkout':
         return (
-          <Suspense >
+          <Suspense>
             <BeginCheckoutEvent />
           </Suspense>
         )
       case 'view-item' && productId && productId !== undefined:
         return (
           <Suspense>
-            <ViewItemEvent productId={productId ?? ''}/>
+            <ViewItemEvent productId={productId ?? ''} />
           </Suspense>
         )
       default:
