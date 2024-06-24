@@ -2,12 +2,19 @@
     <div class="dropdown-menu" id="dropdown-menu">
         <div class="dropdown-content" id="dropdown-content">
             <div class="dropdown-categories-header">
-                <button class="go-back-button" onClick="onGoBackButton()">
+                <button class="go-back-button" id="go-back-button" onClick="onGoBackButton()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
                         <path
                             d="M5.85826 9.53507C5.71766 9.39443 5.63867 9.20369 5.63867 9.00482C5.63867 8.80595 5.71766 8.61522 5.85826 8.47457L10.3583 3.97457C10.4997 3.83795 10.6892 3.76236 10.8858 3.76407C11.0825 3.76577 11.2706 3.84465 11.4096 3.98371C11.5487 4.12276 11.6276 4.31087 11.6293 4.50752C11.631 4.70417 11.5554 4.89362 11.4188 5.03507L7.44901 9.00482L11.4188 12.9746C11.5554 13.116 11.631 13.3055 11.6293 13.5021C11.6276 13.6988 11.5487 13.8869 11.4096 14.0259C11.2706 14.165 11.0825 14.2439 10.8858 14.2456C10.6892 14.2473 10.4997 14.1717 10.3583 14.0351L5.85826 9.53507Z"
                             fill="#3E4849" />
                     </svg>Tillbaka
+                </button>
+                <button class="back-to-menu-button" id="back-to-menu-button" onClick="onBackToMenu()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                        <path
+                            d="M5.85826 9.53507C5.71766 9.39443 5.63867 9.20369 5.63867 9.00482C5.63867 8.80595 5.71766 8.61522 5.85826 8.47457L10.3583 3.97457C10.4997 3.83795 10.6892 3.76236 10.8858 3.76407C11.0825 3.76577 11.2706 3.84465 11.4096 3.98371C11.5487 4.12276 11.6276 4.31087 11.6293 4.50752C11.631 4.70417 11.5554 4.89362 11.4188 5.03507L7.44901 9.00482L11.4188 12.9746C11.5554 13.116 11.631 13.3055 11.6293 13.5021C11.6276 13.6988 11.5487 13.8869 11.4096 14.0259C11.2706 14.165 11.0825 14.2439 10.8858 14.2456C10.6892 14.2473 10.4997 14.1717 10.3583 14.0351L5.85826 9.53507Z"
+                            fill="#3E4849" />
+                    </svg>
                 </button>
                 <div class="close-button">
                     <button onClick="closeMenu()">
@@ -24,11 +31,16 @@
                     <?php if ($categories) { ?>
                         <?php foreach ($categories as $mainCategory) { ?>
                             <li class="parent">
-                                <a class="parent-link" href="<?= $mainCategory['data']['slug'] ?>/">
+                                <a class="parent-link desktop" href="<?= $mainCategory['data']['slug'] ?>/">
                                     <?= $mainCategory['data']['name'] ?>
                                 </a>
+                                <button class="parent-link parent-button mobile" onClick="openSubcategories(<?= $mainCategory['data']['term_id'] ?>, '<?= addSlashes($mainCategory['data']['name']) ?>')">  
+                                <?= $mainCategory['data']['name'] ?>
+                             
+                            </button>
+                                <!-- <div class="subcategories" id="subcategories-<?= $mainCategory['data']['term_id'] ?>"> -->
                                 <?php if (!empty($mainCategory['children'])) { ?>
-                                    <ul class="category">
+                                    <ul class="category" id="category-<?= $mainCategory['data']['term_id'] ?>">
                                         <?php foreach ($mainCategory['children'] as $index => $child) {
                                              ?>
                                             <li class="child-link" data-parent="<?= $mainCategory['data']['term_id'] ?>" class="child"
@@ -52,7 +64,7 @@
                                         <?php } ?>
                                     </ul>
                                 <?php } ?>
-                            </li>
+                                <!-- </div> -->
                         <?php } ?>
                     <?php } ?>
                 </ul>
@@ -60,9 +72,12 @@
             <div class="dropdown-type">
                 <?php foreach ($taxonomies as $taxonomy) { ?>
                     <div class="department">
-                            <a class="dropdown-a" href="<?= $taxonomy['heading-link'] ?>">
+                            <a class="dropdown-a desktop" href="<?= $taxonomy['heading-link'] ?>">
                                 <?= $taxonomy['heading'] ?>
                             </a>
+                            <button class="dropdown-a parent-button mobile" onClick="">  
+                            <?= $taxonomy['heading'] ?>
+                          </button>
                         <ul>
                             <?php foreach ($taxonomy['data'] as $index => $value) { ?>
                                 <?php $value = $value['data'] ?>
@@ -82,7 +97,7 @@
                     </div>
                 <?php } ?>
             </div>
-            <div class="dropdown-product-link">
+            <div class="dropdown-product-link" id="dropdown-product-link">
                 <a href="<?= $data['product_page_url']?> "><?= $data['product_page']?></a>
             </div>
         </div>

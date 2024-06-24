@@ -267,11 +267,24 @@ class Header extends Widget_Base
             'product_page' => $this->lang('Show all products', 'Visa alla produkter'),
         ];
 
+        echo '<script>';
+        echo 'console.log("Data:", ' . json_encode($data) . ');';
+        echo '</script>';
+
+        echo '<script>';
+        echo 'console.log("Product ids", ' . json_encode($product_ids) . ');';
+        echo '</script>';
+
         $loggedInmenuId = $this->get_settings_for_display('login_in_menu_id');
         $formattedMenuItems = $this->getFormatedMenuItems($loggedInmenuId);
 
 
         $categories = $this->getTaxonomies('produkter-kategorier', '/produkter/kategorier/', '/en/products/categories/');
+
+        echo '<script>';
+        echo 'console.log("Categories:", ' . json_encode($categories) . ');';
+        echo '</script>';
+
 
         $taxonomies = [
             [
@@ -287,6 +300,10 @@ class Header extends Widget_Base
                 'class' => 'department'
             ]
         ];
+
+        echo '<script>';
+        echo 'console.log("Taxonomies:", ' . json_encode($taxonomies) . ');';
+        echo '</script>';
 
         $url = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 

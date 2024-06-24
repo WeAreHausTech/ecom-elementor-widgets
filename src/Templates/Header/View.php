@@ -192,9 +192,67 @@
         closeProductModal();
     });
 
+
+    /*Öppna subcategories */
+    openSubcategories = (categoryId, categoryName) => {
+
+        // document.getElementById('main-categories').style.display = 'none'; 
+        // document.getElementById('main-taxonomies').style.display = 'none';
+        document.getElementById('dropdown-product-link').style.display = 'none'; 
+        document.getElementById(`category-${categoryId}`).style.display = 'flex';
+        document.querySelectorAll('.parent-button').forEach(button => {
+            button.style.display = "none"
+        })
+
+        document.getElementById('go-back-button').style.display = 'none'
+        document.getElementById('back-to-menu-button').innerHTML = `${categoryName}`
+    }
+
+    onBackToMenu = () => {
+        document.getElementById('dropdown-product-link').style.display = 'block'; 
+        document.querySelectorAll('.parent-button').forEach(button => {
+            button.style.display = "inline"
+        })
+        document.getElementById(`category-${categoryId}`).style.display = 'none';
+
+    }
+
 </script>
 
 <style>
+
+ /*VISA OCH DÖLJA SUBCATEGORIES  */
+@media only screen and (max-width: 983px) {
+    .dropdown-menu .dropdown-content .category {
+        display: none; 
+    }
+
+    .dropdown-menu .dropdown-content .department ul  {
+        display: none; 
+    }
+
+    }
+
+    /*VISA OCH DÖLJA LÄNKAR/KNAPPAR  */
+    .parent-button.mobile {
+        display:none; 
+    }
+
+    @media screen and (max-width: 983px) {
+        .parent-link.desktop {
+            display: none; 
+        }
+
+        .dropdown-a.desktop {
+            display: none; 
+        }
+
+        .parent-button.mobile {
+            display: inline; 
+        }
+    }
+
+    
     :root {
         --header-height: 84px;
     }
@@ -216,8 +274,6 @@
         align-items: center;
 
     }
-
-
     @media only screen and (min-width: 983px) {
 
         .menu-header-main-container,
