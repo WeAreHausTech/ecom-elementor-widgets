@@ -11,6 +11,14 @@ class Header extends Widget_Base
     use ElementorTemplate;
 
     private WpmlHelper $wpmlHelper;
+
+
+
+
+
+
+
+    
     private $currentLang = 'sv';
 
     public function __construct($data = [], $args = null)

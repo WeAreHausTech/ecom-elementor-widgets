@@ -31,14 +31,13 @@
                 <ul class="categories">
                     <?php if ($categories) { ?>
                         <?php foreach ($categories as $mainCategory) { ?>
-                            <li class="parent">
+                            <li class="parent" id="parent-<?= $mainCategory['data']['term_id'] ?>">
                                 <a class="parent-link desktop" href="<?= $mainCategory['data']['slug'] ?>/">
                                     <?= $mainCategory['data']['name'] ?>
                                 </a>
                                 <button class="parent-link parent-button mobile" onClick="openSubcategories(<?= $mainCategory['data']['term_id'] ?>, '<?= addSlashes($mainCategory['data']['name']) ?>')">  
                                 <?= $mainCategory['data']['name'] ?>
-                             
-                            </button>
+                                </button>
                                 <!-- <div class="subcategories" id="subcategories-<?= $mainCategory['data']['term_id'] ?>"> -->
                                 <?php if (!empty($mainCategory['children'])) { ?>
                                     <ul class="category" id="category-<?= $mainCategory['data']['term_id'] ?>">

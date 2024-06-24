@@ -215,6 +215,7 @@
         closeProductModal();
     });
 
+    //Avfyras när man klickar på OnBackToMenu och 
     const resetMenu = () => {
        document.getElementById('dropdown-product-link').style.display = 'block'; 
         document.querySelectorAll('.parent-button').forEach(button => {
@@ -223,12 +224,20 @@
         document.querySelectorAll('.category').forEach(category => {category.style.display = 'none'})
         document.getElementById('go-back-button').style.display = 'block'
         document.getElementById('back-to-menu-button').style.display = 'none'
+
+        document.getElementById('dropdown-discover').style.display = "none"
         }
 
 
     /*Öppna subcategories */
     openSubcategories = (categoryId, categoryName) => {
+        // document.getElementById('discover-placeholder').textContent = `${categoryName}`
         document.getElementById('dropdown-product-link').style.display = 'none'; 
+        document.querySelectorAll('[id^="parent-"]').forEach(element => {
+        if (element.id !== `parent-${categoryId}`) {
+            element.style.display = 'none';
+        }
+    });
         document.querySelectorAll('.parent-button').forEach(button => {
             button.style.display = "none"
         })
@@ -240,6 +249,7 @@
          document.getElementById('back-to-menu-placeholder').textContent = `${categoryName}`
     }
 
+    //Avfyras när man klickar på ex "Kosmetika"
     onBackToMenu = (event) => {
         event.preventDefault()
         console.log("On back to menu")
