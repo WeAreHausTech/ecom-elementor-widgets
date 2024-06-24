@@ -151,7 +151,7 @@
         console.log("openorclosemenu")
         e.preventDefault();
         const isOpen = document.getElementById('dropdown').classList.contains('active-dropdown')
-console.log("OpenOrCloseMenu")
+        console.log("OpenOrCloseMenu")
         if (isOpen) {
             console.log("Closing menu")
             closeMenu()
@@ -164,6 +164,11 @@ console.log("OpenOrCloseMenu")
             setTimeout(() => {
                 document.getElementById('dropdown-content').classList.add('active-dropdown-content')
             }, 50);
+            //När modalen öppnas återställs menyn. Men vill bara göra det i mobilt och inte i desktop: 
+            const isMobile = window.innerWidth <= 768;
+                if(isMobile) {
+                    resetMenu()
+                }
         }
     }
 
@@ -210,6 +215,16 @@ console.log("OpenOrCloseMenu")
         closeProductModal();
     });
 
+    const resetMenu = () => {
+       document.getElementById('dropdown-product-link').style.display = 'block'; 
+        document.querySelectorAll('.parent-button').forEach(button => {
+            button.style.display = "inline"
+        })
+        document.querySelectorAll('.category').forEach(category => {category.style.display = 'none'})
+        document.getElementById('go-back-button').style.display = 'block'
+        document.getElementById('back-to-menu-button').style.display = 'none'
+        }
+
 
     /*Öppna subcategories */
     openSubcategories = (categoryId, categoryName) => {
@@ -228,14 +243,7 @@ console.log("OpenOrCloseMenu")
     onBackToMenu = (event) => {
         event.preventDefault()
         console.log("On back to menu")
-       document.getElementById('dropdown-product-link').style.display = 'block'; 
-        document.querySelectorAll('.parent-button').forEach(button => {
-            button.style.display = "inline"
-        })
-        document.querySelectorAll('.category').forEach(category => {category.style.display = 'none'})
-        document.getElementById('go-back-button').style.display = 'block'
-        document.getElementById('back-to-menu-button').style.display = 'none'
-
+        resetMenu()
     }
 
 </script>
