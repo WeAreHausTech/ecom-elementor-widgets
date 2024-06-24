@@ -81,6 +81,7 @@
 <script>
     //TODO move to separate external file
     showMore = (buttonElement) => {
+        console.log("Show more")
         const buttonId = buttonElement.id;
         const id = buttonId.split('-')[2];
         document.querySelectorAll(`[data-parent="${id}"]`).forEach((element) => {
@@ -90,6 +91,7 @@
         document.getElementById(buttonId).style.display = 'none'
     }
     closeProductModal = () => {
+        console.log("close Product modal")
         const dropdown = document.getElementById('dropdown')
         const dropdownMenu = document.getElementById('dropdown-menu');
         const dropdownContent = document.getElementById('dropdown-content');
@@ -107,40 +109,37 @@
         }
     }
     closeMobileMenuModal = () => {
+        console.log("close mobile menu modal")
+
         const mobileMenu = document.getElementById('header-content');
         if (mobileMenu.classList.contains('active')) {
             mobileMenu.classList.remove('active');
         }
     }
     onOpenModal = () => {
+        console.log("onopenmodal")
         document.getElementById('header-content').classList.toggle('active')
+        console.log("onOpenmodal")
 
     }
     onCloseModal = () => {
+        console.log("oncloseModal")
         document.getElementById('header-content').classList.toggle('active')
+        console.log("onClosemodal")
     }
 
     onGoBackButton = () => {
-
-        const backButton = document.getElementById('go-back-button')
-
-        if(backButton.classList.contains('back-to-menu')) {
-        console.log("clicking back to menu button")
-        document.getElementById('dropdown-product-link').style.display = 'block'; 
-        document.querySelectorAll('.parent-button').forEach(button => {
-            button.style.display = "inline"
-        })
-        document.querySelectorAll('.category').forEach(category => {category.style.display = 'none'})
-        } else
-            {   
+        console.log("ongobackbutton")
+            
         document.getElementById('dropdown-menu').classList.remove('active-dropdown');
         document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
         document.getElementById('dropdown').classList.remove('active-dropdown');
         document.getElementById('header-content').classList.add('active')
-    }
+    
     }
 
     closeMenu = (e) => {
+        console.log("close menu")
         document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
         setTimeout(() => {
             document.getElementById('dropdown-menu').classList.remove('active-dropdown-menu');
@@ -149,13 +148,16 @@
     }
 
     openOrCloseMenu = (e) => {
+        console.log("openorclosemenu")
         e.preventDefault();
         const isOpen = document.getElementById('dropdown').classList.contains('active-dropdown')
-
+console.log("OpenOrCloseMenu")
         if (isOpen) {
+            console.log("Closing menu")
             closeMenu()
             closeMobileMenuModal();
         } else {
+            console.log("Opening menu")
             document.getElementById('dropdown').classList.add('active-dropdown')
             document.getElementById('dropdown-menu').classList.add('active-dropdown-menu')
 
@@ -166,6 +168,7 @@
     }
 
     updateDeviceType = () => {
+        console.log("Update devide type")
         if (Array.isArray(productMenuIds)) {
             productMenuIds.forEach((productMenuId) => {
                 const menuItemProducts = document.querySelectorAll('#menu-item-' + productMenuId);
@@ -188,10 +191,12 @@
     const dropdown = document.getElementById('dropdown');
 
     document.body.addEventListener('click', (event) => {
+      
         const targetId = event.target.id;
+        console.log("Target id;",targetId)
 
         if (dropdown.classList.contains('active-dropdown')) {
-            if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId.startsWith('menu-item-') || targetId.startsWith('see-more-')) {
+            if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId === 'back-to-menu-button' || targetId === 'back-to-menu-placeholder' ||  targetId.startsWith('menu-item-') || targetId.startsWith('see-more-')) {
                 return;
             } else {
                 closeMenu();
@@ -215,23 +220,23 @@
         document.getElementById(`category-${categoryId}`).style.display = 'flex';
       
 
-        // document.getElementById('go-back-button').style.display = 'none'
-        // document.getElementById('go-back-button').innerHTML = `${categoryName}`
-        const goBackButton = document.getElementById('go-back-button');
-    goBackButton.innerHTML = `${categoryName}`;
-    goBackButton.classList.add('back-to-menu');
+        document.getElementById('go-back-button').style.display = 'none'
+        document.getElementById('back-to-menu-button').style.display = 'block'
+         document.getElementById('back-to-menu-placeholder').textContent = `${categoryName}`
     }
 
-    // onBackToMenu = () => {
-    //     document.getElementById('dropdown-product-link').style.display = 'block'; 
-    //     document.querySelectorAll('.parent-button').forEach(button => {
-    //         button.style.display = "inline"
-    //     })
-    //     document.querySelectorAll('.category').forEach(category => {category.style.display = 'none'})
-    //     document.getElementById('go-back-button').style.display = 'block'
-    //     document.getElementById('back-to-menu-button').style.display = 'none'
+    onBackToMenu = (event) => {
+        event.preventDefault()
+        console.log("On back to menu")
+       document.getElementById('dropdown-product-link').style.display = 'block'; 
+        document.querySelectorAll('.parent-button').forEach(button => {
+            button.style.display = "inline"
+        })
+        document.querySelectorAll('.category').forEach(category => {category.style.display = 'none'})
+        document.getElementById('go-back-button').style.display = 'block'
+        document.getElementById('back-to-menu-button').style.display = 'none'
 
-    // }
+    }
 
 </script>
 
