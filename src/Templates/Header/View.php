@@ -121,10 +121,23 @@
     }
 
     onGoBackButton = () => {
+
+        const backButton = document.getElementById('go-back-button')
+
+        if(backButton.classList.contains('back-to-menu')) {
+        console.log("clicking back to menu button")
+        document.getElementById('dropdown-product-link').style.display = 'block'; 
+        document.querySelectorAll('.parent-button').forEach(button => {
+            button.style.display = "inline"
+        })
+        document.querySelectorAll('.category').forEach(category => {category.style.display = 'none'})
+        } else
+            {   
         document.getElementById('dropdown-menu').classList.remove('active-dropdown');
         document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
         document.getElementById('dropdown').classList.remove('active-dropdown');
         document.getElementById('header-content').classList.add('active')
+    }
     }
 
     closeMenu = (e) => {
@@ -195,27 +208,30 @@
 
     /*Öppna subcategories */
     openSubcategories = (categoryId, categoryName) => {
-
-        // document.getElementById('main-categories').style.display = 'none'; 
-        // document.getElementById('main-taxonomies').style.display = 'none';
         document.getElementById('dropdown-product-link').style.display = 'none'; 
-        document.getElementById(`category-${categoryId}`).style.display = 'flex';
         document.querySelectorAll('.parent-button').forEach(button => {
             button.style.display = "none"
         })
+        document.getElementById(`category-${categoryId}`).style.display = 'flex';
+      
 
-        document.getElementById('go-back-button').style.display = 'none'
-        document.getElementById('back-to-menu-button').innerHTML = `${categoryName}`
+        // document.getElementById('go-back-button').style.display = 'none'
+        // document.getElementById('go-back-button').innerHTML = `${categoryName}`
+        const goBackButton = document.getElementById('go-back-button');
+    goBackButton.innerHTML = `${categoryName}`;
+    goBackButton.classList.add('back-to-menu');
     }
 
-    onBackToMenu = () => {
-        document.getElementById('dropdown-product-link').style.display = 'block'; 
-        document.querySelectorAll('.parent-button').forEach(button => {
-            button.style.display = "inline"
-        })
-        document.getElementById(`category-${categoryId}`).style.display = 'none';
+    // onBackToMenu = () => {
+    //     document.getElementById('dropdown-product-link').style.display = 'block'; 
+    //     document.querySelectorAll('.parent-button').forEach(button => {
+    //         button.style.display = "inline"
+    //     })
+    //     document.querySelectorAll('.category').forEach(category => {category.style.display = 'none'})
+    //     document.getElementById('go-back-button').style.display = 'block'
+    //     document.getElementById('back-to-menu-button').style.display = 'none'
 
-    }
+    // }
 
 </script>
 
