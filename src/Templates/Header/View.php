@@ -167,13 +167,13 @@
             //När modalen öppnas återställs menyn. Men vill bara göra det i mobilt och inte i desktop: 
             const isMobile = window.innerWidth <= 768;
                 if(isMobile) {
-                    // resetMobileDropdown()
+                     resetMobileDropdown()
                 }
         }
     }
 
     updateDeviceType = () => {
-        console.log("Update devide type")
+        console.log("Update device type")
         if (Array.isArray(productMenuIds)) {
             productMenuIds.forEach((productMenuId) => {
                 const menuItemProducts = document.querySelectorAll('#menu-item-' + productMenuId);
@@ -218,22 +218,38 @@
     });
 
     //Avfyras när man klickar på OnBackToMenu och 
-    // const resetMobileDropdown = () => {
-    //    document.getElementById('dropdown-product-link').style.display = 'block'; 
-    //     document.querySelectorAll('.parent-button').forEach(button => {
-    //         button.style.display = "inline"
-    //     })
-    //     document.querySelectorAll('[id^="parent-"]').forEach(element => {element.style.display = 'inline'})
-    //     document.querySelectorAll('.category').forEach(category => {category.style.display = 'none'})
-    //     document.getElementById('go-back-button').style.display = 'block'
-    //     document.getElementById('back-to-menu-button').style.display = 'none'
+    const resetMobileDropdown = () => {
+        console.log("RESETTING MOBILE DROPDOWN")
+       document.getElementById('dropdown-product-link').style.display = 'block'; 
+       document.querySelectorAll('[id^="parent-"]').forEach(element => {
+            element.style.display = 'flex';
+    });
+    document.querySelectorAll('.category').forEach(category => {
+        category.style.display = 'none';
+    });
 
-    //     document.getElementById('dropdown-discover').style.display = "none"
-    //     }
+    document.querySelectorAll('.department-list').forEach(department => {
+        department.style.display = 'none';
+    });
+
+    document.querySelectorAll('.parent-button').forEach(button => {
+        button.style.display = 'inline';
+    });
+    
+    document.querySelectorAll('.explore-categories').forEach(element => {
+        element.style.display = 'none';
+    });
+
+    document.getElementById('go-back-button').style.display = 'block'
+    document.getElementById('back-to-menu-button').style.display = 'none'
+   
+        }
 
     // const resetDesktopDropdown = () => {
     //     console.log("ResetDesktopMenu")
-    //     document.querySelectorAll('.category').forEach(category => {category.style.display = 'flex'})
+    //     document.querySelectorAll('.parent-button').forEach(button => {
+    //     button.style.display = 'none';
+    // });
     // }
 
   
@@ -247,6 +263,7 @@
             element.style.display = 'none';
         }
     });
+
     const categoryElement = document.getElementById(`category-${categoryId}`);
     const categoryButton = document.getElementById(`category-button-${categoryId}`);
     if (categoryElement && categoryButton) {
@@ -254,13 +271,27 @@
         categoryButton.style.display = 'none'
     }
 
-    const departmentElement = document.getElementById(`department-${categoryId}`);
+    const departmentElement = document.getElementById(`department-list-${categoryId}`);
     const departmentButton = document.getElementById(`department-button-${categoryId}`)
     if (departmentElement && departmentButton) {
         departmentElement.style.display = 'flex';
         departmentButton.style.display = 'none'
     }
 
+    const desktopLink = document.getElementById(`desktop-link-${categoryId}`)
+    let link = ''
+    if (desktopLink) {
+        link = desktopLink.getAttribute('href')
+    }
+
+    if (link) {
+        const exploreContainer =  document.querySelector('.explore-categories')
+        const exploreLink = document.querySelector('.explore-link')
+        exploreLink.setAttribute('href', link)
+        exploreLink.textContent = `Utforska ${categoryName}`
+        exploreContainer.style.display = 'block'
+        
+    }
     document.getElementById('go-back-button').style.display = 'none'
     document.getElementById('back-to-menu-button').style.display = 'block'
     document.getElementById('back-to-menu-placeholder').textContent = `${categoryName}`
@@ -269,7 +300,7 @@
     //Avfyras när man klickar på ex "Kosmetika"
     onBackToMenu = () => {
         console.log("On back to menu")
-        // resetMobileDropdown()
+        resetMobileDropdown()
     }
 
 </script>

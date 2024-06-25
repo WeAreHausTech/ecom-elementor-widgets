@@ -25,14 +25,19 @@
                                 fill="#3E4849" />
                         </svg>
                     </button>
-                </div>
             </div>
+            </div>
+
+            <div class="explore-categories" style="display: none">
+            <a class="explore-link" href="#" >Utforska</a>
+            </div>
+
             <div class="dropdown-categories">
                 <ul class="categories">
                     <?php if ($categories) { ?>
                         <?php foreach ($categories as $mainCategory) { ?>
                             <li class="parent" id="parent-<?= $mainCategory['data']['term_id'] ?>">
-                                <a class="parent-link desktop" href="<?= $mainCategory['data']['slug'] ?>/">
+                                <a class="parent-link desktop" id="desktop-link-<?= $mainCategory['data']['term_id'] ?>" href="<?= $mainCategory['data']['slug'] ?>/">
                                     <?= $mainCategory['data']['name'] ?>
                                 </a>
                                 <button class="parent-link parent-button mobile" id="category-button-<?= $mainCategory['data']['term_id'] ?>"onClick="openSubcategories(<?= $mainCategory['data']['term_id'] ?>, '<?= addSlashes($mainCategory['data']['name']) ?>')">  
@@ -72,13 +77,13 @@
             <div class="dropdown-type">
                 <?php foreach ($taxonomies as $taxonomy) { ?>
                     <div class="department" id="parent-<?= $taxonomy['class'] ?>">
-                            <a class="dropdown-a desktop" href="<?= $taxonomy['heading-link'] ?>">
+                            <a class="dropdown-a desktop" id="desktop-link-<?= $taxonomy['class'] ?>" href="<?= $taxonomy['heading-link'] ?>" >
                                 <?= $taxonomy['heading'] ?>
                             </a>
                             <button class="dropdown-a parent-button mobile" id="department-button-<?= $taxonomy['class'] ?>"onClick="openSubcategories('<?= $taxonomy['class'] ?>', '<?= $taxonomy['heading'] ?>')">  
                             <?= $taxonomy['heading'] ?>
                           </button>
-                        <ul id="department-<?= $taxonomy['class'] ?>">
+                        <ul class="department-list" id="department-list-<?= $taxonomy['class'] ?>">
                             <?php foreach ($taxonomy['data'] as $index => $value) { ?>
                                 <?php $value = $value['data'] ?>
                                 <li class="child-link" data-parent="<?= $taxonomy['class'] ?>" class="child"
