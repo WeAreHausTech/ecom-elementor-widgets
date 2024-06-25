@@ -167,7 +167,7 @@
             //När modalen öppnas återställs menyn. Men vill bara göra det i mobilt och inte i desktop: 
             const isMobile = window.innerWidth <= 768;
                 if(isMobile) {
-                    resetMenu()
+                    // resetMobileDropdown()
                 }
         }
     }
@@ -182,8 +182,10 @@
                     if (isMobile) {
                         menuItemProduct.addEventListener('click', openOrCloseMenu);
                         menuItemProduct.removeEventListener('mouseover', openOrCloseMenu);
+                        // resetMenu()
                     } else {
                         menuItemProduct.addEventListener('click', openOrCloseMenu);
+                        // resetDesktopDropdown()
                     }
                 });
             });
@@ -201,7 +203,7 @@
         console.log("Target id;",targetId)
 
         if (dropdown.classList.contains('active-dropdown')) {
-            if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId === 'back-to-menu-button' || targetId === 'back-to-menu-placeholder' ||  targetId.startsWith('menu-item-') || targetId.startsWith('see-more-')) {
+            if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId === 'back-to-menu-button' || targetId === 'back-to-menu-placeholder' ||  targetId.startsWith('menu-item-') ||  targetId.startsWith('category-button-') ||  targetId.startsWith('department-button-') || targetId.startsWith('see-more-')) {
                 return;
             } else {
                 closeMenu();
@@ -216,44 +218,58 @@
     });
 
     //Avfyras när man klickar på OnBackToMenu och 
-    const resetMenu = () => {
-       document.getElementById('dropdown-product-link').style.display = 'block'; 
-        document.querySelectorAll('.parent-button').forEach(button => {
-            button.style.display = "inline"
-        })
-        document.querySelectorAll('.category').forEach(category => {category.style.display = 'none'})
-        document.getElementById('go-back-button').style.display = 'block'
-        document.getElementById('back-to-menu-button').style.display = 'none'
+    // const resetMobileDropdown = () => {
+    //    document.getElementById('dropdown-product-link').style.display = 'block'; 
+    //     document.querySelectorAll('.parent-button').forEach(button => {
+    //         button.style.display = "inline"
+    //     })
+    //     document.querySelectorAll('[id^="parent-"]').forEach(element => {element.style.display = 'inline'})
+    //     document.querySelectorAll('.category').forEach(category => {category.style.display = 'none'})
+    //     document.getElementById('go-back-button').style.display = 'block'
+    //     document.getElementById('back-to-menu-button').style.display = 'none'
 
-        document.getElementById('dropdown-discover').style.display = "none"
-        }
+    //     document.getElementById('dropdown-discover').style.display = "none"
+    //     }
 
+    // const resetDesktopDropdown = () => {
+    //     console.log("ResetDesktopMenu")
+    //     document.querySelectorAll('.category').forEach(category => {category.style.display = 'flex'})
+    // }
+
+  
 
     /*Öppna subcategories */
     openSubcategories = (categoryId, categoryName) => {
-        // document.getElementById('discover-placeholder').textContent = `${categoryName}`
-        document.getElementById('dropdown-product-link').style.display = 'none'; 
-        document.querySelectorAll('[id^="parent-"]').forEach(element => {
+        console.log(categoryId, categoryName)
+    document.getElementById('dropdown-product-link').style.display = 'none'; 
+    document.querySelectorAll('[id^="parent-"]').forEach(element => {
         if (element.id !== `parent-${categoryId}`) {
             element.style.display = 'none';
         }
     });
-        document.querySelectorAll('.parent-button').forEach(button => {
-            button.style.display = "none"
-        })
-        document.getElementById(`category-${categoryId}`).style.display = 'flex';
-      
+    const categoryElement = document.getElementById(`category-${categoryId}`);
+    const categoryButton = document.getElementById(`category-button-${categoryId}`);
+    if (categoryElement && categoryButton) {
+        categoryElement.style.display = 'flex';
+        categoryButton.style.display = 'none'
+    }
 
-        document.getElementById('go-back-button').style.display = 'none'
-        document.getElementById('back-to-menu-button').style.display = 'block'
-         document.getElementById('back-to-menu-placeholder').textContent = `${categoryName}`
+    const departmentElement = document.getElementById(`department-${categoryId}`);
+    const departmentButton = document.getElementById(`department-button-${categoryId}`)
+    if (departmentElement && departmentButton) {
+        departmentElement.style.display = 'flex';
+        departmentButton.style.display = 'none'
+    }
+
+    document.getElementById('go-back-button').style.display = 'none'
+    document.getElementById('back-to-menu-button').style.display = 'block'
+    document.getElementById('back-to-menu-placeholder').textContent = `${categoryName}`
     }
 
     //Avfyras när man klickar på ex "Kosmetika"
-    onBackToMenu = (event) => {
-        event.preventDefault()
+    onBackToMenu = () => {
         console.log("On back to menu")
-        resetMenu()
+        // resetMobileDropdown()
     }
 
 </script>
@@ -270,6 +286,9 @@
         display: none; 
     }
 
+    #back-to-menu-button {
+        display: none; 
+    }
     }
 
     /*VISA OCH DÖLJA LÄNKAR/KNAPPAR  */
