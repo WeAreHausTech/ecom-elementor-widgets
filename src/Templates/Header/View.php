@@ -109,71 +109,68 @@
         }
     }
     closeMobileMenuModal = () => {
-        console.log("close mobile menu modal")
-
         const mobileMenu = document.getElementById('header-content');
         if (mobileMenu.classList.contains('active')) {
             mobileMenu.classList.remove('active');
         }
+        // resetMobileDropdown()
     }
     onOpenModal = () => {
-        console.log("onopenmodal")
         document.getElementById('header-content').classList.toggle('active')
-        console.log("onOpenmodal")
 
     }
     onCloseModal = () => {
-        console.log("oncloseModal")
         document.getElementById('header-content').classList.toggle('active')
-        console.log("onClosemodal")
     }
 
     onGoBackButton = () => {
-        console.log("ongobackbutton")
-            
         document.getElementById('dropdown-menu').classList.remove('active-dropdown');
         document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
         document.getElementById('dropdown').classList.remove('active-dropdown');
         document.getElementById('header-content').classList.add('active')
-    
+
     }
 
     closeMenu = (e) => {
-        console.log("close menu")
         document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
         setTimeout(() => {
             document.getElementById('dropdown-menu').classList.remove('active-dropdown-menu');
             document.getElementById('dropdown').classList.remove('active-dropdown');
         }, 400);
+        
     }
 
     openOrCloseMenu = (e) => {
-        console.log("openorclosemenu")
+        console.log(window.innerWidth)
+        console.log("Open Menuuuu")
         e.preventDefault();
         const isOpen = document.getElementById('dropdown').classList.contains('active-dropdown')
-        console.log("OpenOrCloseMenu")
         if (isOpen) {
-            console.log("Closing menu")
             closeMenu()
             closeMobileMenuModal();
         } else {
-            console.log("Opening menu")
             document.getElementById('dropdown').classList.add('active-dropdown')
             document.getElementById('dropdown-menu').classList.add('active-dropdown-menu')
 
             setTimeout(() => {
                 document.getElementById('dropdown-content').classList.add('active-dropdown-content')
             }, 50);
-            //När modalen öppnas återställs menyn. Men vill bara göra det i mobilt och inte i desktop: 
-            const isMobile = window.innerWidth <= 768;
-                if(isMobile) {
-                     resetMobileDropdown()
-                }
+
+            // resetMobileDropdown()
+            // resetDesktopDropdown()
+            
+
+
+            // När modalen öppnas återställs menyn. Men vill bara göra det i mobilt och inte i desktop:
+            // const isMobile = window.innerWidth <= 983;
+            //     if(isMobile) {
+            //          resetMobileDropdown()
+            //     }
+
         }
     }
 
     updateDeviceType = () => {
-        console.log("Update device type")
         if (Array.isArray(productMenuIds)) {
             productMenuIds.forEach((productMenuId) => {
                 const menuItemProducts = document.querySelectorAll('#menu-item-' + productMenuId);
@@ -182,10 +179,8 @@
                     if (isMobile) {
                         menuItemProduct.addEventListener('click', openOrCloseMenu);
                         menuItemProduct.removeEventListener('mouseover', openOrCloseMenu);
-                        // resetMenu()
                     } else {
                         menuItemProduct.addEventListener('click', openOrCloseMenu);
-                        // resetDesktopDropdown()
                     }
                 });
             });
@@ -194,11 +189,13 @@
 
     updateDeviceType();
     window.addEventListener('resize', updateDeviceType);
+    window.addEventListener('resize', closeMenu)
+    window.addEventListener('resize', closeMobileMenuModal )
 
     const dropdown = document.getElementById('dropdown');
 
     document.body.addEventListener('click', (event) => {
-      
+
         const targetId = event.target.id;
         console.log("Target id;",targetId)
 
@@ -217,13 +214,21 @@
         closeProductModal();
     });
 
-    //Avfyras när man klickar på OnBackToMenu och 
+    //Avfyras när man klickar på OnBackToMenu och
     const resetMobileDropdown = () => {
         console.log("RESETTING MOBILE DROPDOWN")
-       document.getElementById('dropdown-product-link').style.display = 'block'; 
+       document.getElementById('dropdown-product-link').style.display = 'block';
        document.querySelectorAll('[id^="parent-"]').forEach(element => {
             element.style.display = 'flex';
     });
+
+    document.querySelectorAll('.parent').forEach(element => {
+        element.style.flexDirection = 'row'})
+
+    document.querySelectorAll('.department').forEach(element => {
+    element.style.flexDirection = 'row';
+    });
+
     document.querySelectorAll('.category').forEach(category => {
         category.style.display = 'none';
     });
@@ -235,29 +240,50 @@
     document.querySelectorAll('.parent-button').forEach(button => {
         button.style.display = 'inline';
     });
-    
+
     document.querySelectorAll('.explore-categories').forEach(element => {
         element.style.display = 'none';
     });
 
     document.getElementById('go-back-button').style.display = 'block'
     document.getElementById('back-to-menu-button').style.display = 'none'
-   
+
         }
 
-    // const resetDesktopDropdown = () => {
-    //     console.log("ResetDesktopMenu")
-    //     document.querySelectorAll('.parent-button').forEach(button => {
-    //     button.style.display = 'none';
-    // });
-    // }
+    const resetDesktopDropdown = () => {
+        console.log("RESETTING DESKTOP DROPDOWN")
 
-  
+        document.querySelectorAll('.parent-button').forEach(button => {
+        button.style.display = 'none';
+        });
+
+        document.getElementById('go-back-button').style.display = 'none'
+
+        document.querySelectorAll('.category').forEach(category => {
+        category.style.display = 'flex';
+        });
+
+        document.querySelectorAll('.parent').forEach(element => {
+        element.style.flexDirection = 'column';
+        });
+
+        document.querySelectorAll('.department-list').forEach(category => {
+        category.style.display = 'flex';
+        });
+
+        document.querySelectorAll('.department').forEach(element => {
+        element.style.flexDirection = 'column';
+        });
+
+        document.getElementById('dropdown-product-link').style.display = 'none';
+    }
+
+
 
     /*Öppna subcategories */
     openSubcategories = (categoryId, categoryName) => {
         console.log(categoryId, categoryName)
-    document.getElementById('dropdown-product-link').style.display = 'none'; 
+    document.getElementById('dropdown-product-link').style.display = 'none';
     document.querySelectorAll('[id^="parent-"]').forEach(element => {
         if (element.id !== `parent-${categoryId}`) {
             element.style.display = 'none';
@@ -290,7 +316,7 @@
         exploreLink.setAttribute('href', link)
         exploreLink.textContent = `Utforska ${categoryName}`
         exploreContainer.style.display = 'block'
-        
+
     }
     document.getElementById('go-back-button').style.display = 'none'
     document.getElementById('back-to-menu-button').style.display = 'block'
@@ -310,38 +336,38 @@
  /*VISA OCH DÖLJA SUBCATEGORIES  */
 @media only screen and (max-width: 983px) {
     .dropdown-menu .dropdown-content .category {
-        display: none; 
+        display: none;
     }
 
     .dropdown-menu .dropdown-content .department ul  {
-        display: none; 
+        display: none;
     }
 
     #back-to-menu-button {
-        display: none; 
+        display: none;
     }
     }
 
     /*VISA OCH DÖLJA LÄNKAR/KNAPPAR  */
     .parent-button.mobile {
-        display:none; 
+        display:none;
     }
 
     @media screen and (max-width: 983px) {
         .parent-link.desktop {
-            display: none; 
+            display: none;
         }
 
         .dropdown-a.desktop {
-            display: none; 
+            display: none;
         }
 
         .parent-button.mobile {
-            display: inline; 
+            display: inline;
         }
     }
 
-    
+
     :root {
         --header-height: 84px;
     }
