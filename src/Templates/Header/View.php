@@ -133,6 +133,10 @@
         setTimeout(() => {
             document.getElementById('dropdown-menu').classList.remove('active-dropdown-menu');
             document.getElementById('dropdown').classList.remove('active-dropdown');
+
+            if (document.getElementById('header-content').classList.contains('active')) {
+            onCloseModal();
+            }
         }, 400);
         
     }
@@ -205,8 +209,7 @@
 
     //Avfyras när man klickar på OnBackToMenu och
     const resetMobileDropdown = () => {
-        console.log("RESETTING MOBILE DROPDOWN")
-       document.getElementById('dropdown-product-link').style.display = 'block';
+       document.querySelector('.dropdown-product-link').style.display = 'block';
        document.querySelectorAll('[id^="parent-"]').forEach(element => {
             element.style.display = 'flex';
     });
@@ -230,6 +233,14 @@
         button.style.display = 'inline';
     });
 
+    document.querySelectorAll('.parent-link.desktop').forEach(button => {
+        button.style.display = 'none';
+    });
+
+    document.querySelectorAll('.dropdown-a.desktop').forEach(button => {
+        button.style.display = 'none';
+    });
+
     document.querySelectorAll('.explore-categories').forEach(element => {
         element.style.display = 'none';
     });
@@ -240,11 +251,17 @@
         }
 
     const resetDesktopDropdown = () => {
-        console.log("RESETTING DESKTOP DROPDOWN")
-
         document.querySelectorAll('.parent-button').forEach(button => {
         button.style.display = 'none';
         });
+
+        document.querySelectorAll('.parent-link.desktop').forEach(button => {
+        button.style.display = 'block';
+        });
+
+        document.querySelectorAll('.dropdown-a.desktop').forEach(button => {
+        button.style.display = 'block';
+    });
 
         document.getElementById('go-back-button').style.display = 'none'
 
@@ -264,7 +281,7 @@
         element.style.flexDirection = 'column';
         });
 
-        document.getElementById('dropdown-product-link').style.display = 'none';
+        document.querySelector('.dropdown-product-link').style.display = 'none';
     }
 
 
@@ -321,42 +338,6 @@
 </script>
 
 <style>
-
- /*VISA OCH DÖLJA SUBCATEGORIES  */
-@media only screen and (max-width: 983px) {
-    .dropdown-menu .dropdown-content .category {
-        display: none;
-    }
-
-    .dropdown-menu .dropdown-content .department ul  {
-        display: none;
-    }
-
-    #back-to-menu-button {
-        display: none;
-    }
-    }
-
-    /*VISA OCH DÖLJA LÄNKAR/KNAPPAR  */
-    .parent-button.mobile {
-        display:none;
-    }
-
-    @media screen and (max-width: 983px) {
-        .parent-link.desktop {
-            display: none;
-        }
-
-        .dropdown-a.desktop {
-            display: none;
-        }
-
-        .parent-button.mobile {
-            display: inline;
-        }
-    }
-
-
     :root {
         --header-height: 84px;
     }
