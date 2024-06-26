@@ -156,19 +156,28 @@
                 document.getElementById('dropdown-content').classList.add('active-dropdown-content')
             }, 50);
 
-            // resetMobileDropdown()
-            // resetDesktopDropdown()
-            
-
-
-            // När modalen öppnas återställs menyn. Men vill bara göra det i mobilt och inte i desktop:
-            // const isMobile = window.innerWidth <= 983;
-            //     if(isMobile) {
-            //          resetMobileDropdown()
-            //     }
-
+            const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+        resetMobileDropdown();
+    } else {
+        resetMobileDropdown();
+        resetDesktopDropdown();
+    }
         }
     }
+
+    // openOrCloseMobileMenu = (e) => {
+    //     e.preventDefault()
+    //     openOrCloseMenu(e)
+    //     resetMobileDropdown()
+    // }
+
+    // openOrCloseDesktopMenu = (e) => {
+    //     e.preventDefault()
+    //     openOrCloseMenu(e)
+    //     resetMobileDropdown()
+    //     resetDesktopDropdown()
+    // }
 
     updateDeviceType = () => {
         if (Array.isArray(productMenuIds)) {
@@ -177,10 +186,9 @@
                 menuItemProducts.forEach((menuItemProduct) => {
                     const isMobile = window.innerWidth <= 768;
                     if (isMobile) {
-                        menuItemProduct.addEventListener('click', openOrCloseMenu);
-                        menuItemProduct.removeEventListener('mouseover', openOrCloseMenu);
+                        menuItemProduct.addEventListener('click', openOrCloseMenu );
                     } else {
-                        menuItemProduct.addEventListener('click', openOrCloseMenu);
+                        menuItemProduct.addEventListener('click', openOrCloseMenu );
                     }
                 });
             });
