@@ -81,7 +81,6 @@
 <script>
     //TODO move to separate external file
     showMore = (buttonElement) => {
-        console.log("Show more")
         const buttonId = buttonElement.id;
         const id = buttonId.split('-')[2];
         document.querySelectorAll(`[data-parent="${id}"]`).forEach((element) => {
@@ -91,7 +90,6 @@
         document.getElementById(buttonId).style.display = 'none'
     }
     closeProductModal = () => {
-        console.log("close Product modal")
         const dropdown = document.getElementById('dropdown')
         const dropdownMenu = document.getElementById('dropdown-menu');
         const dropdownContent = document.getElementById('dropdown-content');
@@ -113,7 +111,6 @@
         if (mobileMenu.classList.contains('active')) {
             mobileMenu.classList.remove('active');
         }
-        // resetMobileDropdown()
     }
     onOpenModal = () => {
         document.getElementById('header-content').classList.toggle('active')
@@ -156,40 +153,24 @@
                 document.getElementById('dropdown-content').classList.add('active-dropdown-content')
             }, 50);
 
-            const isMobile = window.innerWidth <= 768;
-    if (isMobile) {
-        resetMobileDropdown();
-    } else {
-        resetMobileDropdown();
-        resetDesktopDropdown();
-    }
+
+            const header = document.querySelector('.header')
+            const isMobile = header.offsetWidth <= 983;
+            if (isMobile) {
+                resetMobileDropdown();
+            } else {
+                resetMobileDropdown();
+                resetDesktopDropdown();
+            }
         }
     }
-
-    // openOrCloseMobileMenu = (e) => {
-    //     e.preventDefault()
-    //     openOrCloseMenu(e)
-    //     resetMobileDropdown()
-    // }
-
-    // openOrCloseDesktopMenu = (e) => {
-    //     e.preventDefault()
-    //     openOrCloseMenu(e)
-    //     resetMobileDropdown()
-    //     resetDesktopDropdown()
-    // }
 
     updateDeviceType = () => {
         if (Array.isArray(productMenuIds)) {
             productMenuIds.forEach((productMenuId) => {
                 const menuItemProducts = document.querySelectorAll('#menu-item-' + productMenuId);
                 menuItemProducts.forEach((menuItemProduct) => {
-                    const isMobile = window.innerWidth <= 768;
-                    if (isMobile) {
-                        menuItemProduct.addEventListener('click', openOrCloseMenu );
-                    } else {
-                        menuItemProduct.addEventListener('click', openOrCloseMenu );
-                    }
+                    menuItemProduct.addEventListener('click', openOrCloseMenu );
                 });
             });
         }
