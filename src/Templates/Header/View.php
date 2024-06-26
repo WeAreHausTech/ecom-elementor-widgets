@@ -80,143 +80,15 @@
 
 <script>
     //TODO move to separate external file
-    showMore = (buttonElement) => {
-        const buttonId = buttonElement.id;
-        const id = buttonId.split('-')[2];
-        document.querySelectorAll(`[data-parent="${id}"]`).forEach((element) => {
-            element.style.display = 'block'
-        })
 
-        document.getElementById(buttonId).style.display = 'none'
-    }
-    closeProductModal = () => {
-        const dropdown = document.getElementById('dropdown')
-        const dropdownMenu = document.getElementById('dropdown-menu');
-        const dropdownContent = document.getElementById('dropdown-content');
-
-        if (dropdown.classList.contains('active-dropdown')) {
-            dropdown.classList.remove('active-dropdown');
-        }
-
-        if (dropdownMenu.classList.contains('active-dropdown-menu')) {
-            dropdownMenu.classList.remove('active-dropdown-menu')
-        }
-
-        if (dropdownContent.classList.contains('active-dropdown-content')) {
-            dropdownContent.classList.remove('active-dropdown-content')
-        }
-    }
-    closeMobileMenuModal = () => {
-        const mobileMenu = document.getElementById('header-content');
-        if (mobileMenu.classList.contains('active')) {
-            mobileMenu.classList.remove('active');
-        }
-    }
-    onOpenModal = () => {
-        document.getElementById('header-content').classList.toggle('active')
-
-    }
-    onCloseModal = () => {
-        document.getElementById('header-content').classList.toggle('active')
-    }
-
-    onGoBackButton = () => {
-        document.getElementById('dropdown-menu').classList.remove('active-dropdown');
-        document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
-        document.getElementById('dropdown').classList.remove('active-dropdown');
-        document.getElementById('header-content').classList.add('active')
-
-    }
-
-    closeMenu = (e) => {
-        document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
-        setTimeout(() => {
-            document.getElementById('dropdown-menu').classList.remove('active-dropdown-menu');
-            document.getElementById('dropdown').classList.remove('active-dropdown');
-
-            if (document.getElementById('header-content').classList.contains('active')) {
-            onCloseModal();
-            }
-        }, 400);
-        
-    }
-
-    openOrCloseMenu = (e) => {
-        e.preventDefault();
-        const isOpen = document.getElementById('dropdown').classList.contains('active-dropdown')
-        if (isOpen) {
-            closeMenu()
-            closeMobileMenuModal();
-        } else {
-            document.getElementById('dropdown').classList.add('active-dropdown')
-            document.getElementById('dropdown-menu').classList.add('active-dropdown-menu')
-
-            setTimeout(() => {
-                document.getElementById('dropdown-content').classList.add('active-dropdown-content')
-            }, 50);
-
-            const header = document.querySelector('.header')
-            const isMobile = header.offsetWidth <= 983;
-            if (isMobile) {
-                resetMobileDropdown();
-            } else {
-                resetMobileDropdown();
-                resetDesktopDropdown();
-            }
-        }
-    }
-
-    updateDeviceType = () => {
-        if (Array.isArray(productMenuIds)) {
-            productMenuIds.forEach((productMenuId) => {
-                const menuItemProducts = document.querySelectorAll('#menu-item-' + productMenuId);
-                menuItemProducts.forEach((menuItemProduct) => {
-                    menuItemProduct.addEventListener('click', openOrCloseMenu );
-                });
-            });
-        }
-    }
-
-    updateDeviceType()
-
-    const handleResize = () => {
-        updateDeviceType()
-        closeMenu()
-        closeMobileMenuModal()
-     }
-
-    window.addEventListener('resize', handleResize)
-
-    const dropdown = document.getElementById('dropdown');
-
-    document.body.addEventListener('click', (event) => {
-
-        const targetId = event.target.id;
-        console.log("Target id;",targetId)
-
-        if (dropdown.classList.contains('active-dropdown')) {
-            if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId === 'back-to-menu-button' || targetId === 'back-to-menu-placeholder' ||  targetId.startsWith('menu-item-') ||  targetId.startsWith('category-button-') ||  targetId.startsWith('department-button-') || targetId.startsWith('see-more-')) {
-                return;
-            } else {
-                closeMenu();
-            }
-        }
-    })
-
-    const searchElement = document.getElementById('search-widget')
-
-    searchElement.addEventListener('click', function (e) {
-        closeProductModal();
-    });
-
-    // Helper function to set display style for elements by selector
-    const setDisplayStyle = (selector, displayValue) => {
+     // Function to set display style for elements
+     const setDisplayStyle = (selector, displayValue) => {
     document.querySelectorAll(selector).forEach((element) => {
         element.style.display = displayValue
     })
     }
 
-    // Helper function to set flex direction for elements by selector
+    // Function to set flex direction for elements 
     const setFlexDirection = (selector, flexDirection) => {
     document.querySelectorAll(selector).forEach((element) => {
         element.style.flexDirection = flexDirection
@@ -308,11 +180,138 @@
     // Hide the main product link
     document.querySelector('.dropdown-product-link').style.display = 'none'
     }
+    showMore = (buttonElement) => {
+        const buttonId = buttonElement.id;
+        const id = buttonId.split('-')[2];
+        document.querySelectorAll(`[data-parent="${id}"]`).forEach((element) => {
+            element.style.display = 'block'
+        })
+
+        document.getElementById(buttonId).style.display = 'none'
+    }
+    closeProductModal = () => {
+        const dropdown = document.getElementById('dropdown')
+        const dropdownMenu = document.getElementById('dropdown-menu');
+        const dropdownContent = document.getElementById('dropdown-content');
+
+        if (dropdown.classList.contains('active-dropdown')) {
+            dropdown.classList.remove('active-dropdown');
+        }
+
+        if (dropdownMenu.classList.contains('active-dropdown-menu')) {
+            dropdownMenu.classList.remove('active-dropdown-menu')
+        }
+
+        if (dropdownContent.classList.contains('active-dropdown-content')) {
+            dropdownContent.classList.remove('active-dropdown-content')
+        }
+    }
+    closeMobileMenuModal = () => {
+        const mobileMenu = document.getElementById('header-content');
+        if (mobileMenu.classList.contains('active')) {
+            mobileMenu.classList.remove('active');
+        }
+    }
+    onOpenModal = () => {
+        document.getElementById('header-content').classList.toggle('active')
+
+    }
+    onCloseModal = () => {
+        document.getElementById('header-content').classList.toggle('active')
+    }
+
+    onGoBackButton = () => {
+        document.getElementById('dropdown-menu').classList.remove('active-dropdown');
+        document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
+        document.getElementById('dropdown').classList.remove('active-dropdown');
+        document.getElementById('header-content').classList.add('active')
+
+    }
 
     onBackToMenu = () => {
     resetMobileDropdown()
     }
 
+    closeMenu = (e) => {
+        document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
+        setTimeout(() => {
+            document.getElementById('dropdown-menu').classList.remove('active-dropdown-menu');
+            document.getElementById('dropdown').classList.remove('active-dropdown');
+
+            if (document.getElementById('header-content').classList.contains('active')) {
+            onCloseModal();
+            }
+        }, 400);
+        
+    }
+
+    openOrCloseMenu = (e) => {
+        e.preventDefault();
+        const isOpen = document.getElementById('dropdown').classList.contains('active-dropdown')
+
+        if (isOpen) {
+            closeMenu()
+            closeMobileMenuModal();
+        } else {
+            document.getElementById('dropdown').classList.add('active-dropdown')
+            document.getElementById('dropdown-menu').classList.add('active-dropdown-menu')
+
+            setTimeout(() => {
+                document.getElementById('dropdown-content').classList.add('active-dropdown-content')
+            }, 50);
+
+            const header = document.querySelector('.header')
+            const isMobile = header.offsetWidth <= 983;
+            if (isMobile) {
+                resetMobileDropdown();
+            } else {
+                resetMobileDropdown();
+                resetDesktopDropdown();
+            }
+        }
+    }
+
+    updateDeviceType = () => {
+        if (Array.isArray(productMenuIds)) {
+            productMenuIds.forEach((productMenuId) => {
+                const menuItemProducts = document.querySelectorAll('#menu-item-' + productMenuId);
+                menuItemProducts.forEach((menuItemProduct) => {
+                    menuItemProduct.addEventListener('click', openOrCloseMenu );
+                });
+            });
+        }
+    }
+
+    updateDeviceType()
+
+    const handleResize = () => {
+        updateDeviceType()
+        closeMenu()
+        closeMobileMenuModal()
+     }
+
+    window.addEventListener('resize', handleResize)
+
+    const dropdown = document.getElementById('dropdown');
+
+    document.body.addEventListener('click', (event) => {
+
+        const targetId = event.target.id;
+
+        if (dropdown.classList.contains('active-dropdown')) {
+            if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId === 'back-to-menu-button' || targetId === 'back-to-menu-placeholder' ||  targetId.startsWith('menu-item-') ||  targetId.startsWith('category-button-') ||  targetId.startsWith('department-button-') || targetId.startsWith('see-more-')) {
+                return;
+            } else {
+                closeMenu();
+            }
+        }
+    })
+
+    const searchElement = document.getElementById('search-widget')
+
+    searchElement.addEventListener('click', function (e) {
+        closeProductModal();
+    });
 </script>
 
 <style>
