@@ -142,8 +142,6 @@
     }
 
     openOrCloseMenu = (e) => {
-        console.log(window.innerWidth)
-        console.log("Open Menuuuu")
         e.preventDefault();
         const isOpen = document.getElementById('dropdown').classList.contains('active-dropdown')
         if (isOpen) {
@@ -156,7 +154,6 @@
             setTimeout(() => {
                 document.getElementById('dropdown-content').classList.add('active-dropdown-content')
             }, 50);
-
 
             const header = document.querySelector('.header')
             const isMobile = header.offsetWidth <= 983;
@@ -180,10 +177,15 @@
         }
     }
 
-    updateDeviceType();
-    window.addEventListener('resize', updateDeviceType);
-    window.addEventListener('resize', closeMenu)
-    window.addEventListener('resize', closeMobileMenuModal )
+    updateDeviceType()
+
+    const handleResize = () => {
+        updateDeviceType()
+        closeMenu()
+        closeMobileMenuModal()
+     }
+
+    window.addEventListener('resize', handleResize)
 
     const dropdown = document.getElementById('dropdown');
 
@@ -207,109 +209,50 @@
         closeProductModal();
     });
 
-    //Avfyras när man klickar på OnBackToMenu och
-    const resetMobileDropdown = () => {
-       document.querySelector('.dropdown-product-link').style.display = 'block';
-       document.querySelectorAll('[id^="parent-"]').forEach(element => {
-            element.style.display = 'flex';
-    });
-
-    document.querySelectorAll('.parent').forEach(element => {
-        element.style.flexDirection = 'row'})
-
-    document.querySelectorAll('.department').forEach(element => {
-    element.style.flexDirection = 'row';
-    });
-
-    document.querySelectorAll('.category').forEach(category => {
-        category.style.display = 'none';
-    });
-
-    document.querySelectorAll('.department-list').forEach(department => {
-        department.style.display = 'none';
-    });
-
-    document.querySelectorAll('.parent-button').forEach(button => {
-        button.style.display = 'inline';
-    });
-
-    document.querySelectorAll('.parent-link.desktop').forEach(button => {
-        button.style.display = 'none';
-    });
-
-    document.querySelectorAll('.dropdown-a.desktop').forEach(button => {
-        button.style.display = 'none';
-    });
-
-    document.querySelectorAll('.explore-categories').forEach(element => {
-        element.style.display = 'none';
-    });
-
-    document.getElementById('go-back-button').style.display = 'block'
-    document.getElementById('back-to-menu-button').style.display = 'none'
-
-        }
-
-    const resetDesktopDropdown = () => {
-        document.querySelectorAll('.parent-button').forEach(button => {
-        button.style.display = 'none';
-        });
-
-        document.querySelectorAll('.parent-link.desktop').forEach(button => {
-        button.style.display = 'block';
-        });
-
-        document.querySelectorAll('.dropdown-a.desktop').forEach(button => {
-        button.style.display = 'block';
-    });
-
-        document.getElementById('go-back-button').style.display = 'none'
-
-        document.querySelectorAll('.category').forEach(category => {
-        category.style.display = 'flex';
-        });
-
-        document.querySelectorAll('.parent').forEach(element => {
-        element.style.flexDirection = 'column';
-        });
-
-        document.querySelectorAll('.department-list').forEach(category => {
-        category.style.display = 'flex';
-        });
-
-        document.querySelectorAll('.department').forEach(element => {
-        element.style.flexDirection = 'column';
-        });
-
-        document.querySelector('.dropdown-product-link').style.display = 'none';
+    // Helper function to set display style for elements by selector
+    const setDisplayStyle = (selector, displayValue) => {
+    document.querySelectorAll(selector).forEach((element) => {
+        element.style.display = displayValue
+    })
     }
 
+    // Helper function to set flex direction for elements by selector
+    const setFlexDirection = (selector, flexDirection) => {
+    document.querySelectorAll(selector).forEach((element) => {
+        element.style.flexDirection = flexDirection
+    })
+    }
 
-
-    /*Öppna subcategories */
     openSubcategories = (categoryId, categoryName) => {
-        console.log(categoryId, categoryName)
-    document.getElementById('dropdown-product-link').style.display = 'none';
-    document.querySelectorAll('[id^="parent-"]').forEach(element => {
-        if (element.id !== `parent-${categoryId}`) {
-            element.style.display = 'none';
-        }
-    });
+    // Hide the main dropdown product link
+    document.getElementById('dropdown-product-link').style.display = 'none'
 
-    const categoryElement = document.getElementById(`category-${categoryId}`);
-    const categoryButton = document.getElementById(`category-button-${categoryId}`);
+    // Set display properties for headings for categories and departments
+    document.querySelectorAll('[id^="parent-"]').forEach((element) => {
+        element.style.display = element.id === `parent-${categoryId}` ? 'flex' : 'none'
+    })
+
+    // Adjust button visibility
+    document.getElementById('go-back-button').style.display = 'none'
+    document.getElementById('back-to-menu-button').style.display = 'block'
+    document.getElementById('back-to-menu-placeholder').textContent = `${categoryName}`
+
+    // Set display properties for categories and departments and their buttons
+    const categoryElement = document.getElementById(`category-${categoryId}`)
+    const categoryButton = document.getElementById(`category-button-${categoryId}`)
     if (categoryElement && categoryButton) {
-        categoryElement.style.display = 'flex';
+        categoryElement.style.display = 'flex'
         categoryButton.style.display = 'none'
     }
 
-    const departmentElement = document.getElementById(`department-list-${categoryId}`);
+    const departmentElement = document.getElementById(`department-list-${categoryId}`)
     const departmentButton = document.getElementById(`department-button-${categoryId}`)
     if (departmentElement && departmentButton) {
-        departmentElement.style.display = 'flex';
+        departmentElement.style.display = 'flex'
         departmentButton.style.display = 'none'
     }
 
+    // Set explore link properties
     const desktopLink = document.getElementById(`desktop-link-${categoryId}`)
     let link = ''
     if (desktopLink) {
@@ -317,22 +260,57 @@
     }
 
     if (link) {
-        const exploreContainer =  document.querySelector('.explore-categories')
+        const exploreContainer = document.querySelector('.explore-categories')
         const exploreLink = document.querySelector('.explore-link')
         exploreLink.setAttribute('href', link)
         exploreLink.textContent = `Utforska ${categoryName}`
         exploreContainer.style.display = 'block'
-
     }
+    }
+
+    const resetMobileDropdown = () => {
+    //Show the main product link
+    document.querySelector('.dropdown-product-link').style.display = 'block'
+
+    // Set display and flex direction properties for various elements
+    setDisplayStyle('[id^="parent-"]', 'flex')
+    setDisplayStyle('.parent-button', 'inline')
+    
+    setDisplayStyle('.category', 'none')
+    setDisplayStyle('.department-list', 'none')
+    setDisplayStyle('.parent-link.desktop', 'none')
+    setDisplayStyle('.dropdown-a.desktop', 'none')
+    setDisplayStyle('.explore-categories', 'none')
+
+    setFlexDirection('.parent', 'row')
+    setFlexDirection('.department', 'row')
+
+    //Adjust button visibility
+    document.getElementById('go-back-button').style.display = 'block'
+    document.getElementById('back-to-menu-button').style.display = 'none'
+    }
+
+    const resetDesktopDropdown = () => {
+    // Set display properties for buttons and links
+    setDisplayStyle('.parent-button', 'none')
+    setDisplayStyle('.parent-link.desktop', 'block')
+    setDisplayStyle('.dropdown-a.desktop', 'block')
+
+    // Hide the go-back button
     document.getElementById('go-back-button').style.display = 'none'
-    document.getElementById('back-to-menu-button').style.display = 'block'
-    document.getElementById('back-to-menu-placeholder').textContent = `${categoryName}`
+
+    // Set display and flex direction properties for categories and departments
+    setDisplayStyle('.category', 'flex')
+    setDisplayStyle('.department-list', 'flex')
+    setFlexDirection('.parent', 'column')
+    setFlexDirection('.department', 'column')
+
+    // Hide the main product link
+    document.querySelector('.dropdown-product-link').style.display = 'none'
     }
 
-    //Avfyras när man klickar på ex "Kosmetika"
     onBackToMenu = () => {
-        console.log("On back to menu")
-        resetMobileDropdown()
+    resetMobileDropdown()
     }
 
 </script>
