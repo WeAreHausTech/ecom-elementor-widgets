@@ -225,7 +225,7 @@
 
     openSubcategories = (categoryId, categoryName) => {
     // Hide the main dropdown product link
-    document.getElementById('dropdown-product-link').style.display = 'none'
+    document.querySelector('.dropdown-product-link').style.display = 'none'
 
     // Set display properties for headings for categories and departments
     document.querySelectorAll('[id^="parent-"]').forEach((element) => {

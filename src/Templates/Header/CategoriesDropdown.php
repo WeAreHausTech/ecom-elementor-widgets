@@ -43,7 +43,6 @@
                                 <button class="parent-link parent-button mobile" id="category-button-<?= $mainCategory['data']['term_id'] ?>"onClick="openSubcategories(<?= $mainCategory['data']['term_id'] ?>, '<?= addSlashes($mainCategory['data']['name']) ?>')">  
                                 <?= $mainCategory['data']['name'] ?>
                                 </button>
-                                <!-- <div class="subcategories" id="subcategories-<?= $mainCategory['data']['term_id'] ?>"> -->
                                 <?php if (!empty($mainCategory['children'])) { ?>
                                     <ul class="category" id="category-<?= $mainCategory['data']['term_id'] ?>">
                                         <?php foreach ($mainCategory['children'] as $index => $child) {
@@ -69,7 +68,6 @@
                                         <?php } ?>
                                     </ul>
                                 <?php } ?>
-                                <!-- </div> -->
                         <?php } ?>
                     <?php } ?>
                 </ul>
@@ -102,7 +100,7 @@
                     </div>
                 <?php } ?>
             </div>
-            <div class="dropdown-product-link" id="dropdown-product-link">
+            <div class="dropdown-product-link">
                 <a href="<?= $data['product_page_url']?> "><?= $data['product_page']?></a>
             </div>
         </div>
