@@ -38,7 +38,7 @@
                         <?php foreach ($categories as $mainCategory) { ?>
                             <li class="parent" id="parent-<?= $mainCategory['data']['term_id'] ?>">
                                 <?php if (!empty($mainCategory['data']['bild'])) { ?>
-                                     <img src="<?= $mainCategory['data']['bild'] ?>" alt="<?= $mainCategory['data']['name'] ?>">
+                                     <img class="category-image" src="<?= $mainCategory['data']['bild'] ?>" alt="<?= $mainCategory['data']['name'] ?>">
                                 <?php } ?>
                                 <a class="parent-link desktop" id="desktop-link-<?= $mainCategory['data']['term_id'] ?>" href="<?= $mainCategory['data']['slug'] ?>/">
                                     <?= $mainCategory['data']['name'] ?>
@@ -90,7 +90,7 @@
                                 <li class="child-link" data-parent="<?= $taxonomy['class'] ?>" class="child"
                                     style="display: <?= $index < 7 ? 'block' : 'none'; ?>">
                                     <?php if (!empty($value['bild'])) { ?>
-                                     <img src="<?= $value['bild'] ?>" alt="<?= $value['name'] ?>">
+                                     <img class="category-image" src="<?= $value['bild'] ?>" alt="<?= $value['name'] ?>">
                                 <?php } ?>
                                     <a href="<?= $value['slug'] ?>/">
                                         <?= $value['name'] ?>

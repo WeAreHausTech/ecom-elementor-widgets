@@ -964,4 +964,16 @@
             padding-bottom: 50px;
         }
     }
+
+    .category-image {
+        display: none; 
+    }
+
+    @media only screen and (max-width: 983px) {
+        .category-image {
+            display: block; 
+            width: 20%; 
+            
+        }
+    }
 </style>
