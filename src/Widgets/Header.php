@@ -12,13 +12,6 @@ class Header extends Widget_Base
 
     private WpmlHelper $wpmlHelper;
 
-
-
-
-
-
-
-    
     private $currentLang = 'sv';
 
     public function __construct($data = [], $args = null)
