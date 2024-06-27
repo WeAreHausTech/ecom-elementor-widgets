@@ -123,21 +123,13 @@
     document.getElementById('back-to-menu-button').style.display = 'block'
     document.getElementById('back-to-menu-placeholder').textContent = `${categoryName}`
 
-    // Set display properties for categories and departments and their buttons
+    // Set display properties for categories and departments
     const categoryElement = document.getElementById(`category-${categoryId}`)
-    const categoryButton = document.getElementById(`category-button-${categoryId}`)
-    if (categoryElement && categoryButton) {
-        categoryElement.style.display = 'flex'
-        categoryButton.style.display = 'none'
-    }
-
+    if (categoryElement) categoryElement.style.display = 'flex'
+    
     const departmentElement = document.getElementById(`department-list-${categoryId}`)
-    const departmentButton = document.getElementById(`department-button-${categoryId}`)
-    if (departmentElement && departmentButton) {
-        departmentElement.style.display = 'flex'
-        departmentButton.style.display = 'none'
-    }
-
+    if (departmentElement) departmentElement.style.display = 'flex'
+    
     // Set explore link properties
     const desktopLink = document.getElementById(`desktop-link-${categoryId}`)
     let link = ''
@@ -162,12 +154,9 @@
 
     // Set display and flex direction properties for various elements
     setDisplayStyle('[id^="parent-"]', 'flex')
-    setDisplayStyle('.parent-button', 'inline')
     
     setDisplayStyle('.category', 'none')
     setDisplayStyle('.department-list', 'none')
-    setDisplayStyle('.parent-link.desktop', 'none')
-    setDisplayStyle('.dropdown-a.desktop', 'none')
     setDisplayStyle('.explore-categories', 'none')
 
     setFlexDirection('.parent', 'row')
@@ -179,12 +168,7 @@
     }
 
     const resetDesktopDropdown = () => {
-        console.log("RESETTING DESKTOP")
-    // Set display properties for buttons and links
-    setDisplayStyle('.parent-button', 'none')
-    setDisplayStyle('.parent-link.desktop', 'block')
-    setDisplayStyle('.dropdown-a.desktop', 'block')
-
+    console.log("RESETTING DESKTOP")
     // Hide the go-back button
     document.getElementById('go-back-button').style.display = 'none'
 
@@ -991,6 +975,16 @@
         .category-image {
             display: block; 
             width: 10%; 
+        }
+    }
+
+    @media only screen and (max-width: 983px) {
+        .parent-link.desktop {
+            pointer-events: none; 
+        }
+
+        .dropdown-a.desktop {
+            pointer-events: none; 
         }
     }
 </style>

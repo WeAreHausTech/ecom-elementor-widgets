@@ -43,9 +43,9 @@
                                 <a class="parent-link desktop" id="desktop-link-<?= $mainCategory['data']['term_id'] ?>" href="<?= $mainCategory['data']['slug'] ?>/">
                                     <?= $mainCategory['data']['name'] ?>
                                 </a>
-                                <button class="parent-link parent-button mobile" id="category-button-<?= $mainCategory['data']['term_id'] ?>">  
+                                <!-- <button class="parent-link parent-button mobile" id="category-button-<?= $mainCategory['data']['term_id'] ?>">  
                                 <?= $mainCategory['data']['name'] ?>
-                                </button>
+                                </button> -->
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 18 18" fill="none">
                                     <path
                                         d="M12.1417 8.46493C12.2823 8.60557 12.3613 8.79631 12.3613 8.99518C12.3613 9.19405 12.2823 9.38478 12.1417 9.52543L7.64174 14.0254C7.50029 14.162 7.31079 14.2376 7.11422 14.2359C6.9176 14.2342 6.72948 14.1553 6.59043 14.0163C6.45137 13.8772 6.37249 13.6891 6.37076 13.4925C6.36899 13.2958 6.44459 13.1063 6.58122 12.9649L10.551 8.99518L6.58122 5.02543C6.44459 4.88499 6.36899 4.69554 6.37076 4.4989C6.37249 4.30225 6.45137 4.11414 6.59043 3.97508C6.72948 3.83602 6.9176 3.75714 7.11422 3.75543C7.31079 3.75372 7.50029 3.82932 7.64174 3.96593L12.1417 8.46493Z"
@@ -82,13 +82,13 @@
             </div>
             <div class="dropdown-type">
                 <?php foreach ($taxonomies as $taxonomy) { ?>
-                    <div class="department" id="parent-<?= $taxonomy['class'] ?>">
+                    <div class="department" id="parent-<?= $taxonomy['class'] ?>" onClick="openSubcategories('<?= $taxonomy['class'] ?>', '<?= $taxonomy['heading'] ?>')">
                             <a class="dropdown-a desktop" id="desktop-link-<?= $taxonomy['class'] ?>" href="<?= $taxonomy['heading-link'] ?>" >
                                 <?= $taxonomy['heading'] ?>
                             </a>
-                            <button class="dropdown-a parent-button mobile" id="department-button-<?= $taxonomy['class'] ?>"onClick="openSubcategories('<?= $taxonomy['class'] ?>', '<?= $taxonomy['heading'] ?>')">  
+                            <!-- <button class="dropdown-a parent-button mobile" id="department-button-<?= $taxonomy['class'] ?>">  
                             <?= $taxonomy['heading'] ?>
-                          </button>
+                          </button> -->
                         <ul class="department-list" id="department-list-<?= $taxonomy['class'] ?>">
                             <?php foreach ($taxonomy['data'] as $index => $value) { ?>
                                 <?php $value = $value['data'] ?>
