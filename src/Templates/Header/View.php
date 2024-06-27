@@ -81,6 +81,17 @@
 <script>
     //TODO move to separate external file
 
+    let header = document.querySelector('.header')
+    let isMobile = header.offsetWidth <= 983
+
+    const updateIsMobile = () => {
+        header = document.querySelector('.header')
+        isMobile = header.offsetWidth <= 983
+    }
+
+    window.addEventListener('load', updateIsMobile);
+    window.addEventListener('resize', updateIsMobile);
+
      // Function to set display style for elements
      const setDisplayStyle = (selector, displayValue) => {
     document.querySelectorAll(selector).forEach((element) => {
@@ -96,6 +107,9 @@
     }
 
     openSubcategories = (categoryId, categoryName) => {
+        if (!isMobile) {
+            return;
+        }
     // Hide the main dropdown product link
     document.querySelector('.dropdown-product-link').style.display = 'none'
 
@@ -141,6 +155,7 @@
     }
 
     const resetMobileDropdown = () => {
+        console.log("RESETTING MOBILE")
     
     //Show the main product link
     document.querySelector('.dropdown-product-link').style.display = 'block'
@@ -164,6 +179,7 @@
     }
 
     const resetDesktopDropdown = () => {
+        console.log("RESETTING DESKTOP")
     // Set display properties for buttons and links
     setDisplayStyle('.parent-button', 'none')
     setDisplayStyle('.parent-link.desktop', 'block')
@@ -261,8 +277,6 @@
                 document.getElementById('dropdown-content').classList.add('active-dropdown-content')
             }, 50);
 
-            const header = document.querySelector('.header')
-            const isMobile = header.offsetWidth <= 983;
             if (isMobile) {
                 resetMobileDropdown();
             } else {
