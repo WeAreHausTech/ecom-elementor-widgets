@@ -338,7 +338,6 @@
 
     }
 
-    
     @media only screen and (min-width: 983px) {
 
         .menu-header-main-container,
