@@ -168,7 +168,7 @@
     }
 
     const resetDesktopDropdown = () => {
-    console.log("RESETTING DESKTOP")
+        console.log("RESETTING DESKTOP")
     // Hide the go-back button
     document.getElementById('go-back-button').style.display = 'none'
 
@@ -181,6 +181,7 @@
     // Hide the main product link
     document.querySelector('.dropdown-product-link').style.display = 'none'
     }
+
     showMore = (buttonElement) => {
         const buttonId = buttonElement.id;
         const id = buttonId.split('-')[2];
@@ -985,6 +986,17 @@
 
         .dropdown-a.desktop {
             pointer-events: none; 
+        }
+    }
+
+    .arrow-icon {
+        display: none; 
+    }
+
+    @media only screen and (max-width: 983px) {
+        .arrow-icon {
+            display: flex; 
+            margin-left: auto; 
         }
     }
 </style>
