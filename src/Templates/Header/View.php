@@ -312,9 +312,10 @@
     document.body.addEventListener('click', (event) => {
 
         const targetId = event.target.id;
+        console.log(targetId)
 
         if (dropdown.classList.contains('active-dropdown')) {
-            if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId === 'back-to-menu-button' || targetId === 'back-to-menu-placeholder' ||  targetId.startsWith('menu-item-') ||  targetId.startsWith('category-button-') ||  targetId.startsWith('department-button-') || targetId.startsWith('see-more-')) {
+            if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId === 'back-to-menu-button' || targetId === 'back-to-menu-placeholder' ||  targetId.startsWith('menu-item-') ||  targetId.startsWith('category-button-') || targetId.startsWith('desktop-link-') || targetId.startsWith('department-button-') || targetId.startsWith('see-more-') || targetId.startsWith('parent-')) {
                 return;
             } else {
                 closeMenu();
