@@ -141,6 +141,7 @@
     }
 
     const resetMobileDropdown = () => {
+    
     //Show the main product link
     document.querySelector('.dropdown-product-link').style.display = 'block'
 
@@ -927,7 +928,9 @@
 
         .dropdown-menu .categories {
             row-gap: 24px;
-            grid-template-columns: repeat(auto-fit, 100vw);
+            /* grid-template-columns: repeat(auto-fit, 100vw); */
+            display: flex; 
+            flex-direction: column; 
         }
 
         .dropdown-type {
@@ -972,8 +975,7 @@
     @media only screen and (max-width: 983px) {
         .category-image {
             display: block; 
-            width: 20%; 
-            
+            width: 10%; 
         }
     }
 </style>
