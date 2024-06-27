@@ -312,6 +312,7 @@
     searchElement.addEventListener('click', function (e) {
         closeProductModal();
     });
+
 </script>
 
 <style>
@@ -336,6 +337,8 @@
         align-items: center;
 
     }
+
+    
     @media only screen and (min-width: 983px) {
 
         .menu-header-main-container,
