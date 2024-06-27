@@ -89,7 +89,9 @@
                                 <?php $value = $value['data'] ?>
                                 <li class="child-link" data-parent="<?= $taxonomy['class'] ?>" class="child"
                                     style="display: <?= $index < 7 ? 'block' : 'none'; ?>">
-                                    
+                                    <?php if (!empty($value['bild'])) { ?>
+                                     <img src="<?= $value['bild'] ?>" alt="<?= $value['name'] ?>">
+                                <?php } ?>
                                     <a href="<?= $value['slug'] ?>/">
                                         <?= $value['name'] ?>
                                     </a>
