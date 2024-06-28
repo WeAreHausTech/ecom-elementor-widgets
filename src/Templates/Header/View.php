@@ -14,6 +14,16 @@
                     'depth' => 2,
                 ]);
             } ?>
+            <div class="footer-container">
+                <div class="footer-menu" id="footer-menu">
+                    <?php if ($data['footer_menu_id']) {
+                        wp_nav_menu([
+                            'menu' => $data['footer_menu_id'],
+                            'depth' => 2,
+                        ]);
+                    } ?>
+                </div>
+            </div>
         </div>
         <div class="menu-links">
             <div class="icons">
@@ -30,6 +40,7 @@
                     </svg>
                 </button>
             </div>
+        </div>
             <?php if ($data['contact_us_link'] && $data['contact_us_text']) { ?>
                 <div class="contact-button">
                     <a href="<?= $data['contact_us_link'] ?>">
@@ -226,6 +237,51 @@
         .menu-item {
             height: 100%;
         }
+    }
+
+     #footer-menu {
+        width: 100%;
+        display: none;
+    }
+
+    @media screen and (max-width: 983px) {
+        .footer-container {
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.10);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+            padding-top: 24px;
+            padding-bottom: 24px;
+        }
+
+        #footer-menu {
+            display: block; 
+        }
+
+        #footer-menu .menu-header-main-container .menu {
+            gap: 8px;
+            padding: 0;
+        }
+
+        #footer-menu li {
+            font-family: Inter;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 150%;
+        }
+
+        #footer-menu .menu-header-main-container .menu a {
+            padding: 0;
+
+                &:hover {
+                    text-decoration-line: underline;
+                    background: none;
+                    border-radius: 0;
+                    color: var(--e-global-color-text);
+                }
+            }
     }
 
     .dropdown {
@@ -578,12 +634,11 @@
         flex-wrap: wrap;
     }
 
-
-
     .menu ul {
         padding-left: 0;
         list-style: none;
     }
+
 
     .menu li {
         color: var(--header-menu-li-color, #3E4849);
@@ -611,7 +666,6 @@
         background: var(--header-menu-li-color-hover, #F2F2F2);
 
     }
-
 
     .menu .current-menu-item {
         border-radius: 20px;
@@ -745,7 +799,7 @@
             left: 0;
             background-color: var(--header-dropdown-background, #fff);
             overflow-y: hidden;
-            padding: 20px 24px 24px 24px;
+            padding: 24px 24px 24px 24px;
             z-index: 9999;
         }
 
@@ -764,6 +818,26 @@
             gap: 0;
         }
 
+        @media only screen and (max-width: 983px) {
+            .menu {
+                height: auto;
+                padding-bottom: 24px;
+            }
+
+            .menu ul {
+                gap: 24px;            
+            }
+
+            .menu li {
+                padding: 0;
+                font-size: 18px;
+            }
+
+            .menu li  a {
+                padding: 0;
+            }
+        } 
+
         .dropdown-content {
             flex-direction: column;
             align-items: flex-start;
@@ -781,11 +855,6 @@
             align-items: center;
             width: 100%;
             margin-bottom: 32px;
-        }
-
-        .menu li {
-            padding: 8px;
-            font-size: 18px;
         }
 
         .logo,
