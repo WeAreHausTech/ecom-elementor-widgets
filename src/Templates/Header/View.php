@@ -113,6 +113,9 @@
     // Hide the main dropdown product link
     document.querySelector('.dropdown-product-link').style.display = 'none'
 
+    //Hide container with image, svg and heading
+    setDisplayStyle('.parent-inner-container', 'none');
+
     // Set display properties for headings for categories and departments
     document.querySelectorAll('[id^="parent-"]').forEach((element) => {
         element.style.display = element.id === `parent-${categoryId}` ? 'flex' : 'none'
@@ -152,6 +155,9 @@
     //Show the main product link
     document.querySelector('.dropdown-product-link').style.display = 'block'
 
+    //Show container with image, svg and heading
+    setDisplayStyle('.parent-inner-container', 'flex');
+
     // Set display and flex direction properties for various elements
     setDisplayStyle('[id^="parent-"]', 'flex')
     
@@ -159,8 +165,7 @@
     setDisplayStyle('.department-list', 'none')
     setDisplayStyle('.explore-categories', 'none')
 
-    setFlexDirection('.parent', 'row')
-    setFlexDirection('.department', 'row')
+    setFlexDirection('.department', 'column')
 
     //Adjust button visibility
     document.getElementById('go-back-button').style.display = 'block'
@@ -998,5 +1003,10 @@
             display: flex; 
             margin-left: auto; 
         }
+    }
+
+    .parent-inner-container {
+        display: flex; 
+        flex-direction: row; 
     }
 </style>

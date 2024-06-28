@@ -37,6 +37,7 @@
                     <?php if ($categories) { ?>
                         <?php foreach ($categories as $mainCategory) { ?>
                             <li class="parent" id="parent-<?= $mainCategory['data']['term_id'] ?>" onClick="openSubcategories(<?= $mainCategory['data']['term_id'] ?>, '<?= addSlashes($mainCategory['data']['name']) ?>')">
+                                <div class="parent-inner-container"">
                                 <?php if (!empty($mainCategory['data']['bild'])) { ?>
                                      <img class="category-image" src="<?= $mainCategory['data']['bild'] ?>" alt="<?= $mainCategory['data']['name'] ?>">
                                 <?php } ?>
@@ -48,6 +49,7 @@
                                         d="M12.1417 8.46493C12.2823 8.60557 12.3613 8.79631 12.3613 8.99518C12.3613 9.19405 12.2823 9.38478 12.1417 9.52543L7.64174 14.0254C7.50029 14.162 7.31079 14.2376 7.11422 14.2359C6.9176 14.2342 6.72948 14.1553 6.59043 14.0163C6.45137 13.8772 6.37249 13.6891 6.37076 13.4925C6.36899 13.2958 6.44459 13.1063 6.58122 12.9649L10.551 8.99518L6.58122 5.02543C6.44459 4.88499 6.36899 4.69554 6.37076 4.4989C6.37249 4.30225 6.45137 4.11414 6.59043 3.97508C6.72948 3.83602 6.9176 3.75714 7.11422 3.75543C7.31079 3.75372 7.50029 3.82932 7.64174 3.96593L12.1417 8.46493Z"
                                         fill="#3E4849" />
                                 </svg>
+                                </div>
                                 <?php if (!empty($mainCategory['children'])) { ?>
                                     <ul class="category" id="category-<?= $mainCategory['data']['term_id'] ?>">
                                         <?php foreach ($mainCategory['children'] as $index => $child) {
@@ -80,6 +82,7 @@
             <div class="dropdown-type">
                 <?php foreach ($taxonomies as $taxonomy) { ?>
                     <div class="department" id="parent-<?= $taxonomy['class'] ?>" onClick="openSubcategories('<?= $taxonomy['class'] ?>', '<?= $taxonomy['heading'] ?>')">
+                    <div class="parent-inner-container">
                             <a class="dropdown-a desktop" id="desktop-link-<?= $taxonomy['class'] ?>" href="<?= $taxonomy['heading-link'] ?>" >
                                 <?= $taxonomy['heading'] ?>
                             </a>
@@ -88,6 +91,7 @@
                                         d="M12.1417 8.46493C12.2823 8.60557 12.3613 8.79631 12.3613 8.99518C12.3613 9.19405 12.2823 9.38478 12.1417 9.52543L7.64174 14.0254C7.50029 14.162 7.31079 14.2376 7.11422 14.2359C6.9176 14.2342 6.72948 14.1553 6.59043 14.0163C6.45137 13.8772 6.37249 13.6891 6.37076 13.4925C6.36899 13.2958 6.44459 13.1063 6.58122 12.9649L10.551 8.99518L6.58122 5.02543C6.44459 4.88499 6.36899 4.69554 6.37076 4.4989C6.37249 4.30225 6.45137 4.11414 6.59043 3.97508C6.72948 3.83602 6.9176 3.75714 7.11422 3.75543C7.31079 3.75372 7.50029 3.82932 7.64174 3.96593L12.1417 8.46493Z"
                                         fill="#3E4849" />
                                 </svg>
+                        </div>
                         <ul class="department-list" id="department-list-<?= $taxonomy['class'] ?>">
                             <?php foreach ($taxonomy['data'] as $index => $value) { ?>
                                 <?php $value = $value['data'] ?>
