@@ -945,7 +945,7 @@
 
         .dropdown-menu .categories {
             row-gap: 24px;
-            /* grid-template-columns: repeat(auto-fit, 100vw); */
+            grid-template-columns: repeat(auto-fit, 100vw);
             display: flex; 
             flex-direction: column; 
         }
