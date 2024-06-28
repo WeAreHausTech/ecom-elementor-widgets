@@ -110,9 +110,6 @@
         if (!isMobile) {
             return;
         }
-    // Hide the main dropdown product link
-    document.querySelector('.dropdown-product-link').style.display = 'none'
-
     //Hide container with image, svg and heading
     setDisplayStyle('.parent-inner-container', 'none');
 
@@ -151,10 +148,6 @@
 
     const resetMobileDropdown = () => {
         console.log("RESETTING MOBILE")
-    
-    //Show the main product link
-    document.querySelector('.dropdown-product-link').style.display = 'block'
-
     //Show container with image, svg and heading
     setDisplayStyle('.parent-inner-container', 'flex');
 
@@ -182,9 +175,6 @@
     setDisplayStyle('.department-list', 'flex')
     setFlexDirection('.parent', 'column')
     setFlexDirection('.department', 'column')
-
-    // Hide the main product link
-    document.querySelector('.dropdown-product-link').style.display = 'none'
     }
 
     showMore = (buttonElement) => {
@@ -546,7 +536,7 @@
 
     @media screen and (max-width: 983px) {
         .dropdown-product-link {
-            display: block;
+            display: none;
             margin-top: 24px;
             margin-left: 0px;
 
@@ -940,7 +930,7 @@
         }
 
         .dropdown-type {
-            margin-top: 24px;
+            margin-top: 48px;
             margin-left: 0px;
         }
 
@@ -968,7 +958,7 @@
         .dropdown-content {
             opacity: 1;
             max-height: 100vh;
-            height: auto;
+            height: 100vh;
             border-radius: 0px;
             padding-bottom: 50px;
         }
@@ -1010,6 +1000,8 @@
         display: flex; 
         flex-direction: row; 
         width: 100%; 
+        align-items: center;
+        gap: 16px; 
     }
 
     .back-icon-wrapper {
