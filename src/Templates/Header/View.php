@@ -829,6 +829,15 @@
         right: 24px;
     }
 
+    @media only screen and (max-width: 983px) {
+        .dropdown-categories-header .close-button {
+            display: block;
+            position: relative; 
+            top: 0px; 
+            right: 0px; 
+        }
+    }
+
     .dropdown-categories-header .go-back-button {
         display: none;
     }
@@ -906,7 +915,10 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            margin-bottom: 32px;
+            padding: 24px; 
+            position: sticky; 
+            top: 0; 
+            background-color: var(--header-dropdown-background, #fff);
         }
 
         .menu li {
@@ -1009,4 +1021,5 @@
         display: flex; 
         flex-direction: row; 
     }
+
 </style>
