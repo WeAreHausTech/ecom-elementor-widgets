@@ -123,7 +123,7 @@
 
     // Adjust button visibility
     document.getElementById('go-back-button').style.display = 'none'
-    document.getElementById('back-to-menu-button').style.display = 'block'
+    document.getElementById('back-to-menu-button').style.display = 'flex'
     document.getElementById('back-to-menu-placeholder').textContent = `${categoryName}`
 
     // Set display properties for categories and departments
@@ -168,7 +168,7 @@
     setFlexDirection('.department', 'column')
 
     //Adjust button visibility
-    document.getElementById('go-back-button').style.display = 'block'
+    document.getElementById('go-back-button').style.display = 'flex'
     document.getElementById('back-to-menu-button').style.display = 'none'
     }
 
@@ -468,7 +468,8 @@
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
-        gap: 4px;
+        gap: 16px;
+        
     }
 
     .dropdown-content .go-back-button:hover {
@@ -980,7 +981,7 @@
     @media only screen and (max-width: 983px) {
         .category-image {
             display: block; 
-            width: 10%; 
+            width: 36px; 
         }
     }
 
@@ -1008,5 +1009,16 @@
     .parent-inner-container {
         display: flex; 
         flex-direction: row; 
+        width: 100%; 
+    }
+
+    .back-icon-wrapper {
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        border-radius: 20px;
+        background: var(--Gray-Light, #F2F2F2);
+        width: 36px;
+        height: 36px;
     }
 </style>
