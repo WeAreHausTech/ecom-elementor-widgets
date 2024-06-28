@@ -55,7 +55,7 @@
                                         <?php foreach ($mainCategory['children'] as $index => $child) {
                                              ?>
                                             <li class="child-link" data-parent="<?= $mainCategory['data']['term_id'] ?>" class="child"
-                                                style="display: <?= $index < 5 || count($mainCategory['children']) === 6 ?'block' : 'none'; ?>">
+                                                style="display: <?= $index < 5 || count($mainCategory['children']) === 6 ?'flex' : 'none'; ?>">
                                                 <a href="<?= $child['slug'] ?>/">
                                                     <?= $child['name']?>
                                                 </a>
@@ -96,7 +96,7 @@
                             <?php foreach ($taxonomy['data'] as $index => $value) { ?>
                                 <?php $value = $value['data'] ?>
                                 <li class="child-link" data-parent="<?= $taxonomy['class'] ?>" class="child"
-                                    style="display: <?= $index < 7 ? 'block' : 'none'; ?>">
+                                    style="display: <?= $index < 7 ? 'flex' : 'none'; ?>">
                                     <?php if (!empty($value['bild'])) { ?>
                                      <img class="category-image" src="<?= $value['bild'] ?>" alt="<?= $value['name'] ?>">
                                 <?php } ?>
