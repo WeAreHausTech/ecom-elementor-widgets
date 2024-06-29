@@ -144,6 +144,8 @@
         exploreLink.textContent = `Utforska ${categoryName}`
         exploreContainer.style.display = 'block'
     }
+    // Add the class to hide the gray line
+    document.querySelector('.dropdown-type').classList.add('hide-gray-line');
     }
 
     const resetMobileDropdown = () => {
@@ -163,6 +165,9 @@
     //Adjust button visibility
     document.getElementById('go-back-button').style.display = 'flex'
     document.getElementById('back-to-menu-button').style.display = 'none'
+
+    // Remove the class to show the gray line again
+    document.querySelector('.dropdown-type').classList.remove('hide-gray-line');
     }
 
     const resetDesktopDropdown = () => {
@@ -446,9 +451,9 @@
     .dropdown-content .go-back-button {
         background: none;
         border: none;
-        font-size: 18px;
+        font-size: 20px;
         font-style: normal;
-        font-weight: 500;
+        font-weight: 600;
         line-height: 140%;
         font-family: Inter;
         color: var(--header-go-back-button-color, #3E4849);
@@ -584,12 +589,6 @@
         cursor: pointer;
         text-decoration: underline;
         color: var(--header-dropdown-child-color-hover, #000) !important;
-    }
-
-    @media screen and (max-width: 983px) {
-        .dropdown-type {
-            grid-auto-rows: auto;
-        }
     }
 
     .dropdown-menu .category,
@@ -888,7 +887,7 @@
             overflow: auto;
             flex-wrap: nowrap;
             gap: 0;
-            padding: 20px 24px 24px 24px;
+            padding: 0; 
         }
 
         .dropdown-categories-header {
@@ -897,7 +896,7 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            margin-bottom: 32px;
+            padding: 24px; 
         }
 
         .menu li {
@@ -927,22 +926,34 @@
             grid-template-columns: repeat(auto-fit, 100vw);
             display: flex; 
             flex-direction: column; 
+            padding: 12px 24px 24px 24px;
         }
 
         .dropdown-type {
-            margin-top: 48px;
-            margin-left: 0px;
+            display: flex; 
+            flex-direction: column; 
+            width: 100%; 
+            padding: 24px; 
+            position: relative; 
         }
 
-        .dropdown-categories,
-        .dropdown-type {
-            border-right: none;
-            width: 100%;
+        .dropdown-type::before {
+            content: '';
+            position: absolute;
+            top: 0; /* Position at the top */
+            left: 24px; /* 24px from the left edge */
+            right: 24px; /* 24px from the right edge */
+            border-top: 1px solid rgba(0, 0, 0, 0.10);
+        }
+
+        .hide-gray-line::before {
+            border-top: none; 
         }
 
         .dropdown-categories {
+            border-right: none;
             margin: 0;
-
+            max-width: none;
         }
 
         .menu .current-menu-item {
@@ -960,7 +971,7 @@
             max-height: 100vh;
             height: 100vh;
             border-radius: 0px;
-            padding-bottom: 50px;
+            padding-bottom: 50px; 
         }
     }
 
@@ -970,19 +981,20 @@
 
     @media only screen and (max-width: 983px) {
         .category-image {
-            display: block; 
-            width: 36px; 
+            display: flex; 
+            width: 56px; 
+            height: 56px;
+            padding: 4px; 
         }
     }
 
     @media only screen and (max-width: 983px) {
+        .dropdown-a.desktop,
         .parent-link.desktop {
             pointer-events: none; 
+            line-height: 140%; 
         }
 
-        .dropdown-a.desktop {
-            pointer-events: none; 
-        }
     }
 
     .arrow-icon {

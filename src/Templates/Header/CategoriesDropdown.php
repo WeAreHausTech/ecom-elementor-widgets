@@ -33,7 +33,6 @@
             <div class="explore-categories" style="display: none">
             <a class="explore-link" href="#" >Utforska</a>
             </div>
-
             <div class="dropdown-categories">
                 <ul class="categories">
                     <?php if ($categories) { ?>
@@ -41,7 +40,9 @@
                             <li class="parent" id="parent-<?= $mainCategory['data']['term_id'] ?>" onClick="openSubcategories(<?= $mainCategory['data']['term_id'] ?>, '<?= addSlashes($mainCategory['data']['name']) ?>')">
                                 <div class="parent-inner-container"">
                                 <?php if (!empty($mainCategory['data']['bild'])) { ?>
-                                     <img class="category-image" src="<?= $mainCategory['data']['bild'] ?>" alt="<?= $mainCategory['data']['name'] ?>">
+                                    <div class="category-image">
+                                     <img src="<?= $mainCategory['data']['bild'] ?>" alt="<?= $mainCategory['data']['name'] ?>">
+                                     </div>
                                 <?php } ?>
                                 <a class="parent-link desktop" id="desktop-link-<?= $mainCategory['data']['term_id'] ?>" href="<?= $mainCategory['data']['slug'] ?>/">
                                     <?= $mainCategory['data']['name'] ?>
