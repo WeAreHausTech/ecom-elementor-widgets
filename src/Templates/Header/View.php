@@ -1025,4 +1025,27 @@
         width: 36px;
         height: 36px;
     }
+
+    .explore-categories {
+        width: 100%; 
+        padding: 12px 24px; 
+    }
+
+    .explore-link {
+        display: flex;
+        height: 40px;
+        padding: 8px 16px;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        align-self: stretch;
+        border-radius: 8px;
+        background: var(--Blue-Light, #E9F4F0);
+    }
+
+    @media only screen and (max-width: 983px) {
+        .dropdown-menu .category {
+            gap: 16px; 
+        }
+    }
 </style>
