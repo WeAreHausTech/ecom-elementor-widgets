@@ -61,6 +61,7 @@
                                                 <a href="<?= $child['slug'] ?>/">
                                                     <?= $child['name']?>
                                                 </a>
+                                                <!-- <div class="box">Box</div> -->
                                             </li>
                                             <?php if ($index === 5 && count($mainCategory['children']) > 6) { ?>
                                                 <button class="see-more-button" id="see-more-<?= $mainCategory['data']['term_id'] ?>"

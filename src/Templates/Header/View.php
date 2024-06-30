@@ -327,6 +327,18 @@
         closeProductModal();
     });
 
+    document.addEventListener('scroll', function() {
+    const header = document.querySelector('.dropdown-categories-header');
+    console.log('ScrollY:', window.scrollY);
+    if (window.scrollY > 0) {
+        header.classList.add('scrolled');
+        console.log('Scrolled class added');
+    } else {
+        header.classList.remove('scrolled');
+        console.log('Scrolled class removed');
+    }
+});
+
 </script>
 
 <style>
@@ -524,6 +536,15 @@
         line-height: 150%;
         align-items: center; 
         gap: 16px;
+        /**LÄGG TILL DENNA FÖR ATT KUNNA SCROLLA */
+        /* flex-direction: column;  */
+    }
+
+    /**TA BORT DENNA STYLING */
+    .box {
+        background-color: blue; 
+        height: 100px; 
+        width: 50px;
     }
 
     .parent-link:hover,
@@ -924,6 +945,15 @@
             align-items: center;
             width: 100%;
             padding: 24px; 
+            position: sticky; 
+            top: 0; 
+            background-color: var(--header-dropdown-background, #fff);
+            z-index: 1000;
+        }
+
+
+        .scrolled {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.10);
         }
 
         .menu li {
@@ -1094,6 +1124,13 @@
             gap: 16px; 
             margin-top: 0; 
         }
-
+    }
+    @media only screen and (max-width: 983px) {
+    .dropdown-categories-header .close-button {
+        position: relative; 
+        top: 0; 
+        right: 0; 
+    }
+}
 
 </style>
