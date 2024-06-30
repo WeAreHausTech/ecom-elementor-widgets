@@ -128,7 +128,10 @@
     if (categoryElement) categoryElement.style.display = 'flex'
     
     const departmentElement = document.getElementById(`department-list-${categoryId}`)
-    if (departmentElement) departmentElement.style.display = 'flex'
+    if (departmentElement) {
+        departmentElement.style.display = 'flex'
+        setDisplayStyle('.dropdown-categories', 'none')
+    }
     
     // Set explore link properties
     const desktopLink = document.getElementById(`desktop-link-${categoryId}`)
@@ -161,6 +164,9 @@
     setDisplayStyle('.explore-categories', 'none')
 
     setFlexDirection('.department', 'column')
+
+    //Reset this element when clicked into avdelningar/departments and hidden explore-button
+    setDisplayStyle('.dropdown-categories', 'block')
 
     //Adjust button visibility
     document.getElementById('go-back-button').style.display = 'flex'
@@ -1046,8 +1052,7 @@
     }
 
     .explore-categories {
-        width: 100%; 
-        padding: 12px 24px; 
+    
     }
 
     .explore-link {
