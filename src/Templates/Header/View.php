@@ -147,8 +147,10 @@
         exploreLink.textContent = `Utforska ${categoryName}`
         exploreContainer.style.display = 'block'
     }
-    // Add the class to hide the gray line
-    document.querySelector('.dropdown-type').classList.add('hide-gray-line');
+    // Hide gray line and change padding size
+    const dropdownType = document.querySelector('.dropdown-type')
+    dropdownType.classList.add('hide-gray-line')
+    dropdownType.style.padding = '12px 24px'
     }
 
     const resetMobileDropdown = () => {
@@ -172,8 +174,10 @@
     document.getElementById('go-back-button').style.display = 'flex'
     document.getElementById('back-to-menu-button').style.display = 'none'
 
-    // Remove the class to show the gray line again
-    document.querySelector('.dropdown-type').classList.remove('hide-gray-line');
+    // Add gray line and change padding size
+    const dropdownType = document.querySelector('.dropdown-type')
+    dropdownType.classList.remove('hide-gray-line')
+    dropdownType.style.padding = '24px'
     }
 
     const resetDesktopDropdown = () => {
@@ -186,6 +190,9 @@
     setDisplayStyle('.department-list', 'flex')
     setFlexDirection('.parent', 'column')
     setFlexDirection('.department', 'column')
+
+    const dropdownType = document.querySelector('.dropdown-type')
+     dropdownType.style.padding = '0'
     }
 
     showMore = (buttonElement) => {
@@ -515,12 +522,26 @@
         font-style: normal;
         font-weight: 400;
         line-height: 150%;
+        align-items: center; 
+        gap: 16px;
     }
 
     .parent-link:hover,
     .child-link:hover a {
         text-decoration: underline;
         color: var(--header-dropdown-child-color-hover, #000) !important;
+    }
+
+    @media screen and (max-width: 983px) {
+        .department-list .child-link a {
+            font-weight: 600; 
+            font-size: 16px; 
+        }
+
+        .department-list .child-link:hover a {
+            font-size: 18px; 
+            text-decoration: underline; 
+        }
     }
 
 
@@ -1010,7 +1031,7 @@
 
         .department-image {
         display: flex; 
-    }
+        }
     }
 
     @media only screen and (max-width: 983px) {
@@ -1068,8 +1089,11 @@
     }
 
     @media only screen and (max-width: 983px) {
-        .dropdown-menu .category {
+        .dropdown-menu .category, 
+        .dropdown-menu .department ul {
             gap: 16px; 
+            margin-top: 0; 
         }
-    }
+
+
 </style>
