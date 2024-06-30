@@ -117,6 +117,18 @@
                                     </a>
                                 <?php } ?>
                             <?php } ?>
+
+                            <?php
+                                // Sort the taxonomy data alphabetically by the 'name' field
+                                usort($taxonomy['data'], function ($a, $b) {
+                                    return strcmp($a['data']['name'], $b['data']['name']);
+                                });
+                                ?>
+                            <?php foreach ($taxonomy['data'] as $index => $value) { ?>
+                                    <a href="<?= $value['data']['slug'] ?>/">
+                                        <?= $value['data']['name'] ?>
+                                    </a>
+                                <?php } ?>
                         </ul>
                     </div>
                 <?php } ?>
