@@ -97,7 +97,13 @@
                                 <li class="child-link" data-parent="<?= $taxonomy['class'] ?>" class="child"
                                     style="display: <?= $index < 7 ? 'flex' : 'none'; ?>">
                                     <?php if (!empty($value['bild'])) { ?>
-                                     <img class="category-image" src="<?= $value['bild'] ?>" alt="<?= $value['name'] ?>">
+                                        <div class="department-image">
+                                     <img  src="<?= $value['bild'] ?>" alt="<?= $value['name'] ?>">
+                                     </div>
+                                     <?php } else { ?>
+                                        <div class="department-image">
+                                        <img src="https://ecom.livv.se.staging.haus.se/assets/source/15/rituals.png" alt="Placeholder">
+                                        </div>
                                 <?php } ?>
                                     <a href="<?= $value['slug'] ?>/">
                                         <?= $value['name'] ?>

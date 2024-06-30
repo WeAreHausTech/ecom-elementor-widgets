@@ -977,15 +977,34 @@
 
     .category-image {
         display: none; 
+        width: 56px; 
+        height: 56px;
+        padding: 4px; 
     }
+
+    .department-image {
+        display: none; 
+        justify-content: center; 
+        width: 56px; 
+        height: 56px; 
+        border-radius: 8px; 
+        border: 1px solid rgba(0, 0, 0, 0.10);
+        background: var(--White, #FFF);
+    }
+
+    .department-image img {
+        border-radius: 8px; 
+    }
+
 
     @media only screen and (max-width: 983px) {
         .category-image {
             display: flex; 
-            width: 56px; 
-            height: 56px;
-            padding: 4px; 
         }
+
+        .department-image {
+        display: flex; 
+    }
     }
 
     @media only screen and (max-width: 983px) {
