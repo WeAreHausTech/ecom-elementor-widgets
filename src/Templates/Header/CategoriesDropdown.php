@@ -2,14 +2,16 @@
     <div class="dropdown-menu" id="dropdown-menu">
         <div class="dropdown-content" id="dropdown-content">
             <div class="dropdown-categories-header">
+            <?php if ($data['products']) { ?>
                 <button class="go-back-button" id="go-back-button" onClick="onGoBackButton()">
                     <div class="back-icon-wrapper">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M7.81134 12.7132C7.62387 12.5257 7.51855 12.2713 7.51855 12.0062C7.51855 11.741 7.62387 11.4867 7.81134 11.2992L13.8113 5.29918C13.9999 5.11703 14.2525 5.01623 14.5147 5.01851C14.7769 5.02079 15.0278 5.12596 15.2132 5.31137C15.3986 5.49677 15.5037 5.74759 15.506 6.00978C15.5083 6.27198 15.4075 6.52458 15.2253 6.71319L9.93234 12.0062L15.2253 17.2992C15.4075 17.4878 15.5083 17.7404 15.506 18.0026C15.5037 18.2648 15.3986 18.5156 15.2132 18.701C15.0278 18.8864 14.7769 18.9916 14.5147 18.9939C14.2525 18.9961 13.9999 18.8953 13.8113 18.7132L7.81134 12.7132Z" fill="#3E4849"/>
                         </svg>
                     </div>
-                    Produkter
+                    <?= $data['products'] ?>
                 </button>
+                <?php } ?>
                 <button class="go-back-button" id="back-to-menu-button" onClick="onBackToMenu()">
                     <div class="back-icon-wrapper">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">

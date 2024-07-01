@@ -273,6 +273,7 @@ class Header extends Widget_Base
             'login_show_as_modal' => $this->get_settings_for_display('login_show_as_modal'),
             'product_page_url' => $this->lang('/en/products/', '/produkter/'),
             'product_page' => $this->lang('Show all products', 'Visa alla produkter'),
+            'products' => $this->lang('Products', 'Produkter'),
         ];
 
         $loggedInmenuId = $this->get_settings_for_display('login_in_menu_id');
