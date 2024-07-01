@@ -92,15 +92,13 @@
                             <?php foreach ($taxonomy['data'] as $index => $value) { ?>
                                 <?php $value = $value['data'] ?>
                                     <li class="child-link" data-parent="<?= $taxonomy['class'] ?>" class="child" style="display: <?= $index < 7 ? 'flex' : 'none'; ?>" data-slug="<?= $value['slug'] ?>" onclick="navigateToSlug(this)">
-                                        <?php if (!empty($value['bild'])) { ?>
-                                            <div class="department-image">
+                                        <div class="department-image">
+                                            <?php if (!empty($value['bild'])) { ?>
                                                 <img  src="<?= $value['bild'] ?>" alt="<?= $value['name'] ?>">
-                                            </div>
-                                        <?php } else { ?>
-                                            <div class="department-image">
-                                                <img src="https://ecom.livv.se.staging.haus.se/assets/source/15/rituals.png" alt="Placeholder">
-                                            </div>
-                                        <?php } ?>
+                                            <?php } else { ?>
+                                                <div class="no-image-placeholder" role="img" alt="No image available"></div>
+                                            <?php } ?>
+                                        </div>
                                         <a href="<?= $value['slug'] ?>/">
                                             <?= $value['name'] ?>
                                         </a>

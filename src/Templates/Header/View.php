@@ -1152,6 +1152,13 @@
     #see-more-brand {
         display: none; 
     }
+
+    .no-image-placeholder {
+        background-color: var(--Gray-Light, #F2F2F2);
+        width: 100%; 
+        height: 100%; 
+        border-radius: 8px; 
+    }
 }
 
 </style>
