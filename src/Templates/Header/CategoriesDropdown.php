@@ -112,7 +112,7 @@
                                     <?php } ?>
                                 <?php } ?>
 
-                               
+                                <?php if ($taxonomy['show-all-list'] === 'true') { ?>
                                     <?php
                                     usort($taxonomy['data'], function ($a, $b) {
                                         return strcmp($a['data']['name'], $b['data']['name']);
@@ -126,7 +126,7 @@
                                             </a>
                                          <?php } ?>
                                     </div>
-                               
+                                    <?php } ?>
                             </ul>
                         </div>
                     <?php } ?>

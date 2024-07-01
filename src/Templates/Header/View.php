@@ -110,6 +110,9 @@
         if (!isMobile) {
             return;
         }
+    //Scroll to top of dropdown
+    dropdownContent.scrollTop = 0; 
+    
     //Hide container with image, svg and heading
     setDisplayStyle('.parent-inner-container', 'none');
 
@@ -154,6 +157,7 @@
     }
 
     const resetMobileDropdown = () => {
+    dropdownContent.scrollTop = 0; 
         console.log("RESETTING MOBILE")
     //Show container with image, svg and heading
     setDisplayStyle('.parent-inner-container', 'flex');
@@ -1148,7 +1152,7 @@
         font-weight: 600; 
     }
 
-    
+
 
     @media only screen and (max-width: 983px) {
     .all-departments-section {
