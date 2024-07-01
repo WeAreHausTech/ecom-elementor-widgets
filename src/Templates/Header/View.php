@@ -536,15 +536,6 @@
         line-height: 150%;
         align-items: center; 
         gap: 16px;
-        /**LÄGG TILL DENNA FÖR ATT KUNNA SCROLLA */
-        /* flex-direction: column;  */
-    }
-
-    /**TA BORT DENNA STYLING */
-    .box {
-        background-color: blue; 
-        height: 100px; 
-        width: 50px;
     }
 
     .parent-link:hover,
@@ -1141,6 +1132,8 @@
         display: flex; 
         flex-direction: column;
         gap: 16px; 
+        border-top: 1px solid rgba(0, 0, 0, 0.10);
+        padding-top: 24px; 
     }
 
     #see-more-brand {
