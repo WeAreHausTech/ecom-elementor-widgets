@@ -1136,17 +1136,23 @@
     }
     }
 
-    .all-brands-section {
+    .all-departments-section {
         display: none; 
-    }
-
-    @media only screen and (max-width: 983px) {
-    .all-brands-section {
-        display: flex; 
         flex-direction: column;
         gap: 16px; 
         border-top: 1px solid rgba(0, 0, 0, 0.10);
         padding-top: 24px; 
+    }
+
+    .all-departments-section p {
+        font-weight: 600; 
+    }
+
+    
+
+    @media only screen and (max-width: 983px) {
+    .all-departments-section {
+        display: flex; 
     }
 
     #see-more-brand {
