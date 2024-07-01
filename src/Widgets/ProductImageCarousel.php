@@ -61,7 +61,8 @@ class ProductImageCarousel extends Widget_Base
         
         $widget_id = 'ecom_' . $this->get_id();
         $post = get_post();
-        echo '<div id="' . $widget_id . '" class="ecom-components-root" data-widget-type="product-image-carousel" data-product-slug="'.$post->post_name.'"></div>';
+        $product_id = get_the_ID();
+        echo '<div id="' . $widget_id . '" class="ecom-components-root" data-widget-type="product-image-carousel" data-product-id="'.$product_id.'" data-product-slug="'.$post->post_name.'"></div>';
         ?>
         <?php
     }

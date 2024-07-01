@@ -83,12 +83,16 @@ export default {
 
   productImageCarousel: (dataAttributes: NamedNodeMap) => {
     const slug = dataAttributes.getNamedItem('data-product-slug')?.value
+    const id = dataAttributes.getNamedItem('data-product-id')?.value
+
+    const propToUse = id ? { id } : { slug: slug! }
+
     const ProductImageCarousel = React.lazy(() => import('./ProductImageCarousel'))
 
     return (
       slug && (
         <Suspense>
-          <ProductImageCarousel slug={slug} />
+          <ProductImageCarousel {...propToUse} />
         </Suspense>
       )
     )
