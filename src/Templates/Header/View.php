@@ -260,6 +260,7 @@
     }
 
     closeMenu = (e) => {
+        document.body.style.position = '';
         document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
         setTimeout(() => {
             document.getElementById('dropdown-menu').classList.remove('active-dropdown-menu');
