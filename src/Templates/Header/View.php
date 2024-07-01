@@ -799,7 +799,7 @@
             left: 0;
             background-color: var(--header-dropdown-background, #fff);
             overflow-y: hidden;
-            padding: 24px 24px 24px 24px;
+            padding: 24px;
             z-index: 9999;
         }
 

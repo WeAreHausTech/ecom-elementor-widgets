@@ -99,7 +99,7 @@ class Header extends Widget_Base
         $this->add_control(
             'footer_menu_id',
             [
-                'label' => __('Id på footer i meny:', 'haus-ecom-widgets'),
+                'label' => __('Id på footer i mobilmeny:', 'haus-ecom-widgets'),
                 'type' => \Elementor\Controls_Manager::TEXT,
                 'label_block' => true,
             ]
