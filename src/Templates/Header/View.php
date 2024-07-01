@@ -195,6 +195,16 @@
      dropdownType.style.padding = '0'
     }
 
+    navigateToSlug = (element) => {
+        if (!isMobile) {
+            return;
+        }
+        const slug = element.getAttribute('data-slug')
+        if (slug) {
+            window.location.href = slug; 
+        }
+    }
+
     showMore = (buttonElement) => {
         const buttonId = buttonElement.id;
         const id = buttonId.split('-')[2];

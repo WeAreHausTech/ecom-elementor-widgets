@@ -97,7 +97,7 @@
                             <?php foreach ($taxonomy['data'] as $index => $value) { ?>
                                 <?php $value = $value['data'] ?>
                                 <li class="child-link" data-parent="<?= $taxonomy['class'] ?>" class="child"
-                                    style="display: <?= $index < 7 ? 'flex' : 'none'; ?>">
+                                    style="display: <?= $index < 7 ? 'flex' : 'none'; ?>" data-slug="<?= $value['slug'] ?>" onclick="navigateToSlug(this)">
                                     <?php if (!empty($value['bild'])) { ?>
                                         <div class="department-image">
                                      <img  src="<?= $value['bild'] ?>" alt="<?= $value['name'] ?>">
