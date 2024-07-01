@@ -147,9 +147,9 @@
         exploreLink.textContent = `Utforska ${categoryName}`
         exploreContainer.style.display = 'block'
     }
-    // Hide gray line and change padding size
+    // Hide grey line and change padding size
     const dropdownType = document.querySelector('.dropdown-type')
-    dropdownType.classList.add('hide-gray-line')
+    dropdownType.classList.add('hide-grey-line')
     dropdownType.style.padding = '12px 24px'
     }
 
@@ -174,9 +174,9 @@
     document.getElementById('go-back-button').style.display = 'flex'
     document.getElementById('back-to-menu-button').style.display = 'none'
 
-    // Add gray line and change padding size
+    // Add grey line and change padding size
     const dropdownType = document.querySelector('.dropdown-type')
-    dropdownType.classList.remove('hide-gray-line')
+    dropdownType.classList.remove('hide-grey-line')
     dropdownType.style.padding = '24px'
     }
 
@@ -229,10 +229,12 @@
     }
     onOpenModal = () => {
         document.getElementById('header-content').classList.toggle('active')
+        document.body.style.position = 'fixed';
 
     }
     onCloseModal = () => {
         document.getElementById('header-content').classList.toggle('active')
+        document.body.style.position = '';
     }
 
     onGoBackButton = () => {
@@ -306,6 +308,7 @@
     window.addEventListener('resize', handleResize)
 
     const dropdown = document.getElementById('dropdown');
+    const dropdownContent = document.getElementById('dropdown-content')
 
     document.body.addEventListener('click', (event) => {
 
@@ -327,10 +330,9 @@
         closeProductModal();
     });
 
-    document.addEventListener('scroll', function() {
+    dropdownContent.addEventListener('scroll', function() {
     const header = document.querySelector('.dropdown-categories-header');
-    console.log('ScrollY:', window.scrollY);
-    if (window.scrollY > 0) {
+    if (dropdownContent.scrollTop > 0) {
         header.classList.add('scrolled');
         console.log('Scrolled class added');
     } else {
@@ -993,7 +995,7 @@
             border-top: 1px solid rgba(0, 0, 0, 0.10);
         }
 
-        .hide-gray-line::before {
+        .hide-grey-line::before {
             border-top: none; 
         }
 
