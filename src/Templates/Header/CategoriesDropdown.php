@@ -118,16 +118,21 @@
                                 <?php } ?>
                             <?php } ?>
 
+                            <?php if ($taxonomy['class'] === 'brand') {?>
                             <?php
-                                // Sort the taxonomy data alphabetically by the 'name' field
                                 usort($taxonomy['data'], function ($a, $b) {
                                     return strcmp($a['data']['name'], $b['data']['name']);
                                 });
                                 ?>
+                                 <div class="all-brands-section">
+                                <p style="font-weight: 600;">Alla varumärken A-Ö</p>
                             <?php foreach ($taxonomy['data'] as $index => $value) { ?>
+                                    
                                     <a href="<?= $value['data']['slug'] ?>/">
                                         <?= $value['data']['name'] ?>
                                     </a>
+                                <?php } ?>
+                                </div>
                                 <?php } ?>
                         </ul>
                     </div>

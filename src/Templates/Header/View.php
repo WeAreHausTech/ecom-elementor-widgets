@@ -565,7 +565,6 @@
         }
     }
 
-
     .dropdown-menu .child {
         font-weight: 400;
         font-size: 14px;
@@ -997,9 +996,9 @@
         .dropdown-type::before {
             content: '';
             position: absolute;
-            top: 0; /* Position at the top */
-            left: 24px; /* 24px from the left edge */
-            right: 24px; /* 24px from the right edge */
+            top: 0; 
+            left: 24px; 
+            right: 24px; 
             border-top: 1px solid rgba(0, 0, 0, 0.10);
         }
 
@@ -1130,6 +1129,22 @@
         position: relative; 
         top: 0; 
         right: 0; 
+    }
+    }
+
+    .all-brands-section {
+        display: none; 
+    }
+
+    @media only screen and (max-width: 983px) {
+    .all-brands-section {
+        display: flex; 
+        flex-direction: column;
+        gap: 16px; 
+    }
+
+    #see-more-brand {
+        display: none; 
     }
 }
 
