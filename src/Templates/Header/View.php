@@ -80,6 +80,121 @@
 
 <script>
     //TODO move to separate external file
+
+    let header = document.querySelector('.header')
+    let isMobile = header.offsetWidth <= 983
+
+    const updateIsMobile = () => {
+        header = document.querySelector('.header')
+        isMobile = header.offsetWidth <= 983
+    }
+
+    window.addEventListener('load', updateIsMobile);
+    window.addEventListener('resize', updateIsMobile);
+
+     // Function to set display style for elements
+     const setDisplayStyle = (selector, displayValue) => {
+    document.querySelectorAll(selector).forEach((element) => {
+        element.style.display = displayValue
+    })
+    }
+
+    // Function to set flex direction for elements 
+    const setFlexDirection = (selector, flexDirection) => {
+    document.querySelectorAll(selector).forEach((element) => {
+        element.style.flexDirection = flexDirection
+    })
+    }
+
+    openSubcategories = (categoryId, categoryName) => {
+        if (!isMobile) {
+            return;
+        }
+    //Hide container with image, svg and heading
+    setDisplayStyle('.parent-inner-container', 'none');
+
+    // Set display properties for headings for categories and departments
+    document.querySelectorAll('[id^="parent-"]').forEach((element) => {
+        element.style.display = element.id === `parent-${categoryId}` ? 'flex' : 'none'
+    })
+
+    // Adjust button visibility
+    document.getElementById('go-back-button').style.display = 'none'
+    document.getElementById('back-to-menu-button').style.display = 'flex'
+    document.getElementById('back-to-menu-placeholder').textContent = `${categoryName}`
+
+    // Set display properties for categories and departments
+    const categoryElement = document.getElementById(`category-${categoryId}`)
+    if (categoryElement) categoryElement.style.display = 'flex'
+    
+    const departmentElement = document.getElementById(`department-list-${categoryId}`)
+    if (departmentElement) {
+        departmentElement.style.display = 'flex'
+        setDisplayStyle('.dropdown-categories', 'none')
+    }
+    
+    // Set explore link properties
+    const desktopLink = document.getElementById(`desktop-link-${categoryId}`)
+    let link = ''
+    if (desktopLink) {
+        link = desktopLink.getAttribute('href')
+    }
+
+    if (link) {
+        const exploreContainer = document.querySelector('.explore-categories')
+        const exploreLink = document.querySelector('.explore-link')
+        exploreLink.setAttribute('href', link)
+        exploreLink.textContent = `Utforska ${categoryName}`
+        exploreContainer.style.display = 'block'
+    }
+    // Hide gray line and change padding size
+    const dropdownType = document.querySelector('.dropdown-type')
+    dropdownType.classList.add('hide-gray-line')
+    dropdownType.style.padding = '12px 24px'
+    }
+
+    const resetMobileDropdown = () => {
+        console.log("RESETTING MOBILE")
+    //Show container with image, svg and heading
+    setDisplayStyle('.parent-inner-container', 'flex');
+
+    // Set display and flex direction properties for various elements
+    setDisplayStyle('[id^="parent-"]', 'flex')
+    
+    setDisplayStyle('.category', 'none')
+    setDisplayStyle('.department-list', 'none')
+    setDisplayStyle('.explore-categories', 'none')
+
+    setFlexDirection('.department', 'column')
+
+    //Reset this element when clicked into avdelningar/departments and hidden explore-button
+    setDisplayStyle('.dropdown-categories', 'block')
+
+    //Adjust button visibility
+    document.getElementById('go-back-button').style.display = 'flex'
+    document.getElementById('back-to-menu-button').style.display = 'none'
+
+    // Add gray line and change padding size
+    const dropdownType = document.querySelector('.dropdown-type')
+    dropdownType.classList.remove('hide-gray-line')
+    dropdownType.style.padding = '24px'
+    }
+
+    const resetDesktopDropdown = () => {
+        console.log("RESETTING DESKTOP")
+    // Hide the go-back button
+    document.getElementById('go-back-button').style.display = 'none'
+
+    // Set display and flex direction properties for categories and departments
+    setDisplayStyle('.category', 'flex')
+    setDisplayStyle('.department-list', 'flex')
+    setFlexDirection('.parent', 'column')
+    setFlexDirection('.department', 'column')
+
+    const dropdownType = document.querySelector('.dropdown-type')
+     dropdownType.style.padding = '0'
+    }
+
     showMore = (buttonElement) => {
         const buttonId = buttonElement.id;
         const id = buttonId.split('-')[2];
@@ -125,6 +240,11 @@
         document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
         document.getElementById('dropdown').classList.remove('active-dropdown');
         document.getElementById('header-content').classList.add('active')
+
+    }
+
+    onBackToMenu = () => {
+    resetMobileDropdown()
     }
 
     closeMenu = (e) => {
@@ -132,7 +252,12 @@
         setTimeout(() => {
             document.getElementById('dropdown-menu').classList.remove('active-dropdown-menu');
             document.getElementById('dropdown').classList.remove('active-dropdown');
+
+            if (document.getElementById('header-content').classList.contains('active')) {
+            onCloseModal();
+            }
         }, 400);
+        
     }
 
     openOrCloseMenu = (e) => {
@@ -149,6 +274,13 @@
             setTimeout(() => {
                 document.getElementById('dropdown-content').classList.add('active-dropdown-content')
             }, 50);
+
+            if (isMobile) {
+                resetMobileDropdown();
+            } else {
+                resetMobileDropdown();
+                resetDesktopDropdown();
+            }
         }
     }
 
@@ -157,28 +289,31 @@
             productMenuIds.forEach((productMenuId) => {
                 const menuItemProducts = document.querySelectorAll('#menu-item-' + productMenuId);
                 menuItemProducts.forEach((menuItemProduct) => {
-                    const isMobile = window.innerWidth <= 768;
-                    if (isMobile) {
-                        menuItemProduct.addEventListener('click', openOrCloseMenu);
-                        menuItemProduct.removeEventListener('mouseover', openOrCloseMenu);
-                    } else {
-                        menuItemProduct.addEventListener('click', openOrCloseMenu);
-                    }
+                    menuItemProduct.addEventListener('click', openOrCloseMenu );
                 });
             });
         }
     }
 
-    updateDeviceType();
-    window.addEventListener('resize', updateDeviceType);
+    updateDeviceType()
+
+    const handleResize = () => {
+        updateDeviceType()
+        closeMenu()
+        closeMobileMenuModal()
+     }
+
+    window.addEventListener('resize', handleResize)
 
     const dropdown = document.getElementById('dropdown');
 
     document.body.addEventListener('click', (event) => {
+
         const targetId = event.target.id;
+        console.log(targetId)
 
         if (dropdown.classList.contains('active-dropdown')) {
-            if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId.startsWith('menu-item-') || targetId.startsWith('see-more-')) {
+            if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId === 'back-to-menu-button' || targetId === 'back-to-menu-placeholder' ||  targetId.startsWith('menu-item-') ||  targetId.startsWith('category-button-') || targetId.startsWith('desktop-link-') || targetId.startsWith('department-button-') || targetId.startsWith('see-more-') || targetId.startsWith('parent-')) {
                 return;
             } else {
                 closeMenu();
@@ -191,6 +326,18 @@
     searchElement.addEventListener('click', function (e) {
         closeProductModal();
     });
+
+    document.addEventListener('scroll', function() {
+    const header = document.querySelector('.dropdown-categories-header');
+    console.log('ScrollY:', window.scrollY);
+    if (window.scrollY > 0) {
+        header.classList.add('scrolled');
+        console.log('Scrolled class added');
+    } else {
+        header.classList.remove('scrolled');
+        console.log('Scrolled class removed');
+    }
+});
 
 </script>
 
@@ -216,7 +363,6 @@
         align-items: center;
 
     }
-
 
     @media only screen and (min-width: 983px) {
 
@@ -330,9 +476,9 @@
     .dropdown-content .go-back-button {
         background: none;
         border: none;
-        font-size: 18px;
+        font-size: 20px;
         font-style: normal;
-        font-weight: 500;
+        font-weight: 600;
         line-height: 140%;
         font-family: Inter;
         color: var(--header-go-back-button-color, #3E4849);
@@ -342,7 +488,8 @@
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
-        gap: 4px;
+        gap: 16px;
+        
     }
 
     .dropdown-content .go-back-button:hover {
@@ -387,12 +534,35 @@
         font-style: normal;
         font-weight: 400;
         line-height: 150%;
+        align-items: center; 
+        gap: 16px;
+        /**LÄGG TILL DENNA FÖR ATT KUNNA SCROLLA */
+        /* flex-direction: column;  */
+    }
+
+    /**TA BORT DENNA STYLING */
+    .box {
+        background-color: blue; 
+        height: 100px; 
+        width: 50px;
     }
 
     .parent-link:hover,
     .child-link:hover a {
         text-decoration: underline;
         color: var(--header-dropdown-child-color-hover, #000) !important;
+    }
+
+    @media screen and (max-width: 983px) {
+        .department-list .child-link a {
+            font-weight: 600; 
+            font-size: 16px; 
+        }
+
+        .department-list .child-link:hover a {
+            font-size: 18px; 
+            text-decoration: underline; 
+        }
     }
 
 
@@ -419,7 +589,7 @@
 
     @media screen and (max-width: 983px) {
         .dropdown-product-link {
-            display: block;
+            display: none;
             margin-top: 24px;
             margin-left: 0px;
 
@@ -467,12 +637,6 @@
         cursor: pointer;
         text-decoration: underline;
         color: var(--header-dropdown-child-color-hover, #000) !important;
-    }
-
-    @media screen and (max-width: 983px) {
-        .dropdown-type {
-            grid-auto-rows: auto;
-        }
     }
 
     .dropdown-menu .category,
@@ -771,7 +935,7 @@
             overflow: auto;
             flex-wrap: nowrap;
             gap: 0;
-            padding: 20px 24px 24px 24px;
+            padding: 0; 
         }
 
         .dropdown-categories-header {
@@ -780,7 +944,16 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            margin-bottom: 32px;
+            padding: 24px; 
+            position: sticky; 
+            top: 0; 
+            background-color: var(--header-dropdown-background, #fff);
+            z-index: 1000;
+        }
+
+
+        .scrolled {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.10);
         }
 
         .menu li {
@@ -808,22 +981,36 @@
         .dropdown-menu .categories {
             row-gap: 24px;
             grid-template-columns: repeat(auto-fit, 100vw);
+            display: flex; 
+            flex-direction: column; 
+            padding: 12px 24px 24px 24px;
         }
 
         .dropdown-type {
-            margin-top: 24px;
-            margin-left: 0px;
+            display: flex; 
+            flex-direction: column; 
+            width: 100%; 
+            padding: 24px; 
+            position: relative; 
         }
 
-        .dropdown-categories,
-        .dropdown-type {
-            border-right: none;
-            width: 100%;
+        .dropdown-type::before {
+            content: '';
+            position: absolute;
+            top: 0; /* Position at the top */
+            left: 24px; /* 24px from the left edge */
+            right: 24px; /* 24px from the right edge */
+            border-top: 1px solid rgba(0, 0, 0, 0.10);
+        }
+
+        .hide-gray-line::before {
+            border-top: none; 
         }
 
         .dropdown-categories {
+            border-right: none;
             margin: 0;
-
+            max-width: none;
         }
 
         .menu .current-menu-item {
@@ -839,9 +1026,111 @@
         .dropdown-content {
             opacity: 1;
             max-height: 100vh;
-            height: auto;
+            height: 100vh;
             border-radius: 0px;
-            padding-bottom: 50px;
+            padding-bottom: 50px; 
         }
     }
+
+    .category-image {
+        display: none; 
+        width: 56px; 
+        height: 56px;
+        padding: 4px; 
+    }
+
+    .department-image {
+        display: none; 
+        justify-content: center; 
+        width: 56px; 
+        height: 56px; 
+        border-radius: 8px; 
+        border: 1px solid rgba(0, 0, 0, 0.10);
+        background: var(--White, #FFF);
+    }
+
+    .department-image img {
+        border-radius: 8px; 
+    }
+
+
+    @media only screen and (max-width: 983px) {
+        .category-image {
+            display: flex; 
+        }
+
+        .department-image {
+        display: flex; 
+        }
+    }
+
+    @media only screen and (max-width: 983px) {
+        .dropdown-a.desktop,
+        .parent-link.desktop {
+            pointer-events: none; 
+            line-height: 140%; 
+        }
+
+    }
+
+    .arrow-icon {
+        display: none; 
+    }
+
+    @media only screen and (max-width: 983px) {
+        .arrow-icon {
+            display: flex; 
+            margin-left: auto; 
+        }
+    }
+
+    .parent-inner-container {
+        display: flex; 
+        flex-direction: row; 
+        width: 100%; 
+        align-items: center;
+        gap: 16px; 
+    }
+
+    .back-icon-wrapper {
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        border-radius: 20px;
+        background: var(--Gray-Light, #F2F2F2);
+        width: 36px;
+        height: 36px;
+    }
+
+    .explore-categories {
+    
+    }
+
+    .explore-link {
+        display: flex;
+        height: 40px;
+        padding: 8px 16px;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        align-self: stretch;
+        border-radius: 8px;
+        background: var(--Blue-Light, #E9F4F0);
+    }
+
+    @media only screen and (max-width: 983px) {
+        .dropdown-menu .category, 
+        .dropdown-menu .department ul {
+            gap: 16px; 
+            margin-top: 0; 
+        }
+    }
+    @media only screen and (max-width: 983px) {
+    .dropdown-categories-header .close-button {
+        position: relative; 
+        top: 0; 
+        right: 0; 
+    }
+}
+
 </style>

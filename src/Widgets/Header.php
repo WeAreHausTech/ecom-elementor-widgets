@@ -164,13 +164,15 @@ class Header extends Widget_Base
 
         if ($this->wpmlHelper->hasWpml()) {
             $query = $wpdb->prepare(
-                "SELECT DISTINCT tt.term_id, tt.parent, t.name, t.slug, tr.language_code as lang
+                "SELECT DISTINCT tt.term_id, tt.parent, t.name, t.slug, tr.language_code as lang, 
+                IFNULL(tm_bild.meta_value, '') AS bild
                 FROM wp_term_taxonomy tt
                 LEFT JOIN $terms t ON tt.term_id = t.term_id
                 LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
                 LEFT JOIN {$wpdb->prefix}icl_translations tr
                     ON tt.term_taxonomy_id = tr.element_id
                     AND tr.element_type = 'tax_{$taxonomy}'
+                LEFT JOIN $termmeta tm_bild ON tt.term_id = tm_bild.term_id AND tm_bild.meta_key = 'bild'
                 WHERE tr.language_code =  '$this->currentLang'
                 AND tm.meta_value IS NOT NULL
                 AND taxonomy = %s
@@ -180,10 +182,12 @@ class Header extends Widget_Base
             
         } else {
             $query = $wpdb->prepare(
-                "SELECT DISTINCT tt.term_id, tt.parent, t.name, t.slug
+                "SELECT DISTINCT tt.term_id, tt.parent, t.name, t.slug, 
+                IFNULL(tm_bild.meta_value, '') AS bild
                 FROM wp_term_taxonomy tt
                 LEFT JOIN $terms t ON tt.term_id = t.term_id
                 LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
+                LEFT JOIN $termmeta tm_bild ON tt.term_id = tm_bild.term_id AND tm_bild.meta_key = 'bild'
                 WHERE tm.meta_value IS NOT NULL
                 AND taxonomy= %s
                 (tt.parent = 0 OR tt.parent IN (SELECT term_id FROM wp_term_taxonomy WHERE parent = 0))",
@@ -192,6 +196,10 @@ class Header extends Widget_Base
         }
 
         $termData = $wpdb->get_results($query, ARRAY_A);
+
+        echo '<script>';
+        echo 'console.log("termData:", ' . json_encode($termData) . ');';
+        echo '</script>';
 
         if (!is_array($termData) || empty($termData)) {
             return null;
@@ -273,6 +281,11 @@ class Header extends Widget_Base
 
         $categories = $this->getTaxonomies('produkter-kategorier', '/produkter/kategorier/', '/en/products/categories/');
 
+        echo '<script>';
+        echo 'console.log("Categories:", ' . json_encode($categories) . ');';
+        echo '</script>';
+
+
         $taxonomies = [
             [
                 'heading' => $this->lang('Brands', 'Varumärken'),
@@ -287,6 +300,10 @@ class Header extends Widget_Base
                 'class' => 'department'
             ]
         ];
+
+        echo '<script>';
+        echo 'console.log("taxonomies:", ' . json_encode($taxonomies) . ');';
+        echo '</script>';
 
         $url = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
