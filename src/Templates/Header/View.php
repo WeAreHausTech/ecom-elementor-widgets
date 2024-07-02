@@ -114,7 +114,7 @@
         dropdownContent.scrollTop = 0; 
         
         //Hide container with image, svg and heading
-        setDisplayStyle('.parent-inner-container', 'none');
+        setDisplayStyle('.parent-button', 'none');
 
         // Adjust button visibility
         document.getElementById('go-back-button').style.display = 'none'
@@ -148,7 +148,7 @@
 
     const resetMobileDropdown = () => {
         dropdownContent.scrollTop = 0; 
-        setDisplayStyle('.parent-inner-container', 'flex');
+        setDisplayStyle('.parent-button', 'flex');
         setDisplayStyle('[id^="parent-"]', 'flex')
         setDisplayStyle('.category', 'none')
         setDisplayStyle('.department-list', 'none')
@@ -164,6 +164,7 @@
 
     const resetDesktopDropdown = () => {
         document.getElementById('go-back-button').style.display = 'none'
+        setDisplayStyle('.parent-button', 'none');
         setDisplayStyle('.category', 'flex')
         setDisplayStyle('.department-list', 'flex')
         setFlexDirection('.parent', 'column')
@@ -943,7 +944,7 @@
         }
 
         .dropdown-menu .categories {
-            row-gap: 24px;
+            row-gap: 16px;
             grid-template-columns: repeat(auto-fit, 100vw);
             display: flex; 
             flex-direction: column; 
@@ -1038,8 +1039,7 @@
     @media only screen and (max-width: 983px) {
         .dropdown-a.desktop,
         .parent-link.desktop {
-            pointer-events: none; 
-            line-height: 140%; 
+            display: none; 
         }
     }
 
@@ -1054,12 +1054,13 @@
         }
     }
 
-    .parent-inner-container {
-        display: flex; 
+    .parent-button {
+        display: none; 
         flex-direction: row; 
         width: 100%; 
         align-items: center;
         gap: 16px; 
+        padding: 0 !important; 
     }
 
     .back-icon-wrapper {

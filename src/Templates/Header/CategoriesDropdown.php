@@ -39,20 +39,24 @@
                                 <a class="explore-link" id="explore-link-<?= $mainCategory['data']['term_id'] ?>" href="<?= $mainCategory['data']['slug'] ?>/" > <?= $data['explore'] ?> <?= strtolower($mainCategory['data']['name']) ?></a>
                         <?php } ?>
                         <?php foreach ($categories as $mainCategory) { ?>
-                            <li class="parent" id="parent-<?= $mainCategory['data']['term_id'] ?>" onClick="openSubcategories(<?= $mainCategory['data']['term_id'] ?>, '<?= addSlashes($mainCategory['data']['name']) ?>')">
-                                <div class="parent-inner-container" role="button" tabIndex='0'>
+                            <li class="parent" id="parent-<?= $mainCategory['data']['term_id'] ?>" >
+                                <button class="parent-button" onClick="openSubcategories(<?= $mainCategory['data']['term_id'] ?>, '<?= addSlashes($mainCategory['data']['name']) ?>')">
                                     <?php if (!empty($mainCategory['data']['bild'])) { ?>
                                         <div class="category-image">
                                             <img src="<?= $mainCategory['data']['bild'] ?>" alt="<?= $mainCategory['data']['name'] ?>">
                                         </div>
                                     <?php } ?>
-                                    <a class="parent-link desktop" id="desktop-link-<?= $mainCategory['data']['term_id'] ?>" href="<?= $mainCategory['data']['slug'] ?>/">
-                                        <?= $mainCategory['data']['name'] ?>
-                                    </a>
+                                    
+                                    <?= $mainCategory['data']['name'] ?>
+                                  
                                     <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                         <path d="M15.7133 11.2993C15.9008 11.4868 16.0061 11.7411 16.0061 12.0063C16.0061 12.2714 15.9008 12.5257 15.7133 12.7133L9.71332 18.7133C9.52471 18.8954 9.27211 18.9962 9.00992 18.9939C8.74772 18.9917 8.49691 18.8865 8.3115 18.7011C8.12609 18.5157 8.02092 18.2649 8.01864 18.0027C8.01636 17.7405 8.11716 17.4879 8.29932 17.2993L13.5923 12.0063L8.29932 6.71327C8.11716 6.52466 8.01636 6.27206 8.01864 6.00986C8.02092 5.74767 8.12609 5.49686 8.3115 5.31145C8.49691 5.12604 8.74772 5.02087 9.00992 5.01859C9.27211 5.01631 9.52471 5.11711 9.71332 5.29927L15.7133 11.2993Z" fill="#3E4849"/>
                                     </svg>
-                                </div>
+                                </button>
+
+                                <a class="parent-link desktop" id="desktop-link-<?= $mainCategory['data']['term_id'] ?>" href="<?= $mainCategory['data']['slug'] ?>/">
+                                        <?= $mainCategory['data']['name'] ?>
+                                </a>
                                 <?php if (!empty($mainCategory['children'])) { ?>
                                     <ul class="category" id="category-<?= $mainCategory['data']['term_id'] ?>">
                                         <?php foreach ($mainCategory['children'] as $index => $child) {?>
@@ -81,15 +85,16 @@
 
             <div class="dropdown-type">
                 <?php foreach ($taxonomies as $taxonomy) { ?>
-                    <div class="department" id="parent-<?= $taxonomy['class'] ?>" onClick="openSubcategories('<?= $taxonomy['class'] ?>', '<?= $taxonomy['heading'] ?>')">
-                        <div class="parent-inner-container">
-                            <a class="dropdown-a desktop" id="desktop-link-<?= $taxonomy['class'] ?>" href="<?= $taxonomy['heading-link'] ?>" >
-                                <?= $taxonomy['heading'] ?>
-                            </a>
+                    <div class="department" id="parent-<?= $taxonomy['class'] ?>" >
+                        <button class="parent-button" onClick="openSubcategories('<?= $taxonomy['class'] ?>', '<?= $taxonomy['heading'] ?>')">
+                            <?= $taxonomy['heading'] ?>
                             <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                 <path d="M15.7133 11.2993C15.9008 11.4868 16.0061 11.7411 16.0061 12.0063C16.0061 12.2714 15.9008 12.5257 15.7133 12.7133L9.71332 18.7133C9.52471 18.8954 9.27211 18.9962 9.00992 18.9939C8.74772 18.9917 8.49691 18.8865 8.3115 18.7011C8.12609 18.5157 8.02092 18.2649 8.01864 18.0027C8.01636 17.7405 8.11716 17.4879 8.29932 17.2993L13.5923 12.0063L8.29932 6.71327C8.11716 6.52466 8.01636 6.27206 8.01864 6.00986C8.02092 5.74767 8.12609 5.49686 8.3115 5.31145C8.49691 5.12604 8.74772 5.02087 9.00992 5.01859C9.27211 5.01631 9.52471 5.11711 9.71332 5.29927L15.7133 11.2993Z" fill="#3E4849"/>
                                 </svg>
-                        </div>
+                        </button>
+                        <a class="dropdown-a desktop" id="desktop-link-<?= $taxonomy['class'] ?>" href="<?= $taxonomy['heading-link'] ?>" >
+                                <?= $taxonomy['heading'] ?>
+                        </a>
                         <ul class="department-list" id="department-list-<?= $taxonomy['class'] ?>">
                             <?php foreach ($taxonomy['data'] as $index => $value) { ?>
                                 <?php $value = $value['data'] ?>
