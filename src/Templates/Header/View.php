@@ -452,6 +452,12 @@
         color: var(--header-see-more-button-color-hover, #000) !important;
     }
 
+    @media only screen and (max-width: 983px) {
+        .see-more-button.departments {
+            display: none; 
+        }
+    }
+
     .dropdown-content .go-back-button {
         background: none;
         border: none;
@@ -595,19 +601,6 @@
         color: var(--header-dropdown-child-color-hover, #000) !important;
     }
 
-    .dropdown-a {
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 600;
-        line-height: 150%;
-    }
-
-    .dropdown-a:hover {
-        cursor: pointer;
-        text-decoration: underline;
-        color: var(--header-dropdown-child-color-hover, #000) !important;
-    }
-
     .dropdown-menu .category,
     .dropdown-menu .brand ul,
     .dropdown-menu .department ul {
@@ -711,8 +704,6 @@
         flex-wrap: wrap;
     }
 
-
-
     .menu ul {
         padding-left: 0;
         list-style: none;
@@ -742,9 +733,7 @@
     .menu li a:hover {
         border-radius: 20px;
         background: var(--header-menu-li-color-hover, #F2F2F2);
-
     }
-
 
     .menu .current-menu-item {
         border-radius: 20px;
@@ -844,8 +833,13 @@
         .dropdown-categories-header .go-back-button {
             display: block;
         }
-    }
 
+        .dropdown-categories-header .close-button {
+        position: relative; 
+        top: 0; 
+        right: 0; 
+        }
+    }
 
     @media only screen and (min-width: 983px) {
         .mobile-heaader {
@@ -1031,6 +1025,13 @@
         .department-image {
         display: flex; 
         }
+
+        .no-image-placeholder {
+        background-color: var(--Gray-Light, #F2F2F2);
+        width: 100%; 
+        height: 100%; 
+        border-radius: 8px; 
+    }
     }
 
     @media only screen and (max-width: 983px) {
@@ -1039,7 +1040,6 @@
             pointer-events: none; 
             line-height: 140%; 
         }
-
     }
 
     .arrow-icon {
@@ -1072,7 +1072,7 @@
     }
 
     .explore-categories {
-        display: flex;
+        display: none;
         justify-content: center;
         border-radius: 8px;
         background: var(--Blue-Light, #E9F4F0);
@@ -1092,13 +1092,6 @@
             margin-top: 0; 
         }
     }
-    @media only screen and (max-width: 983px) {
-    .dropdown-categories-header .close-button {
-        position: relative; 
-        top: 0; 
-        right: 0; 
-    }
-    }
 
     .all-departments-section {
         display: none; 
@@ -1112,23 +1105,10 @@
         font-weight: 600; 
     }
 
-
-
     @media only screen and (max-width: 983px) {
     .all-departments-section {
         display: flex; 
     }
-
-    #see-more-brand {
-        display: none; 
     }
-
-    .no-image-placeholder {
-        background-color: var(--Gray-Light, #F2F2F2);
-        width: 100%; 
-        height: 100%; 
-        border-radius: 8px; 
-    }
-}
 
 </style>

@@ -36,7 +36,7 @@
                 <ul class="categories">
                     <?php if ($categories) { ?>
                         <?php foreach ($categories as $mainCategory) { ?>
-                            <div class="explore-categories" id="explore-categories-<?= $mainCategory['data']['term_id'] ?>" style="display: none">
+                            <div class="explore-categories" id="explore-categories-<?= $mainCategory['data']['term_id'] ?>">
                                 <a class="explore-link" href="<?= $mainCategory['data']['slug'] ?>/" > <?= $data['explore'] ?> <?= strtolower($mainCategory['data']['name']) ?></a>
                             </div>
                         <?php } ?>
@@ -108,10 +108,11 @@
                                         </a>
                                     </li>
                                     <?php if ($index === 8) { ?>
-                                        <a class="see-more-button" id="see-more-<?= $taxonomy['class'] ?>" href="<?= $taxonomy['heading-link'] ?>">
+                                        <a class="see-more-button departments" id="see-more-<?= $taxonomy['class'] ?>" href="<?= $taxonomy['heading-link'] ?>">
                                             <?= $this->lang('Show all (' . count($taxonomy['data']) .')', 'Visa alla (' . count($taxonomy['data']) . ')') ?>
                                         </a>
                                     <?php } ?>
+                                    
                                 <?php } ?>
 
                                 <?php if ($taxonomy['show-all-list'] === 'true') { ?>
