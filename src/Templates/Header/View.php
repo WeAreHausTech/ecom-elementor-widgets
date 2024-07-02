@@ -22,8 +22,8 @@
                 <?php include ('Cart.php') ?>
             </div>
             <div class="close-button">
-                <button onClick="onCloseModal()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <button onClick="onCloseModal()" aria-label="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path
                             d="M7.12099 5.70717C6.73051 5.31668 6.09741 5.31668 5.70693 5.70717C5.31644 6.09765 5.31644 6.73075 5.70693 7.12123L10.5858 12L5.70693 16.8789C5.31644 17.2693 5.31644 17.9024 5.70693 18.2929C6.09741 18.6834 6.73051 18.6834 7.12099 18.2929L11.9998 13.4141L16.8787 18.2929C17.2691 18.6834 17.9022 18.6834 18.2927 18.2929C18.6832 17.9024 18.6832 17.2693 18.2927 16.8789L13.4139 12L18.2927 7.12123C18.6832 6.73075 18.6832 6.09765 18.2927 5.70717C17.9022 5.31668 17.2691 5.31668 16.8787 5.70717L11.9998 10.586L7.12099 5.70717Z"
                             fill="#3E4849" />
@@ -54,8 +54,8 @@
             <?php include ('Cart.php') ?>
 
             <div class="open-button">
-                <button onClick="onOpenModal()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <button onClick="onOpenModal()" aria-label="Open menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path
                             d="M2.74998 6.75H21.25C21.664 6.75 21.9999 6.30195 21.9999 5.75C21.9999 5.19796 21.6639 4.75 21.25 4.75H2.74998C2.33603 4.75 2 5.19796 2 5.75C2 6.30204 2.33603 6.75 2.74998 6.75Z"
                             fill="#3E4849" />
@@ -137,7 +137,7 @@
         }
 
         //Display the explore link
-        const exploreElement = document.getElementById(`explore-categories-${categoryId}`)
+        const exploreElement = document.getElementById(`explore-link-${categoryId}`)
         if (exploreElement) exploreElement.style.display = 'flex'
         
         // Hide grey line and change padding size of dropdown-type
@@ -152,7 +152,7 @@
         setDisplayStyle('[id^="parent-"]', 'flex')
         setDisplayStyle('.category', 'none')
         setDisplayStyle('.department-list', 'none')
-        setDisplayStyle('.explore-categories', 'none')
+        setDisplayStyle('.explore-link', 'none')
         setDisplayStyle('.dropdown-categories', 'block')
         setFlexDirection('.department', 'column')
         document.getElementById('go-back-button').style.display = 'flex'
@@ -294,9 +294,10 @@
     document.body.addEventListener('click', (event) => {
 
         const targetId = event.target.id;
+        console.log(targetId)
 
         if (dropdown.classList.contains('active-dropdown')) {
-            if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId === 'back-to-menu-button' || targetId === 'back-to-menu-placeholder' ||  targetId.startsWith('menu-item-') ||  targetId.startsWith('category-button-') || targetId.startsWith('desktop-link-') || targetId.startsWith('department-button-') || targetId.startsWith('see-more-') || targetId.startsWith('parent-')) {
+            if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId === 'back-to-menu-button' || targetId === 'back-to-menu-placeholder' ||  targetId.startsWith('menu-item-') ||  targetId.startsWith('category-button-') || targetId.startsWith('desktop-link-') || targetId.startsWith('department-button-') || targetId.startsWith('see-more-') || targetId.startsWith('parent-') || targetId.startsWith('explore-link-')) {
                 return;
             } else {
                 closeMenu();
@@ -1071,18 +1072,15 @@
         height: 36px;
     }
 
-    .explore-categories {
-        display: none;
-        justify-content: center;
-        border-radius: 8px;
-        background: var(--Blue-Light, #E9F4F0);
-        padding: 8px 16px;
-    }
-
     .explore-link {
+        display: none; 
+        justify-content: center; 
         font-size: 14px; 
         font-style: normal; 
         font-weight: 600; 
+        background: var(--Blue-Light, #E9F4F0);
+        padding: 8px 16px;
+        border-radius: 8px;
     }
 
     @media only screen and (max-width: 983px) {

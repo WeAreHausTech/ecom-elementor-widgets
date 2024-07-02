@@ -3,7 +3,7 @@
         <div class="dropdown-content" id="dropdown-content">
             <div class="dropdown-categories-header">
             <?php if ($data['products']) { ?>
-                <button class="go-back-button" id="go-back-button" onClick="onGoBackButton()">
+                <button class="go-back-button" id="go-back-button" onClick="onGoBackButton()" aria-label="Go back">
                     <div class="back-icon-wrapper">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M7.81134 12.7132C7.62387 12.5257 7.51855 12.2713 7.51855 12.0062C7.51855 11.741 7.62387 11.4867 7.81134 11.2992L13.8113 5.29918C13.9999 5.11703 14.2525 5.01623 14.5147 5.01851C14.7769 5.02079 15.0278 5.12596 15.2132 5.31137C15.3986 5.49677 15.5037 5.74759 15.506 6.00978C15.5083 6.27198 15.4075 6.52458 15.2253 6.71319L9.93234 12.0062L15.2253 17.2992C15.4075 17.4878 15.5083 17.7404 15.506 18.0026C15.5037 18.2648 15.3986 18.5156 15.2132 18.701C15.0278 18.8864 14.7769 18.9916 14.5147 18.9939C14.2525 18.9961 13.9999 18.8953 13.8113 18.7132L7.81134 12.7132Z" fill="#3E4849"/>
@@ -12,7 +12,7 @@
                     <?= $data['products'] ?>
                 </button>
                 <?php } ?>
-                <button class="go-back-button" id="back-to-menu-button" onClick="onBackToMenu()">
+                <button class="go-back-button" id="back-to-menu-button" onClick="onBackToMenu()" aria-label="Go back">
                     <div class="back-icon-wrapper">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M7.81134 12.7132C7.62387 12.5257 7.51855 12.2713 7.51855 12.0062C7.51855 11.741 7.62387 11.4867 7.81134 11.2992L13.8113 5.29918C13.9999 5.11703 14.2525 5.01623 14.5147 5.01851C14.7769 5.02079 15.0278 5.12596 15.2132 5.31137C15.3986 5.49677 15.5037 5.74759 15.506 6.00978C15.5083 6.27198 15.4075 6.52458 15.2253 6.71319L9.93234 12.0062L15.2253 17.2992C15.4075 17.4878 15.5083 17.7404 15.506 18.0026C15.5037 18.2648 15.3986 18.5156 15.2132 18.701C15.0278 18.8864 14.7769 18.9916 14.5147 18.9939C14.2525 18.9961 13.9999 18.8953 13.8113 18.7132L7.81134 12.7132Z" fill="#3E4849"/>
@@ -21,8 +21,8 @@
                     <span id="back-to-menu-placeholder"></span>
                 </button>
                 <div class="close-button">
-                    <button onClick="closeMenu()">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <button onClick="closeMenu()" aria-label="Close">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"> 
                             <path
                                 d="M7.12099 5.70717C6.73051 5.31668 6.09741 5.31668 5.70693 5.70717C5.31644 6.09765 5.31644 6.73075 5.70693 7.12123L10.5858 12L5.70693 16.8789C5.31644 17.2693 5.31644 17.9024 5.70693 18.2929C6.09741 18.6834 6.73051 18.6834 7.12099 18.2929L11.9998 13.4141L16.8787 18.2929C17.2691 18.6834 17.9022 18.6834 18.2927 18.2929C18.6832 17.9024 18.6832 17.2693 18.2927 16.8789L13.4139 12L18.2927 7.12123C18.6832 6.73075 18.6832 6.09765 18.2927 5.70717C17.9022 5.31668 17.2691 5.31668 16.8787 5.70717L11.9998 10.586L7.12099 5.70717Z"
                                 fill="#3E4849" />
@@ -36,13 +36,11 @@
                 <ul class="categories">
                     <?php if ($categories) { ?>
                         <?php foreach ($categories as $mainCategory) { ?>
-                            <div class="explore-categories" id="explore-categories-<?= $mainCategory['data']['term_id'] ?>">
-                                <a class="explore-link" href="<?= $mainCategory['data']['slug'] ?>/" > <?= $data['explore'] ?> <?= strtolower($mainCategory['data']['name']) ?></a>
-                            </div>
+                                <a class="explore-link" id="explore-link-<?= $mainCategory['data']['term_id'] ?>" href="<?= $mainCategory['data']['slug'] ?>/" > <?= $data['explore'] ?> <?= strtolower($mainCategory['data']['name']) ?></a>
                         <?php } ?>
                         <?php foreach ($categories as $mainCategory) { ?>
                             <li class="parent" id="parent-<?= $mainCategory['data']['term_id'] ?>" onClick="openSubcategories(<?= $mainCategory['data']['term_id'] ?>, '<?= addSlashes($mainCategory['data']['name']) ?>')">
-                                <div class="parent-inner-container"">
+                                <div class="parent-inner-container" role="button" tabIndex='0'>
                                     <?php if (!empty($mainCategory['data']['bild'])) { ?>
                                         <div class="category-image">
                                             <img src="<?= $mainCategory['data']['bild'] ?>" alt="<?= $mainCategory['data']['name'] ?>">
