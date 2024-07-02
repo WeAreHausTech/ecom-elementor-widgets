@@ -135,21 +135,11 @@
         departmentElement.style.display = 'flex'
         setDisplayStyle('.dropdown-categories', 'none')
     }
-    
-    // Set explore link properties
-    const desktopLink = document.getElementById(`desktop-link-${categoryId}`)
-    let link = ''
-    if (desktopLink) {
-        link = desktopLink.getAttribute('href')
-    }
 
-    if (link) {
-        const exploreContainer = document.querySelector('.explore-categories')
-        const exploreLink = document.querySelector('.explore-link')
-        exploreLink.setAttribute('href', link)
-        exploreLink.textContent = `Utforska ${categoryName}`
-        exploreContainer.style.display = 'block'
-    }
+    //Display the explore link
+    const exploreElement = document.getElementById(`explore-categories-${categoryId}`)
+    if (exploreElement) exploreElement.style.display = 'flex'
+    
     // Hide grey line and change padding size
     const dropdownType = document.querySelector('.dropdown-type')
     dropdownType.classList.add('hide-grey-line')
@@ -1110,19 +1100,17 @@
     }
 
     .explore-categories {
-    
+        display: flex;
+        justify-content: center;
+        border-radius: 8px;
+        background: var(--Blue-Light, #E9F4F0);
+        padding: 8px 16px;
     }
 
     .explore-link {
-        display: flex;
-        height: 40px;
-        padding: 8px 16px;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-        align-self: stretch;
-        border-radius: 8px;
-        background: var(--Blue-Light, #E9F4F0);
+        font-size: 14px; 
+        font-style: normal; 
+        font-weight: 600; 
     }
 
     @media only screen and (max-width: 983px) {

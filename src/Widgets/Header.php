@@ -276,6 +276,7 @@ class Header extends Widget_Base
             'product_page_url' => $this->lang('/en/products/', '/produkter/'),
             'product_page' => $this->lang('Show all products', 'Visa alla produkter'),
             'products' => $this->lang('Products', 'Produkter'),
+            'explore' => $this->lang('Explore', 'Upptäck')
         ];
 
         $loggedInmenuId = $this->get_settings_for_display('login_in_menu_id');

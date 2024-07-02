@@ -34,10 +34,12 @@
            
             <div class="dropdown-categories">
                 <ul class="categories">
-                    <div class="explore-categories" style="display: none">
-                        <a class="explore-link" href="#" >Utforska</a>
-                    </div>
                     <?php if ($categories) { ?>
+                        <?php foreach ($categories as $mainCategory) { ?>
+                            <div class="explore-categories" id="explore-categories-<?= $mainCategory['data']['term_id'] ?>" style="display: none">
+                                <a class="explore-link" href="<?= $mainCategory['data']['slug'] ?>/" > <?= $data['explore'] ?> <?= strtolower($mainCategory['data']['name']) ?></a>
+                            </div>
+                        <?php } ?>
                         <?php foreach ($categories as $mainCategory) { ?>
                             <li class="parent" id="parent-<?= $mainCategory['data']['term_id'] ?>" onClick="openSubcategories(<?= $mainCategory['data']['term_id'] ?>, '<?= addSlashes($mainCategory['data']['name']) ?>')">
                                 <div class="parent-inner-container"">
