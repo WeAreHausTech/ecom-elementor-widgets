@@ -110,85 +110,67 @@
         if (!isMobile) {
             return;
         }
-    //Scroll to top of dropdown
-    dropdownContent.scrollTop = 0; 
-    
-    //Hide container with image, svg and heading
-    setDisplayStyle('.parent-inner-container', 'none');
+        //Scroll to top of dropdown
+        dropdownContent.scrollTop = 0; 
+        
+        //Hide container with image, svg and heading
+        setDisplayStyle('.parent-inner-container', 'none');
 
-    // Set display properties for headings for categories and departments
-    document.querySelectorAll('[id^="parent-"]').forEach((element) => {
-        element.style.display = element.id === `parent-${categoryId}` ? 'flex' : 'none'
-    })
+        // Adjust button visibility
+        document.getElementById('go-back-button').style.display = 'none'
+        document.getElementById('back-to-menu-button').style.display = 'flex'
+        document.getElementById('back-to-menu-placeholder').textContent = `${categoryName}`
 
-    // Adjust button visibility
-    document.getElementById('go-back-button').style.display = 'none'
-    document.getElementById('back-to-menu-button').style.display = 'flex'
-    document.getElementById('back-to-menu-placeholder').textContent = `${categoryName}`
+        // Set display properties for headings for categories and departments
+        document.querySelectorAll('[id^="parent-"]').forEach((element) => {
+            element.style.display = element.id === `parent-${categoryId}` ? 'flex' : 'none'
+        })
 
-    // Set display properties for categories and departments
-    const categoryElement = document.getElementById(`category-${categoryId}`)
-    if (categoryElement) categoryElement.style.display = 'flex'
-    
-    const departmentElement = document.getElementById(`department-list-${categoryId}`)
-    if (departmentElement) {
-        departmentElement.style.display = 'flex'
-        setDisplayStyle('.dropdown-categories', 'none')
-    }
+        // Set display properties for categories and departments
+        const categoryElement = document.getElementById(`category-${categoryId}`)
+        if (categoryElement) categoryElement.style.display = 'flex'
+        
+        const departmentElement = document.getElementById(`department-list-${categoryId}`)
+        if (departmentElement) {
+            departmentElement.style.display = 'flex'
+            setDisplayStyle('.dropdown-categories', 'none')
+        }
 
-    //Display the explore link
-    const exploreElement = document.getElementById(`explore-categories-${categoryId}`)
-    if (exploreElement) exploreElement.style.display = 'flex'
-    
-    // Hide grey line and change padding size
-    const dropdownType = document.querySelector('.dropdown-type')
-    dropdownType.classList.add('hide-grey-line')
-    dropdownType.style.padding = '12px 24px'
+        //Display the explore link
+        const exploreElement = document.getElementById(`explore-categories-${categoryId}`)
+        if (exploreElement) exploreElement.style.display = 'flex'
+        
+        // Hide grey line and change padding size of dropdown-type
+        const dropdownType = document.querySelector('.dropdown-type')
+        dropdownType.classList.add('hide-grey-line')
+        dropdownType.style.padding = '12px 24px'
     }
 
     const resetMobileDropdown = () => {
-    dropdownContent.scrollTop = 0; 
-        console.log("RESETTING MOBILE")
-    //Show container with image, svg and heading
-    setDisplayStyle('.parent-inner-container', 'flex');
-
-    // Set display and flex direction properties for various elements
-    setDisplayStyle('[id^="parent-"]', 'flex')
-    
-    setDisplayStyle('.category', 'none')
-    setDisplayStyle('.department-list', 'none')
-    setDisplayStyle('.explore-categories', 'none')
-
-    setFlexDirection('.department', 'column')
-
-    //Reset this element when clicked into avdelningar/departments and hidden explore-button
-    setDisplayStyle('.dropdown-categories', 'block')
-
-    //Adjust button visibility
-    document.getElementById('go-back-button').style.display = 'flex'
-    document.getElementById('back-to-menu-button').style.display = 'none'
-
-    // Add grey line and change padding size
-    const dropdownType = document.querySelector('.dropdown-type')
-    dropdownType.classList.remove('hide-grey-line')
-    dropdownType.style.padding = '24px'
+        dropdownContent.scrollTop = 0; 
+        setDisplayStyle('.parent-inner-container', 'flex');
+        setDisplayStyle('[id^="parent-"]', 'flex')
+        setDisplayStyle('.category', 'none')
+        setDisplayStyle('.department-list', 'none')
+        setDisplayStyle('.explore-categories', 'none')
+        setDisplayStyle('.dropdown-categories', 'block')
+        setFlexDirection('.department', 'column')
+        document.getElementById('go-back-button').style.display = 'flex'
+        document.getElementById('back-to-menu-button').style.display = 'none'
+        const dropdownType = document.querySelector('.dropdown-type')
+        dropdownType.classList.remove('hide-grey-line')
+        dropdownType.style.padding = '24px'
     }
 
     const resetDesktopDropdown = () => {
-        console.log("RESETTING DESKTOP")
-    // Hide the go-back button
-    document.getElementById('go-back-button').style.display = 'none'
-
-    // Set display and flex direction properties for categories and departments
-    setDisplayStyle('.category', 'flex')
-    setDisplayStyle('.department-list', 'flex')
-    setFlexDirection('.parent', 'column')
-    setFlexDirection('.department', 'column')
-
-    const dropdownType = document.querySelector('.dropdown-type')
-     dropdownType.style.padding = '0'
+        document.getElementById('go-back-button').style.display = 'none'
+        setDisplayStyle('.category', 'flex')
+        setDisplayStyle('.department-list', 'flex')
+        setFlexDirection('.parent', 'column')
+        setFlexDirection('.department', 'column')
+        const dropdownType = document.querySelector('.dropdown-type')
+        dropdownType.style.padding = '0'
     }
-
     navigateToSlug = (element) => {
         if (!isMobile) {
             return;
@@ -198,7 +180,6 @@
             window.location.href = slug; 
         }
     }
-
     showMore = (buttonElement) => {
         const buttonId = buttonElement.id;
         const id = buttonId.split('-')[2];
@@ -240,7 +221,6 @@
         document.getElementById('header-content').classList.toggle('active')
         document.body.style.position = '';
     }
-
     onGoBackButton = () => {
         document.getElementById('dropdown-menu').classList.remove('active-dropdown');
         document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
@@ -248,11 +228,9 @@
         document.getElementById('header-content').classList.add('active')
 
     }
-
     onBackToMenu = () => {
-    resetMobileDropdown()
+        resetMobileDropdown()
     }
-
     closeMenu = (e) => {
         document.body.style.position = '';
         document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
@@ -264,9 +242,7 @@
             onCloseModal();
             }
         }, 400);
-        
     }
-
     openOrCloseMenu = (e) => {
         e.preventDefault();
         const isOpen = document.getElementById('dropdown').classList.contains('active-dropdown')
@@ -318,7 +294,6 @@
     document.body.addEventListener('click', (event) => {
 
         const targetId = event.target.id;
-        console.log(targetId)
 
         if (dropdown.classList.contains('active-dropdown')) {
             if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId === 'back-to-menu-button' || targetId === 'back-to-menu-placeholder' ||  targetId.startsWith('menu-item-') ||  targetId.startsWith('category-button-') || targetId.startsWith('desktop-link-') || targetId.startsWith('department-button-') || targetId.startsWith('see-more-') || targetId.startsWith('parent-')) {
@@ -329,23 +304,20 @@
         }
     })
 
+    dropdownContent.addEventListener('scroll', function() {
+        const header = document.querySelector('.dropdown-categories-header');
+            if (dropdownContent.scrollTop > 0) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+});
+
     const searchElement = document.getElementById('search-widget')
 
     searchElement.addEventListener('click', function (e) {
         closeProductModal();
     });
-
-    dropdownContent.addEventListener('scroll', function() {
-    const header = document.querySelector('.dropdown-categories-header');
-    if (dropdownContent.scrollTop > 0) {
-        header.classList.add('scrolled');
-        console.log('Scrolled class added');
-    } else {
-        header.classList.remove('scrolled');
-        console.log('Scrolled class removed');
-    }
-});
-
 </script>
 
 <style>

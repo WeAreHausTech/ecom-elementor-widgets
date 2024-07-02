@@ -199,10 +199,6 @@ class Header extends Widget_Base
 
         $termData = $wpdb->get_results($query, ARRAY_A);
 
-        echo '<script>';
-        echo 'console.log("termData:", ' . json_encode($termData) . ');';
-        echo '</script>';
-
         if (!is_array($termData) || empty($termData)) {
             return null;
         }
@@ -285,11 +281,6 @@ class Header extends Widget_Base
 
         $categories = $this->getTaxonomies('produkter-kategorier', '/produkter/kategorier/', '/en/products/categories/');
 
-        echo '<script>';
-        echo 'console.log("Categories:", ' . json_encode($categories) . ');';
-        echo '</script>';
-
-
         $taxonomies = [
             [
                 'heading' => $this->lang('Brands', 'Varumärken'),
@@ -306,10 +297,6 @@ class Header extends Widget_Base
                 'show-all-list' => 'false'
             ]
         ];
-
-        echo '<script>';
-        echo 'console.log("taxonomies:", ' . json_encode($taxonomies) . ');';
-        echo '</script>';
 
         $url = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
