@@ -7,6 +7,9 @@
                 </img>
             </a>
         </div>
+        <div class="mobile-search">
+            <?php include ('SearchInputField.php') ?>
+        </div>
         <div class="menu" id="main-menu">
             <?php if ($data['menu_id']) {
                 wp_nav_menu([
@@ -27,7 +30,7 @@
         </div>
         <div class="menu-links">
             <div class="icons">
-                <?php include ('Search.php') ?>
+                <?php include ('SearchDialogue.php') ?>
                 <?php include ('Login.php') ?>
                 <?php include ('Cart.php') ?>
             </div>
@@ -60,7 +63,7 @@
             </a>
         </div>
         <div class="mobile-icons">
-            <?php include ('Search.php') ?>
+            <?php include ('SearchDialogue.php') ?>
             <?php include ('Login.php') ?>
             <?php include ('Cart.php') ?>
 
@@ -282,6 +285,22 @@
                     color: var(--e-global-color-text);
                 }
             }
+    }
+
+    .mobile-search {
+        display:none;
+
+        @media screen and (max-width: 983px) {
+            display: flex;
+        }
+    } 
+
+    .search-field-wrapper {
+        display:none;
+
+        @media screen and (max-width: 983px) {
+            display: flex;
+        }
     }
 
     .dropdown {
@@ -782,7 +801,7 @@
         .header .close-button {
             display: block;
             position: absolute;
-            top: 20px;
+            top: 24px;
             right: 24px;
         }
 
