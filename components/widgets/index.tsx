@@ -314,7 +314,7 @@ export default {
             <BeginCheckoutEvent />
           </Suspense>
         )
-      case 'view-item' && productId && productId !== undefined:
+      case 'view-item':
         return (
           <Suspense>
             <ViewItemEvent productId={productId ?? ''} />
