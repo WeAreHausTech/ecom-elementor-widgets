@@ -86,6 +86,10 @@ class BaseEcomElementorWidgets
                 ->widgets_manager
                 ->register(new \WeAreHausTech\Widgets\ProductImageCarousel());
 
+            \Elementor\Plugin::instance()
+                ->widgets_manager
+                ->register(new \WeAreHausTech\Widgets\ProductVariantOptions());
+
             if (defined('WP_CLI') && WP_CLI) {
                 require_once 'SyncData/Commands/SyncProductData.php';
                 require_once 'SyncData/Commands/DeleteAllPosts.php';
