@@ -100,12 +100,12 @@ export default {
     )
   },
 
-  searchField: () => {
-    const SearchField = React.lazy(() => import('./SearchField'))
-
+  searchDialogue: (dataAttributes: NamedNodeMap) => {
+    const SearchDialogue = React.lazy(() => import('./SearchDialogue'))
+    const openOnButton = dataAttributes.getNamedItem('data-open-on-button')?.value === 'true'
     return (
       <Suspense>
-        <SearchField openOnButton={true} autofocus={true} />
+        <SearchDialogue openOnButton={openOnButton} autofocus={true} />
       </Suspense>
     )
   },
@@ -141,12 +141,12 @@ export default {
   },
 
   dropdownCart: (dataAttributes: NamedNodeMap) => {
-    const DropdownCart = React.lazy(() => import('./DropdownCart'));
-    const dropdownEnabled =  +get(dataAttributes.getNamedItem('data-dropdown-enabled'), 'value', 0)
+    const DropdownCart = React.lazy(() => import('./DropdownCart'))
+    const dropdownEnabled = +get(dataAttributes.getNamedItem('data-dropdown-enabled'), 'value', 0)
 
     return (
       <Suspense>
-        <DropdownCart dropdownEnabled={Boolean(dropdownEnabled)}/> 
+        <DropdownCart dropdownEnabled={Boolean(dropdownEnabled)} />
       </Suspense>
     )
   },
@@ -160,7 +160,11 @@ export default {
 
     return (
       <Suspense>
-        <Login onContinueAsGuest={handleTriggerClick} onLoggedIn={handleTriggerClick} showContinueAsGuest={false} />
+        <Login
+          onContinueAsGuest={handleTriggerClick}
+          onLoggedIn={handleTriggerClick}
+          showContinueAsGuest={false}
+        />
       </Suspense>
     )
   },
@@ -289,14 +293,14 @@ export default {
         )
       case 'begin-checkout':
         return (
-          <Suspense >
+          <Suspense>
             <BeginCheckoutEvent />
           </Suspense>
         )
       case 'view-item' && productId && productId !== undefined:
         return (
           <Suspense>
-            <ViewItemEvent productId={productId ?? ''}/>
+            <ViewItemEvent productId={productId ?? ''} />
           </Suspense>
         )
       default:
