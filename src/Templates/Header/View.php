@@ -359,7 +359,7 @@
     }
 
     .menu-header-main-container {
-        padding: 24px;
+        padding: 24px 24px 0 24px;
         width: 100%;
     }
 
@@ -383,17 +383,21 @@
             width: 100%;
             bottom: 0;
             left: 0;
-            border-top: 1px solid rgba(0, 0, 0, 0.10);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.10);
         }
 
         #footer-menu {
-            display: block; 
+            display: block;
+            width: 100%; 
+        }
+
+            #main-menu .menu {
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+
         }
 
         #footer-menu .menu-header-main-container .menu {
             gap: 8px;
-            padding: 0;
         }
 
         #footer-menu li {
