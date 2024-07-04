@@ -373,7 +373,7 @@
         }
     }
 
-     #footer-menu {
+    #footer-menu {
         width: 100%;
         display: none;
     }
@@ -390,10 +390,9 @@
             width: 100%; 
         }
 
-            #main-menu .menu {
+        #main-menu .menu {
             padding-bottom: 24px;
             border-bottom: 1px solid rgba(0, 0, 0, 0.10);
-
         }
 
         #footer-menu .menu-header-main-container .menu {
@@ -422,6 +421,9 @@
 
     .mobile-search {
         display:none;
+        width: 100%;
+        padding: 24px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.10);
 
         @media screen and (max-width: 983px) {
             display: flex;
@@ -429,7 +431,9 @@
     } 
 
     .search-field-wrapper {
-        display:none;
+        display: none;
+        width: 100%;
+        height: 40px;
 
         @media screen and (max-width: 983px) {
             display: flex;
