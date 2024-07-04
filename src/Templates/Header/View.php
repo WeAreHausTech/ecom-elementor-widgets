@@ -356,7 +356,13 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
+    }
 
+    @media only screen and (min-width: 983px) {
+
+        .menu-header-main-container {
+            padding: 24px;
+        }
     }
 
     @media only screen and (min-width: 983px) {
@@ -381,8 +387,6 @@
             left: 0;
             border-top: 1px solid rgba(0, 0, 0, 0.10);
             border-bottom: 1px solid rgba(0, 0, 0, 0.10);
-            padding-top: 24px;
-            padding-bottom: 24px;
         }
 
         #footer-menu {
@@ -950,7 +954,7 @@
             left: 0;
             background-color: var(--header-dropdown-background, #fff);
             overflow-y: hidden;
-            padding: 24px;
+            padding: 0;
             z-index: 9999;
         }
 
@@ -972,7 +976,6 @@
         @media only screen and (max-width: 983px) {
             .menu {
                 height: auto;
-                padding-bottom: 24px;
             }
 
             .menu ul {
