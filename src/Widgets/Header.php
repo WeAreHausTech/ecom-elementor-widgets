@@ -173,13 +173,15 @@ class Header extends Widget_Base
 
         if ($this->wpmlHelper->hasWpml()) {
             $query = $wpdb->prepare(
-                "SELECT DISTINCT tt.term_id, tt.parent, t.name, t.slug, tr.language_code as lang
+                "SELECT DISTINCT tt.term_id, tt.parent, t.name, t.slug, tr.language_code as lang, 
+                IFNULL(tm_bild.meta_value, '') AS bild
                 FROM wp_term_taxonomy tt
                 LEFT JOIN $terms t ON tt.term_id = t.term_id
                 LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
                 LEFT JOIN {$wpdb->prefix}icl_translations tr
                     ON tt.term_taxonomy_id = tr.element_id
                     AND tr.element_type = 'tax_{$taxonomy}'
+                LEFT JOIN $termmeta tm_bild ON tt.term_id = tm_bild.term_id AND tm_bild.meta_key = 'bild'
                 WHERE tr.language_code =  '$this->currentLang'
                 AND tm.meta_value IS NOT NULL
                 AND taxonomy = %s
@@ -189,10 +191,12 @@ class Header extends Widget_Base
             
         } else {
             $query = $wpdb->prepare(
-                "SELECT DISTINCT tt.term_id, tt.parent, t.name, t.slug
+                "SELECT DISTINCT tt.term_id, tt.parent, t.name, t.slug, 
+                IFNULL(tm_bild.meta_value, '') AS bild
                 FROM wp_term_taxonomy tt
                 LEFT JOIN $terms t ON tt.term_id = t.term_id
                 LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
+                LEFT JOIN $termmeta tm_bild ON tt.term_id = tm_bild.term_id AND tm_bild.meta_key = 'bild'
                 WHERE tm.meta_value IS NOT NULL
                 AND taxonomy= %s
                 (tt.parent = 0 OR tt.parent IN (SELECT term_id FROM wp_term_taxonomy WHERE parent = 0))",
@@ -275,6 +279,8 @@ class Header extends Widget_Base
             'login_show_as_modal' => $this->get_settings_for_display('login_show_as_modal'),
             'product_page_url' => $this->lang('/en/products/', '/produkter/'),
             'product_page' => $this->lang('Show all products', 'Visa alla produkter'),
+            'products' => $this->lang('Products', 'Produkter'),
+            'explore' => $this->lang('Explore', 'Upptäck')
         ];
 
         $loggedInmenuId = $this->get_settings_for_display('login_in_menu_id');
@@ -288,13 +294,15 @@ class Header extends Widget_Base
                 'heading' => $this->lang('Brands', 'Varumärken'),
                 'heading-link' => get_home_url() . $this->lang('/products/brands/', '/produkter/varumarken/'),
                 'data' => $this->getTaxonomies('produkter-varumarken', '/produkter/varumarken/', '/en/products/brands/'),
-                'class' => 'brand'
+                'class' => 'brand',
+                'show-all-list' => 'true'
             ],
             [
                 'heading' => $this->lang('Departments', 'Avdelningar'),
                 'heading-link' => get_home_url() . $this->lang('/products/departments/', '/produkter/avdelningar/'),
                 'data' => $this->getTaxonomies('produkter-avdelningar', '/produkter/avdelningar/', '/en/products/departments/'),
-                'class' => 'department'
+                'class' => 'department',
+                'show-all-list' => 'false'
             ]
         ];
 
