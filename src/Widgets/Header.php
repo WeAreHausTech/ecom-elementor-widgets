@@ -96,7 +96,14 @@ class Header extends Widget_Base
             ]
         );
 
-
+        $this->add_control(
+            'footer_menu_id',
+            [
+                'label' => __('Id på footer i mobilmeny:', 'haus-ecom-widgets'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'label_block' => true,
+            ]
+        );
 
         $this->end_controls_section();
 
@@ -264,6 +271,7 @@ class Header extends Widget_Base
             'contact_us_link' => $this->lang('/en/contact-us/', '/kontakta-oss/'),
             'menu_id' => $this->get_settings_for_display('menu_id'),
             'products_menu_ids' => $product_ids,
+            'footer_menu_id' => $this->get_settings_for_display('footer_menu_id'),
             'cart_redirect_to' => $this->get_settings_for_display('cart_redirect_to') ? $this->get_settings_for_display('cart_redirect_to') : '/varukorg',
             'search_placeholder' => $this->get_settings_for_display('search_placeholder'),
             'search_redirect' => $this->get_settings_for_display('search_redirect'),
