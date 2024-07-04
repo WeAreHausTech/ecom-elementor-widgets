@@ -358,11 +358,9 @@
         align-items: center;
     }
 
-    @media only screen and (min-width: 983px) {
-
-        .menu-header-main-container {
-            padding: 24px;
-        }
+    .menu-header-main-container {
+        padding: 24px;
+        width: 100%;
     }
 
     @media only screen and (min-width: 983px) {
@@ -968,7 +966,7 @@
             justify-content: flex-start;
             overflow: auto;
             height: calc(100vh - 54px - var(--header-height));
-            width: calc(100vw - 24px - 24px);
+            width: 100%;
             flex-wrap: nowrap;
             gap: 0;
         }
