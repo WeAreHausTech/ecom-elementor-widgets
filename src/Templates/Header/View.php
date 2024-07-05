@@ -1226,6 +1226,11 @@
         border: none; 
     }
 
+    #language-selector-header .wpml-ls-current-language .wpml-ls-link {
+        display: flex; 
+        align-items: center; 
+    }
+
     #language-selector-header .wpml-ls-legacy-list-vertical {
         padding: 0; 
     }
