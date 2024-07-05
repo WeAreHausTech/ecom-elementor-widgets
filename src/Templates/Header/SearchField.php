@@ -5,9 +5,7 @@
       id="' . $widget_id . '" 
       data-open-on-button="true"
       class="ecom-components-root" 
-      data-vendure-token="' . VENDURE_TOKEN . '"
-      data-vendure-api-url="' . VENDURE_API_URL . '"
-      data-widget-type="search-dialogue"
+      data-widget-type="search-field"
       data-placeholder="' . $data['search_placeholder'] . '"
       >
   </div>';

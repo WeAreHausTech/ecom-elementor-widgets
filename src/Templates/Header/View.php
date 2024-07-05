@@ -2,19 +2,16 @@
     <div class="header-content" id="header-content">
         <div class="logo">
             <a href="<?= get_home_url() ?>">
-                <img style="height: 100%; width: auto;" src="<?= $data['logo']['url'] ?>"
-                    alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
+                <img style="height: 100%; width: auto;" src="<?= $data['logo']['url'] ?>" alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
                 </img>
             </a>
         </div>
         <div class="mobile-search">
-            <?php include ('SearchInputField.php') ?>
+            <?php include('SearchInputField.php') ?>
             <div class="close-button">
                 <button onClick="onCloseModal()" aria-label="Close">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path
-                            d="M7.12099 5.70717C6.73051 5.31668 6.09741 5.31668 5.70693 5.70717C5.31644 6.09765 5.31644 6.73075 5.70693 7.12123L10.5858 12L5.70693 16.8789C5.31644 17.2693 5.31644 17.9024 5.70693 18.2929C6.09741 18.6834 6.73051 18.6834 7.12099 18.2929L11.9998 13.4141L16.8787 18.2929C17.2691 18.6834 17.9022 18.6834 18.2927 18.2929C18.6832 17.9024 18.6832 17.2693 18.2927 16.8789L13.4139 12L18.2927 7.12123C18.6832 6.73075 18.6832 6.09765 18.2927 5.70717C17.9022 5.31668 17.2691 5.31668 16.8787 5.70717L11.9998 10.586L7.12099 5.70717Z"
-                            fill="#3E4849" />
+                        <path d="M7.12099 5.70717C6.73051 5.31668 6.09741 5.31668 5.70693 5.70717C5.31644 6.09765 5.31644 6.73075 5.70693 7.12123L10.5858 12L5.70693 16.8789C5.31644 17.2693 5.31644 17.9024 5.70693 18.2929C6.09741 18.6834 6.73051 18.6834 7.12099 18.2929L11.9998 13.4141L16.8787 18.2929C17.2691 18.6834 17.9022 18.6834 18.2927 18.2929C18.6832 17.9024 18.6832 17.2693 18.2927 16.8789L13.4139 12L18.2927 7.12123C18.6832 6.73075 18.6832 6.09765 18.2927 5.70717C17.9022 5.31668 17.2691 5.31668 16.8787 5.70717L11.9998 10.586L7.12099 5.70717Z" fill="#3E4849" />
                     </svg>
                 </button>
             </div>
@@ -39,55 +36,48 @@
         </div>
         <div class="menu-links">
             <div class="icons">
-                <?php include ('SearchDialogue.php') ?>
-                <?php include ('Login.php') ?>
-                <?php include ('Cart.php') ?>
+                <?php include('SearchField.php') ?>
+                <?php include('Login.php') ?>
+                <?php include('Cart.php') ?>
             </div>
-            
-        </div>
-            <?php if ($data['contact_us_link'] && $data['contact_us_text']) { ?>
-                <div class="contact-button">
-                    <a href="<?= $data['contact_us_link'] ?>">
-                        <?= $data['contact_us_text'] ?>
-                    </a>
-                </div>
-            <?php } ?>
-        </div>
-    </div>
 
-    <div class="mobile-heaader">
-        <div class="mobile-logo">
-            <a href="<?= get_home_url() ?>">
-                <img style="height:100%; width: auto;" src="<?= $data['logo']['url'] ?>"
-                    alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
-                </img>
-            </a>
         </div>
-        <div class="mobile-icons">
-            <?php include ('SearchDialogue.php') ?>
-            <?php include ('Login.php') ?>
-            <?php include ('Cart.php') ?>
-
-            <div class="open-button">
-                <button onClick="onOpenModal()" aria-label="Open menu">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path
-                            d="M2.74998 6.75H21.25C21.664 6.75 21.9999 6.30195 21.9999 5.75C21.9999 5.19796 21.6639 4.75 21.25 4.75H2.74998C2.33603 4.75 2 5.19796 2 5.75C2 6.30204 2.33603 6.75 2.74998 6.75Z"
-                            fill="#3E4849" />
-                        <path
-                            d="M21.25 11.25H2.74998C2.33596 11.25 2 11.698 2 12.25C2 12.802 2.33603 13.25 2.74998 13.25H21.25C21.664 13.25 21.9999 12.802 21.9999 12.25C21.9999 11.698 21.664 11.25 21.25 11.25Z"
-                            fill="#3E4849" />
-                        <path
-                            d="M2.74998 17.75H21.25C21.664 17.75 22 18.198 21.9999 18.75C21.9999 19.302 21.664 19.75 21.25 19.75H2.74998C2.33603 19.75 2 19.302 2 18.75C2 18.198 2.33596 17.75 2.74998 17.75Z"
-                            fill="#3E4849" />
-                    </svg>
-                </button>
+        <?php if ($data['contact_us_link'] && $data['contact_us_text']) { ?>
+            <div class="contact-button">
+                <a href="<?= $data['contact_us_link'] ?>">
+                    <?= $data['contact_us_text'] ?>
+                </a>
             </div>
-        </div>
+        <?php } ?>
     </div>
 </div>
 
-<?php include ('CategoriesDropdown.php') ?>
+<div class="mobile-heaader">
+    <div class="mobile-logo">
+        <a href="<?= get_home_url() ?>">
+            <img style="height:100%; width: auto;" src="<?= $data['logo']['url'] ?>" alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
+            </img>
+        </a>
+    </div>
+    <div class="mobile-icons">
+        <?php include('SearchField.php') ?>
+        <?php include('Login.php') ?>
+        <?php include('Cart.php') ?>
+
+        <div class="open-button">
+            <button onClick="onOpenModal()" aria-label="Open menu">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M2.74998 6.75H21.25C21.664 6.75 21.9999 6.30195 21.9999 5.75C21.9999 5.19796 21.6639 4.75 21.25 4.75H2.74998C2.33603 4.75 2 5.19796 2 5.75C2 6.30204 2.33603 6.75 2.74998 6.75Z" fill="#3E4849" />
+                    <path d="M21.25 11.25H2.74998C2.33596 11.25 2 11.698 2 12.25C2 12.802 2.33603 13.25 2.74998 13.25H21.25C21.664 13.25 21.9999 12.802 21.9999 12.25C21.9999 11.698 21.664 11.25 21.25 11.25Z" fill="#3E4849" />
+                    <path d="M2.74998 17.75H21.25C21.664 17.75 22 18.198 21.9999 18.75C21.9999 19.302 21.664 19.75 21.25 19.75H2.74998C2.33603 19.75 2 19.302 2 18.75C2 18.198 2.33596 17.75 2.74998 17.75Z" fill="#3E4849" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+</div>
+
+<?php include('CategoriesDropdown.php') ?>
 
 <script>
     const productMenuIds = <?= json_encode($data['products_menu_ids']) ?>;
@@ -107,18 +97,18 @@
     window.addEventListener('load', updateIsMobile);
     window.addEventListener('resize', updateIsMobile);
 
-     // Function to set display style for elements
-     const setDisplayStyle = (selector, displayValue) => {
-    document.querySelectorAll(selector).forEach((element) => {
-        element.style.display = displayValue
-    })
+    // Function to set display style for elements
+    const setDisplayStyle = (selector, displayValue) => {
+        document.querySelectorAll(selector).forEach((element) => {
+            element.style.display = displayValue
+        })
     }
 
     // Function to set flex direction for elements 
     const setFlexDirection = (selector, flexDirection) => {
-    document.querySelectorAll(selector).forEach((element) => {
-        element.style.flexDirection = flexDirection
-    })
+        document.querySelectorAll(selector).forEach((element) => {
+            element.style.flexDirection = flexDirection
+        })
     }
 
     openSubcategories = (categoryId, categoryName) => {
@@ -126,8 +116,8 @@
             return;
         }
         //Scroll to top of dropdown
-        dropdownContent.scrollTop = 0; 
-        
+        dropdownContent.scrollTop = 0;
+
         //Hide container with image, svg and heading
         setDisplayStyle('.parent-button', 'none');
 
@@ -144,7 +134,7 @@
         // Set display properties for categories and departments
         const categoryElement = document.getElementById(`category-${categoryId}`)
         if (categoryElement) categoryElement.style.display = 'flex'
-        
+
         const departmentElement = document.getElementById(`department-list-${categoryId}`)
         if (departmentElement) {
             departmentElement.style.display = 'flex'
@@ -154,7 +144,7 @@
         //Display the explore link
         const exploreElement = document.getElementById(`explore-link-${categoryId}`)
         if (exploreElement) exploreElement.style.display = 'flex'
-        
+
         // Hide grey line and change padding size of dropdown-type
         const dropdownType = document.querySelector('.dropdown-type')
         dropdownType.classList.add('hide-grey-line')
@@ -162,7 +152,7 @@
     }
 
     const resetMobileDropdown = () => {
-        dropdownContent.scrollTop = 0; 
+        dropdownContent.scrollTop = 0;
         setDisplayStyle('.parent-button', 'flex');
         setDisplayStyle('[id^="parent-"]', 'flex')
         setDisplayStyle('.category', 'none')
@@ -193,7 +183,7 @@
         }
         const slug = element.getAttribute('data-slug')
         if (slug) {
-            window.location.href = slug; 
+            window.location.href = slug;
         }
     }
     showMore = (buttonElement) => {
@@ -255,7 +245,7 @@
             document.getElementById('dropdown').classList.remove('active-dropdown');
 
             if (document.getElementById('header-content').classList.contains('active')) {
-            onCloseModal();
+                onCloseModal();
             }
         }, 400);
     }
@@ -288,7 +278,7 @@
             productMenuIds.forEach((productMenuId) => {
                 const menuItemProducts = document.querySelectorAll('#menu-item-' + productMenuId);
                 menuItemProducts.forEach((menuItemProduct) => {
-                    menuItemProduct.addEventListener('click', openOrCloseMenu );
+                    menuItemProduct.addEventListener('click', openOrCloseMenu);
                 });
             });
         }
@@ -300,7 +290,7 @@
         updateDeviceType()
         closeMenu()
         closeMobileMenuModal()
-     }
+    }
 
     window.addEventListener('resize', handleResize)
 
@@ -313,7 +303,7 @@
         console.log(targetId)
 
         if (dropdown.classList.contains('active-dropdown')) {
-            if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId === 'back-to-menu-button' || targetId === 'back-to-menu-placeholder' ||  targetId.startsWith('menu-item-') ||  targetId.startsWith('category-button-') || targetId.startsWith('desktop-link-') || targetId.startsWith('department-button-') || targetId.startsWith('see-more-') || targetId.startsWith('parent-') || targetId.startsWith('explore-link-')) {
+            if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId === 'back-to-menu-button' || targetId === 'back-to-menu-placeholder' || targetId.startsWith('menu-item-') || targetId.startsWith('category-button-') || targetId.startsWith('desktop-link-') || targetId.startsWith('department-button-') || targetId.startsWith('see-more-') || targetId.startsWith('parent-') || targetId.startsWith('explore-link-')) {
                 return;
             } else {
                 closeMenu();
@@ -323,16 +313,16 @@
 
     dropdownContent.addEventListener('scroll', function() {
         const header = document.querySelector('.dropdown-categories-header');
-            if (dropdownContent.scrollTop > 0) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-});
+        if (dropdownContent.scrollTop > 0) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
 
     const searchElement = document.getElementById('search-widget')
 
-    searchElement.addEventListener('click', function (e) {
+    searchElement.addEventListener('click', function(e) {
         closeProductModal();
     });
 </script>
@@ -388,7 +378,7 @@
 
         #footer-menu {
             display: block;
-            width: 100%; 
+            width: 100%;
         }
 
         #main-menu .menu {
@@ -411,17 +401,17 @@
         #footer-menu .menu-header-main-container .menu a {
             padding: 0;
 
-                &:hover {
-                    text-decoration-line: underline;
-                    background: none;
-                    border-radius: 0;
-                    color: var(--e-global-color-text);
-                }
+            &:hover {
+                text-decoration-line: underline;
+                background: none;
+                border-radius: 0;
+                color: var(--e-global-color-text);
             }
+        }
     }
 
     .mobile-search {
-        display:none;
+        display: none;
         width: 100%;
         padding: 24px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.10);
@@ -433,7 +423,7 @@
             justify-content: space-between;
             align-items: center;
         }
-    } 
+    }
 
     .search-field-wrapper {
         display: none;
@@ -448,7 +438,7 @@
     @media only screen and (max-width: 983px) {
         .ecom-components-root.search {
             display: block;
-            width: 100%; 
+            width: 100%;
         }
     }
 
@@ -553,7 +543,7 @@
 
     @media only screen and (max-width: 983px) {
         .see-more-button.departments {
-            display: none; 
+            display: none;
         }
     }
 
@@ -573,7 +563,7 @@
         justify-content: flex-start;
         align-items: center;
         gap: 16px;
-        
+
     }
 
     .dropdown-content .go-back-button:hover {
@@ -618,7 +608,7 @@
         font-style: normal;
         font-weight: 400;
         line-height: 150%;
-        align-items: center; 
+        align-items: center;
         gap: 16px;
     }
 
@@ -630,13 +620,13 @@
 
     @media screen and (max-width: 983px) {
         .department-list .child-link a {
-            font-weight: 600; 
-            font-size: 16px; 
+            font-weight: 600;
+            font-size: 16px;
         }
 
         .department-list .child-link:hover a {
-            font-size: 18px; 
-            text-decoration: underline; 
+            font-size: 18px;
+            text-decoration: underline;
         }
     }
 
@@ -935,9 +925,9 @@
         }
 
         .dropdown-categories-header .close-button {
-        position: relative; 
-        top: 0; 
-        right: 0; 
+            position: relative;
+            top: 0;
+            right: 0;
         }
     }
 
@@ -997,7 +987,7 @@
             }
 
             .menu ul {
-                gap: 24px;            
+                gap: 24px;
             }
 
             .menu li {
@@ -1005,10 +995,10 @@
                 font-size: 18px;
             }
 
-            .menu li  a {
+            .menu li a {
                 padding: 0;
             }
-        } 
+        }
 
         .dropdown-content {
             flex-direction: column;
@@ -1017,7 +1007,7 @@
             overflow: auto;
             flex-wrap: nowrap;
             gap: 0;
-            padding: 0; 
+            padding: 0;
         }
 
         .dropdown-categories-header {
@@ -1026,9 +1016,9 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            padding: 24px; 
-            position: sticky; 
-            top: 0; 
+            padding: 24px;
+            position: sticky;
+            top: 0;
             background-color: var(--header-dropdown-background, #fff);
             z-index: 1000;
         }
@@ -1058,30 +1048,30 @@
         .dropdown-menu .categories {
             row-gap: 16px;
             grid-template-columns: repeat(auto-fit, 100vw);
-            display: flex; 
-            flex-direction: column; 
+            display: flex;
+            flex-direction: column;
             padding: 12px 24px 24px 24px;
         }
 
         .dropdown-type {
-            display: flex; 
-            flex-direction: column; 
-            width: 100%; 
-            padding: 24px; 
-            position: relative; 
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            padding: 24px;
+            position: relative;
         }
 
         .dropdown-type::before {
             content: '';
             position: absolute;
-            top: 0; 
-            left: 24px; 
-            right: 24px; 
+            top: 0;
+            left: 24px;
+            right: 24px;
             border-top: 1px solid rgba(0, 0, 0, 0.10);
         }
 
         .hide-grey-line::before {
-            border-top: none; 
+            border-top: none;
         }
 
         .dropdown-categories {
@@ -1105,80 +1095,81 @@
             max-height: 100vh;
             height: 100vh;
             border-radius: 0px;
-            padding-bottom: 50px; 
+            padding-bottom: 50px;
         }
     }
 
     .category-image {
-        display: none; 
-        width: 56px; 
+        display: none;
+        width: 56px;
         height: 56px;
-        padding: 4px; 
+        padding: 4px;
     }
 
     .department-image {
-        display: none; 
-        justify-content: center; 
-        width: 56px; 
-        height: 56px; 
-        border-radius: 8px; 
+        display: none;
+        justify-content: center;
+        width: 56px;
+        height: 56px;
+        border-radius: 8px;
         border: 1px solid rgba(0, 0, 0, 0.10);
         background: var(--White, #FFF);
     }
 
     .department-image img {
-        border-radius: 8px; 
+        border-radius: 8px;
     }
 
 
     @media only screen and (max-width: 983px) {
         .category-image {
-            display: flex; 
+            display: flex;
         }
 
         .department-image {
-        display: flex; 
+            display: flex;
         }
 
         .no-image-placeholder {
-        background-color: var(--Gray-Light, #F2F2F2);
-        width: 100%; 
-        height: 100%; 
-        border-radius: 8px; 
-    }
+            background-color: var(--Gray-Light, #F2F2F2);
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
     }
 
     @media only screen and (max-width: 983px) {
+
         .dropdown-a.desktop,
         .parent-link.desktop {
-            display: none; 
+            display: none;
         }
     }
 
     .arrow-icon {
-        display: none; 
+        display: none;
     }
 
     @media only screen and (max-width: 983px) {
         .arrow-icon {
-            display: flex; 
-            margin-left: auto; 
+            display: flex;
+            margin-left: auto;
         }
     }
 
     .parent-button {
-        display: none; 
-        flex-direction: row; 
-        width: 100%; 
+        display: none;
+        flex-direction: row;
+        width: 100%;
         align-items: center;
-        gap: 16px; 
-        padding: 0 !important; 
+        gap: 16px;
+        padding: 0 !important;
     }
 
     .back-icon-wrapper {
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border-radius: 20px;
         background: var(--Gray-Light, #F2F2F2);
         width: 36px;
@@ -1186,40 +1177,40 @@
     }
 
     .explore-link {
-        display: none; 
-        justify-content: center; 
-        font-size: 14px; 
-        font-style: normal; 
-        font-weight: 600; 
+        display: none;
+        justify-content: center;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
         background: var(--Blue-Light, #E9F4F0);
         padding: 8px 16px;
         border-radius: 8px;
     }
 
     @media only screen and (max-width: 983px) {
-        .dropdown-menu .category, 
+
+        .dropdown-menu .category,
         .dropdown-menu .department ul {
-            gap: 16px; 
-            margin-top: 0; 
+            gap: 16px;
+            margin-top: 0;
         }
     }
 
     .all-departments-section {
-        display: none; 
+        display: none;
         flex-direction: column;
-        gap: 16px; 
+        gap: 16px;
         border-top: 1px solid rgba(0, 0, 0, 0.10);
-        padding-top: 24px; 
+        padding-top: 24px;
     }
 
     .all-departments-section p {
-        font-weight: 600; 
+        font-weight: 600;
     }
 
     @media only screen and (max-width: 983px) {
-    .all-departments-section {
-        display: flex; 
+        .all-departments-section {
+            display: flex;
+        }
     }
-    }
-
 </style>

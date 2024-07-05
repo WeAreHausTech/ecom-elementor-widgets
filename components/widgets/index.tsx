@@ -100,12 +100,12 @@ export default {
     )
   },
 
-  searchDialogue: (dataAttributes: NamedNodeMap) => {
-    const SearchDialogue = React.lazy(() => import('./SearchDialogue'))
+  searchField: (dataAttributes: NamedNodeMap) => {
+    const SearchField = React.lazy(() => import('./SearchField'))
     const openOnButton = dataAttributes.getNamedItem('data-open-on-button')?.value === 'true'
     return (
       <Suspense>
-        <SearchDialogue openOnButton={openOnButton} autofocus={true} />
+        <SearchField openOnButton={openOnButton} autofocus={true} />
       </Suspense>
     )
   },
