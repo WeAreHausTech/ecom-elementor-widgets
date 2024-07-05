@@ -48,7 +48,6 @@
                     </svg>
                 </button>
             </div>
-        </div>
             <?php if ($data['contact_us_link'] && $data['contact_us_text']) { ?>
                 <div class="contact-button">
                     <a href="<?= $data['contact_us_link'] ?>">
@@ -56,6 +55,7 @@
                     </a>
                 </div>
             <?php } ?>
+        </div>
         </div>
     </div>
 
