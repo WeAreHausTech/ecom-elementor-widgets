@@ -25,6 +25,14 @@
                 </div>
             </div>
         </div>
+        <div class="language-selector" id="language-selector-header">
+            <?php if ($data) { ?>
+                <?= $data['language_selector'] ?>
+            <?php } ?>
+            <?php if (defined('ICL_SITEPRESS_VERSION')) {
+                echo do_shortcode('[wpml_language_selector_widget]');
+            } ?>
+        </div>
         <div class="menu-links">
             <div class="icons">
                 <?php include ('Search.php') ?>
@@ -1180,6 +1188,51 @@
     @media only screen and (max-width: 983px) {
     .all-departments-section {
         display: flex; 
+    }
+    }
+
+     /* Styling of the language selector */
+     #language-selector-header {
+            display: none; 
+            flex-direction: column; 
+            gap: 12px; 
+            font-size: 14px; 
+            font-weight: 600; 
+    }
+
+    #language-selector-header ul {
+        display: flex; 
+    }
+
+    #language-selector-header li {
+        display: flex; 
+        padding: 4px 12px;
+        border-radius: 100px; 
+        border: 1px solid rgba(0, 0, 0, 0.10);
+    }
+
+    #language-selector-header a {
+        font-size: 14px; 
+        line-height: 160%; 
+        font-weight: 500; 
+    }
+
+    #language-selector-header .wpml-ls-current-language a {
+        color: var(--White, #FFF);
+    }
+
+    #language-selector-header .wpml-ls-current-language {
+        background: var(--Almost-Black, #3E4849);
+        border: none; 
+    }
+
+    #language-selector-header .wpml-ls-legacy-list-vertical {
+        padding: 0; 
+    }
+
+    @media only screen and (max-width: 983px) {
+        #language-selector-header {
+            display: flex; 
     }
     }
 
