@@ -9,6 +9,15 @@
         </div>
         <div class="mobile-search">
             <?php include ('SearchInputField.php') ?>
+            <div class="close-button">
+                <button onClick="onCloseModal()" aria-label="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path
+                            d="M7.12099 5.70717C6.73051 5.31668 6.09741 5.31668 5.70693 5.70717C5.31644 6.09765 5.31644 6.73075 5.70693 7.12123L10.5858 12L5.70693 16.8789C5.31644 17.2693 5.31644 17.9024 5.70693 18.2929C6.09741 18.6834 6.73051 18.6834 7.12099 18.2929L11.9998 13.4141L16.8787 18.2929C17.2691 18.6834 17.9022 18.6834 18.2927 18.2929C18.6832 17.9024 18.6832 17.2693 18.2927 16.8789L13.4139 12L18.2927 7.12123C18.6832 6.73075 18.6832 6.09765 18.2927 5.70717C17.9022 5.31668 17.2691 5.31668 16.8787 5.70717L11.9998 10.586L7.12099 5.70717Z"
+                            fill="#3E4849" />
+                    </svg>
+                </button>
+            </div>
         </div>
         <div class="menu" id="main-menu">
             <?php if ($data['menu_id']) {
@@ -34,15 +43,7 @@
                 <?php include ('Login.php') ?>
                 <?php include ('Cart.php') ?>
             </div>
-            <div class="close-button">
-                <button onClick="onCloseModal()" aria-label="Close">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path
-                            d="M7.12099 5.70717C6.73051 5.31668 6.09741 5.31668 5.70693 5.70717C5.31644 6.09765 5.31644 6.73075 5.70693 7.12123L10.5858 12L5.70693 16.8789C5.31644 17.2693 5.31644 17.9024 5.70693 18.2929C6.09741 18.6834 6.73051 18.6834 7.12099 18.2929L11.9998 13.4141L16.8787 18.2929C17.2691 18.6834 17.9022 18.6834 18.2927 18.2929C18.6832 17.9024 18.6832 17.2693 18.2927 16.8789L13.4139 12L18.2927 7.12123C18.6832 6.73075 18.6832 6.09765 18.2927 5.70717C17.9022 5.31668 17.2691 5.31668 16.8787 5.70717L11.9998 10.586L7.12099 5.70717Z"
-                            fill="#3E4849" />
-                    </svg>
-                </button>
-            </div>
+            
         </div>
             <?php if ($data['contact_us_link'] && $data['contact_us_text']) { ?>
                 <div class="contact-button">
@@ -424,9 +425,13 @@
         width: 100%;
         padding: 24px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+        gap: 8px;
 
         @media screen and (max-width: 983px) {
             display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
         }
     } 
 
@@ -437,6 +442,13 @@
 
         @media screen and (max-width: 983px) {
             display: flex;
+        }
+    }
+
+    @media only screen and (max-width: 983px) {
+        .ecom-components-root.search {
+            display: block;
+            width: 100%; 
         }
     }
 
@@ -941,10 +953,10 @@
         }
 
         .header .close-button {
-            display: block;
-            position: absolute;
+            display: flex;
+            /* position: absolute;
             top: 24px;
-            right: 24px;
+            right: 24px; */
         }
 
         .active,
