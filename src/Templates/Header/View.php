@@ -91,246 +91,247 @@
 
 <script>
     //TODO move to separate external file
+    document.addEventListener('DOMContentLoaded', function () {
+        let header = document.querySelector('.header')
+        let isMobile = header.offsetWidth <= 983
 
-    let header = document.querySelector('.header')
-    let isMobile = header.offsetWidth <= 983
-
-    const updateIsMobile = () => {
-        header = document.querySelector('.header')
-        isMobile = header.offsetWidth <= 983
-    }
-
-    window.addEventListener('load', updateIsMobile);
-    window.addEventListener('resize', updateIsMobile);
-
-     // Function to set display style for elements
-     const setDisplayStyle = (selector, displayValue) => {
-    document.querySelectorAll(selector).forEach((element) => {
-        element.style.display = displayValue
-    })
-    }
-
-    // Function to set flex direction for elements 
-    const setFlexDirection = (selector, flexDirection) => {
-    document.querySelectorAll(selector).forEach((element) => {
-        element.style.flexDirection = flexDirection
-    })
-    }
-
-    openSubcategories = (categoryId, categoryName) => {
-        if (!isMobile) {
-            return;
+        const updateIsMobile = () => {
+            header = document.querySelector('.header')
+            isMobile = header.offsetWidth <= 983
         }
-        //Scroll to top of dropdown
-        dropdownContent.scrollTop = 0; 
-        
-        //Hide container with image, svg and heading
-        setDisplayStyle('.parent-button', 'none');
 
-        // Adjust button visibility
-        document.getElementById('go-back-button').style.display = 'none'
-        document.getElementById('back-to-menu-button').style.display = 'flex'
-        document.getElementById('back-to-menu-placeholder').textContent = `${categoryName}`
+        window.addEventListener('load', updateIsMobile);
+        window.addEventListener('resize', updateIsMobile);
 
-        // Set display properties for headings for categories and departments
-        document.querySelectorAll('[id^="parent-"]').forEach((element) => {
-            element.style.display = element.id === `parent-${categoryId}` ? 'flex' : 'none'
+        // Function to set display style for elements
+        const setDisplayStyle = (selector, displayValue) => {
+        document.querySelectorAll(selector).forEach((element) => {
+            element.style.display = displayValue
         })
-
-        // Set display properties for categories and departments
-        const categoryElement = document.getElementById(`category-${categoryId}`)
-        if (categoryElement) categoryElement.style.display = 'flex'
-        
-        const departmentElement = document.getElementById(`department-list-${categoryId}`)
-        if (departmentElement) {
-            departmentElement.style.display = 'flex'
-            setDisplayStyle('.dropdown-categories', 'none')
         }
 
-        //Display the explore link
-        const exploreElement = document.getElementById(`explore-link-${categoryId}`)
-        if (exploreElement) exploreElement.style.display = 'flex'
-        
-        // Hide grey line and change padding size of dropdown-type
-        const dropdownType = document.querySelector('.dropdown-type')
-        dropdownType.classList.add('hide-grey-line')
-        dropdownType.style.padding = '12px 24px'
-    }
-
-    const resetMobileDropdown = () => {
-        dropdownContent.scrollTop = 0; 
-        setDisplayStyle('.parent-button', 'flex');
-        setDisplayStyle('[id^="parent-"]', 'flex')
-        setDisplayStyle('.category', 'none')
-        setDisplayStyle('.department-list', 'none')
-        setDisplayStyle('.explore-link', 'none')
-        setDisplayStyle('.dropdown-categories', 'block')
-        setFlexDirection('.department', 'column')
-        document.getElementById('go-back-button').style.display = 'flex'
-        document.getElementById('back-to-menu-button').style.display = 'none'
-        const dropdownType = document.querySelector('.dropdown-type')
-        dropdownType.classList.remove('hide-grey-line')
-        dropdownType.style.padding = '24px'
-    }
-
-    const resetDesktopDropdown = () => {
-        document.getElementById('go-back-button').style.display = 'none'
-        setDisplayStyle('.parent-button', 'none');
-        setDisplayStyle('.category', 'flex')
-        setDisplayStyle('.department-list', 'flex')
-        setFlexDirection('.parent', 'column')
-        setFlexDirection('.department', 'column')
-        const dropdownType = document.querySelector('.dropdown-type')
-        dropdownType.style.padding = '0'
-    }
-    navigateToSlug = (element) => {
-        if (!isMobile) {
-            return;
-        }
-        const slug = element.getAttribute('data-slug')
-        if (slug) {
-            window.location.href = slug; 
-        }
-    }
-    showMore = (buttonElement) => {
-        const buttonId = buttonElement.id;
-        const id = buttonId.split('-')[2];
-        document.querySelectorAll(`[data-parent="${id}"]`).forEach((element) => {
-            element.style.display = 'block'
+        // Function to set flex direction for elements 
+        const setFlexDirection = (selector, flexDirection) => {
+        document.querySelectorAll(selector).forEach((element) => {
+            element.style.flexDirection = flexDirection
         })
-
-        document.getElementById(buttonId).style.display = 'none'
-    }
-    closeProductModal = () => {
-        const dropdown = document.getElementById('dropdown')
-        const dropdownMenu = document.getElementById('dropdown-menu');
-        const dropdownContent = document.getElementById('dropdown-content');
-
-        if (dropdown.classList.contains('active-dropdown')) {
-            dropdown.classList.remove('active-dropdown');
         }
 
-        if (dropdownMenu.classList.contains('active-dropdown-menu')) {
-            dropdownMenu.classList.remove('active-dropdown-menu')
-        }
-
-        if (dropdownContent.classList.contains('active-dropdown-content')) {
-            dropdownContent.classList.remove('active-dropdown-content')
-        }
-    }
-    closeMobileMenuModal = () => {
-        const mobileMenu = document.getElementById('header-content');
-        if (mobileMenu.classList.contains('active')) {
-            mobileMenu.classList.remove('active');
-        }
-    }
-    onOpenModal = () => {
-        document.getElementById('header-content').classList.toggle('active')
-        document.body.style.position = 'fixed';
-
-    }
-    onCloseModal = () => {
-        document.getElementById('header-content').classList.toggle('active')
-        document.body.style.position = '';
-    }
-    onGoBackButton = () => {
-        document.getElementById('dropdown-menu').classList.remove('active-dropdown');
-        document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
-        document.getElementById('dropdown').classList.remove('active-dropdown');
-        document.getElementById('header-content').classList.add('active')
-
-    }
-    onBackToMenu = () => {
-        resetMobileDropdown()
-    }
-    closeMenu = (e) => {
-        document.body.style.position = '';
-        document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
-        setTimeout(() => {
-            document.getElementById('dropdown-menu').classList.remove('active-dropdown-menu');
-            document.getElementById('dropdown').classList.remove('active-dropdown');
-
-            if (document.getElementById('header-content').classList.contains('active')) {
-            onCloseModal();
-            }
-        }, 400);
-    }
-    openOrCloseMenu = (e) => {
-        e.preventDefault();
-        const isOpen = document.getElementById('dropdown').classList.contains('active-dropdown')
-
-        if (isOpen) {
-            closeMenu()
-            closeMobileMenuModal();
-        } else {
-            document.getElementById('dropdown').classList.add('active-dropdown')
-            document.getElementById('dropdown-menu').classList.add('active-dropdown-menu')
-
-            setTimeout(() => {
-                document.getElementById('dropdown-content').classList.add('active-dropdown-content')
-            }, 50);
-
-            if (isMobile) {
-                resetMobileDropdown();
-            } else {
-                resetMobileDropdown();
-                resetDesktopDropdown();
-            }
-        }
-    }
-
-    updateDeviceType = () => {
-        if (Array.isArray(productMenuIds)) {
-            productMenuIds.forEach((productMenuId) => {
-                const menuItemProducts = document.querySelectorAll('#menu-item-' + productMenuId);
-                menuItemProducts.forEach((menuItemProduct) => {
-                    menuItemProduct.addEventListener('click', openOrCloseMenu );
-                });
-            });
-        }
-    }
-
-    updateDeviceType()
-
-    const handleResize = () => {
-        updateDeviceType()
-        closeMenu()
-        closeMobileMenuModal()
-     }
-
-    window.addEventListener('resize', handleResize)
-
-    const dropdown = document.getElementById('dropdown');
-    const dropdownContent = document.getElementById('dropdown-content')
-
-    document.body.addEventListener('click', (event) => {
-
-        const targetId = event.target.id;
-        console.log(targetId)
-
-        if (dropdown.classList.contains('active-dropdown')) {
-            if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId === 'back-to-menu-button' || targetId === 'back-to-menu-placeholder' ||  targetId.startsWith('menu-item-') ||  targetId.startsWith('category-button-') || targetId.startsWith('desktop-link-') || targetId.startsWith('department-button-') || targetId.startsWith('see-more-') || targetId.startsWith('parent-') || targetId.startsWith('explore-link-')) {
+        openSubcategories = (categoryId, categoryName) => {
+            if (!isMobile) {
                 return;
-            } else {
-                closeMenu();
+            }
+            //Scroll to top of dropdown
+            dropdownContent.scrollTop = 0; 
+            
+            //Hide container with image, svg and heading
+            setDisplayStyle('.parent-button', 'none');
+
+            // Adjust button visibility
+            document.getElementById('go-back-button').style.display = 'none'
+            document.getElementById('back-to-menu-button').style.display = 'flex'
+            document.getElementById('back-to-menu-placeholder').textContent = `${categoryName}`
+
+            // Set display properties for headings for categories and departments
+            document.querySelectorAll('[id^="parent-"]').forEach((element) => {
+                element.style.display = element.id === `parent-${categoryId}` ? 'flex' : 'none'
+            })
+
+            // Set display properties for categories and departments
+            const categoryElement = document.getElementById(`category-${categoryId}`)
+            if (categoryElement) categoryElement.style.display = 'flex'
+            
+            const departmentElement = document.getElementById(`department-list-${categoryId}`)
+            if (departmentElement) {
+                departmentElement.style.display = 'flex'
+                setDisplayStyle('.dropdown-categories', 'none')
+            }
+
+            //Display the explore link
+            const exploreElement = document.getElementById(`explore-link-${categoryId}`)
+            if (exploreElement) exploreElement.style.display = 'flex'
+            
+            // Hide grey line and change padding size of dropdown-type
+            const dropdownType = document.querySelector('.dropdown-type')
+            dropdownType.classList.add('hide-grey-line')
+            dropdownType.style.padding = '12px 24px'
+        }
+
+        const resetMobileDropdown = () => {
+            dropdownContent.scrollTop = 0; 
+            setDisplayStyle('.parent-button', 'flex');
+            setDisplayStyle('[id^="parent-"]', 'flex')
+            setDisplayStyle('.category', 'none')
+            setDisplayStyle('.department-list', 'none')
+            setDisplayStyle('.explore-link', 'none')
+            setDisplayStyle('.dropdown-categories', 'block')
+            setFlexDirection('.department', 'column')
+            document.getElementById('go-back-button').style.display = 'flex'
+            document.getElementById('back-to-menu-button').style.display = 'none'
+            const dropdownType = document.querySelector('.dropdown-type')
+            dropdownType.classList.remove('hide-grey-line')
+            dropdownType.style.padding = '24px'
+        }
+
+        const resetDesktopDropdown = () => {
+            document.getElementById('go-back-button').style.display = 'none'
+            setDisplayStyle('.parent-button', 'none');
+            setDisplayStyle('.category', 'flex')
+            setDisplayStyle('.department-list', 'flex')
+            setFlexDirection('.parent', 'column')
+            setFlexDirection('.department', 'column')
+            const dropdownType = document.querySelector('.dropdown-type')
+            dropdownType.style.padding = '0'
+        }
+        navigateToSlug = (element) => {
+            if (!isMobile) {
+                return;
+            }
+            const slug = element.getAttribute('data-slug')
+            if (slug) {
+                window.location.href = slug; 
             }
         }
-    })
+        showMore = (buttonElement) => {
+            const buttonId = buttonElement.id;
+            const id = buttonId.split('-')[2];
+            document.querySelectorAll(`[data-parent="${id}"]`).forEach((element) => {
+                element.style.display = 'block'
+            })
 
-    dropdownContent.addEventListener('scroll', function() {
-        const header = document.querySelector('.dropdown-categories-header');
-            if (dropdownContent.scrollTop > 0) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
+            document.getElementById(buttonId).style.display = 'none'
+        }
+        closeProductModal = () => {
+            const dropdown = document.getElementById('dropdown')
+            const dropdownMenu = document.getElementById('dropdown-menu');
+            const dropdownContent = document.getElementById('dropdown-content');
+
+            if (dropdown.classList.contains('active-dropdown')) {
+                dropdown.classList.remove('active-dropdown');
             }
-});
 
-    const searchElement = document.getElementById('search-widget')
+            if (dropdownMenu.classList.contains('active-dropdown-menu')) {
+                dropdownMenu.classList.remove('active-dropdown-menu')
+            }
 
-    searchElement.addEventListener('click', function (e) {
-        closeProductModal();
+            if (dropdownContent.classList.contains('active-dropdown-content')) {
+                dropdownContent.classList.remove('active-dropdown-content')
+            }
+        }
+        closeMobileMenuModal = () => {
+            const mobileMenu = document.getElementById('header-content');
+            if (mobileMenu.classList.contains('active')) {
+                mobileMenu.classList.remove('active');
+            }
+        }
+        onOpenModal = () => {
+            document.getElementById('header-content').classList.toggle('active')
+            document.body.style.position = 'fixed';
+
+        }
+        onCloseModal = () => {
+            document.getElementById('header-content').classList.toggle('active')
+            document.body.style.position = '';
+        }
+        onGoBackButton = () => {
+            document.getElementById('dropdown-menu').classList.remove('active-dropdown');
+            document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
+            document.getElementById('dropdown').classList.remove('active-dropdown');
+            document.getElementById('header-content').classList.add('active')
+
+        }
+        onBackToMenu = () => {
+            resetMobileDropdown()
+        }
+        closeMenu = (e) => {
+            document.body.style.position = '';
+            document.getElementById('dropdown-content').classList.remove('active-dropdown-content')
+            setTimeout(() => {
+                document.getElementById('dropdown-menu').classList.remove('active-dropdown-menu');
+                document.getElementById('dropdown').classList.remove('active-dropdown');
+
+                if (document.getElementById('header-content').classList.contains('active')) {
+                onCloseModal();
+                }
+            }, 400);
+        }
+        openOrCloseMenu = (e) => {
+            e.preventDefault();
+            const isOpen = document.getElementById('dropdown').classList.contains('active-dropdown')
+
+            if (isOpen) {
+                closeMenu()
+                closeMobileMenuModal();
+            } else {
+                document.getElementById('dropdown').classList.add('active-dropdown')
+                document.getElementById('dropdown-menu').classList.add('active-dropdown-menu')
+
+                setTimeout(() => {
+                    document.getElementById('dropdown-content').classList.add('active-dropdown-content')
+                }, 50);
+
+                if (isMobile) {
+                    resetMobileDropdown();
+                } else {
+                    resetMobileDropdown();
+                    resetDesktopDropdown();
+                }
+            }
+        }
+
+        updateDeviceType = () => {
+            if (Array.isArray(productMenuIds)) {
+                productMenuIds.forEach((productMenuId) => {
+                    const menuItemProducts = document.querySelectorAll('#menu-item-' + productMenuId);
+                    menuItemProducts.forEach((menuItemProduct) => {
+                        menuItemProduct.addEventListener('click', openOrCloseMenu );
+                    });
+                });
+            }
+        }
+
+        updateDeviceType()
+
+        const handleResize = () => {
+            updateDeviceType()
+            closeMenu()
+            closeMobileMenuModal()
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        const dropdown = document.getElementById('dropdown');
+        const dropdownContent = document.getElementById('dropdown-content')
+
+        document.body.addEventListener('click', (event) => {
+
+            const targetId = event.target.id;
+            console.log(targetId)
+
+            if (dropdown.classList.contains('active-dropdown')) {
+                if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId === 'back-to-menu-button' || targetId === 'back-to-menu-placeholder' ||  targetId.startsWith('menu-item-') ||  targetId.startsWith('category-button-') || targetId.startsWith('desktop-link-') || targetId.startsWith('department-button-') || targetId.startsWith('see-more-') || targetId.startsWith('parent-') || targetId.startsWith('explore-link-')) {
+                    return;
+                } else {
+                    closeMenu();
+                }
+            }
+        })
+
+        dropdownContent.addEventListener('scroll', function() {
+            const header = document.querySelector('.dropdown-categories-header');
+                if (dropdownContent.scrollTop > 0) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
     });
+
+        const searchElement = document.getElementById('search-widget')
+
+        searchElement.addEventListener('click', function (e) {
+            closeProductModal();
+        });
+})
 </script>
 
 <style>
