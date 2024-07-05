@@ -29,7 +29,9 @@
             <?php if ($data) { ?>
                 <?= $data['language_selector'] ?>
             <?php } ?>
-            <?php echo do_shortcode('[wpml_language_selector_widget]'); ?>
+            <?php if (defined('ICL_SITEPRESS_VERSION')) {
+                echo do_shortcode('[wpml_language_selector_widget]');
+            } ?>
         </div>
         <div class="menu-links">
             <div class="icons">
