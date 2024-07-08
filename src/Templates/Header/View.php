@@ -48,17 +48,16 @@
                 <?php include('Login.php') ?>
                 <?php include('Cart.php') ?>
             </div>
-
+            <?php if ($data['contact_us_link'] && $data['contact_us_text']) { ?>
+                <div class="contact-button">
+                    <a href="<?= $data['contact_us_link'] ?>">
+                        <?= $data['contact_us_text'] ?>
+                    </a>
+                </div>
+            <?php } ?>
         </div>
-        <?php if ($data['contact_us_link'] && $data['contact_us_text']) { ?>
-            <div class="contact-button">
-                <a href="<?= $data['contact_us_link'] ?>">
-                    <?= $data['contact_us_text'] ?>
-                </a>
-            </div>
-        <?php } ?>
+        </div>
     </div>
-</div>
 
 <div class="mobile-heaader">
     <div class="mobile-logo">
@@ -423,12 +422,10 @@
         display: none;
         width: 100%;
         border-bottom: 1px solid rgba(0, 0, 0, 0.10);
-        gap: 8px;
         
         @media screen and (max-width: 983px) {
             display: flex;
             width: 100%;
-            gap: 20px;
             justify-content: space-between;
             align-items: center;
         }
@@ -721,6 +718,7 @@
         flex-direction: row;
         justify-content: space-between;
         flex-wrap: wrap;
+        padding: 0 24px 0 24px;
     }
 
     .header {
@@ -892,7 +890,6 @@
         flex-direction: row;
         justify-content: flex-end;
         align-items: center;
-        padding: 24px;
         gap: 8px;
     }
 
@@ -1257,6 +1254,11 @@
     #language-selector-header .wpml-ls-current-language {
         background: var(--Almost-Black, #3E4849);
         border: none; 
+    }
+
+    #language-selector-header .wpml-ls-current-language .wpml-ls-link {
+        display: flex; 
+        align-items: center; 
     }
 
     #language-selector-header .wpml-ls-legacy-list-vertical {
