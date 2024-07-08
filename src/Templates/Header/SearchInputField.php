@@ -4,6 +4,7 @@
   echo '<div 
       id="' . $widget_id . '" 
       data-open-on-button="false"
+      open-in-dialog="true"
       class="ecom-components-root search" 
       data-widget-type="search-field"
       data-placeholder="' . $data['search_placeholder'] . '"

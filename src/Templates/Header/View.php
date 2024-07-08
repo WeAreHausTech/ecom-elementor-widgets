@@ -422,13 +422,13 @@
     .mobile-search {
         display: none;
         width: 100%;
-        padding: 24px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.10);
         gap: 8px;
-
+        
         @media screen and (max-width: 983px) {
             display: flex;
-            flex-direction: row;
+            width: 100%;
+            gap: 20px;
             justify-content: space-between;
             align-items: center;
         }
@@ -437,7 +437,6 @@
     .search-field-wrapper {
         display: none;
         width: 100%;
-        height: 40px;
 
         @media screen and (max-width: 983px) {
             display: flex;
@@ -893,6 +892,7 @@
         flex-direction: row;
         justify-content: flex-end;
         align-items: center;
+        padding: 24px;
         gap: 8px;
     }
 
@@ -953,9 +953,8 @@
 
         .header .close-button {
             display: flex;
-            /* position: absolute;
-            top: 24px;
-            right: 24px; */
+            margin-top: 16px;
+            padding-right: 24px;
         }
 
         .active,
@@ -1230,6 +1229,8 @@
             gap: 12px; 
             font-size: 14px; 
             font-weight: 600; 
+            padding: 24px 24px 0 24px;
+            width: 100%;
     }
 
     #language-selector-header ul {
