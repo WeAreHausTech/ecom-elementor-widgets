@@ -17,12 +17,14 @@
             </div>
         </div>
         <div class="menu" id="main-menu">
-            <?php if ($data['menu_id']) {
-                wp_nav_menu([
-                    'menu' => $data['menu_id'],
-                    'depth' => 2,
-                ]);
-            } ?>
+            <div class="main-menu-list" id="main-menu-list">
+                <?php if ($data['menu_id']) {
+                    wp_nav_menu([
+                        'menu' => $data['menu_id'],
+                        'depth' => 2,
+                    ]);
+                } ?>
+            </diV>    
             <div class="footer-container">
                 <div class="footer-menu" id="footer-menu">
                     <?php if ($data['footer_menu_id']) {
@@ -358,7 +360,6 @@
     }
 
     .menu-header-main-container {
-        padding: 24px 24px 0 24px;
         width: 100%;
     }
 
@@ -378,6 +379,11 @@
     }
 
     @media screen and (max-width: 983px) {
+        .main-menu-list {
+            padding: 24px 24px 0 24px;
+            width: 100%;
+        }
+
         .footer-container {
             width: 100%;
             bottom: 0;
@@ -387,6 +393,7 @@
         #footer-menu {
             display: block;
             width: 100%;
+            padding: 24px 24px 0 24px;
         }
 
         #main-menu .menu {
