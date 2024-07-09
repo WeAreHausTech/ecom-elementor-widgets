@@ -2,29 +2,18 @@
     <div class="header-content" id="header-content">
         <div class="logo">
             <a href="<?= get_home_url() ?>">
-                <img style="height: 100%; width: auto;" src="<?= $data['logo']['url'] ?>" alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
+                <img style="height: 100%; width: auto;" src="<?= $data['logo']['url'] ?>"
+                    alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
                 </img>
             </a>
         </div>
-        <div class="mobile-search">
-            <?php include('SearchInputField.php') ?>
-            <div class="close-button">
-                <button onClick="onCloseModal()" aria-label="Close">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path d="M7.12099 5.70717C6.73051 5.31668 6.09741 5.31668 5.70693 5.70717C5.31644 6.09765 5.31644 6.73075 5.70693 7.12123L10.5858 12L5.70693 16.8789C5.31644 17.2693 5.31644 17.9024 5.70693 18.2929C6.09741 18.6834 6.73051 18.6834 7.12099 18.2929L11.9998 13.4141L16.8787 18.2929C17.2691 18.6834 17.9022 18.6834 18.2927 18.2929C18.6832 17.9024 18.6832 17.2693 18.2927 16.8789L13.4139 12L18.2927 7.12123C18.6832 6.73075 18.6832 6.09765 18.2927 5.70717C17.9022 5.31668 17.2691 5.31668 16.8787 5.70717L11.9998 10.586L7.12099 5.70717Z" fill="#3E4849" />
-                    </svg>
-                </button>
-            </div>
-        </div>
         <div class="menu" id="main-menu">
-            <div class="main-menu-list" id="main-menu-list">
-                <?php if ($data['menu_id']) {
-                    wp_nav_menu([
-                        'menu' => $data['menu_id'],
-                        'depth' => 2,
-                    ]);
-                } ?>
-            </diV>    
+            <?php if ($data['menu_id']) {
+                wp_nav_menu([
+                    'menu' => $data['menu_id'],
+                    'depth' => 2,
+                ]);
+            } ?>
             <div class="footer-container">
                 <div class="footer-menu" id="footer-menu">
                     <?php if ($data['footer_menu_id']) {
@@ -46,9 +35,18 @@
         </div>
         <div class="menu-links">
             <div class="icons">
-                <?php include('SearchField.php') ?>
-                <?php include('Login.php') ?>
-                <?php include('Cart.php') ?>
+                <?php include ('Search.php') ?>
+                <?php include ('Login.php') ?>
+                <?php include ('Cart.php') ?>
+            </div>
+            <div class="close-button">
+                <button onClick="onCloseModal()" aria-label="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path
+                            d="M7.12099 5.70717C6.73051 5.31668 6.09741 5.31668 5.70693 5.70717C5.31644 6.09765 5.31644 6.73075 5.70693 7.12123L10.5858 12L5.70693 16.8789C5.31644 17.2693 5.31644 17.9024 5.70693 18.2929C6.09741 18.6834 6.73051 18.6834 7.12099 18.2929L11.9998 13.4141L16.8787 18.2929C17.2691 18.6834 17.9022 18.6834 18.2927 18.2929C18.6832 17.9024 18.6832 17.2693 18.2927 16.8789L13.4139 12L18.2927 7.12123C18.6832 6.73075 18.6832 6.09765 18.2927 5.70717C17.9022 5.31668 17.2691 5.31668 16.8787 5.70717L11.9998 10.586L7.12099 5.70717Z"
+                            fill="#3E4849" />
+                    </svg>
+                </button>
             </div>
             <?php if ($data['contact_us_link'] && $data['contact_us_text']) { ?>
                 <div class="contact-button">
@@ -61,32 +59,39 @@
         </div>
     </div>
 
-<div class="mobile-heaader">
-    <div class="mobile-logo">
-        <a href="<?= get_home_url() ?>">
-            <img style="height:100%; width: auto;" src="<?= $data['logo']['url'] ?>" alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
-            </img>
-        </a>
-    </div>
-    <div class="mobile-icons">
-        <?php include('SearchField.php') ?>
-        <?php include('Login.php') ?>
-        <?php include('Cart.php') ?>
+    <div class="mobile-heaader">
+        <div class="mobile-logo">
+            <a href="<?= get_home_url() ?>">
+                <img style="height:100%; width: auto;" src="<?= $data['logo']['url'] ?>"
+                    alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
+                </img>
+            </a>
+        </div>
+        <div class="mobile-icons">
+            <?php include ('Search.php') ?>
+            <?php include ('Login.php') ?>
+            <?php include ('Cart.php') ?>
 
-        <div class="open-button">
-            <button onClick="onOpenModal()" aria-label="Open menu">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M2.74998 6.75H21.25C21.664 6.75 21.9999 6.30195 21.9999 5.75C21.9999 5.19796 21.6639 4.75 21.25 4.75H2.74998C2.33603 4.75 2 5.19796 2 5.75C2 6.30204 2.33603 6.75 2.74998 6.75Z" fill="#3E4849" />
-                    <path d="M21.25 11.25H2.74998C2.33596 11.25 2 11.698 2 12.25C2 12.802 2.33603 13.25 2.74998 13.25H21.25C21.664 13.25 21.9999 12.802 21.9999 12.25C21.9999 11.698 21.664 11.25 21.25 11.25Z" fill="#3E4849" />
-                    <path d="M2.74998 17.75H21.25C21.664 17.75 22 18.198 21.9999 18.75C21.9999 19.302 21.664 19.75 21.25 19.75H2.74998C2.33603 19.75 2 19.302 2 18.75C2 18.198 2.33596 17.75 2.74998 17.75Z" fill="#3E4849" />
-                </svg>
-            </button>
+            <div class="open-button">
+                <button onClick="onOpenModal()" aria-label="Open menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path
+                            d="M2.74998 6.75H21.25C21.664 6.75 21.9999 6.30195 21.9999 5.75C21.9999 5.19796 21.6639 4.75 21.25 4.75H2.74998C2.33603 4.75 2 5.19796 2 5.75C2 6.30204 2.33603 6.75 2.74998 6.75Z"
+                            fill="#3E4849" />
+                        <path
+                            d="M21.25 11.25H2.74998C2.33596 11.25 2 11.698 2 12.25C2 12.802 2.33603 13.25 2.74998 13.25H21.25C21.664 13.25 21.9999 12.802 21.9999 12.25C21.9999 11.698 21.664 11.25 21.25 11.25Z"
+                            fill="#3E4849" />
+                        <path
+                            d="M2.74998 17.75H21.25C21.664 17.75 22 18.198 21.9999 18.75C21.9999 19.302 21.664 19.75 21.25 19.75H2.74998C2.33603 19.75 2 19.302 2 18.75C2 18.198 2.33596 17.75 2.74998 17.75Z"
+                            fill="#3E4849" />
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
 </div>
-</div>
 
-<?php include('CategoriesDropdown.php') ?>
+<?php include ('CategoriesDropdown.php') ?>
 
 <script>
     const productMenuIds = <?= json_encode($data['products_menu_ids']) ?>;
@@ -357,10 +362,7 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-    }
 
-    .menu-header-main-container {
-        width: 100%;
     }
 
     @media only screen and (min-width: 983px) {
@@ -373,36 +375,29 @@
         }
     }
 
-    #footer-menu {
+     #footer-menu {
         width: 100%;
         display: none;
     }
 
     @media screen and (max-width: 983px) {
-        .main-menu-list {
-            padding: 24px 24px 0 24px;
-            width: 100%;
-        }
-
         .footer-container {
             width: 100%;
             bottom: 0;
             left: 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.10);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+            padding-top: 24px;
+            padding-bottom: 24px;
         }
 
         #footer-menu {
-            display: block;
-            width: 100%;
-            padding: 24px 24px 0 24px;
-        }
-
-        #main-menu .menu {
-            padding-bottom: 24px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+            display: block; 
         }
 
         #footer-menu .menu-header-main-container .menu {
             gap: 8px;
+            padding: 0;
         }
 
         #footer-menu li {
@@ -416,42 +411,13 @@
         #footer-menu .menu-header-main-container .menu a {
             padding: 0;
 
-            &:hover {
-                text-decoration-line: underline;
-                background: none;
-                border-radius: 0;
-                color: var(--e-global-color-text);
+                &:hover {
+                    text-decoration-line: underline;
+                    background: none;
+                    border-radius: 0;
+                    color: var(--e-global-color-text);
+                }
             }
-        }
-    }
-
-    .mobile-search {
-        display: none;
-        width: 100%;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.10);
-        
-        @media screen and (max-width: 983px) {
-            display: flex;
-            width: 100%;
-            justify-content: space-between;
-            align-items: center;
-        }
-    }
-
-    .search-field-wrapper {
-        display: none;
-        width: 100%;
-
-        @media screen and (max-width: 983px) {
-            display: flex;
-        }
-    }
-
-    @media only screen and (max-width: 983px) {
-        .ecom-components-root.search {
-            display: block;
-            width: 100%;
-        }
     }
 
     .dropdown {
@@ -555,7 +521,7 @@
 
     @media only screen and (max-width: 983px) {
         .see-more-button.departments {
-            display: none;
+            display: none; 
         }
     }
 
@@ -575,7 +541,7 @@
         justify-content: flex-start;
         align-items: center;
         gap: 16px;
-
+        
     }
 
     .dropdown-content .go-back-button:hover {
@@ -620,7 +586,7 @@
         font-style: normal;
         font-weight: 400;
         line-height: 150%;
-        align-items: center;
+        align-items: center; 
         gap: 16px;
     }
 
@@ -632,13 +598,13 @@
 
     @media screen and (max-width: 983px) {
         .department-list .child-link a {
-            font-weight: 600;
-            font-size: 16px;
+            font-weight: 600; 
+            font-size: 16px; 
         }
 
         .department-list .child-link:hover a {
-            font-size: 18px;
-            text-decoration: underline;
+            font-size: 18px; 
+            text-decoration: underline; 
         }
     }
 
@@ -725,7 +691,6 @@
         flex-direction: row;
         justify-content: space-between;
         flex-wrap: wrap;
-        padding: 0 24px 0 24px;
     }
 
     .header {
@@ -938,9 +903,9 @@
         }
 
         .dropdown-categories-header .close-button {
-            position: relative;
-            top: 0;
-            right: 0;
+        position: relative; 
+        top: 0; 
+        right: 0; 
         }
     }
 
@@ -956,9 +921,10 @@
         }
 
         .header .close-button {
-            display: flex;
-            margin-top: 16px;
-            padding-right: 24px;
+            display: block;
+            position: absolute;
+            top: 20px;
+            right: 24px;
         }
 
         .active,
@@ -974,7 +940,7 @@
             left: 0;
             background-color: var(--header-dropdown-background, #fff);
             overflow-y: hidden;
-            padding: 0;
+            padding: 24px;
             z-index: 9999;
         }
 
@@ -988,7 +954,7 @@
             justify-content: flex-start;
             overflow: auto;
             height: calc(100vh - 54px - var(--header-height));
-            width: 100%;
+            width: calc(100vw - 24px - 24px);
             flex-wrap: nowrap;
             gap: 0;
         }
@@ -996,10 +962,11 @@
         @media only screen and (max-width: 983px) {
             .menu {
                 height: auto;
+                padding-bottom: 24px;
             }
 
             .menu ul {
-                gap: 24px;
+                gap: 24px;            
             }
 
             .menu li {
@@ -1007,10 +974,10 @@
                 font-size: 18px;
             }
 
-            .menu li a {
+            .menu li  a {
                 padding: 0;
             }
-        }
+        } 
 
         .dropdown-content {
             flex-direction: column;
@@ -1019,7 +986,7 @@
             overflow: auto;
             flex-wrap: nowrap;
             gap: 0;
-            padding: 0;
+            padding: 0; 
         }
 
         .dropdown-categories-header {
@@ -1028,9 +995,9 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            padding: 24px;
-            position: sticky;
-            top: 0;
+            padding: 24px; 
+            position: sticky; 
+            top: 0; 
             background-color: var(--header-dropdown-background, #fff);
             z-index: 1000;
         }
@@ -1060,30 +1027,30 @@
         .dropdown-menu .categories {
             row-gap: 16px;
             grid-template-columns: repeat(auto-fit, 100vw);
-            display: flex;
-            flex-direction: column;
+            display: flex; 
+            flex-direction: column; 
             padding: 12px 24px 24px 24px;
         }
 
         .dropdown-type {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            padding: 24px;
-            position: relative;
+            display: flex; 
+            flex-direction: column; 
+            width: 100%; 
+            padding: 24px; 
+            position: relative; 
         }
 
         .dropdown-type::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 24px;
-            right: 24px;
+            top: 0; 
+            left: 24px; 
+            right: 24px; 
             border-top: 1px solid rgba(0, 0, 0, 0.10);
         }
 
         .hide-grey-line::before {
-            border-top: none;
+            border-top: none; 
         }
 
         .dropdown-categories {
@@ -1107,81 +1074,80 @@
             max-height: 100vh;
             height: 100vh;
             border-radius: 0px;
-            padding-bottom: 50px;
+            padding-bottom: 50px; 
         }
     }
 
     .category-image {
-        display: none;
-        width: 56px;
+        display: none; 
+        width: 56px; 
         height: 56px;
-        padding: 4px;
+        padding: 4px; 
     }
 
     .department-image {
-        display: none;
-        justify-content: center;
-        width: 56px;
-        height: 56px;
-        border-radius: 8px;
+        display: none; 
+        justify-content: center; 
+        width: 56px; 
+        height: 56px; 
+        border-radius: 8px; 
         border: 1px solid rgba(0, 0, 0, 0.10);
         background: var(--White, #FFF);
     }
 
     .department-image img {
-        border-radius: 8px;
+        border-radius: 8px; 
     }
 
 
     @media only screen and (max-width: 983px) {
         .category-image {
-            display: flex;
+            display: flex; 
         }
 
         .department-image {
-            display: flex;
+        display: flex; 
         }
 
         .no-image-placeholder {
-            background-color: var(--Gray-Light, #F2F2F2);
-            width: 100%;
-            height: 100%;
-            border-radius: 8px;
-        }
+        background-color: var(--Gray-Light, #F2F2F2);
+        width: 100%; 
+        height: 100%; 
+        border-radius: 8px; 
+    }
     }
 
     @media only screen and (max-width: 983px) {
-
         .dropdown-a.desktop,
         .parent-link.desktop {
-            display: none;
+            display: none; 
         }
     }
 
     .arrow-icon {
-        display: none;
+        display: none; 
     }
 
     @media only screen and (max-width: 983px) {
         .arrow-icon {
-            display: flex;
-            margin-left: auto;
+            display: flex; 
+            margin-left: auto; 
         }
     }
 
     .parent-button {
-        display: none;
-        flex-direction: row;
-        width: 100%;
+        display: none; 
+        flex-direction: row; 
+        width: 100%; 
         align-items: center;
-        gap: 16px;
-        padding: 0 !important;
+        gap: 16px; 
+        padding: 0 !important; 
     }
 
     .back-icon-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
         border-radius: 20px;
         background: var(--Gray-Light, #F2F2F2);
         width: 36px;
@@ -1189,35 +1155,34 @@
     }
 
     .explore-link {
-        display: none;
-        justify-content: center;
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 600;
+        display: none; 
+        justify-content: center; 
+        font-size: 14px; 
+        font-style: normal; 
+        font-weight: 600; 
         background: var(--Blue-Light, #E9F4F0);
         padding: 8px 16px;
         border-radius: 8px;
     }
 
     @media only screen and (max-width: 983px) {
-
-        .dropdown-menu .category,
+        .dropdown-menu .category, 
         .dropdown-menu .department ul {
-            gap: 16px;
-            margin-top: 0;
+            gap: 16px; 
+            margin-top: 0; 
         }
     }
 
     .all-departments-section {
-        display: none;
+        display: none; 
         flex-direction: column;
-        gap: 16px;
+        gap: 16px; 
         border-top: 1px solid rgba(0, 0, 0, 0.10);
-        padding-top: 24px;
+        padding-top: 24px; 
     }
 
     .all-departments-section p {
-        font-weight: 600;
+        font-weight: 600; 
     }
 
     @media only screen and (max-width: 983px) {
@@ -1233,8 +1198,6 @@
             gap: 12px; 
             font-size: 14px; 
             font-weight: 600; 
-            padding: 24px 24px 0 24px;
-            width: 100%;
     }
 
     #language-selector-header ul {
@@ -1277,4 +1240,5 @@
             display: flex; 
     }
     }
+
 </style>

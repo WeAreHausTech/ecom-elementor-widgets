@@ -100,13 +100,12 @@ export default {
     )
   },
 
-  searchField: (dataAttributes: NamedNodeMap) => {
+  searchField: () => {
     const SearchField = React.lazy(() => import('./SearchField'))
-    const openOnButton = dataAttributes.getNamedItem('data-open-on-button')?.value === 'true'
-    const openInDialog = dataAttributes.getNamedItem('open-in-dialog')?.value === 'true'
+
     return (
       <Suspense>
-        <SearchField openOnButton={openOnButton} autofocus={true} openInDialog={openInDialog} />
+        <SearchField openOnButton={true} autofocus={true} />
       </Suspense>
     )
   },
@@ -142,12 +141,12 @@ export default {
   },
 
   dropdownCart: (dataAttributes: NamedNodeMap) => {
-    const DropdownCart = React.lazy(() => import('./DropdownCart'))
-    const dropdownEnabled = +get(dataAttributes.getNamedItem('data-dropdown-enabled'), 'value', 0)
+    const DropdownCart = React.lazy(() => import('./DropdownCart'));
+    const dropdownEnabled =  +get(dataAttributes.getNamedItem('data-dropdown-enabled'), 'value', 0)
 
     return (
       <Suspense>
-        <DropdownCart dropdownEnabled={Boolean(dropdownEnabled)} />
+        <DropdownCart dropdownEnabled={Boolean(dropdownEnabled)}/> 
       </Suspense>
     )
   },
@@ -161,11 +160,7 @@ export default {
 
     return (
       <Suspense>
-        <Login
-          onContinueAsGuest={handleTriggerClick}
-          onLoggedIn={handleTriggerClick}
-          showContinueAsGuest={false}
-        />
+        <Login onContinueAsGuest={handleTriggerClick} onLoggedIn={handleTriggerClick} showContinueAsGuest={false} />
       </Suspense>
     )
   },
@@ -294,14 +289,14 @@ export default {
         )
       case 'begin-checkout':
         return (
-          <Suspense>
+          <Suspense >
             <BeginCheckoutEvent />
           </Suspense>
         )
       case 'view-item' && productId && productId !== undefined:
         return (
           <Suspense>
-            <ViewItemEvent productId={productId ?? ''} />
+            <ViewItemEvent productId={productId ?? ''}/>
           </Suspense>
         )
       default:
