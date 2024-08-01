@@ -123,7 +123,7 @@ export default {
     )
   },
 
-  productVariantAddToCart: () => {
+  addToCartButtonWidget: () => {
     const AddToCartButtonWidget = React.lazy(() => import('./AddToCartButton'))
 
     return (

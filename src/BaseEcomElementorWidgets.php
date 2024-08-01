@@ -92,7 +92,7 @@ class BaseEcomElementorWidgets
 
             \Elementor\Plugin::instance()
                 ->widgets_manager
-                ->register(new \WeAreHausTech\Widgets\ProductvariantAddToCart());
+                ->register(new \WeAreHausTech\Widgets\AddToCartButtonWidget());
 
 
             if (defined('WP_CLI') && WP_CLI) {

@@ -4,18 +4,18 @@ namespace WeAreHausTech\Widgets;
 use \Elementor\Widget_Base;
 use \WeAreHausTech\Traits\ElementorTemplate;
 
-class ProductvariantAddToCart extends Widget_Base
+class AddToCartButtonWidget extends Widget_Base
 {
     use ElementorTemplate;
 
     public function get_name()
     {
-        return 'ProductvariantAddToCart';
+        return 'AddToCartButtonWidget';
     }
 
     public function get_title()
     {
-        return esc_html__('Product add to cart', 'haus-ecom-widgets');
+        return esc_html__('Add to cart button', 'haus-ecom-widgets');
     }
 
     public function get_icon()
@@ -47,7 +47,7 @@ class ProductvariantAddToCart extends Widget_Base
             'widget_description',
             [
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
-                'raw' => esc_html__('This widget can only be used on product detail page beacuse it requires product variant id ', 'haus-ecom-widgets'),
+                'raw' => esc_html__('This widget can only be used on product detail page because it requires product variantid ', 'haus-ecom-widgets'),
                 'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
             ]
         );
@@ -78,7 +78,7 @@ class ProductvariantAddToCart extends Widget_Base
         <div 
             id="<?= $widgetId ?>"
             class="ecom-components-root" 
-            data-widget-type="product-variant-add-to-cart"
+            data-widget-type="add-to-cart-button-widget"
         >
         </div>
         <?php
