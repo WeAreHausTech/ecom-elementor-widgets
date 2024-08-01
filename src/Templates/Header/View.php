@@ -2,20 +2,16 @@
     <div class="header-content" id="header-content">
         <div class="logo">
             <a href="<?= get_home_url() ?>">
-                <img style="height: 100%; width: auto;" src="<?= $data['logo']['url'] ?>"
-                    alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
+                <img style="height: 100%; width: auto;" src="<?= $data['logo']['url'] ?>" alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
                 </img>
             </a>
         </div>
         <div class="mobile-search">
-            <?php include ('SearchInputField.php') ?>
+            <?php include('SearchInputField.php') ?>
             <div class="close-button">
                 <button onClick="onCloseModal()" aria-label="Close">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        aria-hidden="true">
-                        <path
-                            d="M7.12099 5.70717C6.73051 5.31668 6.09741 5.31668 5.70693 5.70717C5.31644 6.09765 5.31644 6.73075 5.70693 7.12123L10.5858 12L5.70693 16.8789C5.31644 17.2693 5.31644 17.9024 5.70693 18.2929C6.09741 18.6834 6.73051 18.6834 7.12099 18.2929L11.9998 13.4141L16.8787 18.2929C17.2691 18.6834 17.9022 18.6834 18.2927 18.2929C18.6832 17.9024 18.6832 17.2693 18.2927 16.8789L13.4139 12L18.2927 7.12123C18.6832 6.73075 18.6832 6.09765 18.2927 5.70717C17.9022 5.31668 17.2691 5.31668 16.8787 5.70717L11.9998 10.586L7.12099 5.70717Z"
-                            fill="#3E4849" />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M7.12099 5.70717C6.73051 5.31668 6.09741 5.31668 5.70693 5.70717C5.31644 6.09765 5.31644 6.73075 5.70693 7.12123L10.5858 12L5.70693 16.8789C5.31644 17.2693 5.31644 17.9024 5.70693 18.2929C6.09741 18.6834 6.73051 18.6834 7.12099 18.2929L11.9998 13.4141L16.8787 18.2929C17.2691 18.6834 17.9022 18.6834 18.2927 18.2929C18.6832 17.9024 18.6832 17.2693 18.2927 16.8789L13.4139 12L18.2927 7.12123C18.6832 6.73075 18.6832 6.09765 18.2927 5.70717C17.9022 5.31668 17.2691 5.31668 16.8787 5.70717L11.9998 10.586L7.12099 5.70717Z" fill="#3E4849" />
                     </svg>
                 </button>
             </div>
@@ -50,9 +46,9 @@
         </div>
         <div class="menu-links">
             <div class="icons">
-                <?php include ('SearchField.php') ?>
-                <?php include ('Login.php') ?>
-                <?php include ('Cart.php') ?>
+                <?php include('SearchField.php') ?>
+                <?php include('Login.php') ?>
+                <?php include('Cart.php') ?>
             </div>
             <?php if ($data['contact_us_link'] && $data['contact_us_text']) { ?>
                 <div class="contact-button">
@@ -68,29 +64,21 @@
 <div class="mobile-heaader">
     <div class="mobile-logo">
         <a href="<?= get_home_url() ?>">
-            <img style="height:100%; width: auto;" src="<?= $data['logo']['url'] ?>"
-                alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
+            <img style="height:100%; width: auto;" src="<?= $data['logo']['url'] ?>" alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
             </img>
         </a>
     </div>
     <div class="mobile-icons">
-        <?php include ('SearchField.php') ?>
-        <?php include ('Login.php') ?>
-        <?php include ('Cart.php') ?>
+        <?php include('SearchField.php') ?>
+        <?php include('Login.php') ?>
+        <?php include('Cart.php') ?>
 
         <div class="open-button">
             <button onClick="onOpenModal()" aria-label="Open menu">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    aria-hidden="true">
-                    <path
-                        d="M2.74998 6.75H21.25C21.664 6.75 21.9999 6.30195 21.9999 5.75C21.9999 5.19796 21.6639 4.75 21.25 4.75H2.74998C2.33603 4.75 2 5.19796 2 5.75C2 6.30204 2.33603 6.75 2.74998 6.75Z"
-                        fill="#3E4849" />
-                    <path
-                        d="M21.25 11.25H2.74998C2.33596 11.25 2 11.698 2 12.25C2 12.802 2.33603 13.25 2.74998 13.25H21.25C21.664 13.25 21.9999 12.802 21.9999 12.25C21.9999 11.698 21.664 11.25 21.25 11.25Z"
-                        fill="#3E4849" />
-                    <path
-                        d="M2.74998 17.75H21.25C21.664 17.75 22 18.198 21.9999 18.75C21.9999 19.302 21.664 19.75 21.25 19.75H2.74998C2.33603 19.75 2 19.302 2 18.75C2 18.198 2.33596 17.75 2.74998 17.75Z"
-                        fill="#3E4849" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M2.74998 6.75H21.25C21.664 6.75 21.9999 6.30195 21.9999 5.75C21.9999 5.19796 21.6639 4.75 21.25 4.75H2.74998C2.33603 4.75 2 5.19796 2 5.75C2 6.30204 2.33603 6.75 2.74998 6.75Z" fill="#3E4849" />
+                    <path d="M21.25 11.25H2.74998C2.33596 11.25 2 11.698 2 12.25C2 12.802 2.33603 13.25 2.74998 13.25H21.25C21.664 13.25 21.9999 12.802 21.9999 12.25C21.9999 11.698 21.664 11.25 21.25 11.25Z" fill="#3E4849" />
+                    <path d="M2.74998 17.75H21.25C21.664 17.75 22 18.198 21.9999 18.75C21.9999 19.302 21.664 19.75 21.25 19.75H2.74998C2.33603 19.75 2 19.302 2 18.75C2 18.198 2.33596 17.75 2.74998 17.75Z" fill="#3E4849" />
                 </svg>
             </button>
         </div>
@@ -98,7 +86,7 @@
 </div>
 </div>
 
-<?php include ('CategoriesDropdown.php') ?>
+<?php include('CategoriesDropdown.php') ?>
 
 <script>
     const productMenuIds = <?= json_encode($data['products_menu_ids']) ?>;
@@ -106,7 +94,7 @@
 
 <script>
     //TODO move to separate external file
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         let header = document.querySelector('.header')
         let isMobile = header.offsetWidth <= 983
 
@@ -341,7 +329,7 @@
             }
         })
 
-        dropdownContent.addEventListener('scroll', function () {
+        dropdownContent.addEventListener('scroll', function() {
             const header = document.querySelector('.dropdown-categories-header');
             if (dropdownContent.scrollTop > 0) {
                 header.classList.add('scrolled');
@@ -352,7 +340,7 @@
 
         const searchElement = document.getElementById('search-widget')
 
-        searchElement.addEventListener('click', function (e) {
+        searchElement.addEventListener('click', function(e) {
             closeProductModal();
         });
     })
@@ -971,7 +959,7 @@
             top: 0;
             right: 0;
         }
-        
+
         .menu li a:hover {
             border-radius: 0;
             text-decoration-line: underline;
@@ -988,6 +976,10 @@
     }
 
     @media only screen and (max-width: 983px) {
+        #main-menu {
+            border-top: 1px solid rgba(0, 0, 0, 0.10);
+        }
+
         .header-content {
             display: none;
         }
