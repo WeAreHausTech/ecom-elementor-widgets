@@ -142,12 +142,22 @@ export default {
     )
   },
 
-  searchField: () => {
+  searchField: (dataAttributes: NamedNodeMap) => {
     const SearchField = React.lazy(() => import('./SearchField'))
+    const openOnButton = dataAttributes.getNamedItem('data-open-on-button')?.value === 'true'
+    const triggerComponentString = dataAttributes.getNamedItem('data-trigger-component')?.value
 
     return (
       <Suspense>
-        <SearchField openOnButton={true} autofocus={true} />
+        <SearchField
+          openOnButton={openOnButton}
+          autofocus={true}
+          triggerComponent={
+            triggerComponentString ? (
+              <div dangerouslySetInnerHTML={{ __html: triggerComponentString }} />
+            ) : undefined
+          }
+        />
       </Suspense>
     )
   },
