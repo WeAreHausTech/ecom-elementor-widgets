@@ -81,6 +81,48 @@ export default {
     )
   },
 
+  productImageCarousel: (dataAttributes: NamedNodeMap) => {
+    const slug = dataAttributes.getNamedItem('data-product-slug')?.value
+    const id = dataAttributes.getNamedItem('data-product-id')?.value
+
+    const propToUse = id ? { id } : { slug: slug! }
+
+    const ProductImageCarousel = React.lazy(() => import('./ProductImageCarousel'))
+
+    return (
+      slug && (
+        <Suspense>
+          <ProductImageCarousel {...propToUse} />
+        </Suspense>
+      )
+    )
+  },
+
+  productVariantOptions: (dataAttributes: NamedNodeMap) => {
+    const slug = dataAttributes.getNamedItem('data-product-slug')?.value
+    const id = dataAttributes.getNamedItem('data-product-id')?.value
+
+    const propToUse = id ? { id } : { slug: slug! }
+
+    const useUrl = +get(dataAttributes.getNamedItem('data-use-url'), 'value', 0)
+    const optionVariable = dataAttributes.getNamedItem('data-option-variable')?.value as
+      | 'id'
+      | 'code'
+      | undefined
+
+    const ProductVariantOptions = React.lazy(() => import('./ProductVariantOptions'))
+
+    return (
+      <Suspense>
+        <ProductVariantOptions
+          useUrl={Boolean(useUrl)}
+          optionVariable={optionVariable}
+          {...propToUse}
+        />
+      </Suspense>
+    )
+  },
+
   cart: (dataAttributes: NamedNodeMap) => {
     const cartPricePropsCart = {
       subTotal: dataAttributes.getNamedItem('data-show-subtotal')?.value === 'yes' ? true : false,
@@ -307,7 +349,7 @@ export default {
             <BeginCheckoutEvent />
           </Suspense>
         )
-      case 'view-item' && productId && productId !== undefined:
+      case 'view-item':
         return (
           <Suspense>
             <ViewItemEvent productId={productId ?? ''} />
