@@ -123,6 +123,17 @@ export default {
     )
   },
 
+  productVariantAddToCart: () => {
+    const AddToCartButtonWidget = React.lazy(() => import('./AddToCartButton'))
+
+    return (
+      <Suspense>
+       <AddToCartButtonWidget />
+      </Suspense>
+    )
+  },
+  
+
   cart: (dataAttributes: NamedNodeMap) => {
     const cartPricePropsCart = {
       subTotal: dataAttributes.getNamedItem('data-show-subtotal')?.value === 'yes' ? true : false,
@@ -350,3 +361,4 @@ export default {
     }
   },
 }
+
