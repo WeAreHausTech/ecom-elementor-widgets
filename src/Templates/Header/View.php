@@ -376,7 +376,7 @@
 
         .menu-header-main-container,
         .menu,
-        .menu-header-main-engelska-container,
+        [class*="menu-header-main-"][class*="-container"],
         .menu-item {
             height: 100%;
         }
@@ -389,7 +389,7 @@
 
     @media screen and (max-width: 983px) {
 
-        .menu-header-main-container {
+        [class*="menu-header-main-"][class*="-container"] {
             padding: 24px;
         }
 
