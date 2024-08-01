@@ -2,16 +2,20 @@
     <div class="header-content" id="header-content">
         <div class="logo">
             <a href="<?= get_home_url() ?>">
-                <img style="height: 100%; width: auto;" src="<?= $data['logo']['url'] ?>" alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
+                <img style="height: 100%; width: auto;" src="<?= $data['logo']['url'] ?>"
+                    alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
                 </img>
             </a>
         </div>
         <div class="mobile-search">
-            <?php include('SearchInputField.php') ?>
+            <?php include ('SearchInputField.php') ?>
             <div class="close-button">
                 <button onClick="onCloseModal()" aria-label="Close">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path d="M7.12099 5.70717C6.73051 5.31668 6.09741 5.31668 5.70693 5.70717C5.31644 6.09765 5.31644 6.73075 5.70693 7.12123L10.5858 12L5.70693 16.8789C5.31644 17.2693 5.31644 17.9024 5.70693 18.2929C6.09741 18.6834 6.73051 18.6834 7.12099 18.2929L11.9998 13.4141L16.8787 18.2929C17.2691 18.6834 17.9022 18.6834 18.2927 18.2929C18.6832 17.9024 18.6832 17.2693 18.2927 16.8789L13.4139 12L18.2927 7.12123C18.6832 6.73075 18.6832 6.09765 18.2927 5.70717C17.9022 5.31668 17.2691 5.31668 16.8787 5.70717L11.9998 10.586L7.12099 5.70717Z" fill="#3E4849" />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        aria-hidden="true">
+                        <path
+                            d="M7.12099 5.70717C6.73051 5.31668 6.09741 5.31668 5.70693 5.70717C5.31644 6.09765 5.31644 6.73075 5.70693 7.12123L10.5858 12L5.70693 16.8789C5.31644 17.2693 5.31644 17.9024 5.70693 18.2929C6.09741 18.6834 6.73051 18.6834 7.12099 18.2929L11.9998 13.4141L16.8787 18.2929C17.2691 18.6834 17.9022 18.6834 18.2927 18.2929C18.6832 17.9024 18.6832 17.2693 18.2927 16.8789L13.4139 12L18.2927 7.12123C18.6832 6.73075 18.6832 6.09765 18.2927 5.70717C17.9022 5.31668 17.2691 5.31668 16.8787 5.70717L11.9998 10.586L7.12099 5.70717Z"
+                            fill="#3E4849" />
                     </svg>
                 </button>
             </div>
@@ -24,7 +28,7 @@
                         'depth' => 2,
                     ]);
                 } ?>
-            </diV>    
+            </diV>
             <div class="footer-container">
                 <div class="footer-menu" id="footer-menu">
                     <?php if ($data['footer_menu_id']) {
@@ -46,9 +50,9 @@
         </div>
         <div class="menu-links">
             <div class="icons">
-                <?php include('SearchField.php') ?>
-                <?php include('Login.php') ?>
-                <?php include('Cart.php') ?>
+                <?php include ('SearchField.php') ?>
+                <?php include ('Login.php') ?>
+                <?php include ('Cart.php') ?>
             </div>
             <?php if ($data['contact_us_link'] && $data['contact_us_text']) { ?>
                 <div class="contact-button">
@@ -58,27 +62,35 @@
                 </div>
             <?php } ?>
         </div>
-        </div>
     </div>
+</div>
 
 <div class="mobile-heaader">
     <div class="mobile-logo">
         <a href="<?= get_home_url() ?>">
-            <img style="height:100%; width: auto;" src="<?= $data['logo']['url'] ?>" alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
+            <img style="height:100%; width: auto;" src="<?= $data['logo']['url'] ?>"
+                alt="<?= $data['logo']['alt'] ? $data['logo']['alt'] : 'logo' ?> ">
             </img>
         </a>
     </div>
     <div class="mobile-icons">
-        <?php include('SearchField.php') ?>
-        <?php include('Login.php') ?>
-        <?php include('Cart.php') ?>
+        <?php include ('SearchField.php') ?>
+        <?php include ('Login.php') ?>
+        <?php include ('Cart.php') ?>
 
         <div class="open-button">
             <button onClick="onOpenModal()" aria-label="Open menu">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M2.74998 6.75H21.25C21.664 6.75 21.9999 6.30195 21.9999 5.75C21.9999 5.19796 21.6639 4.75 21.25 4.75H2.74998C2.33603 4.75 2 5.19796 2 5.75C2 6.30204 2.33603 6.75 2.74998 6.75Z" fill="#3E4849" />
-                    <path d="M21.25 11.25H2.74998C2.33596 11.25 2 11.698 2 12.25C2 12.802 2.33603 13.25 2.74998 13.25H21.25C21.664 13.25 21.9999 12.802 21.9999 12.25C21.9999 11.698 21.664 11.25 21.25 11.25Z" fill="#3E4849" />
-                    <path d="M2.74998 17.75H21.25C21.664 17.75 22 18.198 21.9999 18.75C21.9999 19.302 21.664 19.75 21.25 19.75H2.74998C2.33603 19.75 2 19.302 2 18.75C2 18.198 2.33596 17.75 2.74998 17.75Z" fill="#3E4849" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    aria-hidden="true">
+                    <path
+                        d="M2.74998 6.75H21.25C21.664 6.75 21.9999 6.30195 21.9999 5.75C21.9999 5.19796 21.6639 4.75 21.25 4.75H2.74998C2.33603 4.75 2 5.19796 2 5.75C2 6.30204 2.33603 6.75 2.74998 6.75Z"
+                        fill="#3E4849" />
+                    <path
+                        d="M21.25 11.25H2.74998C2.33596 11.25 2 11.698 2 12.25C2 12.802 2.33603 13.25 2.74998 13.25H21.25C21.664 13.25 21.9999 12.802 21.9999 12.25C21.9999 11.698 21.664 11.25 21.25 11.25Z"
+                        fill="#3E4849" />
+                    <path
+                        d="M2.74998 17.75H21.25C21.664 17.75 22 18.198 21.9999 18.75C21.9999 19.302 21.664 19.75 21.25 19.75H2.74998C2.33603 19.75 2 19.302 2 18.75C2 18.198 2.33596 17.75 2.74998 17.75Z"
+                        fill="#3E4849" />
                 </svg>
             </button>
         </div>
@@ -86,7 +98,7 @@
 </div>
 </div>
 
-<?php include('CategoriesDropdown.php') ?>
+<?php include ('CategoriesDropdown.php') ?>
 
 <script>
     const productMenuIds = <?= json_encode($data['products_menu_ids']) ?>;
@@ -108,16 +120,16 @@
 
         // Function to set display style for elements
         const setDisplayStyle = (selector, displayValue) => {
-        document.querySelectorAll(selector).forEach((element) => {
-            element.style.display = displayValue
-        })
+            document.querySelectorAll(selector).forEach((element) => {
+                element.style.display = displayValue
+            })
         }
 
         // Function to set flex direction for elements 
         const setFlexDirection = (selector, flexDirection) => {
-        document.querySelectorAll(selector).forEach((element) => {
-            element.style.flexDirection = flexDirection
-        })
+            document.querySelectorAll(selector).forEach((element) => {
+                element.style.flexDirection = flexDirection
+            })
         }
 
         openSubcategories = (categoryId, categoryName) => {
@@ -125,8 +137,8 @@
                 return;
             }
             //Scroll to top of dropdown
-            dropdownContent.scrollTop = 0; 
-            
+            dropdownContent.scrollTop = 0;
+
             //Hide container with image, svg and heading
             setDisplayStyle('.parent-button', 'none');
 
@@ -143,7 +155,7 @@
             // Set display properties for categories and departments
             const categoryElement = document.getElementById(`category-${categoryId}`)
             if (categoryElement) categoryElement.style.display = 'flex'
-            
+
             const departmentElement = document.getElementById(`department-list-${categoryId}`)
             if (departmentElement) {
                 departmentElement.style.display = 'flex'
@@ -153,7 +165,7 @@
             //Display the explore link
             const exploreElement = document.getElementById(`explore-link-${categoryId}`)
             if (exploreElement) exploreElement.style.display = 'flex'
-            
+
             // Hide grey line and change padding size of dropdown-type
             const dropdownType = document.querySelector('.dropdown-type')
             dropdownType.classList.add('hide-grey-line')
@@ -161,7 +173,7 @@
         }
 
         const resetMobileDropdown = () => {
-            dropdownContent.scrollTop = 0; 
+            dropdownContent.scrollTop = 0;
             setDisplayStyle('.parent-button', 'flex');
             setDisplayStyle('[id^="parent-"]', 'flex')
             setDisplayStyle('.category', 'none')
@@ -192,7 +204,7 @@
             }
             const slug = element.getAttribute('data-slug')
             if (slug) {
-                window.location.href = slug; 
+                window.location.href = slug;
             }
         }
         showMore = (buttonElement) => {
@@ -254,7 +266,7 @@
                 document.getElementById('dropdown').classList.remove('active-dropdown');
 
                 if (document.getElementById('header-content').classList.contains('active')) {
-                onCloseModal();
+                    onCloseModal();
                 }
             }, 400);
         }
@@ -287,7 +299,16 @@
                 productMenuIds.forEach((productMenuId) => {
                     const menuItemProducts = document.querySelectorAll('#menu-item-' + productMenuId);
                     menuItemProducts.forEach((menuItemProduct) => {
-                        menuItemProduct.addEventListener('click', openOrCloseMenu );
+                        const iconHtml = `<svg class="arrow-icon product-menu-icon-mobile" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M15.7133 11.2993C15.9008 11.4868 16.0061 11.7411 16.0061 12.0063C16.0061 12.2714 15.9008 12.5257 15.7133 12.7133L9.71332 18.7133C9.52471 18.8954 9.27211 18.9962 9.00992 18.9939C8.74772 18.9917 8.49691 18.8865 8.3115 18.7011C8.12609 18.5157 8.02092 18.2649 8.01864 18.0027C8.01636 17.7405 8.11716 17.4879 8.29932 17.2993L13.5923 12.0063L8.29932 6.71327C8.11716 6.52466 8.01636 6.27206 8.01864 6.00986C8.02092 5.74767 8.12609 5.49686 8.3115 5.31145C8.49691 5.12604 8.74772 5.02087 9.00992 5.01859C9.27211 5.01631 9.52471 5.11711 9.71332 5.29927L15.7133 11.2993Z" fill="#3E4849"/>
+                                    </svg>`
+                        if (!menuItemProduct.querySelector('.product-menu-icon-mobile')) {
+
+                            menuItemProduct.innerHTML += iconHtml
+                        }
+
+                        menuItemProduct.addEventListener('click', openOrCloseMenu);
+
                     });
                 });
             }
@@ -312,7 +333,7 @@
             console.log(targetId)
 
             if (dropdown.classList.contains('active-dropdown')) {
-                if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId === 'back-to-menu-button' || targetId === 'back-to-menu-placeholder' ||  targetId.startsWith('menu-item-') ||  targetId.startsWith('category-button-') || targetId.startsWith('desktop-link-') || targetId.startsWith('department-button-') || targetId.startsWith('see-more-') || targetId.startsWith('parent-') || targetId.startsWith('explore-link-')) {
+                if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId === 'back-to-menu-button' || targetId === 'back-to-menu-placeholder' || targetId.startsWith('menu-item-') || targetId.startsWith('category-button-') || targetId.startsWith('desktop-link-') || targetId.startsWith('department-button-') || targetId.startsWith('see-more-') || targetId.startsWith('parent-') || targetId.startsWith('explore-link-')) {
                     return;
                 } else {
                     closeMenu();
@@ -320,21 +341,21 @@
             }
         })
 
-        dropdownContent.addEventListener('scroll', function() {
+        dropdownContent.addEventListener('scroll', function () {
             const header = document.querySelector('.dropdown-categories-header');
-                if (dropdownContent.scrollTop > 0) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
-    });
+            if (dropdownContent.scrollTop > 0) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
 
         const searchElement = document.getElementById('search-widget')
 
         searchElement.addEventListener('click', function (e) {
             closeProductModal();
         });
-})
+    })
 </script>
 
 <style>
@@ -379,8 +400,12 @@
     }
 
     @media screen and (max-width: 983px) {
+
+        .menu-header-main-container {
+            padding: 24px;
+        }
+
         .main-menu-list {
-            padding: 24px 24px 0 24px;
             width: 100%;
         }
 
@@ -429,7 +454,7 @@
         display: none;
         width: 100%;
         border-bottom: 1px solid rgba(0, 0, 0, 0.10);
-        
+
         @media screen and (max-width: 983px) {
             display: flex;
             width: 100%;
@@ -702,6 +727,10 @@
         color: var(--header-dropdown-child-color-hover, #000) !important;
     }
 
+    .dropdown-menu .category {
+        width: fit-content;
+    }
+
     .dropdown-menu .category,
     .dropdown-menu .brand ul,
     .dropdown-menu .department ul {
@@ -942,6 +971,14 @@
             top: 0;
             right: 0;
         }
+        
+        .menu li a:hover {
+            border-radius: 0;
+            text-decoration-line: underline;
+            background: none;
+            border-radius: 0;
+            color: var(--e-global-color-text);
+        }
     }
 
     @media only screen and (min-width: 983px) {
@@ -1005,6 +1042,11 @@
             .menu li {
                 padding: 0;
                 font-size: 18px;
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
             }
 
             .menu li a {
@@ -1046,11 +1088,7 @@
         }
 
         .contact-button {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 24px;
+            display: none;
         }
 
         .dropdown-menu {
@@ -1118,6 +1156,13 @@
         padding: 4px;
     }
 
+    .category-image-desktop {
+        display: flex;
+        width: 100%;
+        height: 56px;
+        padding: 8px;
+    }
+
     .department-image {
         display: none;
         justify-content: center;
@@ -1148,6 +1193,12 @@
             height: 100%;
             border-radius: 8px;
         }
+    }
+
+    .parent-link.desktop {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
     }
 
     @media only screen and (max-width: 983px) {
@@ -1221,37 +1272,37 @@
     }
 
     @media only screen and (max-width: 983px) {
-    .all-departments-section {
-        display: flex; 
-    }
+        .all-departments-section {
+            display: flex;
+        }
     }
 
-     /* Styling of the language selector */
-     #language-selector-header {
-            display: none; 
-            flex-direction: column; 
-            gap: 12px; 
-            font-size: 14px; 
-            font-weight: 600; 
-            padding: 24px 24px 0 24px;
-            width: 100%;
+    /* Styling of the language selector */
+    #language-selector-header {
+        display: none;
+        flex-direction: column;
+        gap: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 24px 24px 0 24px;
+        width: 100%;
     }
 
     #language-selector-header ul {
-        display: flex; 
+        display: flex;
     }
 
     #language-selector-header li {
-        display: flex; 
+        display: flex;
         padding: 4px 12px;
-        border-radius: 100px; 
+        border-radius: 100px;
         border: 1px solid rgba(0, 0, 0, 0.10);
     }
 
     #language-selector-header a {
-        font-size: 14px; 
-        line-height: 160%; 
-        font-weight: 500; 
+        font-size: 14px;
+        line-height: 160%;
+        font-weight: 500;
     }
 
     #language-selector-header .wpml-ls-current-language a {
@@ -1260,21 +1311,21 @@
 
     #language-selector-header .wpml-ls-current-language {
         background: var(--Almost-Black, #3E4849);
-        border: none; 
+        border: none;
     }
 
     #language-selector-header .wpml-ls-current-language .wpml-ls-link {
-        display: flex; 
-        align-items: center; 
+        display: flex;
+        align-items: center;
     }
 
     #language-selector-header .wpml-ls-legacy-list-vertical {
-        padding: 0; 
+        padding: 0;
     }
 
     @media only screen and (max-width: 983px) {
         #language-selector-header {
-            display: flex; 
-    }
+            display: flex;
+        }
     }
 </style>
