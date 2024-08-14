@@ -134,19 +134,21 @@ class Taxonomies
             $vendureSlug = $this->getVendureTermSlug($vendureTerm);
 
             if ($lang === $this->defaultLang) {
-                $this->updateTaxonomy($wpTerm['term_id'] ?? null, $taxonomy, $vendureTerm['name'], $vendureSlug, $vendureTerm['updatedAt'], $vendureTerm['customFields'] ?? null, $vendureTerm['description']);
+                $termImage = $vendureTerm['assets'] ? $vendureTerm['assets'][0]['source'] : null;
+                $this->updateTaxonomy($wpTerm['term_id'] ?? null, $taxonomy, $vendureTerm['name'], $vendureSlug, $vendureTerm['updatedAt'], $vendureTerm['customFields'] ?? null, $vendureTerm['description'] ?? '', $termImage);
                 continue;
             }
 
             if (isset($wpTerm['translations'][$lang]['term_id'])) {
-                $translatedTermId = (int) $wpTerm['translations'][$lang]['term_id']; 
+                $translatedTermId = (int) $wpTerm['translations'][$lang]['term_id'];
                 $translatedName = $vendureTerm['translations'][$lang]['name'];
                 $translatedDescription = $vendureTerm['translations'][$lang]['description'] ?? '';
                 $name = $vendureTerm['translations'][$lang]['name'];
                 $data = $vendureTerm['translations'][$lang];
+                $termImage = $vendureTerm['translations'][$lang]['assets'] ? $vendureTerm['translations'][$lang]['assets'][0]['source'] : null;
 
                 $translatedSlug = $this->getSlugForTranslations($name, $data, $lang);
-                $this->updateTaxonomy($translatedTermId, $taxonomy, $translatedName, $translatedSlug, $vendureTerm['updatedAt'], $vendureTerm['translations'][$lang]['customFields'] ?? null, $translatedDescription);
+                $this->updateTaxonomy($translatedTermId, $taxonomy, $translatedName, $translatedSlug, $vendureTerm['updatedAt'], $vendureTerm['translations'][$lang]['customFields'] ?? null, $translatedDescription, $termImage);
             } else {
                 $configHelper = new ConfigHelper();
                 $isCollection = $configHelper->isCollection($taxonomy);
@@ -179,7 +181,7 @@ class Taxonomies
         return $data;
     }
 
-    public function updateTaxonomy($termID, $taxonomy, $name, $slug, $updatedAt, $customFields = null, $description = '')
+    public function updateTaxonomy($termID, $taxonomy, $name, $slug, $updatedAt, $customFields = null, $description = '', $termImage = null)
     {
         $args = array(
             'name' => $name,
@@ -199,6 +201,10 @@ class Taxonomies
             update_term_meta($termID, $key, $value);
         }
 
+        if ($termImage) {
+            update_term_meta($termID, 'vendure_term_image', $termImage);
+        }
+
         WpHelper::log(['Updating taxonomy', $taxonomy, $name, $slug]);
 
         $this->updatedTaxonimies++;
@@ -208,10 +214,11 @@ class Taxonomies
         $name = $vendureTerm['translations'][$lang]['name'];
         $slug = $this->getSlugForTranslations($vendureTerm['name'], $vendureTerm['translations'][$lang], $lang);
         $description = $vendureTerm['translations'][$lang]['description'] ?? '';
+        $termImage = $vendureTerm['translations'][$lang]['assets'] ? $vendureTerm['translations'][$lang]['assets'][0]['source'] : null;
 
         $customFields = $vendureTerm['translations'][$lang]['customFields'] ? $this->getCustomFields($vendureTerm['translations'][$lang]['customFields']) : null;
 
-        $term = $this->insertTerm($vendureTerm['id'], $name, $slug, $taxonomy, $vendureType, $vendureTerm['updatedAt'], $customFields, $description);
+        $term = $this->insertTerm($vendureTerm['id'], $name, $slug, $taxonomy, $vendureType, $vendureTerm['updatedAt'], $customFields, $description, $termImage);
 
         $translations[$lang] = $term;
         $wmplType = 'tax_' . $taxonomy;
@@ -314,8 +321,10 @@ class Taxonomies
         $slug = isset($value['slug']) ? $value['slug'] : sanitize_title($value['name']);
 
         $customFields = isset($value['customFields']) ? $this->getCustomFields($value['customFields']) : null;
+        $description = $value['description'] ?? '';
+        $termImage = $value['assets'] ? $value['assets'][0]['source'] : null;
 
-        $term = $this->insertTerm($value['id'], $value['name'], $slug, $taxonomy, $vendureType, $value['updatedAt'], $customFields,  $value['description']);
+        $term = $this->insertTerm($value['id'], $value['name'], $slug, $taxonomy, $vendureType, $value['updatedAt'], $customFields, $description, $termImage);
 
         WpHelper::log(['Creating taxonomy', $taxonomy, $value['name'], $slug]);
 
@@ -331,8 +340,11 @@ class Taxonomies
             $slug = $this->getSlugForTranslations($value['name'], $translation, $lang);
 
             $customFields = $translation['customFields'] ? $this->getCustomFields($translation['customFields']) : null;
+            $description = $translation['description'] ?? '';
 
-            $term = $this->insertTerm($value['id'], $translation['name'], $slug, $taxonomy, $vendureType, $value['updatedAt'], $customFields, $translation['description']);
+            $termImage = $translation['assets'] ? $translation['assets'][0]['source'] : null;
+
+            $term = $this->insertTerm($value['id'], $translation['name'], $slug, $taxonomy, $vendureType, $value['updatedAt'], $customFields, $description, $termImage);
             $translations[$lang] = $term;
         }
 
@@ -354,7 +366,7 @@ class Taxonomies
         }
     }
 
-    public function insertTerm($vendureId, $name, $slug, $taxonomy, $vendureType, $updatedAt, $customFields = null, $description = '')
+    public function insertTerm($vendureId, $name, $slug, $taxonomy, $vendureType, $updatedAt, $customFields = null, $description = '', $termImage = null)
     {
         $term = wp_insert_term($name, $taxonomy, ['slug' => $slug, 'description' => $description]);
 
@@ -366,6 +378,10 @@ class Taxonomies
 
         add_term_meta($term['term_id'], $vendureType, $vendureId, true);
         add_term_meta($term['term_id'], 'vendure_updated_at', $updatedAt, true);
+
+        if ($termImage) {
+            add_term_meta($term['term_id'], 'vendure_term_image', $termImage, true);
+        }
 
         if ($customFields) {
             foreach ($customFields as $key => $value) {
