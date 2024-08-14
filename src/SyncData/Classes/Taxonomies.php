@@ -134,18 +134,19 @@ class Taxonomies
             $vendureSlug = $this->getVendureTermSlug($vendureTerm);
 
             if ($lang === $this->defaultLang) {
-                $this->updateTaxonomy($wpTerm['term_id'] ?? null, $taxonomy, $vendureTerm['name'], $vendureSlug, $vendureTerm['updatedAt'], $vendureTerm['customFields'] ?? null);
+                $this->updateTaxonomy($wpTerm['term_id'] ?? null, $taxonomy, $vendureTerm['name'], $vendureSlug, $vendureTerm['updatedAt'], $vendureTerm['customFields'] ?? null, $vendureTerm['description']);
                 continue;
             }
 
             if (isset($wpTerm['translations'][$lang]['term_id'])) {
-                $translatedTermId = (int) $wpTerm['translations'][$lang]['term_id'];
+                $translatedTermId = (int) $wpTerm['translations'][$lang]['term_id']; 
                 $translatedName = $vendureTerm['translations'][$lang]['name'];
+                $translatedDescription = $vendureTerm['translations'][$lang]['description'] ?? '';
                 $name = $vendureTerm['translations'][$lang]['name'];
                 $data = $vendureTerm['translations'][$lang];
 
                 $translatedSlug = $this->getSlugForTranslations($name, $data, $lang);
-                $this->updateTaxonomy($translatedTermId, $taxonomy, $translatedName, $translatedSlug, $vendureTerm['updatedAt'], $vendureTerm['translations'][$lang]['customFields'] ?? null);
+                $this->updateTaxonomy($translatedTermId, $taxonomy, $translatedName, $translatedSlug, $vendureTerm['updatedAt'], $vendureTerm['translations'][$lang]['customFields'] ?? null, $translatedDescription);
             } else {
                 $configHelper = new ConfigHelper();
                 $isCollection = $configHelper->isCollection($taxonomy);
@@ -178,11 +179,12 @@ class Taxonomies
         return $data;
     }
 
-    public function updateTaxonomy($termID, $taxonomy, $name, $slug, $updatedAt, $customFields = null)
+    public function updateTaxonomy($termID, $taxonomy, $name, $slug, $updatedAt, $customFields = null, $description = '')
     {
         $args = array(
             'name' => $name,
             'slug' => $slug,
+            'description' => $description,
         );
 
         wp_update_term($termID, $taxonomy, $args);
@@ -205,10 +207,11 @@ class Taxonomies
     {
         $name = $vendureTerm['translations'][$lang]['name'];
         $slug = $this->getSlugForTranslations($vendureTerm['name'], $vendureTerm['translations'][$lang], $lang);
+        $description = $vendureTerm['translations'][$lang]['description'] ?? '';
 
         $customFields = $vendureTerm['translations'][$lang]['customFields'] ? $this->getCustomFields($vendureTerm['translations'][$lang]['customFields']) : null;
 
-        $term = $this->insertTerm($vendureTerm['id'], $name, $slug, $taxonomy, $vendureType, $vendureTerm['updatedAt'], $customFields);
+        $term = $this->insertTerm($vendureTerm['id'], $name, $slug, $taxonomy, $vendureType, $vendureTerm['updatedAt'], $customFields, $description);
 
         $translations[$lang] = $term;
         $wmplType = 'tax_' . $taxonomy;
@@ -310,9 +313,9 @@ class Taxonomies
     {
         $slug = isset($value['slug']) ? $value['slug'] : sanitize_title($value['name']);
 
-        $customFields = $value['customFields'] ? $this->getCustomFields($value['customFields']) : null;
+        $customFields = isset($value['customFields']) ? $this->getCustomFields($value['customFields']) : null;
 
-        $term = $this->insertTerm($value['id'], $value['name'], $slug, $taxonomy, $vendureType, $value['updatedAt'], $customFields);
+        $term = $this->insertTerm($value['id'], $value['name'], $slug, $taxonomy, $vendureType, $value['updatedAt'], $customFields,  $value['description']);
 
         WpHelper::log(['Creating taxonomy', $taxonomy, $value['name'], $slug]);
 
@@ -329,7 +332,7 @@ class Taxonomies
 
             $customFields = $translation['customFields'] ? $this->getCustomFields($translation['customFields']) : null;
 
-            $term = $this->insertTerm($value['id'], $translation['name'], $slug, $taxonomy, $vendureType, $value['updatedAt'], $customFields);
+            $term = $this->insertTerm($value['id'], $translation['name'], $slug, $taxonomy, $vendureType, $value['updatedAt'], $customFields, $translation['description']);
             $translations[$lang] = $term;
         }
 
@@ -351,9 +354,9 @@ class Taxonomies
         }
     }
 
-    public function insertTerm($vendureId, $name, $slug, $taxonomy, $vendureType, $updatedAt, $customFields = null)
+    public function insertTerm($vendureId, $name, $slug, $taxonomy, $vendureType, $updatedAt, $customFields = null, $description = '')
     {
-        $term = wp_insert_term($name, $taxonomy, ['slug' => $slug]);
+        $term = wp_insert_term($name, $taxonomy, ['slug' => $slug, 'description' => $description]);
 
         if (is_wp_error($term)) {
             //TODO log error somewhere
