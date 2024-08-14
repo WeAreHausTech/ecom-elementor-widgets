@@ -1,9 +1,9 @@
-<div class="search-field-wrapper" id="search-field-widget" style="position:relative; top:10px; padding:32px 24px;">
+<div class="search-field-wrapper" id="search-field-widget" style="position:static; top:10px; padding:24px;">
   <?php
   $widget_id = 'ecom_' . uniqid();
   $search_placeholder = htmlspecialchars($data['search_placeholder'], ENT_QUOTES, 'UTF-8');
   $trigger_component = '<div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 8px;">
-    <div style="display: flex; justify-content: space-between; align-items: center; flex: 1; box-sizing: border-box; gap: 16px; width: 100%; height: 40px; border-radius: 999px; background-color: rgb(242, 242, 242); font-size: 16px; font-weight: 400; color: #000; padding: 0 16px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex: 1; box-sizing: border-box; gap: 16px; width: 100%; height: 36px; border-radius: 999px; background-color: rgb(242, 242, 242); font-size: 16px; font-weight: 400; color: #000; padding: 0 16px;">
       <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
         <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" width="24" height="24" class="icon icon-search">
           <g clip-path="url(#clip0_1398_6381)">

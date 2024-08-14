@@ -591,8 +591,7 @@
         line-height: 140%;
         font-family: Inter;
         color: var(--header-go-back-button-color, #3E4849);
-        padding: 8px 0;
-        padding: 8px 0;
+        padding: 0; 
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
@@ -996,7 +995,6 @@
 
         .header .close-button {
             display: flex;
-            margin-top: 16px;
             padding-right: 24px;
         }
 
@@ -1043,7 +1041,6 @@
 
             .menu li {
                 padding: 0;
-                font-size: 18px;
                 width: 100%;
                 display: flex;
                 flex-direction: row;
@@ -1160,8 +1157,8 @@
 
     .category-image-desktop {
         display: flex;
-        width: 100%;
-        height: 56px;
+        width: 72px;
+        height: 72px;
         padding: 8px;
     }
 
@@ -1229,6 +1226,7 @@
         align-items: center;
         gap: 16px;
         padding: 0 !important;
+        font-size: 16px !important;
     }
 
     .back-icon-wrapper {
