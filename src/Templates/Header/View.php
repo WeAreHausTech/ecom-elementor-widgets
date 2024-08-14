@@ -409,9 +409,6 @@
             width: 100%;
         }
 
-    /* .dropdown-content a {
-        background: red; 
-    } */
         .footer-container {
             width: 100%;
             bottom: 0;
