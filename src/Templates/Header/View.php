@@ -402,7 +402,7 @@
     @media screen and (max-width: 983px) {
 
         [class*="menu-header-main-"][class*="-container"] {
-            padding: 24px;
+            padding: 27px 25px;
         }
 
         .main-menu-list {
@@ -1069,7 +1069,7 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            padding: 24px;
+            padding: 20px 24px;
             position: sticky;
             top: 0;
             background-color: var(--header-dropdown-background, #fff);
