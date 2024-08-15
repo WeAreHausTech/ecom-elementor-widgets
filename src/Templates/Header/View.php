@@ -402,7 +402,7 @@
     @media screen and (max-width: 983px) {
 
         [class*="menu-header-main-"][class*="-container"] {
-            padding: 24px;
+            padding: 27px 25px;
         }
 
         .main-menu-list {
@@ -1069,7 +1069,7 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            padding: 24px;
+            padding: 20px 24px;
             position: sticky;
             top: 0;
             background-color: var(--header-dropdown-background, #fff);
@@ -1153,6 +1153,12 @@
         width: 56px;
         height: 56px;
         padding: 4px;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .category-image img{
+        border-radius: 0;
     }
 
     .category-image-desktop {
@@ -1160,6 +1166,13 @@
         width: 72px;
         height: 72px;
         padding: 8px;
+        border-radius: 8px; 
+        overflow: hidden; 
+    }
+
+
+    .category-image-desktop img {
+        border-radius: 0; 
     }
 
     .department-image {
@@ -1170,10 +1183,11 @@
         border-radius: 8px;
         border: 1px solid rgba(0, 0, 0, 0.10);
         background: var(--White, #FFF);
+        overflow: hidden; 
     }
 
     .department-image img {
-        border-radius: 8px;
+        border-radius: 0;
     }
 
 

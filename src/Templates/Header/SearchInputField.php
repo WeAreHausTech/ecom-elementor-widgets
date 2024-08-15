@@ -1,4 +1,4 @@
-<div class="search-field-wrapper" id="search-field-widget" style="position:static; top:10px; padding:24px;">
+<div class="search-field-wrapper" id="search-field-widget" style="position:static; top:10px; padding:20px;">
   <?php
   $widget_id = 'ecom_' . uniqid();
   $search_placeholder = htmlspecialchars($data['search_placeholder'], ENT_QUOTES, 'UTF-8');
