@@ -1153,6 +1153,12 @@
         width: 56px;
         height: 56px;
         padding: 4px;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .category-image img{
+        border-radius: 0;
     }
 
     .category-image-desktop {
@@ -1170,10 +1176,11 @@
         border-radius: 8px;
         border: 1px solid rgba(0, 0, 0, 0.10);
         background: var(--White, #FFF);
+        overflow: hidden; 
     }
 
     .department-image img {
-        border-radius: 8px;
+        border-radius: 0;
     }
 
 
