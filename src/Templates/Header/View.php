@@ -1166,6 +1166,13 @@
         width: 72px;
         height: 72px;
         padding: 8px;
+        border-radius: 8px; 
+        overflow: hidden; 
+    }
+
+
+    .category-image-desktop img {
+        border-radius: 0; 
     }
 
     .department-image {
