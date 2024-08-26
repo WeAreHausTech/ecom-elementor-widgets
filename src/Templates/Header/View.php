@@ -40,14 +40,15 @@
                 </div>
             </div>
         </div>
-        <div class="language-selector" id="language-selector-header">
+        <!-- Comment back when language selector is wanted-->
+        <!-- <div class="language-selector" id="language-selector-header">
             <?php if ($data) { ?>
                 <?= $data['language_selector'] ?>
             <?php } ?>
             <?php if (defined('ICL_SITEPRESS_VERSION')) {
                 echo do_shortcode('[wpml_language_selector_widget]');
             } ?>
-        </div>
+        </div> -->
         <div class="menu-links">
             <div class="icons">
                 <?php include ('SearchField.php') ?>
