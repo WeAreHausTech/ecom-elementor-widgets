@@ -64,7 +64,6 @@ class ProductList extends Widget_Base
             ]
         );
 
-        
         $this->getAvalibleCollections();
         $this->add_facet_controls();
         $this->end_controls_section();
@@ -87,6 +86,20 @@ class ProductList extends Widget_Base
 
         $this->getAvailableFacets();
 
+        $this->add_control(
+            'price_filter_enabled',
+            [
+                'label' => __('Price filter enabled', 'haus-ecom-widgets'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'description' => __('Price filter does not support multiple currencies', 'haus-ecom-widgets'),
+                'default' => '0',
+                'options' => [
+                    '0' => __('No', 'haus-ecom-widgets'),
+                    '1' => __('Yes', 'haus-ecom-widgets'),
+                ],
+            ]
+        );
+
         $this->end_controls_section();
     }
 
@@ -94,7 +107,7 @@ class ProductList extends Widget_Base
     {
         $collections = $this->get_collections();
 
-        if (!isset ($collections['data']['collections']['items'])) {
+        if (!isset($collections['data']['collections']['items'])) {
             return;
         }
 
@@ -124,7 +137,7 @@ class ProductList extends Widget_Base
     {
         $facets = $this->get_facets();
 
-        if (!isset ($facets['data']['facets']['items'])) {
+        if (!isset($facets['data']['facets']['items'])) {
             return;
         }
 
@@ -213,7 +226,7 @@ class ProductList extends Widget_Base
     {
         $facets = $this->get_facets();
 
-        if (!isset ($facets['data']['facets']['items'])) {
+        if (!isset($facets['data']['facets']['items'])) {
             return;
         }
 
@@ -320,7 +333,7 @@ class ProductList extends Widget_Base
         $autoSetTaxonomy = $settings['autoFacet'] !== '0';
         $collectionId = $settings['collectionId'] !== '0';
 
-        if ($collectionId){
+        if ($collectionId) {
             $taxonomy = $settings['collectionId'];
         } else if ($autoSetTaxonomy) {
             $currentTerm = get_queried_object();
@@ -335,24 +348,21 @@ class ProductList extends Widget_Base
             }
         }
 
-        foreach ($settings as $key => $value) {  
-            if (strpos($key, 'facetType-') !== false && $value !== '0' && ($autoSetTaxonomy && $key !== 'facetType-' . $settings['autoFacet'] || !$autoSetTaxonomy) ) {
+        foreach ($settings as $key => $value) {
+            if (strpos($key, 'facetType-') !== false && $value !== '0' && ($autoSetTaxonomy && $key !== 'facetType-' . $settings['autoFacet'] || !$autoSetTaxonomy)) {
                 $facets[] = $value;
             }
         }
 
         $widgetId = 'ecom_' . $this->get_id();
         ?>
-        <div id="<?= $widgetId ?>" 
-            class="ecom-components-root" 
-            data-widget-type="product-list" 
-            data-facet="<?= implode(", ", $facets) ?>"
-            data-collection="<?= $taxonomy ?>" data-take="<?= $settings['products_per_page'] ?>"
-            data-sort-enabled="<?= $settings['sort_enabled'] ?>"
+        <div id="<?= $widgetId ?>" class="ecom-components-root" data-widget-type="product-list"
+            data-facet="<?= implode(", ", $facets) ?>" data-collection="<?= $taxonomy ?>"
+            data-take="<?= $settings['products_per_page'] ?>" data-sort-enabled="<?= $settings['sort_enabled'] ?>"
             data-pagination-enabled="<?= $settings['pagination_enabled'] ?>"
             data-add-to-cart-enabled="<?= $settings['show_add_to_cart'] ?>"
-            data-filter-values="<?= htmlspecialchars(json_encode($settings['enabled_filters']), ENT_QUOTES, 'UTF-8'); ?>"
-        >
+            data-price-filter-enabled="<?= $settings['price_filter_enabled'] ?>"
+            data-filter-values="<?= htmlspecialchars(json_encode($settings['enabled_filters']), ENT_QUOTES, 'UTF-8'); ?>">
         </div>
         <?php
     }
