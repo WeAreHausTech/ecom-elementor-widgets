@@ -1,8 +1,8 @@
 <?php
 namespace WeAreHausTech\Widgets; 
 
-use\Elementor\Widget_Base; 
-use\WeAreHausTech\Traits\ElementorTemplate; 
+use \Elementor\Widget_Base; 
+use \WeAreHausTech\Traits\ElementorTemplate; 
 
 class OrderLines extends Widget_Base
 {
@@ -32,17 +32,10 @@ class OrderLines extends Widget_Base
     {
         return ['Ecommerce', 'orderlines', 'cart'];
     }
-    
-    //Osäker på om jag ska registrera kontroller
-    protected function register_controls()
-    {
-       
-    }
 
     protected function render()
     {
         $url = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-        $settings = $this->get_settings_for_display();
 
         if (strpos($url, '&action=elementor') !== false) {
             $this->getTemplate();

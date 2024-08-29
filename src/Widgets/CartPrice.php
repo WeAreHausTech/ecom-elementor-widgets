@@ -4,7 +4,7 @@ namespace WeAreHausTech\Widgets;
 use \Elementor\Widget_Base;
 use \WeAreHausTech\Traits\ElementorTemplate;
 
-class Cart extends Widget_Base 
+class CartPrice extends Widget_Base 
 {
     use ElementorTemplate;
 
