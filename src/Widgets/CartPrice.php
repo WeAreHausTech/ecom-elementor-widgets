@@ -6,7 +6,7 @@ use \WeAreHausTech\Traits\ElementorTemplate;
 
 class CartPrice extends Widget_Base 
 {
-    use ElementorTemplate;
+    use ElementorTemplate; 
 
     public function get_name()
     {
@@ -30,7 +30,7 @@ class CartPrice extends Widget_Base
 
     public function get_keywords()
     {
-        return ['Ecommerce', 'cart', 'price' ];
+        return ['Ecommerce', 'cart', 'price'];
     }
 
     protected function register_controls()
@@ -50,16 +50,17 @@ class CartPrice extends Widget_Base
         $widgetId = 'ecom_' . $this->get_id(); ?>
 
         <div 
-            id="<?= $widgetId ?>"
-            class="ecom-components-root" 
+            id="<?= ($widgetId) ?>" 
+            class="ecom-components-root"
             data-vendure-token="<?= VENDURE_TOKEN ?>"
             data-vendure-api-url="<?= VENDURE_API_URL ?>"
-            data-show-subtotal="<?= $settings['show_subTotal']  ?>"
-            data-show-tax="<?= $settings['show_tax']  ?>"
-            data-show-shipping="<?=  $settings['show_shipping'] ?>"
-            data-show-total="<?=  $settings['show_total'] ?>"
-            data-custom-message="<?= $settings['custom-message']?>"
-            data-widget-type="cartprice">
+            data-show-subtotal="<?= $settings['show_subTotal'] ?>"
+            data-show-tax="<?= $settings['show_tax'] ?>"
+            data-show-shipping="<?= $settings['show_shipping'] ?>"
+            data-show-total="<?= $settings['show_total'] ?>"
+            data-custom-message="<?= $settings['custom_message'] ?>"
+            data-widget-type="cart-price"
+            >
         </div>
         <?php
     }

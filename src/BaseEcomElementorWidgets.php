@@ -97,8 +97,8 @@ class BaseEcomElementorWidgets
             \Elementor\Plugin::instance()
                 ->widgets_manager
                 ->register(new \WeAreHausTech\Widgets\OrderLines());
-            
-            \Elementor\Plugin::instance()
+
+             \Elementor\Plugin::instance()
                 ->widgets_manager
                 ->register(new \WeAreHausTech\Widgets\CartPrice());
 

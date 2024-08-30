@@ -138,7 +138,15 @@ export default {
 
     return (
       <Suspense>
-        <OrderLines />
+        <OrderLines
+          withPrice={true}
+          adjusteableBy="buttons"
+          slotClassNames={{
+            item: {
+              textWrapper: 'ec-orderlines-item-text-wrapper',
+            },
+          }}
+        />
       </Suspense>
     )
   },
