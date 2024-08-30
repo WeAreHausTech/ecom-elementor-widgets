@@ -19,6 +19,11 @@ export default {
       'value',
       0,
     )
+    const priceFilterEnabled = +get(
+      dataAttributes.getNamedItem('data-price-filter-enabled'),
+      'value',
+      0,
+    )
 
     const enabledFilters = dataAttributes.getNamedItem('data-filter-values')?.value
       ? JSON.parse(dataAttributes.getNamedItem('data-filter-values')!.value)
@@ -32,6 +37,10 @@ export default {
         } as EnabledFilter
       },
     )
+
+    if (priceFilterEnabled) { 
+      filtersArray.push({type: 'price'})
+    }
 
     const ProductList = React.lazy(() => import('./ProductList'))
 
