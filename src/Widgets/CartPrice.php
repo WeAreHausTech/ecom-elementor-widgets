@@ -58,7 +58,7 @@ class CartPrice extends Widget_Base
             data-show-tax="<?= $settings['show_tax'] ?>"
             data-show-shipping="<?= $settings['show_shipping'] ?>"
             data-show-total="<?= $settings['show_total'] ?>"
-            data-custom-message="<?= $settings['custom_message'] ?>"
+            data-custom-message="<?= $settings['custom-message'] ?>"
             data-widget-type="cart-price"
             >
         </div>
