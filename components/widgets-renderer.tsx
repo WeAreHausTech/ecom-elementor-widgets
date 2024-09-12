@@ -86,10 +86,12 @@ export class WidgetsRenderer {
           console.log('customer widget', widgetType)
           const widgetElement = customerWidget()
           this.renderElement(element, widgetElement)
-        } else {
+        } else if (ecomWidget) {
           console.log('ecom widget', widgetType)
           const widgetElement = ecomWidget(dataAttributes)
           this.renderElement(element, widgetElement)
+        } else {
+          console.error(`Widget ${widgetType} not found`)
         }
       }
     })

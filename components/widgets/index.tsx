@@ -19,6 +19,11 @@ export default {
       'value',
       0,
     )
+    const priceFilterEnabled = +get(
+      dataAttributes.getNamedItem('data-price-filter-enabled'),
+      'value',
+      0,
+    )
 
     const enabledFilters = dataAttributes.getNamedItem('data-filter-values')?.value
       ? JSON.parse(dataAttributes.getNamedItem('data-filter-values')!.value)
@@ -32,6 +37,10 @@ export default {
         } as EnabledFilter
       },
     )
+
+    if (priceFilterEnabled) { 
+      filtersArray.push({type: 'price'})
+    }
 
     const ProductList = React.lazy(() => import('./ProductList'))
 
@@ -81,6 +90,95 @@ export default {
     )
   },
 
+  productImageCarousel: (dataAttributes: NamedNodeMap) => {
+    const slug = dataAttributes.getNamedItem('data-product-slug')?.value
+    const id = dataAttributes.getNamedItem('data-product-id')?.value
+
+    const propToUse = id ? { id } : { slug: slug! }
+
+    const ProductImageCarousel = React.lazy(() => import('./ProductImageCarousel'))
+
+    return (
+      slug && (
+        <Suspense>
+          <ProductImageCarousel {...propToUse} />
+        </Suspense>
+      )
+    )
+  },
+
+  productVariantOptions: (dataAttributes: NamedNodeMap) => {
+    const slug = dataAttributes.getNamedItem('data-product-slug')?.value
+    const id = dataAttributes.getNamedItem('data-product-id')?.value
+
+    const propToUse = id ? { id } : { slug: slug! }
+
+    const useUrl = +get(dataAttributes.getNamedItem('data-use-url'), 'value', 0)
+    const optionVariable = dataAttributes.getNamedItem('data-option-variable')?.value as
+      | 'id'
+      | 'code'
+      | undefined
+
+    const ProductVariantOptions = React.lazy(() => import('./ProductVariantOptions'))
+
+    return (
+      <Suspense>
+        <ProductVariantOptions
+          useUrl={Boolean(useUrl)}
+          optionVariable={optionVariable}
+          {...propToUse}
+        />
+      </Suspense>
+    )
+  },
+
+  addToCartButtonWidget: () => {
+    const AddToCartButtonWidget = React.lazy(() => import('./AddToCartButton'))
+
+    return (
+      <Suspense>
+        <AddToCartButtonWidget />
+      </Suspense>
+    )
+  },
+
+  orderlines: () => {
+    const OrderLines = React.lazy(() => import('./Orderlines'))
+
+    return (
+      <Suspense>
+        <OrderLines
+          withPrice={true}
+          adjusteableBy="buttons"
+          slotClassNames={{
+            item: {
+              textWrapper: 'ec-orderlines-item-text-wrapper',
+            },
+          }}
+        />
+      </Suspense>
+    )
+  },
+
+  cartPrice: (dataAttributes: NamedNodeMap) => {
+    const cartPriceProps = {
+      subTotal: dataAttributes.getNamedItem('data-show-subtotal')?.value === 'yes' ? true : false,
+      tax: dataAttributes.getNamedItem('data-show-tax')?.value === 'yes' ? true : false,
+      shipping: dataAttributes.getNamedItem('data-show-shipping')?.value === 'yes' ? true : false,
+      total: dataAttributes.getNamedItem('data-show-total')?.value === 'yes' ? true : false,
+      customMessage:
+        dataAttributes.getNamedItem('data-custom-message')?.value === 'yes' ? true : false,
+    }
+
+    const CartPrice = React.lazy(() => import('./CartPrice'))
+
+    return (
+      <Suspense>
+        <CartPrice {...cartPriceProps} />
+      </Suspense>
+    )
+  },
+
   cart: (dataAttributes: NamedNodeMap) => {
     const cartPricePropsCart = {
       subTotal: dataAttributes.getNamedItem('data-show-subtotal')?.value === 'yes' ? true : false,
@@ -100,12 +198,22 @@ export default {
     )
   },
 
-  searchField: () => {
+  searchField: (dataAttributes: NamedNodeMap) => {
     const SearchField = React.lazy(() => import('./SearchField'))
+    const openOnButton = dataAttributes.getNamedItem('data-open-on-button')?.value === 'true'
+    const triggerComponentString = dataAttributes.getNamedItem('data-trigger-component')?.value
 
     return (
       <Suspense>
-        <SearchField openOnButton={true} autofocus={true} />
+        <SearchField
+          openOnButton={openOnButton}
+          autofocus={true}
+          triggerComponent={
+            triggerComponentString ? (
+              <div dangerouslySetInnerHTML={{ __html: triggerComponentString }} />
+            ) : undefined
+          }
+        />
       </Suspense>
     )
   },
@@ -141,12 +249,12 @@ export default {
   },
 
   dropdownCart: (dataAttributes: NamedNodeMap) => {
-    const DropdownCart = React.lazy(() => import('./DropdownCart'));
-    const dropdownEnabled =  +get(dataAttributes.getNamedItem('data-dropdown-enabled'), 'value', 0)
+    const DropdownCart = React.lazy(() => import('./DropdownCart'))
+    const dropdownEnabled = +get(dataAttributes.getNamedItem('data-dropdown-enabled'), 'value', 0)
 
     return (
       <Suspense>
-        <DropdownCart dropdownEnabled={Boolean(dropdownEnabled)}/> 
+        <DropdownCart dropdownEnabled={Boolean(dropdownEnabled)} />
       </Suspense>
     )
   },
@@ -160,7 +268,11 @@ export default {
 
     return (
       <Suspense>
-        <Login onContinueAsGuest={handleTriggerClick} onLoggedIn={handleTriggerClick} showContinueAsGuest={false} />
+        <Login
+          onContinueAsGuest={handleTriggerClick}
+          onLoggedIn={handleTriggerClick}
+          showContinueAsGuest={false}
+        />
       </Suspense>
     )
   },
@@ -289,14 +401,14 @@ export default {
         )
       case 'begin-checkout':
         return (
-          <Suspense >
+          <Suspense>
             <BeginCheckoutEvent />
           </Suspense>
         )
-      case 'view-item' && productId && productId !== undefined:
+      case 'view-item':
         return (
           <Suspense>
-            <ViewItemEvent productId={productId ?? ''}/>
+            <ViewItemEvent productId={productId ?? ''} />
           </Suspense>
         )
       default:

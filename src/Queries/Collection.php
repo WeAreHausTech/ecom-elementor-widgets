@@ -27,6 +27,10 @@ class Collection extends BaseQuery
                     id
                     name
                     slug
+                    description
+                    assets {
+                        source
+                    }           
                     parentId
                     updatedAt
                     $customFields
