@@ -107,7 +107,10 @@ class Taxonomies
 
         if ($isCollection) {
             foreach ($vendureTerms as $vendureId => $vendureTerm) {
-                $this->syncCollectionParents($vendureId, $vendureTerm['parentId'], $taxonomy, $rootCollection);
+                $wpTerm = $wpTerms[$vendureId];
+                if ($vendureTerm['updatedAt'] !== $wpTerm['vendure_updated_at']) {
+                    $this->syncCollectionParents($vendureId, $vendureTerm['parentId'], $taxonomy, $rootCollection);
+                }
             }
         }
     }
