@@ -46,12 +46,7 @@ class ProductPrice extends Widget_Base
                 'price_type', 
             [
                 'label'=> __('Price type', 'haus_ecom_widgets'), 
-                'type' => \Elementor\Controls_Manager::SELECT,
-                'default' => 'ordinaryPrice',
-                'options' => [
-                    'ordinaryPrice' => __('ordinaryPrice', 'haus-ecom-widgets'),
-                    'ordinaryIokPrice' => __('ordinaryIokPrice', 'haus-ecom-widgets')
-                ],
+                'type' => \Elementor\Controls_Manager::TEXT,
             ]
             ); 
     }
