@@ -4,6 +4,8 @@ import { productChannel } from '@haus-tech/ecom-components/eventbus'
 
 const ProductPrice = () => {
   const [selectedProductVariant] = useEventBusOn(productChannel, 'product:variant:selected')
+
+  console.log('selected Product Variant:', selectedProductVariant)
   return (
     <Price
       price={selectedProductVariant?.price!}
