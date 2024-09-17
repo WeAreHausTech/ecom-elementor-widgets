@@ -38,8 +38,8 @@ export default {
       },
     )
 
-    if (priceFilterEnabled) { 
-      filtersArray.push({type: 'price'})
+    if (priceFilterEnabled) {
+      filtersArray.push({ type: 'price' })
     }
 
     const ProductList = React.lazy(() => import('./ProductList'))
