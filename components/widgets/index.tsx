@@ -419,9 +419,10 @@ export default {
   productPrice: (dataAttributes: NamedNodeMap) => {
     const PriceComponent = React.lazy(() => import('./PriceComponent'))
     const priceType = dataAttributes.getNamedItem('data-price-type')?.value
+    const id = dataAttributes.getNamedItem('data-product-id')?.value
     return (
       <Suspense>
-        <PriceComponent priceType={priceType} />
+        <PriceComponent priceType={priceType} id={id} />
       </Suspense>
     )
   },

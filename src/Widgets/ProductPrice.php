@@ -78,6 +78,7 @@ class ProductPrice extends Widget_Base
             data-widget-type="product-price"
             data-product-id="<?= $vendureId ?>"
             data-price-type="<?= $settings['price_type'] ?>"
+            data-product-id="<?= $vendureId ?>"
         >
         </div>
         <?php
