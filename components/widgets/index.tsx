@@ -5,6 +5,7 @@ import React, { Suspense } from 'react'
 
 export default {
   productList: (dataAttributes: NamedNodeMap) => {
+    const productListIdentifier = dataAttributes.getNamedItem('data-product-list-identifier')?.value
     const facetsAttributes = dataAttributes.getNamedItem('data-facet')?.value
     const facetArray = facetsAttributes?.split(',').filter(Number).map(String)
     const collectionId = dataAttributes.getNamedItem('data-collection')?.value
@@ -38,8 +39,8 @@ export default {
       },
     )
 
-    if (priceFilterEnabled) { 
-      filtersArray.push({type: 'price'})
+    if (priceFilterEnabled) {
+      filtersArray.push({ type: 'price' })
     }
 
     const ProductList = React.lazy(() => import('./ProductList'))
@@ -47,6 +48,7 @@ export default {
     return (
       <Suspense>
         <ProductList
+          productListIdentifier={productListIdentifier}
           searchInputProps={{
             facetValueIds: size(facetArray) > 0 ? facetArray : [],
             take: +get(dataAttributes.getNamedItem('data-take'), 'value', 12),
@@ -56,6 +58,47 @@ export default {
           enableSorting={Boolean(enableSort)}
           enableAddToCartBtn={Boolean(enableAddToCart)}
           enabledFilters={size(filtersArray) > 0 ? filtersArray : undefined}
+        />
+      </Suspense>
+    )
+  },
+
+  productListFilters: (dataAttributes: NamedNodeMap) => {
+    const productListIdentifier = dataAttributes.getNamedItem('data-product-list-identifier')?.value
+    const priceFilterEnabled = +get(
+      dataAttributes.getNamedItem('data-price-filter-enabled'),
+      'value',
+      0,
+    )
+
+    const enabledFilters = dataAttributes.getNamedItem('data-filter-values')?.value
+      ? JSON.parse(dataAttributes.getNamedItem('data-filter-values')!.value)
+      : null
+    const filtersArray: EnabledFilter[] = enabledFilters?.map(
+      (filter: { filter_value: string; filter_condition: 'AND' | 'OR'; filter_label?: string }) => {
+        return {
+          facetCode: filter.filter_value,
+          logicalOperator: lowerCase(filter.filter_condition),
+          label: filter.filter_label,
+        } as EnabledFilter
+      },
+    )
+
+    if (priceFilterEnabled) {
+      filtersArray.push({ type: 'price' })
+    }
+
+    if (size(filtersArray) === 0) {
+      return null
+    }
+
+    const ProductListFilters = React.lazy(() => import('./Filters.tsx'))
+
+    return (
+      <Suspense>
+        <ProductListFilters
+          enabledFilters={filtersArray}
+          productListIdentifier={productListIdentifier}
         />
       </Suspense>
     )

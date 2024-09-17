@@ -1,4 +1,5 @@
 <?php
+
 namespace WeAreHausTech\Widgets;
 
 use \Elementor\Widget_Base;
@@ -39,6 +40,16 @@ class ProductList extends Widget_Base
             'section_general',
             [
                 'label' => __('General settings', 'haus-ecom-widgets'),
+            ]
+        );
+
+        $this->add_control(
+            'price_list_identifier',
+            [
+                'label' => __('Price list identifier', 'haus-ecom-widgets'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'description' => __('Price list identifier. Used for just listen to events passed with the same identifier.', 'haus-ecom-widgets'),
+                'default' => 'product-list',
             ]
         );
 
@@ -130,7 +141,6 @@ class ProductList extends Widget_Base
                 'default' => '0',
             ]
         );
-
     }
 
     public function getAvailableFacets()
@@ -355,7 +365,7 @@ class ProductList extends Widget_Base
         }
 
         $widgetId = 'ecom_' . $this->get_id();
-        ?>
+?>
         <div id="<?= $widgetId ?>" class="ecom-components-root" data-widget-type="product-list"
             data-facet="<?= implode(", ", $facets) ?>" data-collection="<?= $taxonomy ?>"
             data-take="<?= $settings['products_per_page'] ?>" data-sort-enabled="<?= $settings['sort_enabled'] ?>"
@@ -364,6 +374,6 @@ class ProductList extends Widget_Base
             data-price-filter-enabled="<?= $settings['price_filter_enabled'] ?>"
             data-filter-values="<?= htmlspecialchars(json_encode($settings['enabled_filters']), ENT_QUOTES, 'UTF-8'); ?>">
         </div>
-        <?php
+<?php
     }
 }
