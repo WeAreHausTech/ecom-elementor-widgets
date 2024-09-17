@@ -2,6 +2,7 @@
 import { EnabledFilter, OrderListOptions } from '@haus-tech/ecom-components'
 import { get, lowerCase, size } from 'lodash'
 import React, { Suspense } from 'react'
+import { FiltersWrapper } from '@haus-tech/ecom-components'
 
 export default {
   productList: (dataAttributes: NamedNodeMap) => {
@@ -70,6 +71,7 @@ export default {
       'value',
       0,
     )
+    const showFiltersAsValue = dataAttributes.getNamedItem('data-show-filters-as')?.value
 
     const enabledFilters = dataAttributes.getNamedItem('data-filter-values')?.value
       ? JSON.parse(dataAttributes.getNamedItem('data-filter-values')!.value)
@@ -94,10 +96,46 @@ export default {
 
     const ProductListFilters = React.lazy(() => import('./Filters.tsx'))
 
+    let showFilters: FiltersWrapper
+
+    switch (showFiltersAsValue) {
+      case 'accordion':
+        showFilters = {
+          as: 'accordion',
+          type: 'multiple',
+          collapsible: true,
+        }
+        break
+      case 'dropdown':
+        showFilters = {
+          as: 'dropdown',
+        }
+        break
+      default:
+        showFilters = {
+          as: 'dropdown',
+        }
+        break
+    }
+
     return (
       <Suspense>
         <ProductListFilters
           enabledFilters={filtersArray}
+          productListIdentifier={productListIdentifier}
+          showFiltersAs={showFilters}
+        />
+      </Suspense>
+    )
+  },
+
+  productListSort: (dataAttributes: NamedNodeMap) => {
+    const productListIdentifier = dataAttributes.getNamedItem('data-product-list-identifier')?.value
+    const Sort = React.lazy(() => import('./Sort.tsx'))
+
+    return (
+      <Suspense>
+        <Sort
           productListIdentifier={productListIdentifier}
         />
       </Suspense>

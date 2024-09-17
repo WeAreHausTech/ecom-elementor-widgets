@@ -365,15 +365,17 @@ class ProductList extends Widget_Base
         }
 
         $widgetId = 'ecom_' . $this->get_id();
-?>
+        ?>
         <div id="<?= $widgetId ?>" class="ecom-components-root" data-widget-type="product-list"
-            data-facet="<?= implode(", ", $facets) ?>" data-collection="<?= $taxonomy ?>"
-            data-take="<?= $settings['products_per_page'] ?>" data-sort-enabled="<?= $settings['sort_enabled'] ?>"
+            data-product-list-identifier="<?= $settings['price_list_identifier'] ?>" 
+            data-facet="<?= implode(", ", $facets) ?>"
+            data-collection="<?= $taxonomy ?>" data-take="<?= $settings['products_per_page'] ?>"
+            data-sort-enabled="<?= $settings['sort_enabled'] ?>"
             data-pagination-enabled="<?= $settings['pagination_enabled'] ?>"
             data-add-to-cart-enabled="<?= $settings['show_add_to_cart'] ?>"
             data-price-filter-enabled="<?= $settings['price_filter_enabled'] ?>"
             data-filter-values="<?= htmlspecialchars(json_encode($settings['enabled_filters']), ENT_QUOTES, 'UTF-8'); ?>">
         </div>
-<?php
+        <?php
     }
 }

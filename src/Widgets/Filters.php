@@ -2,7 +2,7 @@
 
 namespace WeAreHausTech\Widgets;
 
-use Elementor\Widget_Base;
+use \Elementor\Widget_Base;
 use \WeAreHausTech\Traits\ElementorTemplate;
 
 class Filters extends Widget_Base
@@ -11,7 +11,7 @@ class Filters extends Widget_Base
 
   public function get_name()
   {
-    return 'Product List Filters';
+    return 'Filters';
   }
 
   public function get_title()
@@ -50,6 +50,19 @@ class Filters extends Widget_Base
         'type' => \Elementor\Controls_Manager::TEXT,
         'description' => __('Price list identifier, if none specified, filter will update all Product Lists without identifier.', 'haus-ecom-widgets'),
         'default' => 'product-list',
+      ]
+    );
+
+    $this->add_control(
+      'show_filters_as',
+      [
+        'label' => __('Price filter enabled', 'haus-ecom-widgets'),
+        'type' => \Elementor\Controls_Manager::SELECT,
+        'default' => 'dropdown',
+        'options' => [
+          'dropdown' => __('Dropdown', 'haus-ecom-widgets'),
+          'accordion' => __('Accordion', 'haus-ecom-widgets'),
+        ],
       ]
     );
     $this->end_controls_section();
@@ -168,12 +181,14 @@ class Filters extends Widget_Base
     }
 
     $widgetId = 'ecom_' . $this->get_id();
-?>
+    ?>
 
     <div
       id="<?= $widgetId ?>"
       class="ecom-components-root"
       data-widget-type="product-list-filters"
+      data-product-list-identifier="<?= $settings['price_list_identifier'] ?>" 
+      data-show-filters-as="<?= $settings['show_filters_as'] ?>"
       data-widget-id="<?= $widgetId ?>"
       data-price-filter-enabled="<?= $settings['price_filter_enabled'] ?>"
       data-filter-values="<?= htmlspecialchars(json_encode($settings['enabled_filters']), ENT_QUOTES, 'UTF-8'); ?>">
