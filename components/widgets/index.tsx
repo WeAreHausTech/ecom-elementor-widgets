@@ -422,7 +422,7 @@ export default {
     const id = dataAttributes.getNamedItem('data-product-id')?.value
     return (
       <Suspense>
-        <PriceComponent priceType={priceType} id={id} />
+        <PriceComponent priceType={priceType} productId={id} />
       </Suspense>
     )
   },
