@@ -33,6 +33,24 @@ class ProductPrice extends Widget_Base
         return ['Ecommerce', 'product', 'price'];
     }
 
+    protected function _register_controls()
+    {
+        $this->start_controls_section(
+            'section_general', 
+            [
+                'label' => __('General settings', 'haus-ecom-widgets')
+            ]
+            );
+
+            $this->add_control(
+                'price_type', 
+            [
+                'label'=> __('Price type', 'haus_ecom_widgets'), 
+                'type' => \Elementor\Controls_Manager::TEXT,
+            ]
+            ); 
+    }
+
 
     protected function render()
     {
@@ -43,6 +61,7 @@ class ProductPrice extends Widget_Base
             return;
         }
 
+        $settings = $this->get_settings_for_display(); 
         $widgetId = 'ecom_' . $this->get_id();
         
         $post = get_post();
@@ -57,6 +76,8 @@ class ProductPrice extends Widget_Base
             id="<?= $widgetId ?>"
             class="ecom-components-root" 
             data-widget-type="product-price"
+            data-product-id="<?= $vendureId ?>"
+            data-price-type="<?= $settings['price_type'] ?>"
             data-product-id="<?= $vendureId ?>"
         >
         </div>
