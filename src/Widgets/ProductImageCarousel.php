@@ -41,13 +41,27 @@ class ProductImageCarousel extends Widget_Base
             [
                 'label' => __('Hide thumbs if single', 'haus-ecom-widgets'),
                 'type' => \Elementor\Controls_Manager::SELECT,
-                'default' => '1',
+                'default' => 'no',
                 'options' => [
-                    '0' => __('No', 'haus-ecom-widgets'),
-                    '1' => __('Yes', 'haus-ecom-widgets'),
+                    'no' => __('No', 'haus-ecom-widgets'),
+                    'yes' => __('Yes', 'haus-ecom-widgets'),
                 ],
             ]
         );
+
+        $this->add_control(
+            'variant_images_only',
+            [
+                'label' => __('Show only variant images', 'haus-ecom-widgets'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => 'no',
+                'options' => [
+                    'no' => __('No', 'haus-ecom-widgets'),
+                    'yes' => __('Yes', 'haus-ecom-widgets'),
+                ],
+            ]
+        );
+
 
         $this->end_controls_section();
     }
@@ -58,13 +72,19 @@ class ProductImageCarousel extends Widget_Base
             $this->getTemplate();
             return;
         }
-        
-        $widget_id = 'ecom_' . $this->get_id();
+
+        $widgetId = 'ecom_' . $this->get_id();
         $post = get_post();
         $productId = get_the_ID();
         $vendureId = get_post_meta($productId, 'vendure_id', true);
-        echo '<div id="' . $widget_id . '" class="ecom-components-root" data-widget-type="product-image-carousel" data-product-id="'.$vendureId.'" data-product-slug="'.$post->post_name.'"></div>';
+        $settings = $this->get_settings_for_display();
+
         ?>
+
+        <div id="<?= $widgetId ?>" class="ecom-components-root" data-widget-type="product-image-carousel"
+            data-product-id="<?= $vendureId ?>" data-variant-images-only="<?= $settings['variant_images_only'] ?>"
+            data-product-slug="<?= $post->post_name ?>">
+        </div>
         <?php
     }
 }

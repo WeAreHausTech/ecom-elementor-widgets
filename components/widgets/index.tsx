@@ -38,7 +38,7 @@ export default {
       },
     )
 
-    if (priceFilterEnabled) { 
+    if (priceFilterEnabled) {
       filtersArray.push({type: 'price'})
     }
 
@@ -93,6 +93,7 @@ export default {
   productImageCarousel: (dataAttributes: NamedNodeMap) => {
     const slug = dataAttributes.getNamedItem('data-product-slug')?.value
     const id = dataAttributes.getNamedItem('data-product-id')?.value
+    const variantImagesOnly = dataAttributes.getNamedItem('data-variant-images-only')?.value  === 'yes' ? true : false;
 
     const propToUse = id ? { id } : { slug: slug! }
 
@@ -101,7 +102,7 @@ export default {
     return (
       slug && (
         <Suspense>
-          <ProductImageCarousel {...propToUse} />
+          <ProductImageCarousel {...propToUse} variantImagesOnly={variantImagesOnly}/>
         </Suspense>
       )
     )
