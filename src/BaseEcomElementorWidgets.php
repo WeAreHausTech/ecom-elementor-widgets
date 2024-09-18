@@ -23,6 +23,14 @@ class BaseEcomElementorWidgets
 
             \Elementor\Plugin::instance()
                 ->widgets_manager
+                ->register(new \WeAreHausTech\Widgets\Filters());
+
+            \Elementor\Plugin::instance()
+                ->widgets_manager
+                ->register(new \WeAreHausTech\Widgets\Sort());
+
+            \Elementor\Plugin::instance()
+                ->widgets_manager
                 ->register(new \WeAreHausTech\Widgets\Checkout());
 
             \Elementor\Plugin::instance()
@@ -98,7 +106,7 @@ class BaseEcomElementorWidgets
                 ->widgets_manager
                 ->register(new \WeAreHausTech\Widgets\OrderLines());
 
-             \Elementor\Plugin::instance()
+            \Elementor\Plugin::instance()
                 ->widgets_manager
                 ->register(new \WeAreHausTech\Widgets\CartPrice());
 

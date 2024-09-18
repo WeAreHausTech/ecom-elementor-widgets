@@ -2,9 +2,11 @@
 import { EnabledFilter, OrderListOptions } from '@haus-tech/ecom-components'
 import { get, lowerCase, size } from 'lodash'
 import React, { Suspense } from 'react'
+import { FiltersWrapper } from '@haus-tech/ecom-components'
 
 export default {
   productList: (dataAttributes: NamedNodeMap) => {
+    const productListIdentifier = dataAttributes.getNamedItem('data-product-list-identifier')?.value
     const facetsAttributes = dataAttributes.getNamedItem('data-facet')?.value
     const facetArray = facetsAttributes?.split(',').filter(Number).map(String)
     const collectionId = dataAttributes.getNamedItem('data-collection')?.value
@@ -47,6 +49,7 @@ export default {
     return (
       <Suspense>
         <ProductList
+          productListIdentifier={productListIdentifier}
           searchInputProps={{
             facetValueIds: size(facetArray) > 0 ? facetArray : [],
             take: +get(dataAttributes.getNamedItem('data-take'), 'value', 12),
@@ -57,6 +60,84 @@ export default {
           enableAddToCartBtn={Boolean(enableAddToCart)}
           enabledFilters={size(filtersArray) > 0 ? filtersArray : undefined}
           enableSkeletonLoader={import.meta.env.VITE_ENABLE_SKELETON_PRODUCT_LIST === 'true'}
+        />
+      </Suspense>
+    )
+  },
+
+  productListFilters: (dataAttributes: NamedNodeMap) => {
+    const productListIdentifier = dataAttributes.getNamedItem('data-product-list-identifier')?.value
+    const priceFilterEnabled = +get(
+      dataAttributes.getNamedItem('data-price-filter-enabled'),
+      'value',
+      0,
+    )
+    const showFiltersAsValue = dataAttributes.getNamedItem('data-show-filters-as')?.value
+
+    const enabledFilters = dataAttributes.getNamedItem('data-filter-values')?.value
+      ? JSON.parse(dataAttributes.getNamedItem('data-filter-values')!.value)
+      : null
+    const filtersArray: EnabledFilter[] = enabledFilters?.map(
+      (filter: { filter_value: string; filter_condition: 'AND' | 'OR'; filter_label?: string }) => {
+        return {
+          facetCode: filter.filter_value,
+          logicalOperator: lowerCase(filter.filter_condition),
+          label: filter.filter_label,
+        } as EnabledFilter
+      },
+    )
+
+    if (priceFilterEnabled) {
+      filtersArray.push({ type: 'price' })
+    }
+
+    if (size(filtersArray) === 0) {
+      return null
+    }
+
+    const ProductListFilters = React.lazy(() => import('./Filters.tsx'))
+
+    let showFilters: FiltersWrapper
+
+    switch (showFiltersAsValue) {
+      case 'accordion':
+        showFilters = {
+          as: 'accordion',
+          type: 'multiple',
+          collapsible: true,
+        }
+        break
+      case 'dropdown':
+        showFilters = {
+          as: 'dropdown',
+        }
+        break
+      default:
+        showFilters = {
+          as: 'dropdown',
+        }
+        break
+    }
+
+    return (
+      <Suspense>
+        <ProductListFilters
+          enabledFilters={filtersArray}
+          productListIdentifier={productListIdentifier}
+          showFiltersAs={showFilters}
+        />
+      </Suspense>
+    )
+  },
+
+  productListSort: (dataAttributes: NamedNodeMap) => {
+    const productListIdentifier = dataAttributes.getNamedItem('data-product-list-identifier')?.value
+    const Sort = React.lazy(() => import('./Sort.tsx'))
+
+    return (
+      <Suspense>
+        <Sort
+          productListIdentifier={productListIdentifier}
         />
       </Suspense>
     )

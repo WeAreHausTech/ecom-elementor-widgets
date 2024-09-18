@@ -44,6 +44,16 @@ class ProductList extends Widget_Base
         );
 
         $this->add_control(
+            'price_list_identifier',
+            [
+                'label' => __('Price list identifier', 'haus-ecom-widgets'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'description' => __('Price list identifier. Used for just listen to events passed with the same identifier.', 'haus-ecom-widgets'),
+                'default' => 'product-list',
+            ]
+        );
+
+        $this->add_control(
             'show_add_to_cart',
             [
                 'label' => __('Show Add to cart', 'haus-ecom-widgets'),
