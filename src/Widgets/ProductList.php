@@ -409,7 +409,6 @@ class ProductList extends Widget_Base
                 };
 
                 if (productListWidget.shadowRoot) {
-                    console.log('ShadowRoot already exists')
                     handleShadowRootDetected()
                 }
             })
