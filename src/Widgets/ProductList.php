@@ -391,7 +391,7 @@ class ProductList extends Widget_Base
 
 
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
+            addEventListener('product-list:data:changed', function(event) {
                 const productListWidget = document.getElementById('<?= $widgetId ?>')
                 const placeholderCards = document.querySelector('.placeholder-cards')
 
@@ -399,31 +399,53 @@ class ProductList extends Widget_Base
                     return
                 }
 
-                // Function to handle the removal of placeholderCards when shadowRoot is detected
                 const handleShadowRootDetected = () => {
                     if (productListWidget.shadowRoot) {
                         // Remove or hide the placeholder cards
                         if (placeholderCards) {
-                            setTimeout(() => {
-                                placeholderCards.remove()
-                            }, 1000)
+                            placeholderCards.remove()
                         }
                     }
                 };
 
-                // Check immediately if shadowRoot already exists
                 if (productListWidget.shadowRoot) {
+                    console.log('ShadowRoot already exists')
                     handleShadowRootDetected()
-                } else {
-                    // Fallback: Check for shadowRoot periodically if it's created asynchronously
-                    const shadowRootCheckInterval = setInterval(() => {
-                        if (productListWidget.shadowRoot) {
-                            handleShadowRootDetected()
-                            clearInterval(shadowRootCheckInterval) // Stop checking once shadowRoot is found
-                        }
-                    }, 100); // Check every 100ms
                 }
-            });
+            })
+            // document.addEventListener('DOMContentLoaded', function() {
+            //     const productListWidget = document.getElementById('<?= $widgetId ?>')
+            //     const placeholderCards = document.querySelector('.placeholder-cards')
+
+            //     if (!productListWidget) {
+            //         return
+            //     }
+
+            //     // Function to handle the removal of placeholderCards when shadowRoot is detected
+            //     const handleShadowRootDetected = () => {
+            //         if (productListWidget.shadowRoot) {
+            //             // Remove or hide the placeholder cards
+            //             if (placeholderCards) {
+            //                 setTimeout(() => {
+            //                     placeholderCards.remove()
+            //                 }, 1000)
+            //             }
+            //         }
+            //     };
+
+            //     // Check immediately if shadowRoot already exists
+            //     if (productListWidget.shadowRoot) {
+            //         handleShadowRootDetected()
+            //     } else {
+            //         // Fallback: Check for shadowRoot periodically if it's created asynchronously
+            //         const shadowRootCheckInterval = setInterval(() => {
+            //             if (productListWidget.shadowRoot) {
+            //                 handleShadowRootDetected()
+            //                 clearInterval(shadowRootCheckInterval) // Stop checking once shadowRoot is found
+            //             }
+            //         }, 100); // Check every 100ms
+            //     }
+            // });
         </script>
 
 <?php
