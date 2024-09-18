@@ -1,4 +1,5 @@
 <?php
+
 namespace WeAreHausTech\Widgets;
 
 use \Elementor\Widget_Base;
@@ -39,6 +40,16 @@ class ProductList extends Widget_Base
             'section_general',
             [
                 'label' => __('General settings', 'haus-ecom-widgets'),
+            ]
+        );
+
+        $this->add_control(
+            'price_list_identifier',
+            [
+                'label' => __('Price list identifier', 'haus-ecom-widgets'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'description' => __('Price list identifier. Used for just listen to events passed with the same identifier.', 'haus-ecom-widgets'),
+                'default' => 'product-list',
             ]
         );
 
@@ -130,7 +141,6 @@ class ProductList extends Widget_Base
                 'default' => '0',
             ]
         );
-
     }
 
     public function getAvailableFacets()
@@ -355,15 +365,66 @@ class ProductList extends Widget_Base
         }
 
         $widgetId = 'ecom_' . $this->get_id();
-        ?>
-        <div id="<?= $widgetId ?>" class="ecom-components-root" data-widget-type="product-list"
-            data-facet="<?= implode(", ", $facets) ?>" data-collection="<?= $taxonomy ?>"
-            data-take="<?= $settings['products_per_page'] ?>" data-sort-enabled="<?= $settings['sort_enabled'] ?>"
-            data-pagination-enabled="<?= $settings['pagination_enabled'] ?>"
-            data-add-to-cart-enabled="<?= $settings['show_add_to_cart'] ?>"
-            data-price-filter-enabled="<?= $settings['price_filter_enabled'] ?>"
-            data-filter-values="<?= htmlspecialchars(json_encode($settings['enabled_filters']), ENT_QUOTES, 'UTF-8'); ?>">
+
+?>
+        <div style="position: relative; min-height: 100vh; width: 100%;">
+            <div id="<?= $widgetId ?>" class="ecom-components-root productlist-widget" data-widget-type="product-list"
+                data-facet="<?= implode(", ", $facets) ?>" data-collection="<?= $taxonomy ?>"
+                data-take="<?= $settings['products_per_page'] ?>" data-sort-enabled="<?= $settings['sort_enabled'] ?>"
+                data-pagination-enabled="<?= $settings['pagination_enabled'] ?>"
+                data-add-to-cart-enabled="<?= $settings['show_add_to_cart'] ?>"
+                data-price-filter-enabled="<?= $settings['price_filter_enabled'] ?>"
+                data-filter-values="<?= htmlspecialchars(json_encode($settings['enabled_filters']), ENT_QUOTES, 'UTF-8'); ?>">
+            </div>
+            <?php if ($_ENV['ENABLE_SKELETON_PRODUCT_LIST'] === 'true') : ?>
+                <div class="placeholder-cards" style="position:absolute; width: 100%; top: 0; left: 0;">
+                    <?php for ($i = 0; $i < $settings['products_per_page']; $i++): ?>
+                        <div class="placeholder-card">
+                            <div class="placeholder-image"></div>
+                            <div class="placeholder-text"></div>
+                        </div>
+                    <?php endfor; ?>
+                </div>
+            <?php endif; ?>
         </div>
-        <?php
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const productListWidget = document.getElementById('<?= $widgetId ?>')
+                const placeholderCards = document.querySelector('.placeholder-cards')
+
+                if (!productListWidget) {
+                    return
+                }
+
+                // Function to handle the removal of placeholderCards when shadowRoot is detected
+                const handleShadowRootDetected = () => {
+                    if (productListWidget.shadowRoot) {
+                        // Remove or hide the placeholder cards
+                        if (placeholderCards) {
+                            setTimeout(() => {
+                                placeholderCards.remove()
+                            }, 1000)
+                        }
+                    }
+                };
+
+                // Check immediately if shadowRoot already exists
+                if (productListWidget.shadowRoot) {
+                    handleShadowRootDetected()
+                } else {
+                    // Fallback: Check for shadowRoot periodically if it's created asynchronously
+                    const shadowRootCheckInterval = setInterval(() => {
+                        if (productListWidget.shadowRoot) {
+                            handleShadowRootDetected()
+                            clearInterval(shadowRootCheckInterval) // Stop checking once shadowRoot is found
+                        }
+                    }, 100); // Check every 100ms
+                }
+            });
+        </script>
+
+<?php
     }
 }
