@@ -367,7 +367,7 @@ class ProductList extends Widget_Base
         $widgetId = 'ecom_' . $this->get_id();
 
 ?>
-        <div style="position: relative; min-height: 100vh; width: 100%;">
+        <div style="position: relative; width: 100%;">
             <div id="<?= $widgetId ?>" class="ecom-components-root productlist-widget" data-widget-type="product-list"
                 data-facet="<?= implode(", ", $facets) ?>" data-collection="<?= $taxonomy ?>"
                 data-take="<?= $settings['products_per_page'] ?>" data-sort-enabled="<?= $settings['sort_enabled'] ?>"
