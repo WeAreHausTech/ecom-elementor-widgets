@@ -9,7 +9,7 @@ class ProductImageCarousel extends Widget_Base
     use ElementorTemplate;
     public function get_name()
     {
-        return 'Product Image Carousel';
+        return 'ProductImageCarousel';
     }
     public function get_title()
     {
