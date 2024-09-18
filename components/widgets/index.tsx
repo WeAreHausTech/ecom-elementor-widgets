@@ -41,7 +41,7 @@ export default {
     )
 
     if (priceFilterEnabled) {
-      filtersArray.push({type: 'price'})
+      filtersArray.push({ type: 'price' })
     }
 
     const ProductList = React.lazy(() => import('./ProductList'))
@@ -136,9 +136,7 @@ export default {
 
     return (
       <Suspense>
-        <Sort
-          productListIdentifier={productListIdentifier}
-        />
+        <Sort productListIdentifier={productListIdentifier} />
       </Suspense>
     )
   },
@@ -175,7 +173,8 @@ export default {
   productImageCarousel: (dataAttributes: NamedNodeMap) => {
     const slug = dataAttributes.getNamedItem('data-product-slug')?.value
     const id = dataAttributes.getNamedItem('data-product-id')?.value
-    const variantImagesOnly = dataAttributes.getNamedItem('data-variant-images-only')?.value  === 'yes' ? true : false;
+    const variantImagesOnly =
+      dataAttributes.getNamedItem('data-variant-images-only')?.value === 'yes' ? true : false
 
     const propToUse = id ? { id } : { slug: slug! }
 
@@ -184,7 +183,7 @@ export default {
     return (
       slug && (
         <Suspense>
-          <ProductImageCarousel {...propToUse} variantImagesOnly={variantImagesOnly}/>
+          <ProductImageCarousel {...propToUse} variantImagesOnly={variantImagesOnly} />
         </Suspense>
       )
     )
@@ -202,6 +201,12 @@ export default {
       | 'code'
       | undefined
 
+    const selectFirstVariant = +get(
+      dataAttributes.getNamedItem('data-select-first-variant'),
+      'value',
+      0,
+    )
+
     const ProductVariantOptions = React.lazy(() => import('./ProductVariantOptions'))
 
     return (
@@ -209,6 +214,7 @@ export default {
         <ProductVariantOptions
           useUrl={Boolean(useUrl)}
           optionVariable={optionVariable}
+          selectFirstVariant={Boolean(selectFirstVariant)}
           {...propToUse}
         />
       </Suspense>

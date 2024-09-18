@@ -1,4 +1,5 @@
 <?php
+
 namespace WeAreHausTech\Widgets;
 
 use \Elementor\Widget_Base;
@@ -36,39 +37,52 @@ class ProductVariantOptions extends Widget_Base
     protected function _register_controls()
     {
         $this->start_controls_section(
-          'section_general',
-          [
-              'label' => __('General settings', 'haus-ecom-widgets'),
-          ]
+            'section_general',
+            [
+                'label' => __('General settings', 'haus-ecom-widgets'),
+            ]
         );
 
         $this->add_control(
-          'use_url',
-          [
-              'label' => __('Use URL params', 'haus-ecom-widgets'),
-              'type' => \Elementor\Controls_Manager::SELECT,
-              'default' => '1',
-              'options' => [
-                  '0' => __('No', 'haus-ecom-widgets'),
-                  '1' => __('Yes', 'haus-ecom-widgets'),
-              ],
-          ]
+            'use_url',
+            [
+                'label' => __('Use URL params', 'haus-ecom-widgets'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => '1',
+                'options' => [
+                    '0' => __('No', 'haus-ecom-widgets'),
+                    '1' => __('Yes', 'haus-ecom-widgets'),
+                ],
+            ]
         );
 
         $this->add_control(
-          'option_variable',
-          [
-            'label' => __('Use ID or Code', 'haus-ecom-widgets'),
-            'type' => \Elementor\Controls_Manager::SELECT,
-            'default' => 'id',
-            'options' => [
-                'id' => __('Id', 'haus-ecom-widgets'),
-                'code' => __('Code', 'haus-ecom-widgets'),
-            ],
-            'condition' => [
-              'use_url' => '1',
-            ],
-          ]
+            'option_variable',
+            [
+                'label' => __('Use ID or Code', 'haus-ecom-widgets'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => 'id',
+                'options' => [
+                    'id' => __('Id', 'haus-ecom-widgets'),
+                    'code' => __('Code', 'haus-ecom-widgets'),
+                ],
+                'condition' => [
+                    'use_url' => '1',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'select-first-variant',
+            [
+                'label' => __('Auto select first variant', 'haus-ecom-widgets'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => '0',
+                'options' => [
+                    '0' => __('No', 'haus-ecom-widgets'),
+                    '1' => __('Yes', 'haus-ecom-widgets'),
+                ],
+            ]
         );
 
         $this->end_controls_section();
@@ -85,25 +99,25 @@ class ProductVariantOptions extends Widget_Base
 
         $settings = $this->get_settings_for_display();
         $widgetId = 'ecom_' . $this->get_id();
-        
+
         $post = get_post();
         $productId = get_the_ID();
         $vendureId = get_post_meta($productId, 'vendure_id', true);
 
-        ?>
+?>
 
-        
 
-        <div 
+
+        <div
             id="<?= $widgetId ?>"
-            class="ecom-components-root" 
+            class="ecom-components-root"
             data-widget-type="product-variant-options"
             data-use-url="<?= $settings['use_url'] ?>"
             data-option-variable="<?= $settings['option_variable'] ?>"
             data-product-id="<?= $vendureId ?>"
             data-product-slug="<?= $post->post_name ?>"
-        >
+            data-select-first-variant="<?= $settings['select-first-variant'] ?>">
         </div>
-        <?php
+<?php
     }
 }
