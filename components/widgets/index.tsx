@@ -59,6 +59,7 @@ export default {
           enableSorting={Boolean(enableSort)}
           enableAddToCartBtn={Boolean(enableAddToCart)}
           enabledFilters={size(filtersArray) > 0 ? filtersArray : undefined}
+          enableSkeletonLoader={import.meta.env.VITE_ENABLE_SKELETON_PRODUCT_LIST === 'true'}
         />
       </Suspense>
     )
