@@ -77,7 +77,7 @@ class AddToCartButtonWidget extends Widget_Base
 
         <div 
             id="<?= $widgetId ?>"
-            class="ecom-components-root" 
+            class="ecom-components-root add-to-cart-button-widget" 
             data-widget-type="add-to-cart-button-widget"
         >
         </div>
