@@ -367,7 +367,7 @@ class ProductList extends Widget_Base
         $widgetId = 'ecom_' . $this->get_id();
 
 ?>
-        <div style="position: relative; width: 100%;">
+        <div id="placeholderWrapper" style="position: relative; width: 100%; ">
             <div id="<?= $widgetId ?>" class="ecom-components-root productlist-widget" data-widget-type="product-list"
                 data-facet="<?= implode(", ", $facets) ?>" data-collection="<?= $taxonomy ?>"
                 data-take="<?= $settings['products_per_page'] ?>" data-sort-enabled="<?= $settings['sort_enabled'] ?>"
@@ -378,7 +378,7 @@ class ProductList extends Widget_Base
                 data-filter-values="<?= htmlspecialchars(json_encode($settings['enabled_filters']), ENT_QUOTES, 'UTF-8'); ?>">
             </div>
             <?php if ($_ENV['ENABLE_SKELETON_PRODUCT_LIST'] === 'true') : ?>
-                <div class="placeholder-cards" style="position:absolute; width: 100%; top: 0; left: 0;">
+                <div id="ph-cards" class="placeholder-cards" style="position:absolute; width: 100%; top: 0; left: 0;">
                     <?php for ($i = 0; $i < $settings['products_per_page']; $i++): ?>
                         <div class="placeholder-card">
                             <div class="placeholder-image"></div>
@@ -391,10 +391,15 @@ class ProductList extends Widget_Base
 
 
         <script>
-            addEventListener('product-list:data:changed', function(event) {
-                const productListWidget = document.getElementById('<?= $widgetId ?>')
-                const placeholderCards = document.querySelector('.placeholder-cards')
+            const productListWidget = document.getElementById('<?= $widgetId ?>')
+            const placeholderCards = document.getElementById('ph-cards')
+            const placeholderCardsHeight = placeholderCards ? placeholderCards.clientHeight : 0
+            const placeholderWrapper = document.getElementById('placeholderWrapper')
+            if (placeholderCards) {
+                placeholderWrapper.style.height = `${placeholderCardsHeight}px`
+            }
 
+            addEventListener('product-list:data:changed', function(event) {
                 if (!productListWidget) {
                     return
                 }
@@ -404,6 +409,7 @@ class ProductList extends Widget_Base
                         // Remove or hide the placeholder cards
                         if (placeholderCards) {
                             placeholderCards.remove()
+                            placeholderWrapper.style.height = 'auto'
                         }
                     }
                 };
@@ -412,39 +418,6 @@ class ProductList extends Widget_Base
                     handleShadowRootDetected()
                 }
             })
-            // document.addEventListener('DOMContentLoaded', function() {
-            //     const productListWidget = document.getElementById('<?= $widgetId ?>')
-            //     const placeholderCards = document.querySelector('.placeholder-cards')
-
-            //     if (!productListWidget) {
-            //         return
-            //     }
-
-            //     // Function to handle the removal of placeholderCards when shadowRoot is detected
-            //     const handleShadowRootDetected = () => {
-            //         if (productListWidget.shadowRoot) {
-            //             // Remove or hide the placeholder cards
-            //             if (placeholderCards) {
-            //                 setTimeout(() => {
-            //                     placeholderCards.remove()
-            //                 }, 1000)
-            //             }
-            //         }
-            //     };
-
-            //     // Check immediately if shadowRoot already exists
-            //     if (productListWidget.shadowRoot) {
-            //         handleShadowRootDetected()
-            //     } else {
-            //         // Fallback: Check for shadowRoot periodically if it's created asynchronously
-            //         const shadowRootCheckInterval = setInterval(() => {
-            //             if (productListWidget.shadowRoot) {
-            //                 handleShadowRootDetected()
-            //                 clearInterval(shadowRootCheckInterval) // Stop checking once shadowRoot is found
-            //             }
-            //         }, 100); // Check every 100ms
-            //     }
-            // });
         </script>
 
 <?php
