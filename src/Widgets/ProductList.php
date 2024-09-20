@@ -391,33 +391,36 @@ class ProductList extends Widget_Base
 
 
         <script>
-            const productListWidget = document.getElementById('<?= $widgetId ?>')
-            const placeholderCards = document.getElementById('ph-cards')
-            const placeholderCardsHeight = placeholderCards ? placeholderCards.clientHeight : 0
-            const placeholderWrapper = document.getElementById('placeholderWrapper')
-            if (placeholderCards) {
-                placeholderWrapper.style.height = `${placeholderCardsHeight}px`
-            }
+            (function() {
+                const productListWidget = document.getElementById('<?= $widgetId ?>');
+                const placeholderCards = document.getElementById('ph-cards');
+                const placeholderCardsHeight = placeholderCards ? placeholderCards.clientHeight : 0;
+                const placeholderWrapper = document.getElementById('placeholderWrapper');
 
-            addEventListener('product-list:data:changed', function(event) {
-                if (!productListWidget) {
-                    return
+                if (placeholderCards) {
+                    placeholderWrapper.style.height = `${placeholderCardsHeight}px`;
                 }
 
-                const handleShadowRootDetected = () => {
-                    if (productListWidget.shadowRoot) {
-                        // Remove or hide the placeholder cards
-                        if (placeholderCards) {
-                            placeholderCards.remove()
-                            placeholderWrapper.style.height = 'auto'
-                        }
+                window.addEventListener('product-list:data:changed', function(event) {
+                    if (!productListWidget) {
+                        return;
                     }
-                };
 
-                if (productListWidget.shadowRoot) {
-                    handleShadowRootDetected()
-                }
-            })
+                    const handleShadowRootDetected = () => {
+                        if (productListWidget.shadowRoot) {
+                            // Remove or hide the placeholder cards
+                            if (placeholderCards) {
+                                placeholderCards.remove();
+                                placeholderWrapper.style.height = 'auto';
+                            }
+                        }
+                    };
+
+                    if (productListWidget.shadowRoot) {
+                        handleShadowRootDetected();
+                    }
+                });
+            })();
         </script>
 
 <?php
