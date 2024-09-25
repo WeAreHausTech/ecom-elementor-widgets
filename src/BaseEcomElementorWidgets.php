@@ -110,10 +110,10 @@ class BaseEcomElementorWidgets
                 ->widgets_manager
                 ->register(new \WeAreHausTech\Widgets\CartPrice());
 
-            if (defined('WP_CLI') && WP_CLI) {
-                require_once 'SyncData/Commands/SyncProductData.php';
-                require_once 'SyncData/Commands/DeleteAllPosts.php';
-                require_once 'SyncData/Commands/RemoveLock.php';
+            if (defined('WP_CLI') && WP_CLI && !class_exists(\WeAreHausTech\WpProductSync\Commands\SyncProductData::class)) {
+                \WP_CLI::add_command('sync-products', \WeAreHausTech\SyncData\Commands\SyncProductData::class);
+                \WP_CLI::add_command('sync-products', \WeAreHausTech\SyncData\Commands\DeleteAllPosts::class);
+                \WP_CLI::add_command('sync-products', \WeAreHausTech\SyncData\Commands\RemoveLock::class);
             }
         });
     }
