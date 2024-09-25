@@ -66,7 +66,7 @@ class ProductImageCarousel extends Widget_Base
         $this->end_controls_section();
     }
     protected function render()
-    {
+    {   
         $url = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
         if (strpos($url, '&action=elementor') !== false) {
             $this->getTemplate();

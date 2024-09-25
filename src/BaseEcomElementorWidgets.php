@@ -110,6 +110,10 @@ class BaseEcomElementorWidgets
                 ->widgets_manager
                 ->register(new \WeAreHausTech\Widgets\CartPrice());
 
+            \Elementor\Plugin::instance()
+                ->widgets_manager
+                ->register(new \WeAreHausTech\Widgets\ProductPrice());
+
             if (defined('WP_CLI') && WP_CLI) {
                 require_once 'SyncData/Commands/SyncProductData.php';
                 require_once 'SyncData/Commands/DeleteAllPosts.php';
