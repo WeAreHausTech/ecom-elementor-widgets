@@ -368,9 +368,9 @@
   integrity sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==
 
 "@haus-tech/ecom-components@^1.2.20":
-  version "1.2.35"
-  resolved "https://registry.yarnpkg.com/@haus-tech/ecom-components/-/ecom-components-1.2.35.tgz#4b5981335ea23cd8529e387d6b903c3d7491c209"
-  integrity sha512-Ro0dzITQ8kP+5+GqQp68KyMFWaYrryLzZ72NWOIOGFe9MrNsgABoRR+a5h7SR0oWvvawefiYztZ0IHnjNbYuEQ==
+  version "1.2.36"
+  resolved "https://registry.yarnpkg.com/@haus-tech/ecom-components/-/ecom-components-1.2.36.tgz#9cdc28180310d117be634358317a1c871a0cee4c"
+  integrity sha512-6AlY51RrJN1j4JWc66sZYEuu+/+SZYVPNUHrNpuTBFgT0YT/XgjgIi3jn65FZqdlE/o5Eq2kO0xw/1eOuPiHGQ==
   dependencies:
     "@graphql-typed-document-node/core" "^3.2.0"
     "@radix-ui/react-popover" "^1.0.7"
@@ -1241,10 +1241,15 @@
     path-browserify "^1.0.1"
     vue-template-compiler "^2.7.14"
 
-"@vue/shared@3.5.8", "@vue/shared@^3.3.0":
+"@vue/shared@3.5.8":
   version "3.5.8"
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.5.8.tgz#6ef14933872dcc4f7b79fee3aaecf648ff807fed"
   integrity sha512-mJleSWbAGySd2RJdX1RBtcrUBX6snyOc0qHpgk3lGi4l9/P/3ny3ELqFWqYdkXIwwNN/kdm8nD9ky8o6l/Lx2A==
+
+"@vue/shared@^3.3.0":
+  version "3.5.9"
+  resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.5.9.tgz#713257216ea2cbf4e200cb9ae395c34ae2349385"
+  integrity sha512-8wiT/m0mnsLhTME0mPgc57jv+4TipRBSAAmheUdYgiOaO6AobZPNOmm87ub4np65VVDgLcWxc+Edc++5Wyz1uA==
 
 acorn-jsx@^5.3.2:
   version "5.3.2"
