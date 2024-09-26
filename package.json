@@ -1,12 +1,13 @@
 {
   "name": "ecom-elementor-widgets",
   "private": true,
-  "version": "1.2.29",
+  "version": "1.2.30",
   "type": "module",
   "scripts": {
     "build": "tsc && vite build --config vite.config-build.ts",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "version": "auto-changelog -p && git add CHANGELOG.md"
   },
   "dependencies": {
     "@haus-tech/ecom-components": "^1.2.20",
@@ -29,6 +30,7 @@
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.2.1",
+    "auto-changelog": "^2.5.0",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
