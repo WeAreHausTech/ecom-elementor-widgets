@@ -18,7 +18,7 @@
           </defs>
         </svg>
       </div>
-      <input style="width: 100%; background-color: transparent; border: none; font-size: 16px; font-weight: 500; font-family: \'Inter\';" placeholder="' . $search_placeholder . '">
+     <span style="width: 100%; font-size: 16px; font-weight: 500; color: #999999;">' . $search_placeholder . '</span>
     </div>
   </div>';
   ?>
