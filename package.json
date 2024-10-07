@@ -1,7 +1,7 @@
 {
   "name": "ecom-elementor-widgets",
   "private": true,
-  "version": "1.2.43",
+  "version": "1.2.44",
   "type": "module",
   "scripts": {
     "build": "tsc && vite build --config vite.config-build.ts",
@@ -10,7 +10,7 @@
     "version": "auto-changelog -p && git add CHANGELOG.md"
   },
   "dependencies": {
-    "@haus-tech/ecom-components": "1.2.43",
+    "@haus-tech/ecom-components": "1.2.44",
     "classnames": "^2.3.2",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
