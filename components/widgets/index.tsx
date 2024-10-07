@@ -73,6 +73,7 @@ export default {
       0,
     )
     const showFiltersAsValue = dataAttributes.getNamedItem('data-show-filters-as')?.value
+    const maxSkeletonLoaders = dataAttributes.getNamedItem('data-max-skeleton-loaders')?.value
 
     const enabledFilters = dataAttributes.getNamedItem('data-filter-values')?.value
       ? JSON.parse(dataAttributes.getNamedItem('data-filter-values')!.value)
@@ -118,6 +119,11 @@ export default {
         }
         break
     }
+
+    filtersArray.map((filter, index) => {
+      const maxLoaders = maxSkeletonLoaders ? JSON.parse(maxSkeletonLoaders) : filtersArray.length
+      filter.showSkeletonLoader = index < maxLoaders ? true : false
+    })
 
     return (
       <Suspense>

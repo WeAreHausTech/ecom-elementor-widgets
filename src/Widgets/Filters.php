@@ -90,6 +90,30 @@ class Filters extends Widget_Base
       ]
     );
 
+    $this->add_control(
+      'set_max_skeleton_loaders',
+      [
+        'label' => __('Set max skeleton loaders', 'haus-ecom-widgets'),
+        'type' => \Elementor\Controls_Manager::SWITCHER,
+        'label_on' => __('Yes', 'haus-ecom-widgets'),
+        'label_off' => __('No', 'haus-ecom-widgets'),
+        'return_value' => 'yes',
+        'default' => 'no',
+      ]
+    );
+
+    $this->add_control(
+      'max_skeleton_loaders',
+      [
+        'label' => __('Max skeleton loaders', 'haus-ecom-widgets'),
+        'type' => \Elementor\Controls_Manager::NUMBER,
+        'condition' => [
+          'set_max_skeleton_loaders' => 'yes',
+        ],
+        'default' => 3,
+      ]
+    );
+
     $this->end_controls_section();
   }
 
@@ -180,17 +204,16 @@ class Filters extends Widget_Base
       return;
     }
 
-    $widgetId = 'ecom_' . $this->get_id();
-    ?>
+    $maxSkeletonLoaders = $settings['set_max_skeleton_loaders'] === 'yes' ? $settings['max_skeleton_loaders'] : null;
 
-    <div
-      id="<?= $widgetId ?>"
-      class="ecom-components-root"
-      data-widget-type="product-list-filters"
-      data-product-list-identifier="<?= $settings['price_list_identifier'] ?>" 
-      data-show-filters-as="<?= $settings['show_filters_as'] ?>"
-      data-widget-id="<?= $widgetId ?>"
+    $widgetId = 'ecom_' . $this->get_id();
+?>
+
+    <div id="<?= $widgetId ?>" class="ecom-components-root" data-widget-type="product-list-filters"
+      data-product-list-identifier="<?= $settings['price_list_identifier'] ?>"
+      data-show-filters-as="<?= $settings['show_filters_as'] ?>" data-widget-id="<?= $widgetId ?>"
       data-price-filter-enabled="<?= $settings['price_filter_enabled'] ?>"
+      data-max-skeleton-loaders="<?= $maxSkeletonLoaders ?>"
       data-filter-values="<?= htmlspecialchars(json_encode($settings['enabled_filters']), ENT_QUOTES, 'UTF-8'); ?>">
     </div>
 <?php
