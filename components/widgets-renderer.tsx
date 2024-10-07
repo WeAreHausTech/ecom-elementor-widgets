@@ -83,11 +83,11 @@ export class WidgetsRenderer {
         const ecomWidget = ecomWidgets[camelCase(widgetType) as keyof typeof ecomWidgets]
         const customerWidget = this.widgets[camelCase(widgetType) as keyof typeof this.widgets]
         if (customerWidget) {
-          console.log('customer widget', widgetType)
+          // console.log('customer widget', widgetType)
           const widgetElement = customerWidget()
           this.renderElement(element, widgetElement)
         } else if (ecomWidget) {
-          console.log('ecom widget', widgetType)
+          // console.log('ecom widget', widgetType)
           const widgetElement = ecomWidget(dataAttributes)
           this.renderElement(element, widgetElement)
         } else {
