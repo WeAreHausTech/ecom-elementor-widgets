@@ -204,7 +204,7 @@ class Filters extends Widget_Base
       return;
     }
 
-    $maxSkeletonLoaders = $settings['set_max_skeleton_loaders'] === 'yes' ? $settings['max_skelton_loaders'] : null;
+    $maxSkeletonLoaders = $settings['set_max_skeleton_loaders'] === 'yes' ? $settings['max_skeleton_loaders'] : null;
 
     $widgetId = 'ecom_' . $this->get_id();
 ?>
