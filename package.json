@@ -10,12 +10,12 @@
     "version": "auto-changelog -p && git add CHANGELOG.md"
   },
   "dependencies": {
-    "@haus-tech/ecom-components": "1.2.45",
+    "@haus-tech/ecom-components": "^1.2.48",
     "classnames": "^2.3.2",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-i18next": "^14.1.0",
+    "react-i18next": "^15.0.2",
     "vite": "^5.0.8"
   },
   "devDependencies": {
