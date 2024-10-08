@@ -73,9 +73,14 @@ export class WidgetsRenderer {
     )
   }
 
-  private renderElements() {
-    const elements: Element[] = Array.from(document.getElementsByClassName('ecom-components-root'))
+  private renderElements(parentElement: ParentNode = document) {
+    const elements: Element[] = Array.from(
+      (parentElement as Element).getElementsByClassName('ecom-components-root'),
+    )
     elements.forEach((element: Element) => {
+      if (element.shadowRoot) {
+        return
+      }
       const dataAttributes = element.attributes
       const widgetType = dataAttributes.getNamedItem('data-widget-type')?.value
 
@@ -101,14 +106,27 @@ export class WidgetsRenderer {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const _this = this
     if (document.readyState !== 'loading') {
-      this.renderElements()
+      this.renderElements(document)
       callback?.()
     } else {
       document.addEventListener('DOMContentLoaded', function () {
-        _this.renderElements()
+        _this.renderElements(document)
         callback?.()
       })
     }
+
+    const observer = new MutationObserver(function (mutations) {
+      mutations.forEach(function (mutation) {
+        if (mutation.addedNodes.length) {
+          const elementorModal = document.querySelector('.elementor-popup-modal')
+          if (elementorModal) {
+            _this.renderElements(elementorModal)
+          }
+        }
+      })
+    })
+
+    observer.observe(document.body, { childList: true, subtree: true })
   }
 
   renderCustomerWidgets() {}
