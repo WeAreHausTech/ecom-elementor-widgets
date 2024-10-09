@@ -118,10 +118,15 @@ export class WidgetsRenderer {
     const observer = new MutationObserver(function (mutations) {
       mutations.forEach(function (mutation) {
         if (mutation.addedNodes.length) {
-          const elementorModal = document.querySelector('.elementor-popup-modal')
-          if (elementorModal) {
-            _this.renderElements(elementorModal)
-          }
+          mutation.addedNodes.forEach((node) => {
+            if (node instanceof HTMLElement) {
+              const found = node.classList.contains('elementor-popup-modal')
+              if (found) {
+                _this.renderElements(document)
+                callback?.()
+              }
+            }
+          })
         }
       })
     })
