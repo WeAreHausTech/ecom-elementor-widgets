@@ -73,9 +73,14 @@ export class WidgetsRenderer {
     )
   }
 
-  private renderElements() {
-    const elements: Element[] = Array.from(document.getElementsByClassName('ecom-components-root'))
+  private renderElements(parentElement: ParentNode = document) {
+    const elements: Element[] = Array.from(
+      (parentElement as Element).getElementsByClassName('ecom-components-root'),
+    )
     elements.forEach((element: Element) => {
+      if (element.shadowRoot) {
+        return
+      }
       const dataAttributes = element.attributes
       const widgetType = dataAttributes.getNamedItem('data-widget-type')?.value
 
@@ -98,18 +103,38 @@ export class WidgetsRenderer {
   }
 
   init(callback?: () => void) {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const _this = this
     if (document.readyState !== 'loading') {
       this.renderElements()
+      this.setupObserver()
       callback?.()
     } else {
-      document.addEventListener('DOMContentLoaded', function () {
-        _this.renderElements()
+      document.addEventListener('DOMContentLoaded', () => {
+        this.renderElements()
+        this.setupObserver()
         callback?.()
       })
     }
   }
 
-  renderCustomerWidgets() {}
+  setupObserver() {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.addedNodes.length) {
+          mutation.addedNodes.forEach((node) => {
+            if (node instanceof HTMLElement) {
+              const found = node.getElementsByClassName('ecom-components-root').length > 0
+              if (found) {
+                this.renderElements()
+              }
+            }
+          })
+        }
+      })
+    })
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    })
+  }
 }
