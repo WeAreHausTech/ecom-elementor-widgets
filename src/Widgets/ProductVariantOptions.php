@@ -85,6 +85,20 @@ class ProductVariantOptions extends Widget_Base
             ]
         );
 
+
+        $this->add_control(
+            'option-type',
+            [
+                'label' => __('Option type', 'haus-ecom-widgets'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => 'select',
+                'options' => [
+                    'select' => __('Select', 'haus-ecom-widgets'),
+                    'radio' => __('Radio', 'haus-ecom-widgets'),
+                ],
+            ]
+        );
+
         $this->end_controls_section();
     }
 
@@ -116,6 +130,7 @@ class ProductVariantOptions extends Widget_Base
             data-option-variable="<?= $settings['option_variable'] ?>"
             data-product-id="<?= $vendureId ?>"
             data-product-slug="<?= $post->post_name ?>"
+            data-option-type="<?= $settings['option-type'] ?>"
             data-select-first-variant="<?= $settings['select-first-variant'] ?>">
         </div>
 <?php
