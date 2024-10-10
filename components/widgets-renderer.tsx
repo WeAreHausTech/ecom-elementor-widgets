@@ -103,27 +103,28 @@ export class WidgetsRenderer {
   }
 
   init(callback?: () => void) {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const _this = this
     if (document.readyState !== 'loading') {
-      this.renderElements(document)
+      this.renderElements()
+      this.setupObserver()
       callback?.()
     } else {
-      document.addEventListener('DOMContentLoaded', function () {
-        _this.renderElements(document)
+      document.addEventListener('DOMContentLoaded', () => {
+        this.renderElements()
+        this.setupObserver()
         callback?.()
       })
     }
+  }
 
-    const observer = new MutationObserver(function (mutations) {
-      mutations.forEach(function (mutation) {
+  setupObserver() {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
         if (mutation.addedNodes.length) {
           mutation.addedNodes.forEach((node) => {
             if (node instanceof HTMLElement) {
-              const found = node.classList.contains('elementor-popup-modal')
+              const found = node.getElementsByClassName('ecom-components-root').length > 0
               if (found) {
-                _this.renderElements(document)
-                callback?.()
+                this.renderElements()
               }
             }
           })
@@ -131,8 +132,9 @@ export class WidgetsRenderer {
       })
     })
 
-    observer.observe(document.body, { childList: true, subtree: true })
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    })
   }
-
-  renderCustomerWidgets() {}
 }
