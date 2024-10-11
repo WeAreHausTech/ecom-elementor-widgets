@@ -49,6 +49,15 @@ class ProductPrice extends Widget_Base
                 'type' => \Elementor\Controls_Manager::TEXT,
             ]
             ); 
+
+            $this->add_control(
+                'show_skeleton_loader', 
+            [
+                'label'=> __('Show skeleton loader', 'haus_ecom_widgets'), 
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'default' => 'no'
+            ]
+            );
     }
 
 
@@ -78,6 +87,7 @@ class ProductPrice extends Widget_Base
             data-widget-type="product-price"
             data-product-id="<?= $vendureId ?>"
             data-price-type="<?= $settings['price_type'] ?>"
+            data-show-skeleton-loader="<?= $settings['show_skeleton_loader'] ?>"
             data-product-id="<?= $vendureId ?>"
         >
         </div>
