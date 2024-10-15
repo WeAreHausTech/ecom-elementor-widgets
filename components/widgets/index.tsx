@@ -213,6 +213,9 @@ export default {
       0,
     )
 
+    const optionType =
+      (dataAttributes.getNamedItem('data-option-type')?.value as 'select' | 'radio') ?? 'select'
+
     const ProductVariantOptions = React.lazy(() => import('./ProductVariantOptions'))
 
     return (
@@ -221,6 +224,10 @@ export default {
           useUrl={Boolean(useUrl)}
           optionVariable={optionVariable}
           selectFirstVariant={Boolean(selectFirstVariant)}
+          displayAs={{
+            type: optionType,
+            as: optionType === 'select' ? undefined : 'pill',
+          }}
           {...propToUse}
         />
       </Suspense>
