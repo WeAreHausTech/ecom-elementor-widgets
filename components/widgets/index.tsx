@@ -524,11 +524,16 @@ export default {
     const productSlug = dataAttributes.getNamedItem('data-product-slug')?.value
     const productId = dataAttributes.getNamedItem('data-product-id')?.value
     const propToUse = productId ? { productId } : { productSlug: productSlug! }
-    const showSkeletonLoader = dataAttributes.getNamedItem('data-show-skeleton-loader')?.value  === 'yes' ? true : false
+    const showSkeletonLoader =
+      dataAttributes.getNamedItem('data-show-skeleton-loader')?.value === 'yes' ? true : false
 
     return (
       <Suspense>
-        <PriceComponent priceType={priceType} {...propToUse} showSkeletonLoader={showSkeletonLoader}/>
+        <PriceComponent
+          priceType={priceType}
+          {...propToUse}
+          showSkeletonLoader={showSkeletonLoader}
+        />
       </Suspense>
     )
   },
