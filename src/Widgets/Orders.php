@@ -77,7 +77,7 @@ class Orders extends Widget_Base
     $this->add_control(
       'show_order_again_button',
       [
-        'label' => esc_html__('Vis "Bestil igen" knap', 'haus-ecom-widgets'),
+        'label' => esc_html__('Show order again button', 'haus-ecom-widgets'),
         'type' => \Elementor\Controls_Manager::SWITCHER,
         'label_on' => esc_html__('Vis', 'haus-ecom-widgets'),
         'label_off' => esc_html__('Skjul', 'haus-ecom-widgets'),
