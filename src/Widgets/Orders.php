@@ -73,6 +73,18 @@ class Orders extends Widget_Base
         ],
       ]
     );
+
+    $this->add_control(
+      'show_order_again_button',
+      [
+        'label' => esc_html__('Vis "Bestil igen" knap', 'haus-ecom-widgets'),
+        'type' => \Elementor\Controls_Manager::SWITCHER,
+        'label_on' => esc_html__('Vis', 'haus-ecom-widgets'),
+        'label_off' => esc_html__('Skjul', 'haus-ecom-widgets'),
+        'return_value' => 'yes',
+        'default' => 'yes',
+      ]
+      );
       
     $this->end_controls_section();
   }
@@ -102,6 +114,7 @@ class Orders extends Widget_Base
       data-widget-type="orders"
       data-orders-sort="<?= $settings['orders_sort'] ?>"
       data-orders-take="<?= $settings['orders_take'] ?>"
+      data-show-order-again-button="<?= $settings['show_order_again_button'] ?>"
       data-orders-state-filter="<?= implode(", ", $filters) ?>"
     >
     </div>
