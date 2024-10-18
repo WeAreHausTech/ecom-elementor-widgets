@@ -1,4 +1,5 @@
 <?php
+
 namespace WeAreHausTech\Widgets;
 
 use \Elementor\Widget_Base;
@@ -75,17 +76,17 @@ class Orders extends Widget_Base
     );
 
     $this->add_control(
-      'show_order_again_button',
+      'show_repeat_order_button',
       [
-        'label' => esc_html__('Show order again button', 'haus-ecom-widgets'),
+        'label' => esc_html__('Show repeat order button', 'haus-ecom-widgets'),
         'type' => \Elementor\Controls_Manager::SWITCHER,
         'label_on' => esc_html__('Vis', 'haus-ecom-widgets'),
         'label_off' => esc_html__('Skjul', 'haus-ecom-widgets'),
         'return_value' => 'yes',
         'default' => 'yes',
       ]
-      );
-      
+    );
+
     $this->end_controls_section();
   }
 
@@ -98,26 +99,25 @@ class Orders extends Widget_Base
       $this->getTemplate();
       return;
     }
-    
-     $filters = [];
-     forEach($settings['orders_state_filter'] as $filter) {
-       $filters[] = $filter;
-     }
 
-    $widgetId = 'ecom_' . $this->get_id();?>
+    $filters = [];
+    foreach ($settings['orders_state_filter'] as $filter) {
+      $filters[] = $filter;
+    }
 
-    <div 
+    $widgetId = 'ecom_' . $this->get_id(); ?>
+
+    <div
       id="<?= $widgetId ?>"
-      class="ecom-components-root" 
-      data-vendure-token="<?= VENDURE_TOKEN?>"
+      class="ecom-components-root"
+      data-vendure-token="<?= VENDURE_TOKEN ?>"
       data-vendure-api-url="<?= VENDURE_API_URL ?>"
       data-widget-type="orders"
       data-orders-sort="<?= $settings['orders_sort'] ?>"
       data-orders-take="<?= $settings['orders_take'] ?>"
-      data-show-order-again-button="<?= $settings['show_order_again_button'] ?>"
-      data-orders-state-filter="<?= implode(", ", $filters) ?>"
-    >
+      data-show-repeat-order-button="<?= $settings['show_repeat_order_button'] ?>"
+      data-orders-state-filter="<?= implode(", ", $filters) ?>">
     </div>
-    <?php
+<?php
   }
 }

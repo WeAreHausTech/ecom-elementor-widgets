@@ -415,7 +415,8 @@ export default {
     const take = dataAttributes.getNamedItem('data-orders-take')?.value
     const sort = dataAttributes.getNamedItem('data-orders-sort')?.value
     const stateFilter = dataAttributes.getNamedItem('data-orders-state-filter')?.value
-    const showOrderAgainButton = dataAttributes.getNamedItem('data-show-order-again-button')?.value  ===  'yes' ? true : false
+    const showRepeatOrderButton =
+      dataAttributes.getNamedItem('data-show-repeat-order-button')?.value === 'yes' ? true : false
     let filters: string[] = []
 
     if (stateFilter) {
@@ -439,7 +440,7 @@ export default {
 
     return (
       <Suspense>
-        <Orders showOrderAgainButton={showOrderAgainButton}/>
+        <Orders showRepeatOrderButton={showRepeatOrderButton} />
       </Suspense>
     )
   },
