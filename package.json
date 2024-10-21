@@ -10,7 +10,7 @@
     "version": "auto-changelog -p && git add CHANGELOG.md"
   },
   "dependencies": {
-    "@haus-tech/ecom-components": "^1.2.61",
+    "@haus-tech/ecom-components": "1.2.62",
     "classnames": "^2.3.2",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
