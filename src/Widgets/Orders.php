@@ -80,10 +80,10 @@ class Orders extends Widget_Base
       [
         'label' => esc_html__('Show repeat order button', 'haus-ecom-widgets'),
         'type' => \Elementor\Controls_Manager::SWITCHER,
-        'label_on' => esc_html__('Vis', 'haus-ecom-widgets'),
-        'label_off' => esc_html__('Skjul', 'haus-ecom-widgets'),
+        'label_on' => esc_html__('Visa', 'haus-ecom-widgets'),
+        'label_off' => esc_html__('Dölj', 'haus-ecom-widgets'),
         'return_value' => 'yes',
-        'default' => 'yes',
+        'default' => 'no',
       ]
     );
 
