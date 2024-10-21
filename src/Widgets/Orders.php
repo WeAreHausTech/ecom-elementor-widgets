@@ -82,7 +82,6 @@ class Orders extends Widget_Base
         'type' => \Elementor\Controls_Manager::SWITCHER,
         'label_on' => esc_html__('Visa', 'haus-ecom-widgets'),
         'label_off' => esc_html__('Dölj', 'haus-ecom-widgets'),
-        'return_value' => 'yes',
         'default' => 'no',
       ]
     );
