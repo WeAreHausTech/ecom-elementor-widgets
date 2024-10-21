@@ -182,6 +182,9 @@ export default {
     const variantImagesOnly =
       dataAttributes.getNamedItem('data-variant-images-only')?.value === 'yes' ? true : false
 
+    const showProductBadges =
+      dataAttributes.getNamedItem('data-show-badges')?.value === 'yes' ? true : false
+
     const propToUse = id ? { id } : { slug: slug! }
 
     const ProductImageCarousel = React.lazy(() => import('./ProductImageCarousel'))
@@ -189,7 +192,11 @@ export default {
     return (
       slug && (
         <Suspense>
-          <ProductImageCarousel {...propToUse} variantImagesOnly={variantImagesOnly} />
+          <ProductImageCarousel
+            {...propToUse}
+            variantImagesOnly={variantImagesOnly}
+            showProductBadges={showProductBadges}
+          />
         </Suspense>
       )
     )
@@ -534,6 +541,29 @@ export default {
           priceType={priceType}
           {...propToUse}
           showSkeletonLoader={showSkeletonLoader}
+        />
+      </Suspense>
+    )
+  },
+
+  productBadges: (dataAttributes: NamedNodeMap) => {
+    const Badges = React.lazy(() => import('./Badges'))
+    const badgesPositions = dataAttributes.getNamedItem('data-badge-positions')?.value
+    const productSlug = dataAttributes.getNamedItem('data-product-slug')?.value
+    const productId = dataAttributes.getNamedItem('data-product-id')?.value
+    const propToUse = productId ? { productId } : { productSlug: productSlug! }
+
+    let badgePositionsArray: string[] = []
+    if (badgesPositions) {
+      badgePositionsArray = badgesPositions.split(',').map((position) => position.trim())
+    }
+
+    return (
+      <Suspense>
+        <Badges
+          ui="list"
+          {...(badgePositionsArray.length > 0 && { badgesPositions: badgePositionsArray })}
+          {...propToUse}
         />
       </Suspense>
     )
