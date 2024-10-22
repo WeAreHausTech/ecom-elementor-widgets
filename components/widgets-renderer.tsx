@@ -24,13 +24,13 @@ export class WidgetsRenderer {
   updates: BuilderQueryUpdates
   options: VendureDataProviderProps['options']
   sdkInstance: VendureDataProviderProps['sdkInstance']
-  widgets: Record<string, () => JSX.Element> = {} // TODO: Make widgets accept dataAttributes
+  widgets: Record<string, (dataAttributes: NamedNodeMap) => JSX.Element> = {}
   translations: ResourceBundle[] = []
   customComponents: ComponentProviderProps['components']
 
   constructor(
     { provider, updates, options, sdkInstance }: IWidgetsRendererOptions,
-    widgets?: Record<string, () => JSX.Element>,
+    widgets?: Record<string, (dataAttributes: NamedNodeMap) => JSX.Element>,
     translations?: ResourceBundle[],
     customComponents?: ComponentProviderProps['components'],
   ) {
@@ -89,7 +89,7 @@ export class WidgetsRenderer {
         const customerWidget = this.widgets[camelCase(widgetType) as keyof typeof this.widgets]
         if (customerWidget) {
           // console.log('customer widget', widgetType)
-          const widgetElement = customerWidget()
+          const widgetElement = customerWidget(dataAttributes)
           this.renderElement(element, widgetElement)
         } else if (ecomWidget) {
           // console.log('ecom widget', widgetType)
