@@ -547,11 +547,10 @@ export default {
   },
 
   productBadges: (dataAttributes: NamedNodeMap) => {
-    const Badges = React.lazy(() => import('./Badges'))
+    const ProductBadges = React.lazy(() => import('./ProductBadges.tsx'))
     const badgesPositions = dataAttributes.getNamedItem('data-badge-positions')?.value
     const productSlug = dataAttributes.getNamedItem('data-product-slug')?.value
     const productId = dataAttributes.getNamedItem('data-product-id')?.value
-    const propToUse = productId ? { productId } : { productSlug: productSlug! }
 
     let badgePositionsArray: string[] = []
     if (badgesPositions) {
@@ -560,10 +559,10 @@ export default {
 
     return (
       <Suspense>
-        <Badges
-          ui="list"
+        <ProductBadges
           {...(badgePositionsArray.length > 0 && { badgesPositions: badgePositionsArray })}
-          {...propToUse}
+          id={productId}
+          slug={productSlug ?? ''}
         />
       </Suspense>
     )
