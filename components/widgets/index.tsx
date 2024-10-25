@@ -182,21 +182,14 @@ export default {
     const variantImagesOnly =
       dataAttributes.getNamedItem('data-variant-images-only')?.value === 'yes' ? true : false
 
-    const showProductBadges =
-      dataAttributes.getNamedItem('data-show-badges')?.value === 'yes' ? true : false
-
     const propToUse = id ? { id } : { slug: slug! }
 
     const ProductImageCarousel = React.lazy(() => import('./ProductImageCarousel'))
 
     return (
-      slug && (
+      propToUse && (
         <Suspense>
-          <ProductImageCarousel
-            {...propToUse}
-            variantImagesOnly={variantImagesOnly}
-            showProductBadges={showProductBadges}
-          />
+          <ProductImageCarousel {...propToUse} variantImagesOnly={variantImagesOnly} />
         </Suspense>
       )
     )

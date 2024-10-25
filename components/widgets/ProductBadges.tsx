@@ -20,13 +20,11 @@ const ProductBadges = ({ badgesPositions = [], id, slug }: ProductVariantDetails
 
   if (!product) return null
 
-  return (
-    <Badges
-      ui="list"
-      {...(badgesPositions?.length > 0 && { badgesPositions: badgesPositions })}
-      badges={product?.badges}
-    />
+  const filteredBadges = product?.badges?.filter((badge) =>
+    badgesPositions.includes(badge.position),
   )
+
+  return <Badges badges={filteredBadges} />
 }
 
 export default ProductBadges

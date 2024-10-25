@@ -1,4 +1,5 @@
 <?php
+
 namespace WeAreHausTech\Widgets;
 
 use \Elementor\Widget_Base;
@@ -61,19 +62,6 @@ class ProductImageCarousel extends Widget_Base
                 ],
             ]
         );
-        $this->add_control(
-            'show_badges',
-            [
-                'label' => __('Show badges', 'haus-ecom-widgets'),
-                'type' => \Elementor\Controls_Manager::SELECT,
-                'default' => 'no',
-                'options' => [
-                    'no' => __('No', 'haus-ecom-widgets'),
-                    'yes' => __('Yes', 'haus-ecom-widgets'),
-                ],
-            ]
-        );
-
 
         $this->end_controls_section();
     }
@@ -91,12 +79,11 @@ class ProductImageCarousel extends Widget_Base
         $vendureId = get_post_meta($productId, 'vendure_id', true);
         $settings = $this->get_settings_for_display();
 
-        ?>
+?>
 
         <div id="<?= $widgetId ?>" class="ecom-components-root" data-widget-type="product-image-carousel"
-            data-product-id="<?= $vendureId ?>" data-variant-images-only="<?= $settings['variant_images_only'] ?>"
-            data-show-badges="<?= $settings['show_badges'] ?>" data-product-slug="<?= $post->post_name ?>">
+            data-product-id="<?= $vendureId ?>" data-variant-images-only="<?= $settings['variant_images_only'] ?>">
         </div>
-        <?php
+<?php
     }
 }
