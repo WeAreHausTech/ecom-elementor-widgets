@@ -1,4 +1,5 @@
 <?php
+
 namespace WeAreHausTech\Widgets;
 
 use \Elementor\Widget_Base;
@@ -62,11 +63,10 @@ class ProductImageCarousel extends Widget_Base
             ]
         );
 
-
         $this->end_controls_section();
     }
     protected function render()
-    {   
+    {
         $url = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
         if (strpos($url, '&action=elementor') !== false) {
             $this->getTemplate();
@@ -79,12 +79,11 @@ class ProductImageCarousel extends Widget_Base
         $vendureId = get_post_meta($productId, 'vendure_id', true);
         $settings = $this->get_settings_for_display();
 
-        ?>
+?>
 
         <div id="<?= $widgetId ?>" class="ecom-components-root" data-widget-type="product-image-carousel"
-            data-product-id="<?= $vendureId ?>" data-variant-images-only="<?= $settings['variant_images_only'] ?>"
-            data-product-slug="<?= $post->post_name ?>">
+            data-product-id="<?= $vendureId ?>" data-variant-images-only="<?= $settings['variant_images_only'] ?>">
         </div>
-        <?php
+<?php
     }
 }

@@ -187,7 +187,7 @@ export default {
     const ProductImageCarousel = React.lazy(() => import('./ProductImageCarousel'))
 
     return (
-      slug && (
+      propToUse && (
         <Suspense>
           <ProductImageCarousel {...propToUse} variantImagesOnly={variantImagesOnly} />
         </Suspense>
@@ -534,6 +534,28 @@ export default {
           priceType={priceType}
           {...propToUse}
           showSkeletonLoader={showSkeletonLoader}
+        />
+      </Suspense>
+    )
+  },
+
+  productBadges: (dataAttributes: NamedNodeMap) => {
+    const ProductBadges = React.lazy(() => import('./ProductBadges.tsx'))
+    const badgesPositions = dataAttributes.getNamedItem('data-badge-positions')?.value
+    const productSlug = dataAttributes.getNamedItem('data-product-slug')?.value
+    const productId = dataAttributes.getNamedItem('data-product-id')?.value
+
+    let badgePositionsArray: string[] = []
+    if (badgesPositions) {
+      badgePositionsArray = badgesPositions.split(',').map((position) => position.trim())
+    }
+
+    return (
+      <Suspense>
+        <ProductBadges
+          {...(badgePositionsArray.length > 0 && { badgesPositions: badgePositionsArray })}
+          id={productId}
+          slug={productSlug ?? ''}
         />
       </Suspense>
     )

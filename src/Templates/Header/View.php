@@ -8,7 +8,7 @@
             </a>
         </div>
         <div class="mobile-search">
-            <?php include ('SearchInputField.php') ?>
+            <?php include('SearchInputField.php') ?>
             <div class="close-button">
                 <button onClick="onCloseModal()" aria-label="Close">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -51,9 +51,9 @@
         </div> -->
         <div class="menu-links">
             <div class="icons">
-                <?php include ('SearchField.php') ?>
-                <?php include ('Login.php') ?>
-                <?php include ('Cart.php') ?>
+                <?php include('SearchField.php') ?>
+                <?php include('Login.php') ?>
+                <?php include('Cart.php') ?>
             </div>
             <?php if ($data['contact_us_link'] && $data['contact_us_text']) { ?>
                 <div class="contact-button">
@@ -75,9 +75,9 @@
         </a>
     </div>
     <div class="mobile-icons">
-        <?php include ('SearchField.php') ?>
-        <?php include ('Login.php') ?>
-        <?php include ('Cart.php') ?>
+        <?php include('SearchField.php') ?>
+        <?php include('Login.php') ?>
+        <?php include('Cart.php') ?>
 
         <div class="open-button">
             <button onClick="onOpenModal()" aria-label="Open menu">
@@ -99,7 +99,7 @@
 </div>
 </div>
 
-<?php include ('CategoriesDropdown.php') ?>
+<?php include('CategoriesDropdown.php') ?>
 
 <script>
     const productMenuIds = <?= json_encode($data['products_menu_ids']) ?>;
@@ -107,7 +107,7 @@
 
 <script>
     //TODO move to separate external file
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         let header = document.querySelector('.header')
         let isMobile = header.offsetWidth <= 983
 
@@ -331,7 +331,6 @@
         document.body.addEventListener('click', (event) => {
 
             const targetId = event.target.id;
-            console.log(targetId)
 
             if (dropdown.classList.contains('active-dropdown')) {
                 if (!targetId || targetId == null || targetId === 'dropdown-content' || targetId === 'back-to-menu-button' || targetId === 'back-to-menu-placeholder' || targetId.startsWith('menu-item-') || targetId.startsWith('category-button-') || targetId.startsWith('desktop-link-') || targetId.startsWith('department-button-') || targetId.startsWith('see-more-') || targetId.startsWith('parent-') || targetId.startsWith('explore-link-')) {
@@ -342,7 +341,7 @@
             }
         })
 
-        dropdownContent.addEventListener('scroll', function () {
+        dropdownContent.addEventListener('scroll', function() {
             const header = document.querySelector('.dropdown-categories-header');
             if (dropdownContent.scrollTop > 0) {
                 header.classList.add('scrolled');
@@ -353,7 +352,7 @@
 
         const searchElement = document.getElementById('search-widget')
 
-        searchElement.addEventListener('click', function (e) {
+        searchElement.addEventListener('click', function(e) {
             closeProductModal();
         });
     })
@@ -455,6 +454,7 @@
         display: none;
         width: 100%;
     }
+
     .search-field-wrapper {
         display: none;
         width: 100%;
@@ -472,6 +472,7 @@
         .search-field-wrapper {
             display: flex;
         }
+
         .ecom-components-root.search {
             display: block;
             width: 100%;
@@ -592,7 +593,7 @@
         line-height: 140%;
         font-family: Inter;
         color: var(--header-go-back-button-color, #3E4849);
-        padding: 0; 
+        padding: 0;
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
@@ -1158,7 +1159,7 @@
         overflow: hidden;
     }
 
-    .category-image img{
+    .category-image img {
         border-radius: 0;
     }
 
@@ -1167,13 +1168,13 @@
         width: 72px;
         height: 72px;
         padding: 8px;
-        border-radius: 8px; 
-        overflow: hidden; 
+        border-radius: 8px;
+        overflow: hidden;
     }
 
 
     .category-image-desktop img {
-        border-radius: 0; 
+        border-radius: 0;
     }
 
     .department-image {
@@ -1184,7 +1185,7 @@
         border-radius: 8px;
         border: 1px solid rgba(0, 0, 0, 0.10);
         background: var(--White, #FFF);
-        overflow: hidden; 
+        overflow: hidden;
     }
 
     .department-image img {
