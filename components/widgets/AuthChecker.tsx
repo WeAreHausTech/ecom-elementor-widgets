@@ -1,6 +1,7 @@
 import { withAuthCheck } from '@haus-tech/ecom-components/hooks'
+import { FC } from 'react'
 
-const AuthChecker = withAuthCheck(
+const AuthChecker: FC = withAuthCheck(
   () => {
     return null
   },

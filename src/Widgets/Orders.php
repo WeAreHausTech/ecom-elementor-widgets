@@ -43,37 +43,39 @@ class Orders extends Widget_Base
       ]
     );
 
-    $this->add_control(
-      'orders_take',
-      [
-        'label' => esc_html__('Antal', 'haus-ecom-widgets'),
-        'type' => \Elementor\Controls_Manager::NUMBER,
-        'default' => 10,
-      ]
-    );
+    // TODO: Currently we're not passing these props to the component, enable this when we have logic for fetching states from the API
+    // $this->add_control(
+    //   'orders_take',
+    //   [
+    //     'label' => esc_html__('Antal', 'haus-ecom-widgets'),
+    //     'type' => \Elementor\Controls_Manager::NUMBER,
+    //     'default' => 10,
+    //   ]
+    // );
 
-    $this->add_control(
-      'orders_state_filter',
-      [
-        'label' => esc_html__('Status', 'haus-ecom-widgets'),
-        'type' => \Elementor\Controls_Manager::SELECT2,
-        'multiple' => true,
-        'options' => [
-          'AddingItems' => esc_html__('AddingItems', 'haus-ecom-widgets'),
-          'ArrangingPayment' => esc_html__('ArrangingPayment', 'haus-ecom-widgets'),
-          'Cancelled' => esc_html__('Cancelled', 'haus-ecom-widgets'),
-          'CancelledAfterApproval' => esc_html__('CancelledAfterApproval', 'haus-ecom-widgets'),
-          'Delivered' => esc_html__('Delivered', 'haus-ecom-widgets'),
-          'PaymentAuthorized' => esc_html__('PaymentAuthorized', 'haus-ecom-widgets'),
-          'PaymentSettled' => esc_html__('PaymentSettled', 'haus-ecom-widgets'),
-          'PaymentDeclined' => esc_html__('PaymentDeclined', 'haus-ecom-widgets'),
-          'PaymentFailed' => esc_html__('PaymentFailed', 'haus-ecom-widgets'),
-          'Pending' => esc_html__('Pending', 'haus-ecom-widgets'),
-          'Refunded' => esc_html__('Refunded', 'haus-ecom-widgets'),
-          'Shipped' => esc_html__('Shipped', 'haus-ecom-widgets'),
-        ],
-      ]
-    );
+    // TODO: We need to fetch available order states from the API
+    // $this->add_control(
+    //   'orders_state_filter',
+    //   [
+    //     'label' => esc_html__('Status', 'haus-ecom-widgets'),
+    //     'type' => \Elementor\Controls_Manager::SELECT2,
+    //     'multiple' => true,
+    //     'options' => [
+    //       'AddingItems' => esc_html__('AddingItems', 'haus-ecom-widgets'),
+    //       'ArrangingPayment' => esc_html__('ArrangingPayment', 'haus-ecom-widgets'),
+    //       'Cancelled' => esc_html__('Cancelled', 'haus-ecom-widgets'),
+    //       'CancelledAfterApproval' => esc_html__('CancelledAfterApproval', 'haus-ecom-widgets'),
+    //       'Delivered' => esc_html__('Delivered', 'haus-ecom-widgets'),
+    //       'PaymentAuthorized' => esc_html__('PaymentAuthorized', 'haus-ecom-widgets'),
+    //       'PaymentSettled' => esc_html__('PaymentSettled', 'haus-ecom-widgets'),
+    //       'PaymentDeclined' => esc_html__('PaymentDeclined', 'haus-ecom-widgets'),
+    //       'PaymentFailed' => esc_html__('PaymentFailed', 'haus-ecom-widgets'),
+    //       'Pending' => esc_html__('Pending', 'haus-ecom-widgets'),
+    //       'Refunded' => esc_html__('Refunded', 'haus-ecom-widgets'),
+    //       'Shipped' => esc_html__('Shipped', 'haus-ecom-widgets'),
+    //     ],
+    //   ]
+    // );
 
     $this->add_control(
       'show_repeat_order_button',
