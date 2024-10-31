@@ -50,6 +50,15 @@ class ProductPrice extends Widget_Base
             ]
             ); 
 
+
+            $this->add_control(
+                'ordinary_price_type', 
+            [
+                'label'=> __('Ordinary Price type', 'haus_ecom_widgets'), 
+                'type' => \Elementor\Controls_Manager::TEXT,
+            ]
+            ); 
+
             $this->add_control(
                 'show_skeleton_loader', 
             [
@@ -87,6 +96,7 @@ class ProductPrice extends Widget_Base
             data-widget-type="product-price"
             data-product-id="<?= $vendureId ?>"
             data-price-type="<?= $settings['price_type'] ?>"
+            data-ordinary-price-type="<?= $settings['ordinary_price_type'] ?>"
             data-show-skeleton-loader="<?= $settings['show_skeleton_loader'] ?>"
             data-product-id="<?= $vendureId ?>"
         >
