@@ -36,37 +36,20 @@ class ProductPrice extends Widget_Base
     protected function _register_controls()
     {
         $this->start_controls_section(
-            'section_general', 
+            'section_general',
             [
                 'label' => __('General settings', 'haus-ecom-widgets')
             ]
-            );
+        );
 
-            $this->add_control(
-                'price_type', 
+        $this->add_control(
+            'show_skeleton_loader',
             [
-                'label'=> __('Price type', 'haus_ecom_widgets'), 
-                'type' => \Elementor\Controls_Manager::TEXT,
-            ]
-            ); 
-
-
-            $this->add_control(
-                'ordinary_price_type', 
-            [
-                'label'=> __('Ordinary Price type', 'haus_ecom_widgets'), 
-                'type' => \Elementor\Controls_Manager::TEXT,
-            ]
-            ); 
-
-            $this->add_control(
-                'show_skeleton_loader', 
-            [
-                'label'=> __('Show skeleton loader', 'haus_ecom_widgets'), 
+                'label' => __('Show skeleton loader', 'haus_ecom_widgets'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'default' => 'no'
             ]
-            );
+        );
     }
 
 
@@ -79,27 +62,20 @@ class ProductPrice extends Widget_Base
             return;
         }
 
-        $settings = $this->get_settings_for_display(); 
+        $settings = $this->get_settings_for_display();
         $widgetId = 'ecom_' . $this->get_id();
-        
+
         $post = get_post();
         $productId = get_the_ID();
         $vendureId = get_post_meta($productId, 'vendure_id', true);
 
         ?>
 
-        
 
-        <div 
-            id="<?= $widgetId ?>"
-            class="ecom-components-root" 
-            data-widget-type="product-price"
-            data-product-id="<?= $vendureId ?>"
-            data-price-type="<?= $settings['price_type'] ?>"
-            data-ordinary-price-type="<?= $settings['ordinary_price_type'] ?>"
-            data-show-skeleton-loader="<?= $settings['show_skeleton_loader'] ?>"
-            data-product-id="<?= $vendureId ?>"
-        >
+
+        <div id="<?= $widgetId ?>" class="ecom-components-root" data-widget-type="product-price"
+            data-product-id="<?= $vendureId ?>" data-show-skeleton-loader="<?= $settings['show_skeleton_loader'] ?>"
+            data-product-id="<?= $vendureId ?>">
         </div>
         <?php
     }

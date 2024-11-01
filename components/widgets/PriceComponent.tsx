@@ -1,29 +1,43 @@
-import { Product, RequireAtLeastOne, SearchResult } from '@haus-tech/ecom-components'
+import { RequireAtLeastOne } from '@haus-tech/ecom-components'
 import { useProductDetail } from '@haus-tech/ecom-components/hooks'
 import { PriceComponent as EcomPriceComponent } from '@haus-tech/ecom-components/store-components'
-import { ComponentProps } from 'react'
+import { useEventBusOn, productChannel } from '@haus-tech/ecom-components/eventbus'
 
 type ProductInputVariable = RequireAtLeastOne<{
   productId: string
   productSlug: string
-  product?: Pick<Product | SearchResult, 'currencyCode' | 'price' | 'priceWithTax'>
 }>
 
-type Props = ComponentProps<typeof EcomPriceComponent> & ProductInputVariable
+type Props = ProductInputVariable & {
+  showSkeletonLoader?: boolean
+}
 
-const PriceComponent = ({
-  productId,
-  productSlug,
-  showSkeletonLoader,
-  product: incomingProduct,
-  ...rest
-}: Props) => {
+const PriceComponent = ({ productId, productSlug, showSkeletonLoader }: Props) => {
+  const [selectedProductVariant] = useEventBusOn(productChannel, 'product:variant:selected')
+
   const { data: product, isLoading } = useProductDetail(
     productId ? { id: productId } : { slug: productSlug! },
+    !selectedProductVariant,
   )
 
-  if (!showSkeletonLoader && isLoading && !product) return null
-  return <EcomPriceComponent product={product || incomingProduct} {...rest} />
+  if (!selectedProductVariant || !product) {
+    return null
+  }
+
+  if (!showSkeletonLoader && isLoading && (!selectedProductVariant || !product)) return null
+
+  return (
+    <EcomPriceComponent
+      price={selectedProductVariant?.price || product.price}
+      priceWithTax={selectedProductVariant?.priceWithTax || product.priceWithTax}
+      currencyCode={selectedProductVariant?.currencyCode || product.currencyCode}
+      ordinaryPrice={
+        selectedProductVariant?.ordinaryPrice !== undefined
+          ? selectedProductVariant.ordinaryPrice
+          : product.ordinaryPrice || 0
+      }
+    />
+  )
 }
 
 export default PriceComponent
