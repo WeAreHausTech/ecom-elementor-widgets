@@ -521,7 +521,6 @@ export default {
 
   productPrice: (dataAttributes: NamedNodeMap) => {
     const PriceComponent = React.lazy(() => import('./PriceComponent'))
-    const priceType = dataAttributes.getNamedItem('data-price-type')?.value
     const productSlug = dataAttributes.getNamedItem('data-product-slug')?.value
     const productId = dataAttributes.getNamedItem('data-product-id')?.value
     const propToUse = productId ? { productId } : { productSlug: productSlug! }
@@ -531,7 +530,6 @@ export default {
     return (
       <Suspense>
         <PriceComponent
-          priceType={priceType}
           {...propToUse}
           showSkeletonLoader={showSkeletonLoader}
         />
