@@ -188,7 +188,7 @@ class Header extends Widget_Base
                 AND (tt.parent = 0 OR tt.parent IN (SELECT term_id FROM wp_term_taxonomy WHERE parent = 0))",
                 $taxonomy
             );
-            
+
         } else {
             $query = $wpdb->prepare(
                 "SELECT DISTINCT tt.term_id, tt.parent, t.name, t.slug, 
@@ -223,6 +223,17 @@ class Header extends Widget_Base
                 $terms[$parent]['children'][] = $term;
             }
         }
+
+        // Sort children alphabetically by name within each parent
+        foreach ($terms as &$term) {
+            if (isset($term['children'])) {
+                usort($term['children'], function ($a, $b) {
+                    return strcmp($a['name'], $b['name']);
+                });
+            }
+        }
+
+        unset($term);
 
         // Use array_values to reset the array keys
         return array_values($terms);
@@ -281,7 +292,7 @@ class Header extends Widget_Base
             'product_page' => $this->lang('Show all products', 'Visa alla produkter'),
             'products' => $this->lang('Products', 'Produkter'),
             'explore' => $this->lang('Explore', 'Utforska'),
-            'language_selector' => $this-> lang('Choose language', 'Välj språk')
+            'language_selector' => $this->lang('Choose language', 'Välj språk')
         ];
 
         $loggedInmenuId = $this->get_settings_for_display('login_in_menu_id');
