@@ -53,11 +53,24 @@ export class WidgetsRenderer {
 
   private async renderElement(element: Element, children: ReactNode) {
     // const css = await this.fetchCSSContent()
-    const shadowRoot = element.attachShadow({ mode: 'open' })
+    const shadowRoot = element.attachShadow({ mode: 'open', delegatesFocus: true })
 
     const styleEl = document.createElement('style')
     styleEl.textContent = css
     shadowRoot.appendChild(styleEl)
+    
+
+    // Fix for activeElement not being correct in shadow DOM when tabbing
+    const originalActiveElement = Object.getOwnPropertyDescriptor(Document.prototype, 'activeElement')?.get;
+
+    if (originalActiveElement) {
+      Object.defineProperty(Document.prototype, 'activeElement', {
+        get() {
+          const activeElement = originalActiveElement.call(this);
+          return activeElement?.shadowRoot?.activeElement ?? activeElement;
+        },
+      });
+    }
 
     return ReactDOM.createRoot(shadowRoot).render(
       <React.StrictMode>
