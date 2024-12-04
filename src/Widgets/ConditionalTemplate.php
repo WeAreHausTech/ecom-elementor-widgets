@@ -48,7 +48,6 @@ class ConditionalTemplate extends Widget_Base
             ]
         );
 
-
         $this->add_control(
             'condition',
             [
@@ -60,7 +59,6 @@ class ConditionalTemplate extends Widget_Base
             ]
         );
 
-
         $elementor_templates = get_posts([
             'post_type' => 'elementor_library',
             'posts_per_page' => -1,
@@ -70,7 +68,6 @@ class ConditionalTemplate extends Widget_Base
         foreach ($elementor_templates as $template) {
             $template_options[$template->ID] = $template->post_title;
         }
-
 
         $this->add_control(
             'template-id',
@@ -85,9 +82,7 @@ class ConditionalTemplate extends Widget_Base
             ]
         );
 
-
         $this->end_controls_section();
-
     }
 
     protected function render()
