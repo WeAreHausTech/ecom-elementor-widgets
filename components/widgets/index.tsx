@@ -529,7 +529,7 @@ export default {
 
     return (
       <Suspense>
-        <PriceComponent
+            <PriceComponent
           {...propToUse}
           showSkeletonLoader={showSkeletonLoader}
         />
@@ -555,6 +555,21 @@ export default {
           id={productId}
           slug={productSlug ?? ''}
         />
+      </Suspense>
+    )
+  },
+  conditionalTemplate: (dataAttributes: NamedNodeMap) => {
+    const ConditionalTemplate = React.lazy(() => import('./ConditionalTemplate.tsx'))
+    const templateId = dataAttributes.getNamedItem('data-template-id')?.value
+    const condition = dataAttributes.getNamedItem('data-condition')?.value
+
+    if (!templateId || !condition) {
+      return null
+    }
+
+    return (
+      <Suspense>
+        <ConditionalTemplate templateId={templateId} condition={condition} />
       </Suspense>
     )
   },
