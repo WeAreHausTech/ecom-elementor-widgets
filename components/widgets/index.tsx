@@ -1,7 +1,7 @@
 // Ecom Widgets - do not modify
 import { EnabledFilter, OrderListOptions } from '@haus-tech/ecom-components'
 import { get, lowerCase, size } from 'lodash'
-import React, { Suspense } from 'react'
+import React, { ComponentProps, Suspense } from 'react'
 import { FiltersWrapper } from '@haus-tech/ecom-components'
 
 export default {
@@ -529,10 +529,7 @@ export default {
 
     return (
       <Suspense>
-            <PriceComponent
-          {...propToUse}
-          showSkeletonLoader={showSkeletonLoader}
-        />
+        <PriceComponent {...propToUse} showSkeletonLoader={showSkeletonLoader} />
       </Suspense>
     )
   },
@@ -561,8 +558,9 @@ export default {
   conditionalTemplate: (dataAttributes: NamedNodeMap) => {
     const ConditionalTemplate = React.lazy(() => import('./ConditionalTemplate.tsx'))
     const templateId = dataAttributes.getNamedItem('data-template-id')?.value
-    const condition = dataAttributes.getNamedItem('data-condition')?.value
-
+    const condition = dataAttributes.getNamedItem('data-condition')?.value as ComponentProps<
+      typeof ConditionalTemplate
+    >['condition']
     if (!templateId || !condition) {
       return null
     }
