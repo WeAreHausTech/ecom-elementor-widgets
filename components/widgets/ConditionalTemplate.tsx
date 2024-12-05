@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 
 type CustomTemplateProps = {
   templateId: string
-  condition: string
+  condition:'priceIsZero'
 }
 
 const ConditionalTemplate = ({ templateId, condition }: CustomTemplateProps) => {
