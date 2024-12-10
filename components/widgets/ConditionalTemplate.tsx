@@ -1,37 +1,53 @@
 import { useEventBusOn } from '@haus-tech/ecom-components/eventbus'
 import { productChannel } from '@haus-tech/ecom-components/eventbus'
 import { useEffect } from 'react'
+import { ConditionalTemplateProps } from '../widgets-renderer'
+import { ProductVariant } from '@haus-tech/ecom-components'
 
 type CustomTemplateProps = {
   templateId: string
-  condition: 'priceIsZero'
+  selectedCondition: 'priceIsZero'
+  customConditions: ConditionalTemplateProps['conditions'] | undefined
 }
 
-const ConditionalTemplate = ({ templateId, condition }: CustomTemplateProps) => {
+const conditions: ConditionalTemplateProps['conditions'] = [
+  {
+    key: 'priceIsZero',
+    condition: (selectedProductVariant: ProductVariant | null | undefined) =>
+      selectedProductVariant?.price === 0 ? true : false
+  },
+]
+
+const ConditionalTemplate = ({
+  templateId,
+  selectedCondition,
+  customConditions,
+}: CustomTemplateProps) => {
   const [selectedProductVariant] = useEventBusOn(productChannel, 'product:variant:selected')
 
-  const handleTemplateRendering = () => {
+  const handleConditions = (
+    conditions: ConditionalTemplateProps['conditions'],
+    templateId: string,
+  ) => {
     const element = document.getElementById(`ecom-elementor-template-${templateId}`)
 
     if (!element) return
 
-    switch (condition) {
-      case 'priceIsZero':
-        element.style.display = selectedProductVariant?.price === 0 ? 'block' : 'none'
-        break
+    const condition = conditions.find((c) => c.key === selectedCondition)
 
-      default:
-        element.style.display = 'none'
-        break
+    if (condition) {
+      element.style.display = condition.condition(selectedProductVariant) ? 'block' : 'none'
     }
   }
 
   useEffect(() => {
-    if (templateId && condition) {
-      handleTemplateRendering()
+    const allConditions = [...conditions, ...(customConditions || [])]
+
+    if (allConditions && allConditions.length) {
+      handleConditions(allConditions, templateId)
     }
   }),
-    [templateId, condition, selectedProductVariant]
+    [templateId, selectedCondition, selectedProductVariant, customConditions]
 
   return null
 }

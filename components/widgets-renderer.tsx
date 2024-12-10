@@ -5,6 +5,7 @@ import ecomWidgets from './widgets'
 import { camelCase, set } from 'lodash'
 import css from '@haus-tech/ecom-components/dist/ecom-style.css?raw'
 import { ComponentProviderProps, DataProvider } from '@haus-tech/ecom-components/providers'
+import { ProductVariant } from '@haus-tech/ecom-components'
 
 export interface IWidgetsRendererOptions {
   provider: 'vendure'
@@ -19,20 +20,46 @@ export interface ResourceBundle {
   resources: Record<string, unknown>
 }
 
+export type ConditionalTemplateProps = {
+  conditions: Array<{
+    key: string
+    condition: (selectedProductVariant: ProductVariant | undefined | null) => boolean
+  }>
+}
+
+export type CustomWidgetProps = {
+  widgetType: 'conditional-template'
+  props: ConditionalTemplateProps
+}
+
 export class WidgetsRenderer {
   provider: 'vendure'
   updates: BuilderQueryUpdates
   options: VendureDataProviderProps['options']
   sdkInstance: VendureDataProviderProps['sdkInstance']
-  widgets: Record<string, (dataAttributes: NamedNodeMap) => JSX.Element> = {}
+  widgets: Record<
+    string,
+    (
+      dataAttributes: NamedNodeMap,
+      widgetProps: Extract<CustomWidgetProps, { widgetType: string }>['props'] | undefined,
+    ) => JSX.Element
+  > = {}
   translations: ResourceBundle[] = []
   customComponents: ComponentProviderProps['components']
+  customWidgetProps: CustomWidgetProps[]
 
   constructor(
     { provider, updates, options, sdkInstance }: IWidgetsRendererOptions,
-    widgets?: Record<string, (dataAttributes: NamedNodeMap) => JSX.Element>,
+    widgets?: Record<
+      string,
+      (
+        dataAttributes: NamedNodeMap,
+        widgetProps: Extract<CustomWidgetProps, { widgetType: string }>['props'] | undefined,
+      ) => JSX.Element
+    >,
     translations?: ResourceBundle[],
     customComponents?: ComponentProviderProps['components'],
+    customWidgetProps?: CustomWidgetProps[],
   ) {
     set(options, 'localizationProviderProps.resourceBundles', translations)
     set(options, 'customComponents', customComponents)
@@ -44,6 +71,7 @@ export class WidgetsRenderer {
     this.widgets = widgets || {}
     this.translations = translations || []
     this.customComponents = customComponents || []
+    this.customWidgetProps = customWidgetProps || []
   }
 
   // private async fetchCSSContent() {
@@ -98,15 +126,19 @@ export class WidgetsRenderer {
       const widgetType = dataAttributes.getNamedItem('data-widget-type')?.value
 
       if (widgetType) {
+        const widgetProps = this.customWidgetProps.find(
+          (widget) => widget.widgetType === widgetType,
+        )?.props as Extract<CustomWidgetProps, { widgetType: typeof widgetType }>['props']
+
         const ecomWidget = ecomWidgets[camelCase(widgetType) as keyof typeof ecomWidgets]
         const customerWidget = this.widgets[camelCase(widgetType) as keyof typeof this.widgets]
         if (customerWidget) {
           // console.log('customer widget', widgetType)
-          const widgetElement = customerWidget(dataAttributes)
+          const widgetElement = customerWidget(dataAttributes, widgetProps)
           this.renderElement(element, widgetElement)
         } else if (ecomWidget) {
           // console.log('ecom widget', widgetType)
-          const widgetElement = ecomWidget(dataAttributes)
+          const widgetElement = ecomWidget(dataAttributes, widgetProps)
           this.renderElement(element, widgetElement)
         } else {
           console.error(`Widget ${widgetType} not found`)

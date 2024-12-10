@@ -53,9 +53,9 @@ class ConditionalTemplate extends Widget_Base
             [
                 'label' => __('Condition', 'haus-ecom-widgets'),
                 'type' => \Elementor\Controls_Manager::SELECT,
-                'options' => [
-                    'priceIsZero' => __('Selected variant price is 0', 'haus-ecom-widgets'),
-                ]
+                'options' => apply_filters('haus_ecom_widgets_conditional_template_options', [
+                    'priceIsZero' => __('Salesprice is 0 (variant)', 'haus-ecom-widgets'),
+                ]),
             ]
         );
 
