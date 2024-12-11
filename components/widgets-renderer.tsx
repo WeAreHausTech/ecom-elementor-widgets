@@ -5,8 +5,6 @@ import ecomWidgets from './widgets'
 import { camelCase, set } from 'lodash'
 import css from '@haus-tech/ecom-components/dist/ecom-style.css?raw'
 import { ComponentProviderProps, DataProvider } from '@haus-tech/ecom-components/providers'
-import { ProductVariant } from '@haus-tech/ecom-components'
-
 export interface IWidgetsRendererOptions {
   provider: 'vendure'
   updates: BuilderQueryUpdates
@@ -21,10 +19,9 @@ export interface ResourceBundle {
 }
 
 export type ConditionalTemplateProps = {
-  conditions: Array<{
-    key: string
-    condition: (selectedProductVariant: ProductVariant | undefined | null) => boolean
-  }>
+  conditions: {
+    [key: string]: (input: any) => boolean;
+  };
 }
 
 export type CustomWidgetProps = {

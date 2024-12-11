@@ -1,55 +1,52 @@
-import { useEventBusOn } from '@haus-tech/ecom-components/eventbus'
-import { productChannel } from '@haus-tech/ecom-components/eventbus'
-import { useEffect } from 'react'
-import { ConditionalTemplateProps } from '../widgets-renderer'
-import { ProductVariant } from '@haus-tech/ecom-components'
+import { useEventBusOn } from '@haus-tech/ecom-components/eventbus';
+import { productChannel } from '@haus-tech/ecom-components/eventbus';
+import { useEffect } from 'react';
+import { ConditionalTemplateProps } from '../widgets-renderer';
+import { ProductVariant } from '@haus-tech/ecom-components';
 
 type CustomTemplateProps = {
-  templateId: string
-  selectedCondition: 'priceIsZero'
-  customConditions: ConditionalTemplateProps['conditions'] | undefined
-}
+  templateId: string;
+  selectedCondition: 'priceIsZero';
+  customConditions: ConditionalTemplateProps['conditions'] | undefined;
+};
 
-const conditions: ConditionalTemplateProps['conditions'] = [
-  {
-    key: 'priceIsZero',
-    condition: (selectedProductVariant: ProductVariant | null | undefined) =>
-      selectedProductVariant?.price === 0 ? true : false
-  },
-]
+const defaultConditions: ConditionalTemplateProps['conditions'] = {
+  priceIsZero: (selectedProductVariant: ProductVariant | null | undefined) =>
+    selectedProductVariant?.price === 0,
+};
 
 const ConditionalTemplate = ({
   templateId,
   selectedCondition,
   customConditions,
 }: CustomTemplateProps) => {
-  const [selectedProductVariant] = useEventBusOn(productChannel, 'product:variant:selected')
+  const [selectedProductVariant] = useEventBusOn(productChannel, 'product:variant:selected');
 
   const handleConditions = (
     conditions: ConditionalTemplateProps['conditions'],
     templateId: string,
   ) => {
-    const element = document.getElementById(`ecom-elementor-template-${templateId}`)
+    const element = document.getElementById(`ecom-elementor-template-${templateId}`);
 
-    if (!element) return
+    if (!element) return;
 
-    const condition = conditions.find((c) => c.key === selectedCondition)
+    const condition = conditions[selectedCondition];
 
     if (condition) {
-      element.style.display = condition.condition(selectedProductVariant) ? 'block' : 'none'
+      element.style.display = condition(selectedProductVariant) ? 'block' : 'none';
     }
-  }
+  };
 
   useEffect(() => {
-    const allConditions = [...conditions, ...(customConditions || [])]
+    const allConditions = {
+      ...defaultConditions,
+      ...(customConditions || {}),
+    };
 
-    if (allConditions && allConditions.length) {
-      handleConditions(allConditions, templateId)
-    }
-  }),
-    [templateId, selectedCondition, selectedProductVariant, customConditions]
+    handleConditions(allConditions, templateId);
+  }, [templateId, selectedCondition, selectedProductVariant, customConditions]);
 
-  return null
-}
+  return null;
+};
 
-export default ConditionalTemplate
+export default ConditionalTemplate;
