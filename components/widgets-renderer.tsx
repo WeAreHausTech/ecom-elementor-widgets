@@ -20,7 +20,10 @@ export interface ResourceBundle {
 
 export type ConditionalTemplateProps = {
   conditions: {
-    [key: string]: (input: unknown) => boolean
+    [key: string]: {
+      inputType: 'productVariant' // Add more input types as needed (e.g. 'product', 'cart', etc.)
+      fn: (input: never) => boolean
+    }
   }
 }
 
@@ -36,10 +39,7 @@ export class WidgetsRenderer {
   sdkInstance: VendureDataProviderProps['sdkInstance']
   widgets: Record<
     string,
-    (
-      dataAttributes: NamedNodeMap,
-      widgetProps: Extract<CustomWidgetProps, { widgetType: string }>['props'] | undefined,
-    ) => JSX.Element
+    (dataAttributes: NamedNodeMap, widgetProps: ConditionalTemplateProps) => JSX.Element
   > = {}
   translations: ResourceBundle[] = []
   customComponents: ComponentProviderProps['components']
@@ -49,10 +49,7 @@ export class WidgetsRenderer {
     { provider, updates, options, sdkInstance }: IWidgetsRendererOptions,
     widgets?: Record<
       string,
-      (
-        dataAttributes: NamedNodeMap,
-        widgetProps: Extract<CustomWidgetProps, { widgetType: string }>['props'] | undefined,
-      ) => JSX.Element
+      (dataAttributes: NamedNodeMap, widgetProps: ConditionalTemplateProps) => JSX.Element
     >,
     translations?: ResourceBundle[],
     customComponents?: ComponentProviderProps['components'],

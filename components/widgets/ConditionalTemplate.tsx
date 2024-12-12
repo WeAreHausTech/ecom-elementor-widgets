@@ -2,7 +2,7 @@ import { useEventBusOn } from '@haus-tech/ecom-components/eventbus'
 import { productChannel } from '@haus-tech/ecom-components/eventbus'
 import { useCallback, useEffect } from 'react'
 import { ConditionalTemplateProps } from '../widgets-renderer'
-import { ProductVariant } from '@haus-tech/ecom-components'
+import { Maybe, ProductVariant } from '@haus-tech/ecom-components'
 
 type CustomTemplateProps = {
   templateId: string
@@ -11,9 +11,9 @@ type CustomTemplateProps = {
 }
 
 const defaultConditions: ConditionalTemplateProps['conditions'] = {
-  priceIsZero: (input: unknown) => {
-    const selectedProductVariant = input as ProductVariant | null | undefined
-    return selectedProductVariant?.price === 0
+  priceIsZero: {
+    inputType: 'productVariant',
+    fn: (input: Maybe<ProductVariant>) => input?.price === 0,
   },
 }
 
@@ -26,6 +26,10 @@ const ConditionalTemplate = ({
 
   const handleConditions = useCallback(
     (conditions: ConditionalTemplateProps['conditions'], templateId: string) => {
+      const inputTypes = {
+        productVariant: selectedProductVariant,
+      }
+
       const element = document.getElementById(`ecom-elementor-template-${templateId}`)
 
       if (!element) return
@@ -33,7 +37,9 @@ const ConditionalTemplate = ({
       const condition = conditions[selectedCondition]
 
       if (condition) {
-        element.style.display = condition(selectedProductVariant) ? 'block' : 'none'
+        element.style.display = condition.fn(inputTypes[condition.inputType] as never)
+          ? 'block'
+          : 'none'
       }
     },
     [selectedCondition, selectedProductVariant],
