@@ -20,8 +20,8 @@ export interface ResourceBundle {
 
 export type ConditionalTemplateProps = {
   conditions: {
-    [key: string]: (input: any) => boolean;
-  };
+    [key: string]: (input: unknown) => boolean
+  }
 }
 
 export type CustomWidgetProps = {
@@ -83,18 +83,20 @@ export class WidgetsRenderer {
     const styleEl = document.createElement('style')
     styleEl.textContent = css
     shadowRoot.appendChild(styleEl)
-    
 
     // Fix for activeElement not being correct in shadow DOM when tabbing
-    const originalActiveElement = Object.getOwnPropertyDescriptor(Document.prototype, 'activeElement')?.get;
+    const originalActiveElement = Object.getOwnPropertyDescriptor(
+      Document.prototype,
+      'activeElement',
+    )?.get
 
     if (originalActiveElement) {
       Object.defineProperty(Document.prototype, 'activeElement', {
         get() {
-          const activeElement = originalActiveElement.call(this);
-          return activeElement?.shadowRoot?.activeElement ?? activeElement;
+          const activeElement = originalActiveElement.call(this)
+          return activeElement?.shadowRoot?.activeElement ?? activeElement
         },
-      });
+      })
     }
 
     return ReactDOM.createRoot(shadowRoot).render(
