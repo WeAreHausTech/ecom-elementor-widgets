@@ -17,11 +17,6 @@ export default {
       0,
     )
     const enableSort = +get(dataAttributes.getNamedItem('data-sort-enabled'), 'value', 0)
-    const enableAddToCart = +get(
-      dataAttributes.getNamedItem('data-add-to-cart-enabled'),
-      'value',
-      0,
-    )
     const priceFilterEnabled = +get(
       dataAttributes.getNamedItem('data-price-filter-enabled'),
       'value',
@@ -58,7 +53,6 @@ export default {
           }}
           enablePagination={Boolean(enablePagination)}
           enableSorting={Boolean(enableSort)}
-          enableAddToCartBtn={Boolean(enableAddToCart)}
           enabledFilters={size(filtersArray) > 0 ? filtersArray : undefined}
           enableSkeletonLoader={import.meta.env.VITE_ENABLE_SKELETON_PRODUCT_LIST === 'true'}
         />
@@ -448,11 +442,6 @@ export default {
   relatedProducts: (dataAttributes: NamedNodeMap) => {
     const id = dataAttributes.getNamedItem('data-product')?.value
     const facet = dataAttributes.getNamedItem('data-facet')?.value
-    const enableAddToCart = +get(
-      dataAttributes.getNamedItem('data-add-to-cart-enabled'),
-      'value',
-      0,
-    )
 
     if (!id || !facet) {
       return
@@ -466,7 +455,6 @@ export default {
           productId={id}
           facetId={facet}
           maxTake={+get(dataAttributes.getNamedItem('data-take'), 'value', 12)}
-          enableAddToCartBtn={Boolean(enableAddToCart)}
         />
       </Suspense>
     )
@@ -562,9 +550,8 @@ export default {
   ) => {
     const ConditionalTemplate = React.lazy(() => import('./ConditionalTemplate.tsx'))
     const templateId = dataAttributes.getNamedItem('data-template-id')?.value
-    const selectedCondition = dataAttributes.getNamedItem('data-condition')?.value as ComponentProps<
-      typeof ConditionalTemplate
-    >['selectedCondition']
+    const selectedCondition = dataAttributes.getNamedItem('data-condition')
+      ?.value as ComponentProps<typeof ConditionalTemplate>['selectedCondition']
 
     if (!templateId || !selectedCondition) {
       return null
