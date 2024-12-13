@@ -165,7 +165,7 @@ class Header extends Widget_Base
         $this->end_controls_section();
     }
 
-    public function getTaxonomies($taxonomy, $urlSv, $urlEn)
+    public function getTaxonomies($taxonomy, $urlSv, $urlEn, $urlFi )
     {
         global $wpdb;
         $terms = $wpdb->prefix . 'terms';
@@ -210,7 +210,7 @@ class Header extends Widget_Base
             return null;
         }
 
-        $page = $this->lang($urlEn, $urlSv);
+        $page = $this->lang($urlEn, $urlSv, $urlFi);
         $terms = [];
         foreach ($termData as $term) {
             $term['slug'] = $page . $term['slug'];
@@ -258,16 +258,20 @@ class Header extends Widget_Base
      * Returns a language-specific string based on the current language setting.
      *
      * @param string $en The string to return if the current language is English.
-     * @param string $default The string to return if the current language is not English.
+     * @param string $sv The string to return if the current language is not English.
      *
      * @return string The language-specific string.
      */
-    protected function lang($en, $default)
+    protected function lang($en, $sv, $fi)
     {
+
+        if (isset($fi) && $this->currentLang === 'fi') {
+            return $fi;
+        } else
         if ($this->currentLang === 'en') {
             return $en;
         } else {
-            return $default;
+            return $sv;
         }
     }
 
@@ -278,8 +282,8 @@ class Header extends Widget_Base
 
         $data = [
             'logo' => $this->get_settings_for_display('logo'),
-            'contact_us_text' => $this->lang('Contact us', 'Kontakta oss'),
-            'contact_us_link' => $this->lang('/en/contact-us/', '/kontakta-oss/'),
+            'contact_us_text' => $this->lang('Contact us', 'Kontakta oss', 'Ota yhteyttä'),
+            'contact_us_link' => $this->lang('/en/contact-us/', '/kontakta-oss/', '/ota-meihin-yhteytta-osoitteessa/'),
             'menu_id' => $this->get_settings_for_display('menu_id'),
             'products_menu_ids' => $product_ids,
             'footer_menu_id' => $this->get_settings_for_display('footer_menu_id'),
@@ -288,31 +292,31 @@ class Header extends Widget_Base
             'search_redirect' => $this->get_settings_for_display('search_redirect'),
             'login_redirect' => $this->get_settings_for_display('login_redirect'),
             'login_show_as_modal' => $this->get_settings_for_display('login_show_as_modal'),
-            'product_page_url' => $this->lang('/en/products/', '/produkter/'),
-            'product_page' => $this->lang('Show all products', 'Visa alla produkter'),
-            'products' => $this->lang('Products', 'Produkter'),
-            'explore' => $this->lang('Explore', 'Utforska'),
-            'language_selector' => $this->lang('Choose language', 'Välj språk')
+            'product_page_url' => $this->lang('/en/products/', '/produkter/', '/tuotteet/'),
+            'product_page' => $this->lang('Show all products', 'Visa alla produkter' , 'Näytä kaikki tuotteet'),
+            'products' => $this->lang('Products', 'Produkter', 'Tuotteet'),
+            'explore' => $this->lang('Explore', 'Utforska', 'Tutkia'),
+            'language_selector' => $this->lang('Choose language', 'Välj språk', 'Valitse kieli'),
         ];
 
         $loggedInmenuId = $this->get_settings_for_display('login_in_menu_id');
         $formattedMenuItems = $this->getFormatedMenuItems($loggedInmenuId);
 
 
-        $categories = $this->getTaxonomies('produkter-kategorier', '/produkter/kategorier/', '/en/products/categories/');
+        $categories = $this->getTaxonomies('produkter-kategorier', '/produkter/kategorier/', '/en/products/categories/', '/tuotteet/kategoriat/');
 
         $taxonomies = [
             [
-                'heading' => $this->lang('Brands', 'Varumärken'),
-                'heading-link' => get_home_url() . $this->lang('/products/brands/', '/produkter/varumarken/'),
-                'data' => $this->getTaxonomies('produkter-varumarken', '/produkter/varumarken/', '/en/products/brands/'),
+                'heading' => $this->lang('Brands', 'Varumärken', 'Tuotemerkit'),
+                'heading-link' => get_home_url() . $this->lang('/products/brands/', '/produkter/varumarken/', '/tuotteet/tuotemerkit/'),
+                'data' => $this->getTaxonomies('produkter-varumarken', '/produkter/varumarken/', '/en/products/brands/', '/tuotteet/tuotemerkit/'),
                 'class' => 'brand',
                 'show-all-list' => 'true'
             ],
             [
-                'heading' => $this->lang('Departments', 'Avdelningar'),
-                'heading-link' => get_home_url() . $this->lang('/products/departments/', '/produkter/avdelningar/'),
-                'data' => $this->getTaxonomies('produkter-avdelningar', '/produkter/avdelningar/', '/en/products/departments/'),
+                'heading' => $this->lang('Departments', 'Avdelningar', 'Tilat'),
+                'heading-link' => get_home_url() . $this->lang('/products/departments/', '/produkter/avdelningar/', '/tuotteet/osastot/'),
+                'data' => $this->getTaxonomies('produkter-avdelningar', '/produkter/avdelningar/', '/en/products/departments/', '/tuotteet/osastot/'),
                 'class' => 'department',
                 'show-all-list' => 'false'
             ]
