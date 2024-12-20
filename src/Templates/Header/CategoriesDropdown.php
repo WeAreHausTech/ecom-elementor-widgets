@@ -126,9 +126,11 @@
 
                                 <?php if ($taxonomy['show-all-list'] === 'true') { ?>
                                     <?php
-                                    usort($taxonomy['data'], function ($a, $b) {
-                                        return strcmp($a['data']['name'], $b['data']['name']);
-                                    });
+                                    if (isset($taxonomy['data']) && is_array(value: $taxonomy['data'])) {
+                                        usort($taxonomy['data'], function ($a, $b) {
+                                            return strcmp($a['data']['name'], $b['data']['name']);
+                                        });
+                                    } 
                                     ?>
                                     <div class="all-departments-section">
                                         <p> <?= $this->lang('All ' . strtolower($taxonomy['heading']) . ' A-Z', 'Alla ' . strtolower($taxonomy['heading']) . ' A-Ö',  'Näytä kaikki ' . strtolower($taxonomy['heading'])) ?></p>
