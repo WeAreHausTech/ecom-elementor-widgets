@@ -307,13 +307,6 @@ class Header extends Widget_Base
 
         $taxonomies = [
             [
-                'heading' => $this->lang('Brands', 'Varumärken', 'Tuotemerkit'),
-                'heading-link' => get_home_url() . $this->lang('/products/brands/', '/produkter/varumarken/', '/tuotteet/tuotemerkit/'),
-                'data' => $this->getTaxonomies('produkter-varumarken', '/produkter/varumarken/', '/en/products/brands/', '/tuotteet/tuotemerkit/'),
-                'class' => 'brand',
-                'show-all-list' => 'true'
-            ],
-            [
                 'heading' => $this->lang('Departments', 'Avdelningar', 'Tilat'),
                 'heading-link' => get_home_url() . $this->lang('/products/departments/', '/produkter/avdelningar/', '/tuotteet/osastot/'),
                 'data' => $this->getTaxonomies('produkter-avdelningar', '/produkter/avdelningar/', '/en/products/departments/', '/tuotteet/osastot/'),
