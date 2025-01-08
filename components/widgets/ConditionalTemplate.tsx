@@ -31,7 +31,7 @@ const ConditionalTemplate = ({
 
   const { data: product } = useProductDetail(
     productId ? { id: productId } : { slug: productSlug! },
-    !selectedProductVariant,
+    true,
   )
 
   const handleConditions = useCallback(
