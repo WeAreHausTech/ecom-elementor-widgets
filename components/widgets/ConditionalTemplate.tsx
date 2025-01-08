@@ -35,9 +35,10 @@ const ConditionalTemplate = ({
     return allConditions[selectedCondition]?.inputType
   }, [selectedCondition, customConditions])
 
-  const shouldFetchProduct = inputType === 'product' && Boolean(productId)
-
-  const { data: product } = useProductDetail({ id: productId ?? '' }, shouldFetchProduct)
+  const { data: product } = useProductDetail(
+    { id: productId ?? '' },
+    inputType === 'product' && !!productId,
+  )
 
   const handleConditions = useCallback(
     (conditions: ConditionalTemplateProps['conditions'], templateId: string) => {
@@ -54,8 +55,8 @@ const ConditionalTemplate = ({
 
       if (condition) {
         element.style.display = condition.fn(inputTypes[condition.inputType] as never)
-        ? 'block'
-        : 'none'
+          ? 'block'
+          : 'none'
       }
     },
     [selectedCondition, selectedProductVariant, product],
