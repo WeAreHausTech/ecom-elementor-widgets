@@ -569,9 +569,8 @@ export default {
       typeof ConditionalTemplate
     >['selectedCondition']
     const productId = dataAttributes.getNamedItem('data-product-id')?.value
-    const productSlug = dataAttributes.getNamedItem('data-product-slug')?.value
 
-    if (!templateId || !selectedCondition || !productId) {
+    if (!templateId || !selectedCondition) {
       return null
     }
 
@@ -582,7 +581,6 @@ export default {
           selectedCondition={selectedCondition}
           customConditions={widgetProps?.conditions}
           productId={productId}
-          productSlug={productSlug ?? ''}
         />
       </Suspense>
     )

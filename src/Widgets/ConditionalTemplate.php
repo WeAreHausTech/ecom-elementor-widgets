@@ -99,10 +99,9 @@ class ConditionalTemplate extends Widget_Base
         $templateId = $settings['template-id'];
         $productId = get_the_ID();
         $vendureId = get_post_meta($productId, 'vendure_id', true);
-        $post = get_post();
 
         ?>
-        <div id="<?= $widgetId ?>" class="ecom-components-root" data-product-slug="<?= $post->post_name ?>"
+        <div id="<?= $widgetId ?>" class="ecom-components-root"
             data-product-id="<?= $vendureId ?>" data-template-id="<?= $templateId ?>" data-widget-type="conditional-template"
             data-condition="<?= $settings['condition'] ?>">
         </div>

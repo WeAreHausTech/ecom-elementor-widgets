@@ -1,6 +1,6 @@
 import { useEventBusOn } from '@haus-tech/ecom-components/eventbus'
 import { productChannel } from '@haus-tech/ecom-components/eventbus'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { ConditionalTemplateProps } from '../widgets-renderer'
 import { Maybe, ProductVariant } from '@haus-tech/ecom-components'
 import { useProductDetail } from '@haus-tech/ecom-components/hooks'
@@ -9,8 +9,7 @@ type CustomTemplateProps = {
   templateId: string
   selectedCondition: 'priceIsZero'
   customConditions: ConditionalTemplateProps['conditions'] | undefined
-  productId: string
-  productSlug?: string
+  productId?: string
 }
 
 const defaultConditions: ConditionalTemplateProps['conditions'] = {
@@ -25,14 +24,20 @@ const ConditionalTemplate = ({
   selectedCondition,
   customConditions,
   productId,
-  productSlug,
 }: CustomTemplateProps) => {
   const [selectedProductVariant] = useEventBusOn(productChannel, 'product:variant:selected')
 
-  const { data: product } = useProductDetail(
-    productId ? { id: productId } : { slug: productSlug! },
-    true,
-  )
+  const inputType = useMemo(() => {
+    const allConditions = {
+      ...defaultConditions,
+      ...(customConditions || {}),
+    }
+    return allConditions[selectedCondition]?.inputType
+  }, [selectedCondition, customConditions])
+
+  const shouldFetchProduct = inputType === 'product' && Boolean(productId)
+
+  const { data: product } = useProductDetail({ id: productId ?? '' }, shouldFetchProduct)
 
   const handleConditions = useCallback(
     (conditions: ConditionalTemplateProps['conditions'], templateId: string) => {
@@ -49,8 +54,8 @@ const ConditionalTemplate = ({
 
       if (condition) {
         element.style.display = condition.fn(inputTypes[condition.inputType] as never)
-          ? 'block'
-          : 'none'
+        ? 'block'
+        : 'none'
       }
     },
     [selectedCondition, selectedProductVariant, product],
