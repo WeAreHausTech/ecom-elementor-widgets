@@ -295,7 +295,7 @@ class Header extends Widget_Base
         $data = [
             'logo' => $this->get_settings_for_display('logo'),
             'contact_us_text' => $this->lang('Contact us', 'Kontakta oss', 'Ota yhteyttä'),
-            'contact_us_link' => $this->lang('/en/contact-us/', '/kontakta-oss/', '/ota-meihin-yhteytta-osoitteessa/'),
+            'contact_us_link' => $this->lang('/en/contact-us/', '/sv/kontakta-oss/', '/fi/ota-meihin-yhteytta-osoitteessa/'),
             'menu_id' => $this->get_settings_for_display('menu_id'),
             'products_menu_ids' => $product_ids,
             'footer_menu_id' => $this->get_settings_for_display('footer_menu_id'),
@@ -304,7 +304,7 @@ class Header extends Widget_Base
             'search_redirect' => $this->get_settings_for_display('search_redirect'),
             'login_redirect' => $this->get_settings_for_display('login_redirect'),
             'login_show_as_modal' => $this->get_settings_for_display('login_show_as_modal'),
-            'product_page_url' => $this->lang('/en/products/', '/produkter/', '/tuotteet/'),
+            'product_page_url' => $this->lang('/en/products/', '/sv/produkter/', '/fi/tuotteet/'),
             'product_page' => $this->lang('Show all products', 'Visa alla produkter' , 'Näytä kaikki tuotteet'),
             'products' => $this->lang('Products', 'Produkter', 'Tuotteet'),
             'explore' => $this->lang('Explore', 'Utforska', 'Tutkia'),
@@ -315,13 +315,13 @@ class Header extends Widget_Base
         $formattedMenuItems = $this->getFormatedMenuItems($loggedInmenuId);
 
 
-        $categories = $this->getTaxonomies('produkter-kategorier', '/produkter/kategorier/', '/en/products/categories/', '/tuotteet/kategoriat/');
+        $categories = $this->getTaxonomies('produkter-kategorier', '/sv/produkter/kategorier/', '/en/products/categories/', '/fi/tuotteet/kategoriat/');
 
         $taxonomies = [
             [
                 'heading' => $this->lang('Departments', 'Avdelningar', 'Tilat'),
                 'heading-link' => get_home_url() . $this->lang('/products/departments/', '/produkter/avdelningar/', '/tuotteet/osastot/'),
-                'data' => $this->getTaxonomies('produkter-avdelningar', '/produkter/avdelningar/', '/en/products/departments/', '/tuotteet/osastot/'),
+                'data' => $this->getTaxonomies('produkter-avdelningar', '/sv/produkter/avdelningar/', '/en/products/departments/', '/fi/tuotteet/osastot/'),
                 'class' => 'department',
                 'show-all-list' => 'false'
             ]
