@@ -1,8 +1,9 @@
 // Ecom Widgets - do not modify
 import { EnabledFilter, OrderListOptions } from '@haus-tech/ecom-components'
 import { get, lowerCase, size } from 'lodash'
-import React, { Suspense } from 'react'
+import React, { ComponentProps, Suspense } from 'react'
 import { FiltersWrapper } from '@haus-tech/ecom-components'
+import { ConditionalTemplateProps } from '../widgets-renderer'
 
 export default {
   productList: (dataAttributes: NamedNodeMap) => {
@@ -554,6 +555,32 @@ export default {
           {...(badgePositionsArray.length > 0 && { badgesPositions: badgePositionsArray })}
           id={productId}
           slug={productSlug ?? ''}
+        />
+      </Suspense>
+    )
+  },
+  conditionalTemplate: (
+    dataAttributes: NamedNodeMap,
+    widgetProps: ConditionalTemplateProps | undefined,
+  ) => {
+    const ConditionalTemplate = React.lazy(() => import('./ConditionalTemplate.tsx'))
+    const templateId = dataAttributes.getNamedItem('data-template-id')?.value
+    const selectedCondition = dataAttributes.getNamedItem('data-condition')?.value as ComponentProps<
+      typeof ConditionalTemplate
+    >['selectedCondition']
+    const productId = dataAttributes.getNamedItem('data-product-id')?.value
+
+    if (!templateId || !selectedCondition) {
+      return null
+    }
+
+    return (
+      <Suspense>
+        <ConditionalTemplate
+          templateId={templateId}
+          selectedCondition={selectedCondition}
+          customConditions={widgetProps?.conditions}
+          productId={productId}
         />
       </Suspense>
     )
