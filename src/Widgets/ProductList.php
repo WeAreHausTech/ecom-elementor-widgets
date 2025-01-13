@@ -53,18 +53,19 @@ class ProductList extends Widget_Base
             ]
         );
 
-        $this->add_control(
-            'show_add_to_cart',
-            [
-                'label' => __('Show Add to cart', 'haus-ecom-widgets'),
-                'type' => \Elementor\Controls_Manager::SELECT,
-                'default' => '0',
-                'options' => [
-                    '0' => __('No', 'haus-ecom-widgets'),
-                    '1' => __('Yes', 'haus-ecom-widgets'),
-                ],
-            ]
-        );
+        // This prop doesn't exist anymore, should use the hideAddToCart prop instead
+        // $this->add_control(
+        //     'show_add_to_cart',
+        //     [
+        //         'label' => __('Show Add to cart', 'haus-ecom-widgets'),
+        //         'type' => \Elementor\Controls_Manager::SELECT,
+        //         'default' => '0',
+        //         'options' => [
+        //             '0' => __('No', 'haus-ecom-widgets'),
+        //             '1' => __('Yes', 'haus-ecom-widgets'),
+        //         ],
+        //     ]
+        // );
 
         $this->end_controls_section();
 
@@ -372,7 +373,6 @@ class ProductList extends Widget_Base
                 data-facet="<?= implode(", ", $facets) ?>" data-collection="<?= $taxonomy ?>"
                 data-take="<?= $settings['products_per_page'] ?>" data-sort-enabled="<?= $settings['sort_enabled'] ?>"
                 data-pagination-enabled="<?= $settings['pagination_enabled'] ?>"
-                data-add-to-cart-enabled="<?= $settings['show_add_to_cart'] ?>"
                 data-price-filter-enabled="<?= $settings['price_filter_enabled'] ?>"
                 data-product-list-identifier="<?= $settings['product_list_identifier'] ?>"
                 data-filter-values="<?= htmlspecialchars(json_encode($settings['enabled_filters']), ENT_QUOTES, 'UTF-8'); ?>">

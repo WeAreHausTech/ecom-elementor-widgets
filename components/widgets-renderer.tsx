@@ -75,7 +75,7 @@ export class WidgetsRenderer {
 
   private async renderElement(element: Element, children: ReactNode) {
     // const css = await this.fetchCSSContent()
-    const shadowRoot = element.attachShadow({ mode: 'open', delegatesFocus: true })
+    const shadowRoot = element.attachShadow({ mode: 'open' })
 
     const styleEl = document.createElement('style')
     styleEl.textContent = css

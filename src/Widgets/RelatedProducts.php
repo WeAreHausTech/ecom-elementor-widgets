@@ -1,4 +1,5 @@
 <?php
+
 namespace WeAreHausTech\Widgets;
 
 use \Elementor\Widget_Base;
@@ -39,18 +40,19 @@ class RelatedProducts extends Widget_Base
 
         $this->add_facet_controls();
 
-        $this->add_control(
-            'show_add_to_cart',
-            [
-                'label' => __('Show Add to cart', 'haus-ecom-widgets'),
-                'type' => \Elementor\Controls_Manager::SELECT,
-                'default' => '0',
-                'options' => [
-                    '0' => __('No', 'haus-ecom-widgets'),
-                    '1' => __('Yes', 'haus-ecom-widgets'),
-                ],
-            ]
-        );
+        // This prop doesn't exist anymore, should use the hideAddToCart prop instead
+        // $this->add_control(
+        //     'show_add_to_cart',
+        //     [
+        //         'label' => __('Show Add to cart', 'haus-ecom-widgets'),
+        //         'type' => \Elementor\Controls_Manager::SELECT,
+        //         'default' => '0',
+        //         'options' => [
+        //             '0' => __('No', 'haus-ecom-widgets'),
+        //             '1' => __('Yes', 'haus-ecom-widgets'),
+        //         ],
+        //     ]
+        // );
 
         $this->add_control(
             'max_products',
@@ -62,11 +64,11 @@ class RelatedProducts extends Widget_Base
         );
 
         $this->end_controls_section();
-
     }
 
 
-    public function get_facets(){
+    public function get_facets()
+    {
         $facets = get_transient('ecom-haus-queries-facet');
 
         if (!$facets) {
@@ -104,7 +106,7 @@ class RelatedProducts extends Widget_Base
     protected function render()
     {
         $url = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-        
+
         if (strpos($url, '&action=elementor') !== false) {
             $this->getTemplate();
             return;
@@ -115,20 +117,18 @@ class RelatedProducts extends Widget_Base
         $vendureId = get_post_meta($productId, 'vendure_id', true);
 
         $widget_id = 'ecom_' . $this->get_id();
-        ?>
-        <div 
+?>
+        <div
             id="<?= $widget_id ?>"
-            data-vendure-api-url="<?= VENDURE_API_URL ?>" 
+            data-vendure-api-url="<?= VENDURE_API_URL ?>"
             data-vendure-token="<?= VENDURE_TOKEN ?>"
             class="ecom-components-root"
             data-widget-type="related-products"
             data-product="<?= $vendureId ?>"
             data-take="<?= $settings['max_products'] ?>"
-            data-add-to-cart-enabled="<?= $settings['show_add_to_cart'] ?>"
-            data-facet="<?= $facet ?>"
-            >
+            data-facet="<?= $facet ?>">
         </div>
-        <?php
-      
+<?php
+
     }
 }
