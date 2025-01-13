@@ -552,6 +552,7 @@ export default {
     const templateId = dataAttributes.getNamedItem('data-template-id')?.value
     const selectedCondition = dataAttributes.getNamedItem('data-condition')
       ?.value as ComponentProps<typeof ConditionalTemplate>['selectedCondition']
+    const productId = dataAttributes.getNamedItem('data-product-id')?.value
 
     if (!templateId || !selectedCondition) {
       return null
@@ -563,6 +564,7 @@ export default {
           templateId={templateId}
           selectedCondition={selectedCondition}
           customConditions={widgetProps?.conditions}
+          productId={productId}
         />
       </Suspense>
     )

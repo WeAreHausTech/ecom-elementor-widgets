@@ -165,7 +165,7 @@ class Header extends Widget_Base
         $this->end_controls_section();
     }
 
-    public function getTaxonomies($taxonomy, $urlSv, $urlEn)
+    public function getTaxonomies($taxonomy, $urlSv, $urlEn, $urlFi)
     {
         global $wpdb;
         $terms = $wpdb->prefix . 'terms';
@@ -174,7 +174,8 @@ class Header extends Widget_Base
         if ($this->wpmlHelper->hasWpml()) {
             $query = $wpdb->prepare(
                 "SELECT DISTINCT tt.term_id, tt.parent, t.name, t.slug, tr.language_code as lang, 
-                IFNULL(tm_bild.meta_value, '') AS bild
+                IFNULL(tm_bild.meta_value, '') AS bild, 
+                IFNULL(tm_position.meta_value, '') AS position
                 FROM wp_term_taxonomy tt
                 LEFT JOIN $terms t ON tt.term_id = t.term_id
                 LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
@@ -182,6 +183,7 @@ class Header extends Widget_Base
                     ON tt.term_taxonomy_id = tr.element_id
                     AND tr.element_type = 'tax_{$taxonomy}'
                 LEFT JOIN $termmeta tm_bild ON tt.term_id = tm_bild.term_id AND tm_bild.meta_key = 'bild'
+                LEFT JOIN $termmeta tm_position ON tt.term_id = tm_position.term_id AND tm_position.meta_key = 'vendure_term_position'
                 WHERE tr.language_code =  '$this->currentLang'
                 AND tm.meta_value IS NOT NULL
                 AND taxonomy = %s
@@ -192,11 +194,13 @@ class Header extends Widget_Base
         } else {
             $query = $wpdb->prepare(
                 "SELECT DISTINCT tt.term_id, tt.parent, t.name, t.slug, 
-                IFNULL(tm_bild.meta_value, '') AS bild
+                IFNULL(tm_bild.meta_value, '') AS bild, 
+                IFNULL(tm_position.meta_value, '') AS position
                 FROM wp_term_taxonomy tt
                 LEFT JOIN $terms t ON tt.term_id = t.term_id
                 LEFT JOIN $termmeta tm ON tt.term_id = tm.term_id
                 LEFT JOIN $termmeta tm_bild ON tt.term_id = tm_bild.term_id AND tm_bild.meta_key = 'bild'
+                LEFT JOIN $termmeta tm_position ON tt.term_id = tm_position.term_id AND tm_position.meta_key = 'vendure_term_position'
                 WHERE tm.meta_value IS NOT NULL
                 AND taxonomy= %s
                 (tt.parent = 0 OR tt.parent IN (SELECT term_id FROM wp_term_taxonomy WHERE parent = 0))",
@@ -210,7 +214,7 @@ class Header extends Widget_Base
             return null;
         }
 
-        $page = $this->lang($urlEn, $urlSv);
+        $page = $this->lang($urlEn, $urlSv, $urlFi);
         $terms = [];
         foreach ($termData as $term) {
             $term['slug'] = $page . $term['slug'];
@@ -223,6 +227,14 @@ class Header extends Widget_Base
                 $terms[$parent]['children'][] = $term;
             }
         }
+
+        // sort parents by position
+        usort($terms, callback: function ($a, $b) {
+            $posA = isset($a['data']['position']) && is_numeric($a['data']['position']) ? (int) $a['data']['position'] : 0;
+            $posB = isset($b['data']['position']) && is_numeric($b['data']['position']) ? (int) $b['data']['position'] : 0;
+
+            return $posA <=> $posB;
+        });
 
         // Sort children alphabetically by name within each parent
         foreach ($terms as &$term) {
@@ -258,17 +270,21 @@ class Header extends Widget_Base
      * Returns a language-specific string based on the current language setting.
      *
      * @param string $en The string to return if the current language is English.
-     * @param string $default The string to return if the current language is not English.
+     * @param string $sv The string to return if the current language is not English.
      *
      * @return string The language-specific string.
      */
-    protected function lang($en, $default)
+    protected function lang($en, $sv, $fi)
     {
-        if ($this->currentLang === 'en') {
-            return $en;
-        } else {
-            return $default;
-        }
+
+        if (isset($fi) && $this->currentLang === 'fi') {
+            return $fi;
+        } else
+            if ($this->currentLang === 'en') {
+                return $en;
+            } else {
+                return $sv;
+            }
     }
 
     protected function render()
@@ -278,8 +294,8 @@ class Header extends Widget_Base
 
         $data = [
             'logo' => $this->get_settings_for_display('logo'),
-            'contact_us_text' => $this->lang('Contact us', 'Kontakta oss'),
-            'contact_us_link' => $this->lang('/en/contact-us/', '/kontakta-oss/'),
+            'contact_us_text' => $this->lang('Contact us', 'Kontakta oss', 'Ota yhteyttä'),
+            'contact_us_link' => $this->lang('/en/contact-us/', '/kontakta-oss/', '/ota-meihin-yhteytta-osoitteessa/'),
             'menu_id' => $this->get_settings_for_display('menu_id'),
             'products_menu_ids' => $product_ids,
             'footer_menu_id' => $this->get_settings_for_display('footer_menu_id'),
@@ -288,31 +304,24 @@ class Header extends Widget_Base
             'search_redirect' => $this->get_settings_for_display('search_redirect'),
             'login_redirect' => $this->get_settings_for_display('login_redirect'),
             'login_show_as_modal' => $this->get_settings_for_display('login_show_as_modal'),
-            'product_page_url' => $this->lang('/en/products/', '/produkter/'),
-            'product_page' => $this->lang('Show all products', 'Visa alla produkter'),
-            'products' => $this->lang('Products', 'Produkter'),
-            'explore' => $this->lang('Explore', 'Utforska'),
-            'language_selector' => $this->lang('Choose language', 'Välj språk')
+            'product_page_url' => $this->lang('/en/products/', '/produkter/', '/tuotteet/'),
+            'product_page' => $this->lang('Show all products', 'Visa alla produkter', 'Näytä kaikki tuotteet'),
+            'products' => $this->lang('Products', 'Produkter', 'Tuotteet'),
+            'explore' => $this->lang('Explore', 'Utforska', 'Tutkia'),
+            'language_selector' => $this->lang('Choose language', 'Välj språk', 'Valitse kieli'),
         ];
 
         $loggedInmenuId = $this->get_settings_for_display('login_in_menu_id');
         $formattedMenuItems = $this->getFormatedMenuItems($loggedInmenuId);
 
 
-        $categories = $this->getTaxonomies('produkter-kategorier', '/produkter/kategorier/', '/en/products/categories/');
+        $categories = $this->getTaxonomies('produkter-kategorier', '/produkter/kategorier/', '/en/products/categories/', '/tuotteet/kategoriat/');
 
         $taxonomies = [
             [
-                'heading' => $this->lang('Brands', 'Varumärken'),
-                'heading-link' => get_home_url() . $this->lang('/products/brands/', '/produkter/varumarken/'),
-                'data' => $this->getTaxonomies('produkter-varumarken', '/produkter/varumarken/', '/en/products/brands/'),
-                'class' => 'brand',
-                'show-all-list' => 'true'
-            ],
-            [
-                'heading' => $this->lang('Departments', 'Avdelningar'),
-                'heading-link' => get_home_url() . $this->lang('/products/departments/', '/produkter/avdelningar/'),
-                'data' => $this->getTaxonomies('produkter-avdelningar', '/produkter/avdelningar/', '/en/products/departments/'),
+                'heading' => $this->lang('Departments', 'Avdelningar', 'Tilat'),
+                'heading-link' => get_home_url() . $this->lang('/products/departments/', '/produkter/avdelningar/', '/tuotteet/osastot/'),
+                'data' => $this->getTaxonomies('produkter-avdelningar', '/produkter/avdelningar/', '/en/products/departments/', '/tuotteet/osastot/'),
                 'class' => 'department',
                 'show-all-list' => 'false'
             ]

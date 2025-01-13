@@ -73,7 +73,7 @@
                                             </li>
                                             <?php if ($index === 5 && count($mainCategory['children']) > 6) { ?>
                                                 <button class="see-more-button" id="see-more-<?= $mainCategory['data']['term_id'] ?>" onClick="showMore(this)">
-                                                <?= $this->lang('Show all (' . (count($mainCategory['children']) - 5) . ')', 'Visa alla (' . (count($mainCategory['children']) - 5) . ')') ?>
+                                                <?= $this->lang('Show all (' . (count($mainCategory['children']) - 5) . ')', 'Visa alla (' . (count($mainCategory['children']) - 5) . ')','Näytä kaikki (' . (count($mainCategory['children']) - 5) . ')') ?>
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
                                                         <path
                                                             d="M8.47936 11.3048C8.35434 11.4298 8.18481 11.5 8.00803 11.5C7.83125 11.5 7.66171 11.4298 7.5367 11.3048L3.5367 7.30481C3.41526 7.17907 3.34806 7.01067 3.34958 6.83587C3.3511 6.66108 3.42121 6.49387 3.54482 6.37026C3.66842 6.24666 3.83563 6.17654 4.01043 6.17503C4.18523 6.17351 4.35363 6.2407 4.47936 6.36214L8.00803 9.89081L11.5367 6.36214C11.6624 6.2407 11.8308 6.17351 12.0056 6.17503C12.1804 6.17655 12.3476 6.24666 12.4712 6.37026C12.5948 6.49387 12.665 6.66108 12.6665 6.83588C12.668 7.01067 12.6008 7.17907 12.4794 7.30481L8.47936 11.3048Z"
@@ -118,7 +118,7 @@
                                     </li>
                                     <?php if ($index === 8) { ?>
                                         <a class="see-more-button departments" id="see-more-<?= $taxonomy['class'] ?>" href="<?= $taxonomy['heading-link'] ?>">
-                                            <?= $this->lang('Show all (' . count($taxonomy['data']) .')', 'Visa alla (' . count($taxonomy['data']) . ')') ?>
+                                            <?= $this->lang('Show all (' . count($taxonomy['data']) .')', 'Visa alla (' . count($taxonomy['data']) . ')', 'Näytä kaikki (' . count($taxonomy['data']) . ')') ?>
                                         </a>
                                     <?php } ?>
                                     
@@ -126,12 +126,14 @@
 
                                 <?php if ($taxonomy['show-all-list'] === 'true') { ?>
                                     <?php
-                                    usort($taxonomy['data'], function ($a, $b) {
-                                        return strcmp($a['data']['name'], $b['data']['name']);
-                                    });
+                                     if (isset($taxonomy['data']) && is_array(value: $taxonomy['data'])) {
+                                        usort($taxonomy['data'], function ($a, $b) {
+                                            return strcmp($a['data']['name'], $b['data']['name']);
+                                        });
+                                    } 
                                     ?>
                                     <div class="all-departments-section">
-                                        <p> <?= $this->lang('All ' . strtolower($taxonomy['heading']) . ' A-Z', 'Alla ' . strtolower($taxonomy['heading']) . ' A-Ö') ?></p>
+                                        <p> <?= $this->lang('All ' . strtolower($taxonomy['heading']) . ' A-Z', 'Alla ' . strtolower($taxonomy['heading']) . ' A-Ö',  'Näytä kaikki ' . strtolower($taxonomy['heading'])) ?></p>
                                         <?php foreach ($taxonomy['data'] as $index => $value) { ?>
                                             <a href="<?= $value['data']['slug'] ?>/">
                                                 <?= $value['data']['name'] ?>
