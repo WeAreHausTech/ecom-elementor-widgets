@@ -37,10 +37,6 @@ class ConditionalTemplate extends Widget_Base
     protected function _register_controls()
     {
 
-        if (!\Elementor\Plugin::$instance->editor->is_edit_mode()) {
-            return;
-        }
-
         $this->start_controls_section(
             'section_general',
             [
