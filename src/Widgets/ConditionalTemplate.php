@@ -34,7 +34,7 @@ class ConditionalTemplate extends Widget_Base
     }
 
 
-    protected function _register_controls()
+    protected function register_controls()
     {
 
         $this->start_controls_section(
@@ -52,6 +52,7 @@ class ConditionalTemplate extends Widget_Base
                 'options' => apply_filters('haus_ecom_widgets_conditional_template_options', [
                     'priceIsZero' => __('Salesprice is 0 (variant)', 'haus-ecom-widgets'),
                 ]),
+                'default' => 'priceIsZero',
             ]
         );
 
@@ -83,7 +84,9 @@ class ConditionalTemplate extends Widget_Base
                     'Choose your template carefully. Using a large or overly complex template may negatively impact your site’s performance. Note that the template will still be rendered in the background, even if the condition for displaying it is not met.',
                     'haus-ecom-widgets'
                 ),
+                'default' => '',
                 'options' => $options,
+                'label_block' => true,
             ]
         );
 
@@ -92,6 +95,7 @@ class ConditionalTemplate extends Widget_Base
 
     protected function render()
     {
+        $settings = $this->get_settings_for_display();
         $url = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
         if (strpos($url, '&action=elementor') !== false) {
@@ -99,7 +103,6 @@ class ConditionalTemplate extends Widget_Base
             return;
         }
 
-        $settings = $this->get_settings_for_display();
         $widgetId = 'ecom_' . $this->get_id();
         $templateId = $settings['template-id'];
         $productId = get_the_ID();
