@@ -55,26 +55,35 @@ class ConditionalTemplate extends Widget_Base
             ]
         );
 
-        $elementor_templates = get_posts([
-            'post_type' => 'elementor_library',
-            'posts_per_page' => -1,
-        ]);
+        $templates = get_transient('ecom-haus-queries-templates');
 
-        $template_options = [];
-        foreach ($elementor_templates as $template) {
-            $template_options[$template->ID] = $template->post_title;
+        if (!$templates) {
+            $elementor_templates = get_posts([
+                'post_type' => 'elementor_library',
+                'posts_per_page' => -1,
+            ]);
+
+            $templates = [];
+            foreach ($elementor_templates as $template) {
+                $templates[$template->ID] = $template->post_title;
+            }
+
+            set_transient('ecom-haus-queries-templates', $templates, 60 * 5);
         }
+
+        $options = !empty($templates) ? $templates : ['' => __('No templates available', 'haus-ecom-widgets')];
+
 
         $this->add_control(
             'template-id',
             [
                 'label' => __('Select Elementor Template', 'haus-ecom-widgets'),
-                'type' => \Elementor\Controls_Manager::SELECT,
+                'type' => \Elementor\Controls_Manager::SELECT2,
                 'description' => __(
                     'Choose your template carefully. Using a large or overly complex template may negatively impact your site’s performance. Note that the template will still be rendered in the background, even if the condition for displaying it is not met.',
                     'haus-ecom-widgets'
                 ),
-                'options' => $template_options,
+                'options' => $options,
             ]
         );
 
@@ -97,8 +106,8 @@ class ConditionalTemplate extends Widget_Base
         $vendureId = get_post_meta($productId, 'vendure_id', true);
 
         ?>
-        <div id="<?= $widgetId ?>" class="ecom-components-root"
-            data-product-id="<?= $vendureId ?>" data-template-id="<?= $templateId ?>" data-widget-type="conditional-template"
+        <div id="<?= $widgetId ?>" class="ecom-components-root" data-product-id="<?= $vendureId ?>"
+            data-template-id="<?= $templateId ?>" data-widget-type="conditional-template"
             data-condition="<?= $settings['condition'] ?>">
         </div>
         <div id="ecom-elementor-template-<?= $templateId ?>" style="display:none">
