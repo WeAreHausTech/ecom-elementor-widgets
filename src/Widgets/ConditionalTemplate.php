@@ -1,4 +1,5 @@
 <?php
+
 namespace WeAreHausTech\Widgets;
 
 use \Elementor\Widget_Base;
@@ -51,6 +52,7 @@ class ConditionalTemplate extends Widget_Base
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'options' => apply_filters('haus_ecom_widgets_conditional_template_options', [
                     'priceIsZero' => __('Salesprice is 0 (variant)', 'haus-ecom-widgets'),
+                    'cartIsEmpty' => __('Cart is empty', 'haus-ecom-widgets'),
                 ]),
                 'default' => 'priceIsZero',
             ]
@@ -78,7 +80,22 @@ class ConditionalTemplate extends Widget_Base
         $this->add_control(
             'template-id',
             [
-                'label' => __('Select Elementor Template', 'haus-ecom-widgets'),
+                'label' => __('Select Elementor Template if condition is true', 'haus-ecom-widgets'),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'description' => __(
+                    'Choose your template carefully. Using a large or overly complex template may negatively impact your site’s performance. Note that the template will still be rendered in the background, even if the condition for displaying it is not met.',
+                    'haus-ecom-widgets'
+                ),
+                'default' => '',
+                'options' => $options,
+                'label_block' => true,
+            ]
+        );
+
+        $this->add_control(
+            'template-id-false',
+            [
+                'label' => __('Select Elementor Template if condition is false', 'haus-ecom-widgets'),
                 'type' => \Elementor\Controls_Manager::SELECT2,
                 'description' => __(
                     'Choose your template carefully. Using a large or overly complex template may negatively impact your site’s performance. Note that the template will still be rendered in the background, even if the condition for displaying it is not met.',
@@ -105,17 +122,28 @@ class ConditionalTemplate extends Widget_Base
 
         $widgetId = 'ecom_' . $this->get_id();
         $templateId = $settings['template-id'];
+        $templateIdFalse = $settings['template-id-false'];
         $productId = get_the_ID();
         $vendureId = get_post_meta($productId, 'vendure_id', true);
 
-        ?>
+?>
         <div id="<?= $widgetId ?>" class="ecom-components-root" data-product-id="<?= $vendureId ?>"
-            data-template-id="<?= $templateId ?>" data-widget-type="conditional-template"
+            data-template-id="<?= $templateId ?>" data-template-id-false="<?= $templateIdFalse ?>" data-widget-type="conditional-template"
             data-condition="<?= $settings['condition'] ?>">
         </div>
-        <div id="ecom-elementor-template-<?= $templateId ?>" style="display:none">
-            <?php echo do_shortcode('[elementor-template id="' . $templateId . '"]'); ?>
-        </div>
         <?php
+        if ($templateId) { ?>
+            <div id="ecom-elementor-template-<?= $templateId ?>" style="display:none">
+                <?php echo do_shortcode('[elementor-template id="' . $templateId . '"]'); ?>
+            </div>
+        <?php }
+        ?>
+
+        <?php if ($templateIdFalse) { ?>
+            <div id="ecom-elementor-template-<?= $templateIdFalse ?>" style="display:none">
+                <?php echo do_shortcode('[elementor-template id="' . $templateIdFalse . '"]'); ?>
+            </div>
+        <?php } ?>
+<?php
     }
 }

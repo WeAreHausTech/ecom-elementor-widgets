@@ -550,11 +550,12 @@ export default {
   ) => {
     const ConditionalTemplate = React.lazy(() => import('./ConditionalTemplate.tsx'))
     const templateId = dataAttributes.getNamedItem('data-template-id')?.value
+    const templateIdFalse = dataAttributes.getNamedItem('data-template-id-false')?.value
     const selectedCondition = dataAttributes.getNamedItem('data-condition')
       ?.value as ComponentProps<typeof ConditionalTemplate>['selectedCondition']
     const productId = dataAttributes.getNamedItem('data-product-id')?.value
 
-    if (!templateId || !selectedCondition) {
+    if ((!templateId && !templateIdFalse) || !selectedCondition) {
       return null
     }
 
@@ -562,6 +563,7 @@ export default {
       <Suspense>
         <ConditionalTemplate
           templateId={templateId}
+          templateIdFalse={templateIdFalse}
           selectedCondition={selectedCondition}
           customConditions={widgetProps?.conditions}
           productId={productId}

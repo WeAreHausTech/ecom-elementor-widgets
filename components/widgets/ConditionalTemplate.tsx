@@ -1,12 +1,13 @@
 import { useEventBusOn } from '@haus-tech/ecom-components/eventbus'
 import { productChannel } from '@haus-tech/ecom-components/eventbus'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useLayoutEffect, useMemo } from 'react'
 import { ConditionalTemplateProps } from '../widgets-renderer'
-import { Maybe, ProductVariant } from '@haus-tech/ecom-components'
-import { useProductDetail } from '@haus-tech/ecom-components/hooks'
+import { Maybe, Order, ProductVariant } from '@haus-tech/ecom-components'
+import { useActiveOrder, useProductDetail } from '@haus-tech/ecom-components/hooks'
 
 type CustomTemplateProps = {
-  templateId: string
+  templateId?: string
+  templateIdFalse?: string
   selectedCondition: 'priceIsZero'
   customConditions: ConditionalTemplateProps['conditions'] | undefined
   productId?: string
@@ -17,10 +18,15 @@ const defaultConditions: ConditionalTemplateProps['conditions'] = {
     inputType: 'productVariant',
     fn: (input: Maybe<ProductVariant>) => input?.price !== undefined && Number(input.price) === 0,
   },
+  cartIsEmpty: {
+    inputType: 'activeOrder',
+    fn: (input: Maybe<Order>) => !input?.lines?.length,
+  },
 }
 
 const ConditionalTemplate = ({
   templateId,
+  templateIdFalse,
   selectedCondition,
   customConditions,
   productId,
@@ -40,36 +46,54 @@ const ConditionalTemplate = ({
     inputType === 'product' && !!productId,
   )
 
+  const { data: activeOrder } = useActiveOrder({
+    enabled: inputType === 'activeOrder',
+  })
+
   const handleConditions = useCallback(
-    (conditions: ConditionalTemplateProps['conditions'], templateId: string) => {
+    (conditions: ConditionalTemplateProps['conditions']) => {
       const inputTypes = {
         productVariant: selectedProductVariant,
-        product: product,
+        product,
+        activeOrder,
       }
 
       const element = document.getElementById(`ecom-elementor-template-${templateId}`)
-
-      if (!element) return
-
+      const elementFalse = document.getElementById(`ecom-elementor-template-${templateIdFalse}`)
       const condition = conditions[selectedCondition]
 
-      if (condition) {
-        element.style.display = condition.fn(inputTypes[condition.inputType] as never)
-          ? 'block'
-          : 'none'
+      if (!element && !elementFalse) return
+      if (!condition) return
+
+      const conditionValue = condition.fn(inputTypes[condition.inputType] as never)
+
+      if (conditionValue) {
+        if (element) {
+          element.style.display = 'block'
+        }
+        if (elementFalse) {
+          elementFalse.style.display = 'none'
+        }
+      } else {
+        if (element) {
+          element.style.display = 'none'
+        }
+        if (elementFalse) {
+          elementFalse.style.display = 'block'
+        }
       }
     },
-    [selectedCondition, selectedProductVariant, product],
+    [selectedProductVariant, product, activeOrder, templateId, templateIdFalse, selectedCondition],
   )
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const allConditions = {
       ...defaultConditions,
       ...(customConditions || {}),
     }
 
-    handleConditions(allConditions, templateId)
-  }, [templateId, customConditions, handleConditions])
+    handleConditions(allConditions)
+  }, [customConditions, handleConditions])
 
   return null
 }
