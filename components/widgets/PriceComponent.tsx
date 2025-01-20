@@ -1,7 +1,7 @@
 import { RequireAtLeastOne } from '@haus-tech/ecom-components'
 import { useProductDetail } from '@haus-tech/ecom-components/hooks'
 import { PriceComponent as EcomPriceComponent } from '@haus-tech/ecom-components/store-components'
-import { useEventBusOn, productChannel } from '@haus-tech/ecom-components/eventbus'
+import { productChannel, useEventBusOn } from '@haus-tech/ecom-components/eventbus'
 
 type ProductInputVariable = RequireAtLeastOne<{
   productId: string
