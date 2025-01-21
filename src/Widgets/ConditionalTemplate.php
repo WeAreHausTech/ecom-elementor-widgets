@@ -83,7 +83,7 @@ class ConditionalTemplate extends Widget_Base
                 'label' => __('Select Elementor Template if condition is true', 'haus-ecom-widgets'),
                 'type' => \Elementor\Controls_Manager::SELECT2,
                 'description' => __(
-                    'Choose your template carefully. Using a large or overly complex template may negatively impact your site’s performance. Note that the template will still be rendered in the background, even if the condition for displaying it is not met.',
+                    'Choose your template carefully. Using a large or overly complex template may negatively impact your site’s performance.',
                     'haus-ecom-widgets'
                 ),
                 'default' => '',
@@ -97,10 +97,6 @@ class ConditionalTemplate extends Widget_Base
             [
                 'label' => __('Select Elementor Template if condition is false', 'haus-ecom-widgets'),
                 'type' => \Elementor\Controls_Manager::SELECT2,
-                'description' => __(
-                    'Choose your template carefully. Using a large or overly complex template may negatively impact your site’s performance. Note that the template will still be rendered in the background, even if the condition for displaying it is not met.',
-                    'haus-ecom-widgets'
-                ),
                 'default' => '',
                 'options' => $options,
                 'label_block' => true,
