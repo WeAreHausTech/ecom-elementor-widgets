@@ -47,7 +47,54 @@ class ProductBadges extends Widget_Base
             [
                 'label' => __('Badge positions', 'haus_ecom_widgets'),
                 'type' => \Elementor\Controls_Manager::TEXT,
-                'description' => 'Seperate by coma'
+                'description' => 'Seperate by coma (if empty, all positions will be displayed)',
+            ]
+        );
+
+        $this->add_responsive_control(
+            'badge_height',
+            [
+                'label' => __('Badge Height (px)', 'haus-ecom-widgets'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => ['px'],
+                'range' => [
+                    'px' => [
+                        'min' => 30,
+                        'max' => 400,
+                        'step' => 1,
+                    ],
+                ],
+                'default' => [
+                    'unit' => 'px',
+                    'size' => 90,
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .ecom-components-root[data-widget-type="product-badges"]' => '--badge-height: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+
+        $this->add_responsive_control(
+            'badge_gap',
+            [
+                'label' => __('Gap between badges (px)', 'haus-ecom-widgets'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => ['px'],
+                'range' => [
+                    'px' => [
+                        'min' => 0,
+                        'max' => 50,
+                        'step' => 2,
+                    ],
+                ],
+                'default' => [
+                    'unit' => 'px',
+                    'size' => 0,
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .ecom-components-root[data-widget-type="product-badges"]' => '--badges-container-gap: {{SIZE}}{{UNIT}};',
+                ],
             ]
         );
     }
@@ -70,6 +117,23 @@ class ProductBadges extends Widget_Base
         $vendureId = get_post_meta($productId, 'vendure_id', true);
 
         ?>
+        <style>
+            .ecom-components-root[data-widget-type='product-badges'] {
+                --badges-container-position: relative;
+                --badge-wrapper-position: relative;
+                --badge-wrapper-display: flex;
+                --badge-wrapper-flex-direction: row;
+                --badge-wrapper-justify-content: flex-start;
+                --badge-wrapper-align-items: center;
+                --badge-wrapper-flex-wrap: wrap;
+                --badge-wrapper-width: auto;
+                --badges-container-height: fit-content;
+                --badge-max-width: 100%;
+                --badge-object-fit: contain;
+                --badge-width: auto;
+                --badge-margin: 0;
+            }
+        </style>
 
         <div id="<?= $widgetId ?>" class="ecom-components-root" data-widget-type="product-badges"
             data-product-id="<?= $vendureId ?>" data-badge-positions="<?= $settings['badge_positions'] ?>"
