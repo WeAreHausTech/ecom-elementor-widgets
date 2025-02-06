@@ -77,9 +77,20 @@ export class WidgetsRenderer {
     // const css = await this.fetchCSSContent()
     const shadowRoot = element.attachShadow({ mode: 'open' })
 
+    // Create style element and apply existing styles
     const styleEl = document.createElement('style')
-    styleEl.textContent = css
+    styleEl.setAttribute('id', 'ecom-components-styles')
+    styleEl.textContent = css // Existing CSS
+
+    // Extract additional `.ec-` styles from loaded stylesheets
+    const ecStyleEl = document.createElement('style')
+    ecStyleEl.setAttribute('id', 'ecom-components-ec-styles')
+    const extraEcStyles = extractEcStylesFromStyleSheets()
+    ecStyleEl.textContent = `\n${extraEcStyles}`
+
+    // Inject styles into Shadow DOM
     shadowRoot.appendChild(styleEl)
+    shadowRoot.appendChild(ecStyleEl)
 
     // Fix for activeElement not being correct in shadow DOM when tabbing
     const originalActiveElement = Object.getOwnPropertyDescriptor(
@@ -178,4 +189,26 @@ export class WidgetsRenderer {
       subtree: true,
     })
   }
+}
+
+/**
+ * Extracts all `.ec-` styles from loaded stylesheets.
+ */
+const extractEcStylesFromStyleSheets = (): string => {
+  const ecStyles: string[] = []
+
+  for (const sheet of document.styleSheets) {
+    try {
+      for (const rule of sheet.cssRules) {
+        if (rule instanceof CSSStyleRule && rule.selectorText.startsWith('.ec-')) {
+          ecStyles.push(rule.cssText)
+        }
+      }
+    } catch (error: unknown) {
+      // Catch CORS-restricted stylesheets
+      console.warn('Could not access stylesheet:', sheet.href, error)
+    }
+  }
+
+  return ecStyles.join('\n')
 }
