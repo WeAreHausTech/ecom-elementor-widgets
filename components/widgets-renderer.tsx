@@ -21,7 +21,7 @@ export interface ResourceBundle {
 export type ConditionalTemplateProps = {
   conditions: {
     [key: string]: {
-      inputType: 'productVariant' | 'product' | 'activeOrder' // Add more input types as needed (e.g. 'product', 'cart', etc.)
+      inputType: 'productVariant' | 'product' | 'activeOrder' | 'activeCustomer' // Add more input types as needed (e.g. 'product', 'cart', etc.)
       fn: (input: never) => boolean
     }
   }

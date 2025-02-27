@@ -2,8 +2,8 @@ import { useEventBusOn } from '@haus-tech/ecom-components/eventbus'
 import { productChannel } from '@haus-tech/ecom-components/eventbus'
 import { useCallback, useLayoutEffect, useMemo } from 'react'
 import { ConditionalTemplateProps } from '../widgets-renderer'
-import { Maybe, Order, ProductVariant } from '@haus-tech/ecom-components'
-import { useActiveOrder, useProductDetail } from '@haus-tech/ecom-components/hooks'
+import { Maybe, Order, ProductVariant, Customer } from '@haus-tech/ecom-components'
+import { useActiveOrder, useProductDetail, useActiveCustomer } from '@haus-tech/ecom-components/hooks'
 
 type CustomTemplateProps = {
   templateId?: string
@@ -22,6 +22,10 @@ const defaultConditions: ConditionalTemplateProps['conditions'] = {
     inputType: 'activeOrder',
     fn: (input: Maybe<Order>) => !input?.lines?.length,
   },
+  userIsLoggedIn: {
+    inputType: 'activeCustomer',
+    fn: (input: Maybe<Customer>) => input !== null,
+  }
 }
 
 const ConditionalTemplate = ({
@@ -46,6 +50,10 @@ const ConditionalTemplate = ({
     inputType === 'product' && !!productId,
   )
 
+  const { data: activeCustomer } = useActiveCustomer({
+    enabled: inputType === 'activeCustomer',
+  })
+
   const { data: activeOrder } = useActiveOrder({
     enabled: inputType === 'activeOrder',
   })
@@ -56,6 +64,7 @@ const ConditionalTemplate = ({
         productVariant: selectedProductVariant,
         product,
         activeOrder,
+        activeCustomer,
       }
 
       const element = document.getElementById(`ecom-elementor-template-${templateId}`)
@@ -83,7 +92,7 @@ const ConditionalTemplate = ({
         }
       }
     },
-    [selectedProductVariant, product, activeOrder, templateId, templateIdFalse, selectedCondition],
+    [selectedProductVariant, product, activeOrder, templateId, templateIdFalse, selectedCondition, activeCustomer],
   )
 
   useLayoutEffect(() => {
