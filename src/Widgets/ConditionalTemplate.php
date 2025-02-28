@@ -53,6 +53,7 @@ class ConditionalTemplate extends Widget_Base
                 'options' => apply_filters('haus_ecom_widgets_conditional_template_options', [
                     'priceIsZero' => __('Salesprice is 0 (variant)', 'haus-ecom-widgets'),
                     'cartIsEmpty' => __('Cart is empty', 'haus-ecom-widgets'),
+                    'userIsLoggedIn' => __('User is logged in', 'haus-ecom-widgets'),
                 ]),
                 'default' => 'priceIsZero',
             ]
