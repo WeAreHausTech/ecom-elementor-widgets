@@ -157,12 +157,12 @@ export class WidgetsRenderer {
   init(callback?: () => void) {
     if (document.readyState !== 'loading') {
       this.renderElements()
-      this.setupObserver()
+      // this.setupObserver()
       callback?.()
     } else {
       document.addEventListener('DOMContentLoaded', () => {
         this.renderElements()
-        this.setupObserver()
+        // this.setupObserver()
         callback?.()
       })
     }
