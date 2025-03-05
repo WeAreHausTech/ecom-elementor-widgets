@@ -42,6 +42,5 @@
     "typescript-eslint": "^8.18.0",
     "vite-plugin-dts": "^4.3.0"
   },
-  "source": "components/index.tsx",
-  "packageManager": "yarn@4.7.0"
+  "source": "components/index.tsx"
 }
