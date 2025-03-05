@@ -2,7 +2,7 @@ import { BuilderQueryUpdates, VendureDataProviderProps } from '@haus-tech/ecom-c
 import React, { ReactNode } from 'react'
 import ReactDOM from 'react-dom/client'
 import ecomWidgets from './widgets'
-import { camelCase, set } from 'lodash'
+import { camelCase, debounce, set } from 'lodash'
 import css from '@haus-tech/ecom-components/dist/ecom-style.css?raw'
 import { ComponentProviderProps, DataProvider } from '@haus-tech/ecom-components/providers'
 export interface IWidgetsRendererOptions {
@@ -169,6 +169,11 @@ export class WidgetsRenderer {
   }
 
   setupObserver() {
+    const debouncedRenderElements = debounce(() => this.renderElements(), 300, {
+      leading: false,
+      trailing: true,
+    })
+
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.addedNodes.length) {
@@ -176,7 +181,7 @@ export class WidgetsRenderer {
             if (node instanceof HTMLElement) {
               const found = node.getElementsByClassName('ecom-components-root').length > 0
               if (found) {
-                this.renderElements()
+                debouncedRenderElements()
               }
             }
           })
