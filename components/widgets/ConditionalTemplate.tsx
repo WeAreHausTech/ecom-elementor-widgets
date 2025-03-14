@@ -2,8 +2,12 @@ import { useEventBusOn } from '@haus-tech/ecom-components/eventbus'
 import { productChannel } from '@haus-tech/ecom-components/eventbus'
 import { useCallback, useLayoutEffect, useMemo } from 'react'
 import { ConditionalTemplateProps } from '../widgets-renderer'
-import { Maybe, Order, ProductVariant, Customer } from '@haus-tech/ecom-components'
-import { useActiveOrder, useProductDetail, useActiveCustomer } from '@haus-tech/ecom-components/hooks'
+import { Customer, Maybe, Order, ProductVariant } from '@haus-tech/ecom-components'
+import {
+  useActiveCustomer,
+  useActiveOrder,
+  useProductDetail,
+} from '@haus-tech/ecom-components/hooks'
 
 type CustomTemplateProps = {
   templateId?: string
@@ -25,7 +29,7 @@ const defaultConditions: ConditionalTemplateProps['conditions'] = {
   userIsLoggedIn: {
     inputType: 'activeCustomer',
     fn: (input: Maybe<Customer>) => input !== null,
-  }
+  },
 }
 
 const ConditionalTemplate = ({
@@ -92,7 +96,15 @@ const ConditionalTemplate = ({
         }
       }
     },
-    [selectedProductVariant, product, activeOrder, templateId, templateIdFalse, selectedCondition, activeCustomer],
+    [
+      selectedProductVariant,
+      product,
+      activeOrder,
+      templateId,
+      templateIdFalse,
+      selectedCondition,
+      activeCustomer,
+    ],
   )
 
   useLayoutEffect(() => {
