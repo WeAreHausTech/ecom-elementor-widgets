@@ -1,5 +1,7 @@
 <?php
+
 namespace WeAreHausTech\Queries;
+
 class Collection extends BaseQuery
 {
     public function get($lang, $skip, $take, $parentIds = [])
@@ -19,8 +21,15 @@ class Collection extends BaseQuery
             }
         })";
 
-        $this->query = 
-           "query{
+        if (empty($parentIds)) {
+            $options = "(options: {
+                take: $take,
+                skip: $skip
+            })";
+        };
+
+        $this->query =
+            "query{
                 collections $options{
                     totalItems
                     items {
