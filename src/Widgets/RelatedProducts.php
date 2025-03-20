@@ -4,6 +4,7 @@ namespace WeAreHausTech\Widgets;
 
 use \Elementor\Widget_Base;
 use \WeAreHausTech\Traits\ElementorTemplate;
+use WeAreHausTech\Queries\QueryHelper;
 
 class RelatedProducts extends Widget_Base
 {
@@ -72,7 +73,7 @@ class RelatedProducts extends Widget_Base
         $facets = get_transient('ecom-haus-queries-facet');
 
         if (!$facets) {
-            $facets = (new \WeAreHausTech\Queries\Facet)->get('sv');
+            $facets = (new QueryHelper)->getVendureFacets('sv');
             set_transient('ecom-haus-queries-facet', $facets, 60 * 5);
         }
 
@@ -83,13 +84,13 @@ class RelatedProducts extends Widget_Base
     {
         $facets = $this->get_facets();
 
-        if (!isset($facets['data']['facets']['items'])) {
+        if (!isset($facets)) {
             return;
         }
 
         $options = [];
 
-        foreach ($facets['data']['facets']['items'] as $facet) {
+        foreach ($facets as $facet) {
             $options[$facet['id']] = $facet['name'];
         }
 
@@ -117,7 +118,7 @@ class RelatedProducts extends Widget_Base
         $vendureId = get_post_meta($productId, 'vendure_id', true);
 
         $widget_id = 'ecom_' . $this->get_id();
-?>
+        ?>
         <div
             id="<?= $widget_id ?>"
             data-vendure-api-url="<?= VENDURE_API_URL ?>"
@@ -128,7 +129,7 @@ class RelatedProducts extends Widget_Base
             data-take="<?= $settings['max_products'] ?>"
             data-facet="<?= $facet ?>">
         </div>
-<?php
+        <?php
 
     }
 }

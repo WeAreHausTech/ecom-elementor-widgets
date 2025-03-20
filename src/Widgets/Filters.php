@@ -4,6 +4,7 @@ namespace WeAreHausTech\Widgets;
 
 use \Elementor\Widget_Base;
 use \WeAreHausTech\Traits\ElementorTemplate;
+use WeAreHausTech\Queries\QueryHelper;
 
 class Filters extends Widget_Base
 {
@@ -121,13 +122,13 @@ class Filters extends Widget_Base
   {
     $facets = $this->get_facets();
 
-    if (!isset($facets['data']['facets']['items'])) {
+    if (!isset($facets)) {
       return;
     }
 
     $options = [];
 
-    foreach ($facets['data']['facets']['items'] as $facet) {
+    foreach ($facets as $facet) {
       $options[$facet['code']] = $facet['code'] . ' (id: ' . $facet['id'] . ')';
     }
 
@@ -187,7 +188,7 @@ class Filters extends Widget_Base
     $facets = get_transient('ecom-haus-queries-facet');
 
     if (!$facets) {
-      $facets = (new \WeAreHausTech\Queries\Facet)->get('sv');
+      $facets = (new QueryHelper)->getVendureFacets('sv');
       set_transient('ecom-haus-queries-facet', $facets, 60 * 5);
     }
 

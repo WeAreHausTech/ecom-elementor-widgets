@@ -4,6 +4,7 @@ namespace WeAreHausTech\Widgets;
 
 use \Elementor\Widget_Base;
 use \WeAreHausTech\Traits\ElementorTemplate;
+use WeAreHausTech\Queries\QueryHelper;
 
 class ProductList extends Widget_Base
 {
@@ -119,15 +120,11 @@ class ProductList extends Widget_Base
     {
         $collections = $this->get_collections();
 
-        if (!isset($collections['data']['collections']['items'])) {
-            return;
-        }
-
         $options = [
             '0' => '-',
         ];
 
-        foreach ($collections['data']['collections']['items'] as $value) {
+        foreach ($collections as $value) {
             $options[$value['id']] = $value['name'];
         }
 
@@ -148,13 +145,13 @@ class ProductList extends Widget_Base
     {
         $facets = $this->get_facets();
 
-        if (!isset($facets['data']['facets']['items'])) {
+        if (!isset($facets)) {
             return;
         }
 
         $options = [];
 
-        foreach ($facets['data']['facets']['items'] as $facet) {
+        foreach ($facets as $facet) {
             $options[$facet['code']] = $facet['code'] . ' (id: ' . $facet['id'] . ')';
         }
 
@@ -214,7 +211,7 @@ class ProductList extends Widget_Base
         $collections = get_transient('ecom-haus-queries-collection');
 
         if (!$collections) {
-            $collections = (new \WeAreHausTech\Queries\Collection)->get('sv', 0, 100);
+            $collections = (new QueryHelper)->getVendureCollections('sv');
             set_transient('ecom-haus-queries-collection', $collections, 60 * 5);
         }
 
@@ -226,7 +223,7 @@ class ProductList extends Widget_Base
         $facets = get_transient('ecom-haus-queries-facet');
 
         if (!$facets) {
-            $facets = (new \WeAreHausTech\Queries\Facet)->get('sv');
+            $facets = (new QueryHelper)->getVendureFacets('sv');
             set_transient('ecom-haus-queries-facet', $facets, 60 * 5);
         }
 
@@ -237,7 +234,7 @@ class ProductList extends Widget_Base
     {
         $facets = $this->get_facets();
 
-        if (!isset($facets['data']['facets']['items'])) {
+        if (!isset($facets)) {
             return;
         }
 
@@ -260,7 +257,7 @@ class ProductList extends Widget_Base
             ]
         );
 
-        foreach ($facets['data']['facets']['items'] as $facet) {
+        foreach ($facets as $facet) {
             $this->add_control(
                 'facetType-' . $facet['code'],
                 [
