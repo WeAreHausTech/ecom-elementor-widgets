@@ -23,7 +23,7 @@ class QueryHelper
         if (count($data) === $totalItems) {
             return array_combine(array_column($data, 'id'), $data);
         } else {
-            return $this->getVendureCollections($lang, $data, $skip + 100, $take);
+            return $this->getVendureCollections($lang, $data, $skip + $take, $take);
         }
     }
     
@@ -31,7 +31,7 @@ class QueryHelper
     {
         $facets = (new \WeAreHausTech\Queries\Facet)->get($lang, $skip, $take);
 
-        if (!isset($collectfacetsions['data']['facets']['items'])) {
+        if (!isset($facets['data']['facets']['items'])) {
             return [];
         }
 
@@ -43,7 +43,7 @@ class QueryHelper
         if (count($data) === $totalItems) {
             return array_combine(array_column($data, 'id'), $data);
         } else {
-            return $this->getVendureFacets($lang, $data, $skip + 100, $take);
+            return $this->getVendureFacets($lang, $data, $skip + $take, $take);
         }
     }
 }
