@@ -4,6 +4,7 @@ namespace WeAreHausTech\Widgets;
 
 use \Elementor\Widget_Base;
 use \WeAreHausTech\Traits\ElementorTemplate;
+use WeAreHausTech\Queries\QueryHelper;
 
 class RelatedProducts extends Widget_Base
 {
