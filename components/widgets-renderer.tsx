@@ -4,7 +4,12 @@ import ReactDOM from 'react-dom/client'
 import ecomWidgets from './widgets'
 import { camelCase, debounce, set } from 'lodash'
 import css from '@haus-tech/ecom-components/dist/ecom-style.css?raw'
-import { ComponentProviderProps, DataProvider } from '@haus-tech/ecom-components/providers'
+import {
+  ComponentProviderProps,
+  DataProvider,
+  vendureQueryClient,
+} from '@haus-tech/ecom-components/providers'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 export interface IWidgetsRendererOptions {
   provider: 'vendure'
   updates: BuilderQueryUpdates
@@ -44,6 +49,7 @@ export class WidgetsRenderer {
   translations: ResourceBundle[] = []
   customComponents: ComponentProviderProps['components']
   customWidgetProps: CustomWidgetProps[]
+  enableReactQueryDevtools = false
 
   constructor(
     { provider, updates, options, sdkInstance }: IWidgetsRendererOptions,
@@ -158,11 +164,13 @@ export class WidgetsRenderer {
     if (document.readyState !== 'loading') {
       this.renderElements()
       this.setupObserver()
+      this.setupReactQueryDevtools()
       callback?.()
     } else {
       document.addEventListener('DOMContentLoaded', () => {
         this.renderElements()
         this.setupObserver()
+        this.setupReactQueryDevtools()
         callback?.()
       })
     }
@@ -193,6 +201,34 @@ export class WidgetsRenderer {
       childList: true,
       subtree: true,
     })
+  }
+
+  setupReactQueryDevtools() {
+    if (!this.enableReactQueryDevtools) {
+      return
+    }
+    const devtools = document.createElement('div')
+    devtools.id = 'devtools'
+    document.body.appendChild(devtools)
+
+    const shadowRoot = devtools.attachShadow({ mode: 'open' })
+
+    const ReactQueryDevtoolsProduction = React.lazy(() =>
+      import('@tanstack/react-query-devtools/build/modern/production.js').then((d) => ({
+        default: d.ReactQueryDevtools,
+      })),
+    )
+
+    return ReactDOM.createRoot(shadowRoot).render(
+      <React.StrictMode>
+        <QueryClientProvider client={vendureQueryClient as unknown as QueryClient}>
+          <ReactQueryDevtoolsProduction
+            client={vendureQueryClient as unknown as QueryClient}
+            shadowDOMTarget={shadowRoot}
+          />
+        </QueryClientProvider>
+      </React.StrictMode>,
+    )
   }
 }
 
