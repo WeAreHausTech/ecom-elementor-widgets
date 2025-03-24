@@ -238,6 +238,7 @@ class ProductList extends Widget_Base
             return;
         }
 
+        //TODO make a boolean, right now department/brand/category all means true and all works the same
         $this->add_control(
             'autoFacet',
             [
@@ -346,13 +347,15 @@ class ProductList extends Widget_Base
         } else if ($autoSetTaxonomy) {
             $currentTerm = get_queried_object();
             $termId = $currentTerm->term_id;
-            $termTaxonomy = $currentTerm->taxonomy;
+            $vendureCollectionId = get_term_meta($termId, 'vendure_collection_id', true);
 
-            if ($termId && $termTaxonomy === 'produkter-kategorier') {
-                $taxonomy = get_term_meta($termId, 'vendure_collection_id', true);
+            if ($termId && $vendureCollectionId) {
+                $taxonomy = $vendureCollectionId;
             } else {
-                $facetId = get_term_meta($termId, 'vendure_term_id', true);
-                $facets[] = $facetId;
+                $vendureTermId = get_term_meta($termId, 'vendure_term_id', true);
+                if ($vendureTermId) {
+                    $facets[] = $vendureTermId;
+                }
             }
         }
 
@@ -364,7 +367,7 @@ class ProductList extends Widget_Base
 
         $widgetId = 'ecom_' . $this->get_id();
 
-?>
+        ?>
         <div id="placeholderWrapper" style="position: relative; width: 100%; ">
             <div id="<?= $widgetId ?>" class="ecom-components-root productlist-widget" data-widget-type="product-list"
                 data-facet="<?= implode(", ", $facets) ?>" data-collection="<?= $taxonomy ?>"
@@ -374,7 +377,7 @@ class ProductList extends Widget_Base
                 data-product-list-identifier="<?= $settings['product_list_identifier'] ?>"
                 data-filter-values="<?= htmlspecialchars(json_encode($settings['enabled_filters']), ENT_QUOTES, 'UTF-8'); ?>">
             </div>
-            <?php if ($_ENV['ENABLE_SKELETON_PRODUCT_LIST'] === 'true') : ?>
+            <?php if ($_ENV['ENABLE_SKELETON_PRODUCT_LIST'] === 'true'): ?>
                 <div id="ph-cards" class="placeholder-cards" style="position:absolute; width: 100%; top: 0; left: 0;">
                     <?php for ($i = 0; $i < $settings['products_per_page']; $i++): ?>
                         <div class="placeholder-card">
@@ -388,7 +391,7 @@ class ProductList extends Widget_Base
 
 
         <script>
-            (function() {
+            (function () {
                 const productListWidget = document.getElementById('<?= $widgetId ?>');
                 const placeholderCards = document.getElementById('ph-cards');
                 const placeholderCardsHeight = placeholderCards ? placeholderCards.clientHeight : 0;
@@ -398,7 +401,7 @@ class ProductList extends Widget_Base
                     placeholderWrapper.style.height = `${placeholderCardsHeight}px`;
                 }
 
-                window.addEventListener('product-list:data:changed', function(event) {
+                window.addEventListener('product-list:data:changed', function (event) {
                     if (!productListWidget) {
                         return;
                     }
@@ -420,6 +423,6 @@ class ProductList extends Widget_Base
             })();
         </script>
 
-<?php
+        <?php
     }
 }
