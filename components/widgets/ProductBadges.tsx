@@ -1,6 +1,6 @@
 import { Badges } from '@haus-tech/ecom-components/store-components'
-import { RequireAtLeastOne } from '@haus-tech/ecom-components'
-import { useProductDetail } from '@haus-tech/ecom-components/hooks'
+import { RequireAtLeastOne } from '@haus-storefront/shared-types'
+import { useProductDetail } from '@haus-storefront/hooks'
 import { useMemo } from 'react'
 
 type ProductInputVariable = RequireAtLeastOne<{ id: string; slug: string }>

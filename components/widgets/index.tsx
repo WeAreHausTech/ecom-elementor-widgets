@@ -1,5 +1,5 @@
 // Ecom Widgets - do not modify
-import { EnabledFilter, OrderListOptions } from '@haus-tech/ecom-components'
+import { EnabledFilter, OrderListOptions } from  '@haus-storefront/shared-types'
 import { get, lowerCase, size } from 'lodash'
 import React, { ComponentProps, Suspense } from 'react'
 import { FiltersWrapper } from '@haus-tech/ecom-components'
@@ -229,15 +229,15 @@ export default {
     )
   },
 
-  addToCartButtonWidget: () => {
-    const AddToCartButtonWidget = React.lazy(() => import('./AddToCartButton'))
+  // addToCartButtonWidget: () => {
+  //   const AddToCartButtonWidget = React.lazy(() => import('./AddToCartButton'))
 
-    return (
-      <Suspense>
-        <AddToCartButtonWidget />
-      </Suspense>
-    )
-  },
+  //   return (
+  //     <Suspense>
+  //       <AddToCartButtonWidget />
+  //     </Suspense>
+  //   )
+  // },
 
   orderlines: () => {
     const OrderLines = React.lazy(() => import('./Orderlines'))

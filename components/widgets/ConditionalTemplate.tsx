@@ -1,13 +1,8 @@
-import { useEventBusOn } from '@haus-tech/ecom-components/eventbus'
-import { productChannel } from '@haus-tech/ecom-components/eventbus'
+import { productChannel, useEventBusOn } from '@haus-storefront/core'
 import { useCallback, useLayoutEffect, useMemo } from 'react'
 import { ConditionalTemplateProps } from '../widgets-renderer'
-import { Customer, Maybe, Order, ProductVariant } from '@haus-tech/ecom-components'
-import {
-  useActiveCustomer,
-  useActiveOrder,
-  useProductDetail,
-} from '@haus-tech/ecom-components/hooks'
+import { Customer, Maybe, Order, ProductVariant } from '@haus-storefront/shared-types'
+import { useActiveCustomer, useActiveOrder, useProductDetail } from '@haus-storefront/hooks'
 
 type CustomTemplateProps = {
   templateId?: string

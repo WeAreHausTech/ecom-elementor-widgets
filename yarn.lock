@@ -133,7 +133,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.25.9"
 
-"@babel/runtime@^7.25.0":
+"@babel/runtime@^7.25.0", "@babel/runtime@^7.26.10":
   version "7.26.10"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.26.10.tgz#a07b4d8fa27af131a633d7b3524db803eb4764c2"
   integrity sha512-2WJMeRQPHKSPemqk/awGrAiuFfzBmOIPXKizAsVhWH9YJqLZ0H+HS4c8loHGgW6utJ3E/ejXQUsiGaQy2NZ9Fw==
@@ -392,6 +392,89 @@
   version "3.2.0"
   resolved "https://registry.npmjs.org/@graphql-typed-document-node/core/-/core-3.2.0.tgz#5f3d96ec6b2354ad6d8a28bf216a1d97b5426861"
   integrity sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==
+
+"@haus-storefront/add-to-cart-btn@^1.0.0":
+  version "1.0.0"
+  resolved "http://localhost:4873/@haus-storefront/add-to-cart-btn/-/add-to-cart-btn-1.0.0.tgz#2b990bb4f46708e31655c0da9b7085fc20bf7789"
+  integrity sha512-xvXQHSrbn3czsprIIJNlNfuPHREQUhZFmpgrcFzw8gZ9VgoSS5WKJakC+ulfESGytNg18lQSiZxwil/NLpzr+Q==
+  dependencies:
+    "@haus-storefront/core" "1.0.0"
+    "@haus-storefront/shared-types" "1.0.0"
+    i18next "^24.2.2"
+    react-i18next "^15.4.0"
+
+"@haus-storefront/common-hooks@^1.0.0":
+  version "1.0.0"
+  resolved "http://localhost:4873/@haus-storefront/common-hooks/-/common-hooks-1.0.0.tgz#87222bd78a1fcb3b93a2b127c1cd78dfc28ec2b0"
+  integrity sha512-E1JUE+4JC0cFpSZdaPLtU1rRxKf9GCqaSVpAwaVA00qeluAY+7KTdEIN/ELE7W34LXtoTMtgsPFPM9Z0b/aLOw==
+  dependencies:
+    i18next "^24.2.2"
+    react-i18next "^15.4.0"
+
+"@haus-storefront/common-ui@^1.0.0":
+  version "1.0.0"
+  resolved "http://localhost:4873/@haus-storefront/common-ui/-/common-ui-1.0.0.tgz#9c8d86fe8e4665a80c7a020cfafad602d0515230"
+  integrity sha512-rO+6mONrIliadsj1br+wwhG1b0XIMKM4hsHn0BIlD6p/uPfSStH8utb9EMFoVY2qOxDPgVnO7+ihuTEf0dCaFA==
+  dependencies:
+    i18next "^24.2.2"
+    react-i18next "^15.4.0"
+
+"@haus-storefront/common-utils@1.0.1":
+  version "1.0.1"
+  resolved "http://localhost:4873/@haus-storefront/common-utils/-/common-utils-1.0.1.tgz#c2ca6dc198b8339368e4632288a13db9e054dde7"
+  integrity sha512-q/GrLcUFKZZ9DJG9i/fLglr9tpsOzM3p9M9gXNaxpQoKaNS62ORZlxhqloY+d+NOaJDaNOVCTEUhJvtQpdqNrw==
+  dependencies:
+    i18next "^24.2.2"
+    react-i18next "^15.4.0"
+
+"@haus-storefront/core@1.0.0":
+  version "1.0.0"
+  resolved "http://localhost:4873/@haus-storefront/core/-/core-1.0.0.tgz#d6057e222b57fe1690ca899612be8e5cff469924"
+  integrity sha512-lk5dEUT8ope2jeDr9jW8tE7Pw5GpLMDwP0cO7JFWkGhfuwyWrFQsr5LXPPCrLJD/jygljLLrBixGnbrmf7W+Wg==
+  dependencies:
+    i18next "^24.2.2"
+    react-i18next "^15.4.0"
+
+"@haus-storefront/core@1.0.4":
+  version "1.0.4"
+  resolved "http://localhost:4873/@haus-storefront/core/-/core-1.0.4.tgz#8546cb4eea6efcb449ce3a2e1958ce9a9e93c70f"
+  integrity sha512-nF1jnEGtdbEgtw53hrbnV0S2vrpTdkrIMtuO4H0xunaO7zaq2HPbBKfJrXAxAa8YOOFmUuXTQO2eqpfnsDmWPA==
+  dependencies:
+    i18next "^24.2.2"
+    react-i18next "^15.4.0"
+
+"@haus-storefront/hooks@1.0.3":
+  version "1.0.3"
+  resolved "http://localhost:4873/@haus-storefront/hooks/-/hooks-1.0.3.tgz#d3a170fce837dfa522aca4da7bc527d0ac020dd9"
+  integrity sha512-GL81rRJmZh4/xSeg6x9miFrDn27Zx2om6OGjV4HFhhp9vBYQWbK5+j3TiXpza/EtIEUIqXa0v3L2bYTaMEN1tw==
+  dependencies:
+    i18next "^24.2.2"
+    react-i18next "^15.4.0"
+
+"@haus-storefront/image@^1.0.5":
+  version "1.0.5"
+  resolved "http://localhost:4873/@haus-storefront/image/-/image-1.0.5.tgz#29f2cd057642a4715830a1ce4924147fc79829bb"
+  integrity sha512-lgl/1FXzQGgGU+dZg3JpKxbA/qqGvCjTiH9zB8Ei7UNKyxGqAJKwSLt3SapSwsYW62k9cSJWbcj0eEN459D7ug==
+
+"@haus-storefront/order-view@^1.0.0":
+  version "1.0.0"
+  resolved "http://localhost:4873/@haus-storefront/order-view/-/order-view-1.0.0.tgz#bbda5c397cc6b0d302de49c89d442f0317e2f76f"
+  integrity sha512-R+BvxaWET3zjc+m9lGuNv6fWJnYOnUHPf5o5aeOEghxqK9dlm8ysS/1wVMDZRNG3FuB5NFgazayeIl26zLSeoQ==
+
+"@haus-storefront/price@^1.0.0":
+  version "1.0.0"
+  resolved "http://localhost:4873/@haus-storefront/price/-/price-1.0.0.tgz#07ee92d86eb58454dcf0e54406571e26197d5819"
+  integrity sha512-zv6A43bo0cMp1Hbe/4oWK9z+5NgGSGt+CFs+Msg+QX1XiIYIb2Tup3t1a3PxbWRZAmS5K7dd7uJHF2YcTjrEtg==
+
+"@haus-storefront/shared-types@1.0.0":
+  version "1.0.0"
+  resolved "http://localhost:4873/@haus-storefront/shared-types/-/shared-types-1.0.0.tgz#16970d10acbd67eb2eb25e0fa69103d796b6c22c"
+  integrity sha512-PaRm5DHW6azHHdWUSW2zjCb1vIQHfP6PZ3MaVHsSsyXA95dBBG5AVmMcN+JTL3GlHj3gterKX3ErAu3tDB4ezQ==
+
+"@haus-storefront/shared-types@1.0.1":
+  version "1.0.1"
+  resolved "http://localhost:4873/@haus-storefront/shared-types/-/shared-types-1.0.1.tgz#8cc588af22fd3bbb8da91d8923bf9aa7c4383f05"
+  integrity sha512-SzHA/GDny1K/0VS0MV5wiyhg0vqD7QLJkPRX6+6irldgT65dxCLbCDjWIEOaHiPjuIT5CaRc/odtMwguHX59Qw==
 
 "@haus-tech/ecom-components@^1.7.4":
   version "1.7.4"
@@ -2155,6 +2238,13 @@ html-parse-stringify@^3.0.1:
   dependencies:
     void-elements "3.1.0"
 
+i18next@^24.2.2:
+  version "24.2.3"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-24.2.3.tgz#3a05f72615cbd7c00d7e348667e2aabef1df753b"
+  integrity sha512-lfbf80OzkocvX7nmZtu7nSTNbrTYR52sLWxPtlXX1zAhVw8WEnFk4puUkCR4B1dNQwbSpEHHHemcZu//7EcB7A==
+  dependencies:
+    "@babel/runtime" "^7.26.10"
+
 ignore@^5.2.0, ignore@^5.3.1:
   version "5.3.2"
   resolved "https://registry.npmjs.org/ignore/-/ignore-5.3.2.tgz#3cd40e729f3643fd87cb04e50bf0eb722bc596f5"
@@ -2644,7 +2734,7 @@ react-dom@^18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.2"
 
-react-i18next@^15.0.2:
+react-i18next@^15.0.2, react-i18next@^15.4.0:
   version "15.4.1"
   resolved "https://registry.npmjs.org/react-i18next/-/react-i18next-15.4.1.tgz#33f3e89c2f6c68e2bfcbf9aa59986ad42fe78758"
   integrity sha512-ahGab+IaSgZmNPYXdV1n+OYky95TGpFwnKRflX/16dY04DsYYKHtVLjeny7sBSCREEcoMbAgSkFiGLF5g5Oofw==

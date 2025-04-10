@@ -100,10 +100,6 @@ class BaseEcomElementorWidgets
 
             \Elementor\Plugin::instance()
                 ->widgets_manager
-                ->register(new \WeAreHausTech\Widgets\AddToCartButtonWidget());
-
-            \Elementor\Plugin::instance()
-                ->widgets_manager
                 ->register(new \WeAreHausTech\Widgets\OrderLines());
 
             \Elementor\Plugin::instance()

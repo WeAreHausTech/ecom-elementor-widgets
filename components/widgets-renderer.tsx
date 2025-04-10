@@ -1,14 +1,10 @@
-import { BuilderQueryUpdates, VendureDataProviderProps } from '@haus-tech/ecom-components'
+import { ComponentProviderProps, DataProvider, VendureDataProviderProps, vendureQueryClient } from '@haus-storefront/core'
+import { BuilderQueryUpdates } from '@haus-storefront/shared-types'
 import React, { ReactNode } from 'react'
 import ReactDOM from 'react-dom/client'
 import ecomWidgets from './widgets'
 import { camelCase, debounce, set } from 'lodash'
 import css from '@haus-tech/ecom-components/dist/ecom-style.css?raw'
-import {
-  ComponentProviderProps,
-  DataProvider,
-  vendureQueryClient,
-} from '@haus-tech/ecom-components/providers'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 export interface IWidgetsRendererOptions {
   provider: 'vendure'
