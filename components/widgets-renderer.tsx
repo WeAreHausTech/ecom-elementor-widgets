@@ -15,6 +15,7 @@ export interface IWidgetsRendererOptions {
   updates: BuilderQueryUpdates
   options: VendureDataProviderProps['options']
   sdkInstance?: VendureDataProviderProps['sdkInstance']
+  requestInterceptorStrategy?: VendureDataProviderProps['requestInterceptorStrategy']
 }
 
 export interface ResourceBundle {
@@ -49,10 +50,17 @@ export class WidgetsRenderer {
   translations: ResourceBundle[] = []
   customComponents: ComponentProviderProps['components']
   customWidgetProps: CustomWidgetProps[]
+  requestInterceptorStrategy?: VendureDataProviderProps['requestInterceptorStrategy']
   enableReactQueryDevtools = false
 
   constructor(
-    { provider, updates, options, sdkInstance }: IWidgetsRendererOptions,
+    {
+      provider,
+      updates,
+      options,
+      sdkInstance,
+      requestInterceptorStrategy,
+    }: IWidgetsRendererOptions,
     widgets?: Record<
       string,
       (dataAttributes: NamedNodeMap, widgetProps: ConditionalTemplateProps) => JSX.Element
@@ -72,6 +80,7 @@ export class WidgetsRenderer {
     this.translations = translations || []
     this.customComponents = customComponents || []
     this.customWidgetProps = customWidgetProps || []
+    this.requestInterceptorStrategy = requestInterceptorStrategy
   }
 
   // private async fetchCSSContent() {
@@ -120,6 +129,7 @@ export class WidgetsRenderer {
           updates={this.updates}
           options={this.options}
           sdkInstance={this.sdkInstance}
+          requestInterceptorStrategy={this.requestInterceptorStrategy}
         >
           {children}
         </DataProvider>
