@@ -296,9 +296,9 @@
   integrity sha512-kM3HKb16VIXZyIeVrM1ygYmZBKybX8N4p754bw390wGO3Tf2j4L2/WYL+4suWujpgf6GBYs3jv7TyUivdd05JA==
 
 "@eslint-community/eslint-utils@^4.2.0", "@eslint-community/eslint-utils@^4.4.0":
-  version "4.6.0"
-  resolved "https://registry.npmjs.org/@eslint-community/eslint-utils/-/eslint-utils-4.6.0.tgz#bfe67b3d334a8579a35e48fe240dc0638d1bcd91"
-  integrity sha512-WhCn7Z7TauhBtmzhvKpoQs0Wwb/kBcy4CwpuI0/eEIr2Lx2auxmulAzLr91wVZJaz47iUZdkXOK7WlAfxGKCnA==
+  version "4.6.1"
+  resolved "https://registry.npmjs.org/@eslint-community/eslint-utils/-/eslint-utils-4.6.1.tgz#e4c58fdcf0696e7a5f19c30201ed43123ab15abc"
+  integrity sha512-KTsJMmobmbrFLe3LDh0PC2FXpcSYJt/MLjlkh/9LEnmKYLSYmT/0EW9JWANjeoemiuZrmogti0tW5Ch+qNUYDw==
   dependencies:
     eslint-visitor-keys "^3.4.3"
 
@@ -401,9 +401,9 @@
   integrity sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==
 
 "@haus-tech/ecom-components@^1.8.2":
-  version "1.8.5"
-  resolved "https://registry.npmjs.org/@haus-tech/ecom-components/-/ecom-components-1.8.5.tgz#ca031aa55fd3b3b5cac0eedec8d8ed513bf6dd33"
-  integrity sha512-IEmkV+9wJyXY0hpTRQ1M0nUyGJs3qd+1rRr/MMcFah2pPDl5choTfeGrFb+CgVFWDCDAShLmwfYYttpiB4Iq5g==
+  version "1.8.6"
+  resolved "https://registry.npmjs.org/@haus-tech/ecom-components/-/ecom-components-1.8.6.tgz#963bbdd3c18e70da5a9297265f8ac73edc384a00"
+  integrity sha512-O58f8FS0dfPid9+jj7YP15mFBnIabjclfLHNhXx7o3QaYhR/xupSAwmeUiTpMvei2SpVsa+5r8qHkn0UydmbBA==
   dependencies:
     "@graphql-typed-document-node/core" "^3.2.0"
     "@radix-ui/react-popover" "^1.0.7"
@@ -510,9 +510,9 @@
     "@rushstack/node-core-library" "5.13.0"
 
 "@microsoft/api-extractor@^7.50.1":
-  version "7.52.3"
-  resolved "https://registry.npmjs.org/@microsoft/api-extractor/-/api-extractor-7.52.3.tgz#f943f5e88c2ed77009fd24689f93a4ed84473842"
-  integrity sha512-QEs6l8h7p9eOSHrQ9NBBUZhUuq+j/2QKcRgigbSs2YQepKz8glvsqmsUOp+nvuaY60ps7KkpVVYQCj81WLoMVQ==
+  version "7.52.4"
+  resolved "https://registry.npmjs.org/@microsoft/api-extractor/-/api-extractor-7.52.4.tgz#2ed9bd80bab9104e4e0180947d4f73423ee8e38b"
+  integrity sha512-mIEcqgx877CFwNrTuCdPnlIGak8FjlayZb8sSBwWXX+i4gxkZRpMsb5BQcFW3v1puuJB3jYMqQ08kyAc4Vldhw==
   dependencies:
     "@microsoft/api-extractor-model" "7.30.5"
     "@microsoft/tsdoc" "~0.15.1"
@@ -3064,9 +3064,9 @@ vite-plugin-dts@^4.3.0:
     magic-string "^0.30.17"
 
 vite@^6.0.9:
-  version "6.3.0"
-  resolved "https://registry.npmjs.org/vite/-/vite-6.3.0.tgz#17c86b3a0f4d20b210fe89f22f7b27d5926fcce5"
-  integrity sha512-9aC0n4pr6hIbvi1YOpFjwQ+QOTGssvbJKoeYkuHHGWwlXfdxQlI8L2qNMo9awEEcCPSiS+5mJZk5jH1PAqoDeQ==
+  version "6.3.1"
+  resolved "https://registry.npmjs.org/vite/-/vite-6.3.1.tgz#6b080ff907308ca691c5639c095ab6d938734c0d"
+  integrity sha512-kkzzkqtMESYklo96HKKPE5KKLkC1amlsqt+RjFMlX2AvbRB/0wghap19NdBxxwGZ+h/C6DLCrcEphPIItlGrRQ==
   dependencies:
     esbuild "^0.25.0"
     fdir "^6.4.3"
