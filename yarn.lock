@@ -294,9 +294,9 @@
   integrity sha512-ICgUR+kPimx0vvRzf+N/7L7tVSQeE3BYY+NhHRHXS1kBuPO7z2+7ea2HbhDyZdTephgvNvKrlDDKUexuCVBVvg==
 
 "@eslint-community/eslint-utils@^4.2.0", "@eslint-community/eslint-utils@^4.4.0":
-  version "4.6.1"
-  resolved "https://registry.npmjs.org/@eslint-community/eslint-utils/-/eslint-utils-4.6.1.tgz#e4c58fdcf0696e7a5f19c30201ed43123ab15abc"
-  integrity sha512-KTsJMmobmbrFLe3LDh0PC2FXpcSYJt/MLjlkh/9LEnmKYLSYmT/0EW9JWANjeoemiuZrmogti0tW5Ch+qNUYDw==
+  version "4.7.0"
+  resolved "https://registry.npmjs.org/@eslint-community/eslint-utils/-/eslint-utils-4.7.0.tgz#607084630c6c033992a082de6e6fbc1a8b52175a"
+  integrity sha512-dyybb3AcajC7uha6CvhdVRJqaKyn7w2YKqKyAN37NKYgZT36w+iRb0Dymmc5qEJ549c/S31cMMSFd75bteCpCw==
   dependencies:
     eslint-visitor-keys "^3.4.3"
 
@@ -391,10 +391,10 @@
   resolved "https://registry.npmjs.org/@graphql-typed-document-node/core/-/core-3.2.0.tgz#5f3d96ec6b2354ad6d8a28bf216a1d97b5426861"
   integrity sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==
 
-"@haus-tech/ecom-components@1.8.12":
-  version "1.8.12"
-  resolved "https://registry.yarnpkg.com/@haus-tech/ecom-components/-/ecom-components-1.8.12.tgz#1b48e3938cb3688402dc511dbbad62583f43692f"
-  integrity sha512-Lp12LVku0btYPC7bWLa/XOVenrOt6oQOsyPYRTMPuxOu8Gp3TwPiYAaNdSEIJ0D7WaWdtBs/rCvgbRV/IYdfsA==
+"@haus-tech/ecom-components@1.8.13":
+  version "1.8.13"
+  resolved "https://registry.npmjs.org/@haus-tech/ecom-components/-/ecom-components-1.8.13.tgz#d27f70a5fc0e0da7728ab368ed7818e87a8832b1"
+  integrity sha512-WKMBKHc2QyliGkQGaBe2p2sq2g+/S4IA6VzsagNWm5RaIrdSE3pafJn+KIyZizKhuAMD3zQ9Yr5U3tBTlftRug==
   dependencies:
     "@graphql-typed-document-node/core" "^3.2.0"
     "@radix-ui/react-popover" "^1.0.7"
