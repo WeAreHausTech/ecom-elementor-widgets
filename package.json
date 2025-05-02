@@ -10,7 +10,7 @@
     "version": "[ $(git branch --show-current) = main ] && tsc && auto-changelog -p --tag-pattern ^v[0-9]+\\.[0-9]+\\.[0-9]+$ && git add CHANGELOG.md || echo 'Changelog generation skipped (not on main branch)'"
   },
   "dependencies": {
-    "@haus-tech/ecom-components": "1.8.14",
+    "@haus-tech/ecom-components": "1.8.15",
     "@tanstack/react-query": "^5.72.1",
     "@tanstack/react-query-devtools": "^5.69.0",
     "classnames": "^2.3.2",
