@@ -57,7 +57,7 @@ class Filters extends Widget_Base
     $this->add_control(
       'show_filters_as',
       [
-        'label' => __('Price filter enabled', 'haus-ecom-widgets'),
+        'label' => __('Show filters as', 'haus-ecom-widgets'),
         'type' => \Elementor\Controls_Manager::SELECT,
         'default' => 'dropdown',
         'options' => [
@@ -66,6 +66,36 @@ class Filters extends Widget_Base
         ],
       ]
     );
+
+    // Mobile display controls
+    $this->add_control(
+      'mobile_as_modal',
+      [
+        'label' => __('Show as modal on mobile', 'haus-ecom-widgets'),
+        'type' => \Elementor\Controls_Manager::SWITCHER,
+        'label_on' => __('Yes', 'haus-ecom-widgets'),
+        'label_off' => __('No', 'haus-ecom-widgets'),
+        'return_value' => 'yes',
+        'default' => 'no',
+      ]
+    );
+
+    $this->add_control(
+      'mobile_breakpoint',
+      [
+        'label' => __('Mobile breakpoint (px)', 'haus-ecom-widgets'),
+        'type' => \Elementor\Controls_Manager::NUMBER,
+        'description' => __('Screen width below which mobile settings apply', 'haus-ecom-widgets'),
+        'default' => 768,
+        'min' => 320,
+        'max' => 1200,
+        'step' => 1,
+        'condition' => [
+          'mobile_as_modal' => 'yes',
+        ],
+      ]
+    );
+
     $this->end_controls_section();
 
     $this->start_controls_section(
@@ -208,15 +238,16 @@ class Filters extends Widget_Base
     $maxSkeletonLoaders = $settings['set_max_skeleton_loaders'] === 'yes' ? $settings['max_skeleton_loaders'] : null;
 
     $widgetId = 'ecom_' . $this->get_id();
-?>
+    ?>
 
     <div id="<?= $widgetId ?>" class="ecom-components-root" data-widget-type="product-list-filters"
       data-product-list-identifier="<?= $settings['price_list_identifier'] ?>"
       data-show-filters-as="<?= $settings['show_filters_as'] ?>" data-widget-id="<?= $widgetId ?>"
       data-price-filter-enabled="<?= $settings['price_filter_enabled'] ?>"
-      data-max-skeleton-loaders="<?= $maxSkeletonLoaders ?>"
+      data-max-skeleton-loaders="<?= $maxSkeletonLoaders ?>" data-mobile-as-modal="<?= $settings['mobile_as_modal'] ?>"
+      data-mobile-breakpoint="<?= $settings['mobile_breakpoint'] ?>"
       data-filter-values="<?= htmlspecialchars(json_encode($settings['enabled_filters']), ENT_QUOTES, 'UTF-8'); ?>">
     </div>
-<?php
+    <?php
   }
 }
