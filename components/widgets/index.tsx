@@ -117,7 +117,7 @@ export default {
         break
     }
 
-    if (mobileAsModal) {
+    if (mobileAsModal === 'yes') {
       showFilters.mobile = {
         as: 'modal',
         mobileBreakpoint: parseInt(mobileBreakpoint),
