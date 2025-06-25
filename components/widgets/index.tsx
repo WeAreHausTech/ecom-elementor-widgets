@@ -69,6 +69,8 @@ export default {
     )
     const showFiltersAsValue = dataAttributes.getNamedItem('data-show-filters-as')?.value
     const maxSkeletonLoaders = dataAttributes.getNamedItem('data-max-skeleton-loaders')?.value
+    const mobileAsModal = dataAttributes.getNamedItem('data-mobile-as-modal')?.value
+    const mobileBreakpoint = dataAttributes.getNamedItem('data-mobile-breakpoint')?.value ?? '768'
 
     const enabledFilters = dataAttributes.getNamedItem('data-filter-values')?.value
       ? JSON.parse(dataAttributes.getNamedItem('data-filter-values')!.value)
@@ -115,6 +117,13 @@ export default {
         break
     }
 
+    if (mobileAsModal) {
+      showFilters.mobile = {
+        as: 'modal',
+        mobileBreakpoint: parseInt(mobileBreakpoint),
+      }
+    }
+
     filtersArray.map((filter, index) => {
       const maxLoaders = maxSkeletonLoaders ? JSON.parse(maxSkeletonLoaders) : filtersArray.length
       filter.showSkeletonLoader = index < maxLoaders ? true : false
@@ -133,11 +142,17 @@ export default {
 
   productListSort: (dataAttributes: NamedNodeMap) => {
     const productListIdentifier = dataAttributes.getNamedItem('data-product-list-identifier')?.value
+    const openInModal = dataAttributes.getNamedItem('data-open-in-modal')?.value === 'yes'
+    const mobileBreakpoint = dataAttributes.getNamedItem('data-mobile-breakpoint')?.value
     const Sort = React.lazy(() => import('./Sort.tsx'))
 
     return (
       <Suspense>
-        <Sort productListIdentifier={productListIdentifier} />
+        <Sort
+          productListIdentifier={productListIdentifier}
+          openInModal={openInModal}
+          mobileBreakpoint={mobileBreakpoint ? parseInt(mobileBreakpoint) : undefined}
+        />
       </Suspense>
     )
   },

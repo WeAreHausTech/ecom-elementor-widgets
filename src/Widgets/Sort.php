@@ -53,6 +53,35 @@ class Sort extends Widget_Base
       ]
     );
 
+    // Mobile display controls
+    $this->add_control(
+      'open_in_modal',
+      [
+        'label' => __('Open in modal on mobile', 'haus-ecom-widgets'),
+        'type' => \Elementor\Controls_Manager::SWITCHER,
+        'label_on' => __('Yes', 'haus-ecom-widgets'),
+        'label_off' => __('No', 'haus-ecom-widgets'),
+        'return_value' => 'yes',
+        'default' => 'no',
+      ]
+    );
+
+    $this->add_control(
+      'mobile_breakpoint',
+      [
+        'label' => __('Mobile breakpoint (px)', 'haus-ecom-widgets'),
+        'type' => \Elementor\Controls_Manager::NUMBER,
+        'description' => __('Screen width of which the sort will open in a modal', 'haus-ecom-widgets'),
+        'default' => 768,
+        'min' => 320,
+        'max' => 1200,
+        'step' => 1,
+        'condition' => [
+          'open_in_modal' => 'yes',
+        ],
+      ]
+    );
+
     $this->end_controls_section();
   }
 
@@ -70,7 +99,8 @@ class Sort extends Widget_Base
     ?>
 
     <div id="<?= $widgetId ?>" class="ecom-components-root" data-widget-type="product-list-sort"
-      data-product-list-identifier="<?= $settings['price_list_identifier'] ?>" data-widget-id="<?= $widgetId ?>">
+      data-product-list-identifier="<?= $settings['price_list_identifier'] ?>" data-widget-id="<?= $widgetId ?>"
+      data-open-in-modal="<?= $settings['open_in_modal'] ?>" data-mobile-breakpoint="<?= $settings['mobile_breakpoint'] ?>">
     </div>
     <?php
   }
